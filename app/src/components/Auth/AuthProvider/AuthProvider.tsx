@@ -119,6 +119,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       credentials: "include",
     });
     setUser(null);
+
+    if (typeof window !== "undefined") {
+      localStorage.clear();
+      sessionStorage.clear();
+      document.cookie.split(";").forEach((c) => {
+        document.cookie = c
+          .replace(/^ +/, "")
+          .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+      });
+    }
+
     router.replace("/auth");
   };
 
