@@ -1,4 +1,4 @@
-import ProtectRoutes from "@/components/Auth/ProtectedRoutes/ProtectRoutes";
+import ProtectRoutes from "../../components/Auth/ProtectedRoutes/ProtectRoutes";
 import Profile from "../../components/Profile/Profile";
 
 export default function ProfilePage() {
