@@ -9,8 +9,9 @@ import {
   useRef,
 } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { X } from "lucide-react";
+import { X, CheckCircle, AlertCircle, Info, AlertTriangle } from "lucide-react";
 import clsx from "clsx";
+import React from "react"; // Required for React.ReactElement typing
 
 export type NotificationType = "success" | "error" | "info" | "warning";
 
@@ -54,7 +55,6 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
 
     const timeoutId = setTimeout(() => {
       setNotifications((prev) => prev.filter((n) => n.id !== id));
-
       removalQueue.current = removalQueue.current.filter(
         (t) => t !== timeoutId
       );
@@ -65,6 +65,13 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
 
   const removeNotification = (id: string) => {
     setNotifications((prev) => prev.filter((n) => n.id !== id));
+  };
+
+  const iconMap: Record<NotificationType, React.ReactElement> = {
+    success: <CheckCircle className="text-emerald-400" size={20} />,
+    error: <AlertCircle className="text-rose-400" size={20} />,
+    info: <Info className="text-sky-400" size={20} />,
+    warning: <AlertTriangle className="text-yellow-400" size={20} />,
   };
 
   return (
@@ -90,23 +97,24 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
                 delay: index * 0.1,
               }}
               className={clsx(
-                "flex items-center gap-3 px-4 py-2 rounded-xl shadow-lg text-white w-72",
+                "flex items-start gap-3 px-4 py-3 rounded-xl border w-80 shadow-xl backdrop-blur-md bg-neutral-900/90",
                 {
-                  "bg-green-600": n.type === "success",
-                  "bg-red-600": n.type === "error",
-                  "bg-blue-600": n.type === "info",
-                  "bg-yellow-500": n.type === "warning",
+                  "border-emerald-500/30": n.type === "success",
+                  "border-rose-500/30": n.type === "error",
+                  "border-sky-500/30": n.type === "info",
+                  "border-yellow-400/30": n.type === "warning",
                 }
               )}
             >
-              <span className="flex-1 text-sm">{n.message}</span>
+              <div className="pt-0.5">{iconMap[n.type]}</div>
+              <span className="flex-1 text-sm text-zinc-200">{n.message}</span>
               <button
                 onClick={() => removeNotification(n.id)}
                 title="Close notification"
                 aria-label="Close notification"
                 className="opacity-80 hover:opacity-100 transition-opacity"
               >
-                <X className="w-4 h-4" />
+                <X className="w-4 h-4 text-zinc-400 hover:text-white" />
               </button>
             </motion.div>
           ))}
