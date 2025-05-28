@@ -1,6 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useEffect, useState } from "react";
+import { useRouter, usePathname } from "next/navigation";
 
 interface User {
   _id: string;
@@ -23,6 +24,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
+  const pathname = usePathname();
 
   const refreshUser = async () => {
     setLoading(true);
@@ -32,7 +35,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       });
       if (res.ok) {
         const data = await res.json();
-        // Handle _doc structure from backend
         let userObj = data.user;
         if (userObj && userObj._doc) {
           userObj = { ...userObj._doc, _id: userObj._id };
@@ -52,6 +54,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   useEffect(() => {
     refreshUser();
   }, []);
+
+  useEffect(() => {
+    if (!loading && user && pathname.startsWith("/auth")) {
+      router.replace("/profile");
+    }
+  }, [loading, user, pathname, router]);
 
   const login = async (email: string, password: string) => {
     const res = await fetch(`${process.env.NEXTAUTH_URL}/api/auth/login`, {
@@ -89,6 +97,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       credentials: "include",
     });
     setUser(null);
+    router.replace("/auth");
   };
 
   return (
