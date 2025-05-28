@@ -11,7 +11,7 @@ import {
 import { AnimatePresence, motion } from "framer-motion";
 import { X, CheckCircle, AlertCircle, Info, AlertTriangle } from "lucide-react";
 import clsx from "clsx";
-import React from "react"; // Required for React.ReactElement typing
+import React from "react";
 
 export type NotificationType = "success" | "error" | "info" | "warning";
 

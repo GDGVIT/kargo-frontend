@@ -54,7 +54,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
           userObj = { ...userObj._doc, _id: userObj._id };
         }
         setUser(userObj);
-        console.log("User data:", userObj);
       } else {
         setUser(null);
       }

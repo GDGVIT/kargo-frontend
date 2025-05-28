@@ -1,9 +1,6 @@
 import axios from "axios";
 
-const baseURL =
-  process.env.NEXT_PUBLIC_ENV === "development"
-    ? "http://localhost:5000"
-    : "https://api.kargo.upayan.dev";
+const baseURL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
 const instance = axios.create({
   baseURL,
