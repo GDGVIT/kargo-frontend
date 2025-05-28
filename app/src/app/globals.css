@@ -1,8 +1,53 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: "Montserrat-Regular";
+  src: url("../../public/fonts/Montserrat-Regular.ttf") format("truetype");
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  --screen-horizontal-margin: clamp(1rem, 5vw, 4rem);
+  --screen-vertical-margin: 0;
+
+  --text-link-color: #1c86ee;
+  --text-link-hover-color: rgb(77, 156, 235);
+
+  --padding-tiny: 0.25rem;
+  --padding-small: 0.5rem;
+  --padding-medium: 1rem;
+  --padding-large: 2rem;
+  --padding-huge: 4rem;
+
+  --margin-tiny: 0.25rem;
+  --margin-small: 0.5rem;
+  --margin-medium: 1rem;
+  --margin-large: 2rem;
+  --margin-huge: 4rem;
+
+  --border-radius-tiny: 0.25rem;
+  --border-radius-small: 0.5rem;
+  --border-radius-medium: 1rem;
+  --border-radius-large: 2rem;
+  --border-radius-huge: 4rem;
+
+  --font-size-tiny: clamp(0.7rem, 1vw, 0.8rem);
+  --font-size-small: clamp(0.8rem, 1.2vw, 0.9rem);
+  --font-size-medium: clamp(1rem, 2vw, 1.125rem);
+  --font-size-large: clamp(1.25rem, 2.5vw, 1.5rem);
+  --font-size-huge: clamp(1.75rem, 4vw, 2rem);
+
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-bold: 700;
+
+  --transition-fast: 0.2s ease-in-out;
+  --transition-medium: 0.4s ease-in-out;
+  --transition-slow: 0.8s ease-in-out;
+
+  --box-shadow-default: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -12,8 +57,35 @@
   }
 }
 
+html,
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Montserrat-Regular", sans-serif;
+  scroll-behavior: smooth;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-size: var(--font-size-medium);
+  font-weight: var(--font-weight-normal);
+}
+
+main {
+  min-height: 100vh;
+  margin: 0 var(--screen-horizontal-margin);
+  padding: 0 var(--padding-medium);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+button {
+  text-decoration: none;
+  margin: var(--margin-tiny) 0;
+}
+
+button:hover {
+  cursor: pointer;
 }

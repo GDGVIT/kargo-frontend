@@ -4,6 +4,28 @@ import { useState } from "react";
 import { useAuth } from "../AuthProvider/AuthProvider";
 import { motion } from "framer-motion";
 import { useNotification } from "../../Notification/Notification";
+import {
+  FaGoogle,
+  FaUser,
+  FaUserCircle,
+  FaLock,
+  FaEnvelope,
+} from "react-icons/fa";
+
+const Input = ({
+  icon,
+  ...props
+}: React.InputHTMLAttributes<HTMLInputElement> & {
+  icon: React.ReactNode;
+}) => (
+  <div className="flex items-center bg-neutral-800 border border-neutral-700 rounded px-3 py-2">
+    <span className="text-zinc-400 mr-2">{icon}</span>
+    <input
+      className="bg-transparent outline-none w-full text-white placeholder-zinc-500"
+      {...props}
+    />
+  </div>
+);
 
 export default function Authenticate() {
   const [isLogin, setIsLogin] = useState(true);
@@ -22,12 +44,15 @@ export default function Authenticate() {
       notify("Please fill in all fields.", "warning");
       return;
     }
+
     let success = false;
+
     if (isLogin) {
       success = await login(email, password);
     } else {
       success = await register(email, password, name, username);
     }
+
     if (success) {
       notify(isLogin ? "Logged in!" : "Registered and logged in!", "success");
       setEmail("");
@@ -49,62 +74,65 @@ export default function Authenticate() {
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="w-full max-w-md bg-neutral-900 rounded-xl p-6 border border-neutral-800 space-y-5"
+        className="w-full min-w-sm max-w-md bg-neutral-900 rounded-2xl p-8 border border-neutral-800 space-y-6 shadow-2xl"
       >
-        <h1 className="text-3xl font-semibold text-center">
+        <h1 className="text-3xl font-semibold text-center text-slate-100">
           {isLogin ? "Login" : "Register"}
         </h1>
 
         {!isLogin && (
           <>
-            <input
+            <Input
+              icon={<FaUserCircle />}
+              placeholder="Full Name"
               type="text"
-              placeholder="Name"
-              className="bg-neutral-800 p-3 w-full rounded text-white placeholder-neutral-500 border border-neutral-700"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              required
             />
-            <input
-              type="text"
+            <Input
+              icon={<FaUser />}
               placeholder="Username"
-              className="bg-neutral-800 p-3 w-full rounded text-white placeholder-neutral-500 border border-neutral-700"
+              type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              required
             />
           </>
         )}
 
-        <input
-          type="email"
+        <Input
+          icon={<FaEnvelope />}
           placeholder="Email"
-          className="bg-neutral-800 p-3 w-full rounded text-white placeholder-neutral-500 border border-neutral-700"
+          type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          required
         />
 
-        <input
-          type="password"
+        <Input
+          icon={<FaLock />}
           placeholder="Password"
-          className="bg-neutral-800 p-3 w-full rounded text-white placeholder-neutral-500 border border-neutral-700"
+          type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          required
         />
 
         <button
           onClick={handleSubmit}
-          className="w-full py-3 rounded-xl font-medium bg-white text-neutral-950 hover:bg-neutral-200 transition duration-300"
+          className="w-full py-3 rounded-xl font-medium bg-slate-800 text-white hover:bg-slate-700 transition duration-300"
         >
           {isLogin ? "Login" : "Register"}
         </button>
 
+        <div className="flex items-center justify-center my-2">
+          <div className="h-px w-full bg-neutral-700" />
+          <span className="mx-3 text-sm text-zinc-500">or</span>
+          <div className="h-px w-full bg-neutral-700" />
+        </div>
+
         <button
           onClick={googleLogin}
-          className="w-full py-3 rounded-xl font-medium bg-red-600 text-white hover:bg-red-500 transition duration-300"
+          className="flex items-center justify-center gap-3 w-full py-3 rounded-xl font-medium bg-neutral-800 text-zinc-200 hover:bg-neutral-700 transition duration-300 border border-neutral-700"
         >
+          <FaGoogle className="text-lg" />
           Continue with Google
         </button>
 
@@ -112,14 +140,14 @@ export default function Authenticate() {
           {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
           <button
             onClick={() => setIsLogin(!isLogin)}
-            className="text-blue-500 underline hover:text-blue-400"
+            className="text-blue-400 hover:text-blue-300 ml-1"
           >
             {isLogin ? "Register" : "Login"}
           </button>
         </p>
 
         {user && (
-          <div className="text-center text-sm text-green-400">
+          <div className="text-center text-sm text-emerald-400">
             Welcome, {user.name || user.email}!
           </div>
         )}
