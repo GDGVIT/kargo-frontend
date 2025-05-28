@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../../AuthProvider/AuthProvider";
 import { motion } from "framer-motion";
+import { useNotification } from "../../../Notification/Notification";
 
 const SetUsername: React.FC = () => {
   const [username, setUsername] = useState("");
@@ -11,6 +12,7 @@ const SetUsername: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const { refreshUser } = useAuth();
+  const { notify } = useNotification();
 
   const usernameRegex = /^[A-Za-z0-9_-]+$/;
 
@@ -26,6 +28,10 @@ const SetUsername: React.FC = () => {
     ) {
       setError(
         "Invalid username. Only letters, numbers, underscores, and hyphens. No spaces."
+      );
+      notify(
+        "Invalid username. Only letters, numbers, underscores, and hyphens. No spaces.",
+        "warning"
       );
       return;
     }
@@ -43,12 +49,15 @@ const SetUsername: React.FC = () => {
       const data = await res.json();
       if (!res.ok) {
         setError(data.message || "Failed to set username");
+        notify(data.message || "Failed to set username", "error");
       } else {
+        notify("Username set successfully!", "success");
         await refreshUser();
         router.replace("/profile");
       }
     } catch {
       setError("Something went wrong. Please try again.");
+      notify("Something went wrong. Please try again.", "error");
     } finally {
       setLoading(false);
     }

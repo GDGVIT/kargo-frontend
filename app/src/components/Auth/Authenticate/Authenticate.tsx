@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useAuth } from "../AuthProvider/AuthProvider";
 import { motion } from "framer-motion";
+import { useNotification } from "../../Notification/Notification";
 
 export default function Authenticate() {
   const [isLogin, setIsLogin] = useState(true);
@@ -11,8 +12,16 @@ export default function Authenticate() {
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
   const { login, register, user } = useAuth();
+  const { notify } = useNotification();
 
   const handleSubmit = async () => {
+    if (
+      (isLogin && (!email || !password)) ||
+      (!isLogin && (!email || !password || !name || !username))
+    ) {
+      notify("Please fill in all fields.", "warning");
+      return;
+    }
     let success = false;
     if (isLogin) {
       success = await login(email, password);
@@ -20,13 +29,13 @@ export default function Authenticate() {
       success = await register(email, password, name, username);
     }
     if (success) {
-      alert(isLogin ? "Logged in!" : "Registered and logged in!");
+      notify(isLogin ? "Logged in!" : "Registered and logged in!", "success");
       setEmail("");
       setPassword("");
       setName("");
       setUsername("");
     } else {
-      alert(isLogin ? "Login failed" : "Registration failed");
+      notify(isLogin ? "Login failed" : "Registration failed", "error");
     }
   };
 
@@ -54,6 +63,7 @@ export default function Authenticate() {
               className="bg-neutral-800 p-3 w-full rounded text-white placeholder-neutral-500 border border-neutral-700"
               value={name}
               onChange={(e) => setName(e.target.value)}
+              required
             />
             <input
               type="text"
@@ -61,6 +71,7 @@ export default function Authenticate() {
               className="bg-neutral-800 p-3 w-full rounded text-white placeholder-neutral-500 border border-neutral-700"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
+              required
             />
           </>
         )}
@@ -71,6 +82,7 @@ export default function Authenticate() {
           className="bg-neutral-800 p-3 w-full rounded text-white placeholder-neutral-500 border border-neutral-700"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          required
         />
 
         <input
@@ -79,6 +91,7 @@ export default function Authenticate() {
           className="bg-neutral-800 p-3 w-full rounded text-white placeholder-neutral-500 border border-neutral-700"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          required
         />
 
         <button

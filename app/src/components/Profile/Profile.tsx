@@ -4,9 +4,20 @@ import React from "react";
 import Image from "next/image";
 import { useAuth } from "../Auth/AuthProvider/AuthProvider";
 import Loader from "../Loader/Loader";
+import { useNotification } from "../Notification/Notification";
 
 const Profile: React.FC = () => {
   const { user, loading, logout } = useAuth();
+  const { notify } = useNotification();
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      notify("Logged out successfully!", "success");
+    } catch {
+      notify("Logout failed. Please try again.", "error");
+    }
+  };
 
   if (loading) return <Loader />;
   if (!user)
@@ -48,7 +59,7 @@ const Profile: React.FC = () => {
           </p>
         </div>
         <button
-          onClick={logout}
+          onClick={handleLogout}
           className="mt-4 px-6 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition"
         >
           Logout
