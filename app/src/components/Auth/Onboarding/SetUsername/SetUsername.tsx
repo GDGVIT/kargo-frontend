@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../../AuthProvider/AuthProvider";
+import { motion } from "framer-motion";
 
 const SetUsername: React.FC = () => {
   const [username, setUsername] = useState("");
@@ -24,7 +25,7 @@ const SetUsername: React.FC = () => {
       username.includes(" ")
     ) {
       setError(
-        "Invalid username. Only alphabets, numbers, underscores, and hyphens are allowed. No spaces."
+        "Invalid username. Only letters, numbers, underscores, and hyphens. No spaces."
       );
       return;
     }
@@ -54,29 +55,37 @@ const SetUsername: React.FC = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10 p-6 rounded shadow bg-zinc-900 border border-zinc-800">
-      <h2 className="text-2xl font-bold mb-4 text-zinc-100">
-        Choose a Username
-      </h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <input
-          type="text"
-          className="border border-zinc-700 bg-zinc-800 text-zinc-100 p-2 w-full rounded focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-zinc-400"
-          placeholder="Enter your username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          required
-        />
-        {error && <div className="text-red-400 text-sm">{error}</div>}
-        <button
-          type="submit"
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded disabled:opacity-50 transition-colors"
-          disabled={loading}
-        >
-          {loading ? "Setting..." : "Set Username"}
-        </button>
-      </form>
-    </div>
+    <section className="min-h-screen flex items-center justify-center bg-neutral-950 text-white px-4">
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="max-w-md w-full bg-neutral-900 p-6 rounded-xl border border-neutral-800 space-y-5"
+      >
+        <h2 className="text-2xl font-bold text-center text-white">
+          Choose a Username
+        </h2>
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <input
+            type="text"
+            className="bg-neutral-800 border border-neutral-700 text-white p-3 w-full rounded placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Enter your username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
+          {error && <div className="text-red-400 text-sm">{error}</div>}
+          <button
+            type="submit"
+            className="w-full py-3 rounded-xl font-medium bg-white text-neutral-950 hover:bg-neutral-200 transition duration-300 disabled:opacity-50"
+            disabled={loading}
+          >
+            {loading ? "Setting..." : "Set Username"}
+          </button>
+        </form>
+      </motion.div>
+    </section>
   );
 };
 

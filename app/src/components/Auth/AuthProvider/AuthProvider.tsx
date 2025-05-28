@@ -2,6 +2,7 @@
 
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
+import Loader from "../../Loader/Loader";
 
 interface User {
   name: string;
@@ -125,7 +126,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     <AuthContext.Provider
       value={{ user, loading, login, register, logout, refreshUser }}
     >
-      {children}
+      {loading ? <Loader /> : children}
     </AuthContext.Provider>
   );
 };

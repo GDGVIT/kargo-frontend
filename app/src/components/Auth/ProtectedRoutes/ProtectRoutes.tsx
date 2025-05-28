@@ -3,6 +3,7 @@
 import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../AuthProvider/AuthProvider";
+import Loader from "../../Loader/Loader";
 
 interface ProtectRoutesProps {
   children: React.ReactNode;
@@ -19,7 +20,7 @@ export default function ProtectRoutes({ children }: ProtectRoutesProps) {
   }, [loading, user, router]);
 
   if (loading || !user) {
-    return <div>Loading...</div>;
+    return <Loader />;
   }
 
   return <>{children}</>;

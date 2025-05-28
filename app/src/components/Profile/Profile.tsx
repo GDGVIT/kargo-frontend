@@ -3,12 +3,12 @@
 import React from "react";
 import Image from "next/image";
 import { useAuth } from "../Auth/AuthProvider/AuthProvider";
+import Loader from "../Loader/Loader";
 
 const Profile: React.FC = () => {
   const { user, loading, logout } = useAuth();
 
-  if (loading)
-    return <div className="text-center py-8 text-gray-200">Loading...</div>;
+  if (loading) return <Loader />;
   if (!user)
     return (
       <div className="text-center py-8 text-gray-200">
