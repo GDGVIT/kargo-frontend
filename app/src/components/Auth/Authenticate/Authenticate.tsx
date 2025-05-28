@@ -8,6 +8,7 @@ export default function Authenticate() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
   const { login, register, user } = useAuth();
 
   const handleSubmit = async () => {
@@ -15,13 +16,14 @@ export default function Authenticate() {
     if (isLogin) {
       success = await login(email, password);
     } else {
-      success = await register(email, password, name);
+      success = await register(email, password, name, username);
     }
     if (success) {
       alert(isLogin ? "Logged in!" : "Registered and logged in!");
       setEmail("");
       setPassword("");
       setName("");
+      setUsername("");
     } else {
       alert(isLogin ? "Login failed" : "Registration failed");
     }
@@ -36,13 +38,22 @@ export default function Authenticate() {
       <h1 className="text-2xl font-bold">{isLogin ? "Login" : "Register"}</h1>
 
       {!isLogin && (
-        <input
-          type="text"
-          placeholder="Name"
-          className="border p-2 w-full"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
+        <>
+          <input
+            type="text"
+            placeholder="Name"
+            className="border p-2 w-full"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+          <input
+            type="text"
+            placeholder="Username"
+            className="border p-2 w-full"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+        </>
       )}
 
       <input

@@ -7,16 +7,23 @@ interface User {
   name: string;
   _id: string;
   email: string;
+  username?: string;
+  profilePicture?: string;
 }
 
 interface AuthContextType {
   user: User | null;
   loading: boolean;
-  login: (email: string, password: string) => Promise<boolean>;
+  login: (
+    email: string,
+    password: string,
+    username?: string
+  ) => Promise<boolean>;
   register: (
     email: string,
     password: string,
-    name?: string
+    name?: string,
+    username?: string
   ) => Promise<boolean>;
   logout: () => Promise<void>;
   refreshUser: () => Promise<void>;
@@ -66,12 +73,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   }, [loading, user, pathname, router]);
 
-  const login = async (email: string, password: string) => {
+  const login = async (email: string, password: string, username?: string) => {
     const res = await fetch(`${process.env.NEXTAUTH_URL}/api/auth/login`, {
       method: "POST",
       credentials: "include",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ email, password, username }),
     });
 
     if (res.ok) {
@@ -81,12 +88,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     return false;
   };
 
-  const register = async (email: string, password: string, name?: string) => {
+  const register = async (
+    email: string,
+    password: string,
+    name?: string,
+    username?: string
+  ) => {
     const res = await fetch(`${process.env.NEXTAUTH_URL}/api/auth/register`, {
       method: "POST",
       credentials: "include",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password, name }),
+      body: JSON.stringify({ email, password, name, username }),
     });
 
     if (res.ok) {
