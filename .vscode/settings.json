@@ -1,3 +1,4 @@
 {
-  "colorWheel.settings.workspaceColor": "hsl(272,52%,45%)"
+  "colorWheel.settings.workspaceColor": "hsl(272,52%,45%)",
+  "cSpell.words": ["Buildx", "gdgvit", "GDSC", "kargo", "libc"]
 }
