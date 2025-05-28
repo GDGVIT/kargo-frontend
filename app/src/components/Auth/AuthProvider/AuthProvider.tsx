@@ -3,6 +3,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Loader from "../../Loader/Loader";
+import { baseURL } from "../../../utils/api";
 
 interface User {
   name: string;
@@ -43,7 +44,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const refreshUser = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`${process.env.NEXTAUTH_URL}/api/auth/me`, {
+      const res = await fetch(`${baseURL}/api/auth/me`, {
         credentials: "include",
       });
       if (res.ok) {
@@ -79,7 +80,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   }, [loading, user, pathname, router]);
 
   const login = async (email: string, password: string, username?: string) => {
-    const res = await fetch(`${process.env.NEXTAUTH_URL}/api/auth/login`, {
+    const res = await fetch(`${baseURL}/api/auth/login`, {
       method: "POST",
       credentials: "include",
       headers: { "Content-Type": "application/json" },
@@ -99,7 +100,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     name?: string,
     username?: string
   ) => {
-    const res = await fetch(`${process.env.NEXTAUTH_URL}/api/auth/register`, {
+    const res = await fetch(`${baseURL}/api/auth/register`, {
       method: "POST",
       credentials: "include",
       headers: { "Content-Type": "application/json" },
@@ -114,7 +115,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const logout = async () => {
-    await fetch(`${process.env.NEXTAUTH_URL}/api/auth/logout`, {
+    await fetch(`${baseURL}/api/auth/logout`, {
       method: "POST",
       credentials: "include",
     });

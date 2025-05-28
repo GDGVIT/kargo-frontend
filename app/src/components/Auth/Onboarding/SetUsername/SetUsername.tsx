@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "../../AuthProvider/AuthProvider";
 import { motion } from "framer-motion";
 import { useNotification } from "../../../Notification/Notification";
+import { baseURL } from "../../../../utils/api";
 
 const SetUsername: React.FC = () => {
   const [username, setUsername] = useState("");
@@ -37,15 +38,12 @@ const SetUsername: React.FC = () => {
     }
     setLoading(true);
     try {
-      const res = await fetch(
-        `${process.env.NEXTAUTH_URL}/api/auth/set-username`,
-        {
-          method: "POST",
-          credentials: "include",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ username }),
-        }
-      );
+      const res = await fetch(`${baseURL}/api/auth/set-username`, {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username }),
+      });
       const data = await res.json();
       if (!res.ok) {
         setError(data.message || "Failed to set username");

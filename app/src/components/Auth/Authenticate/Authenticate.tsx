@@ -11,6 +11,7 @@ import {
   FaLock,
   FaEnvelope,
 } from "react-icons/fa";
+import { baseURL } from "../../../utils/api";
 
 const Input = ({
   icon,
@@ -65,7 +66,7 @@ export default function Authenticate() {
   };
 
   const googleLogin = () => {
-    window.location.href = `${process.env.NEXTAUTH_URL}/api/auth/google`;
+    window.location.href = `${baseURL}/api/auth/google`;
   };
 
   return (
