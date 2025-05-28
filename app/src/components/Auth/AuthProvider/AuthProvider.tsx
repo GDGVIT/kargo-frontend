@@ -68,8 +68,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   }, []);
 
   useEffect(() => {
-    if (!loading && user && pathname.startsWith("/auth")) {
-      router.replace("/profile");
+    if (!loading && user) {
+      if (!user.username && pathname !== "/auth/onboarding") {
+        router.replace("/auth/onboarding");
+      } else if (user.username && pathname.startsWith("/auth")) {
+        router.replace("/profile");
+      }
     }
   }, [loading, user, pathname, router]);
 
