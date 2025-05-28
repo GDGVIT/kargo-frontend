@@ -7,16 +7,21 @@ export default function Authenticate() {
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { login, register } = useAuth();
+  const [name, setName] = useState("");
+  const { login, register, user } = useAuth();
 
   const handleSubmit = async () => {
-    const success = isLogin
-      ? await login(email, password)
-      : await register(email, password);
+    let success = false;
+    if (isLogin) {
+      success = await login(email, password);
+    } else {
+      success = await register(email, password, name);
+    }
     if (success) {
       alert(isLogin ? "Logged in!" : "Registered and logged in!");
       setEmail("");
       setPassword("");
+      setName("");
     } else {
       alert(isLogin ? "Login failed" : "Registration failed");
     }
@@ -29,6 +34,16 @@ export default function Authenticate() {
   return (
     <div className="p-6 space-y-4 max-w-sm mx-auto">
       <h1 className="text-2xl font-bold">{isLogin ? "Login" : "Register"}</h1>
+
+      {!isLogin && (
+        <input
+          type="text"
+          placeholder="Name"
+          className="border p-2 w-full"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+      )}
 
       <input
         type="email"
@@ -71,6 +86,14 @@ export default function Authenticate() {
           {isLogin ? "Register" : "Login"}
         </button>
       </p>
+
+      {user && (
+        <div className="mt-4 text-center">
+          <span className="font-semibold">
+            Welcome, {user.name || user.email}!
+          </span>
+        </div>
+      )}
     </div>
   );
 }

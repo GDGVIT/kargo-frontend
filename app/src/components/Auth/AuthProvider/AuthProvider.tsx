@@ -4,6 +4,7 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 
 interface User {
+  name: string;
   _id: string;
   email: string;
 }
@@ -12,7 +13,11 @@ interface AuthContextType {
   user: User | null;
   loading: boolean;
   login: (email: string, password: string) => Promise<boolean>;
-  register: (email: string, password: string) => Promise<boolean>;
+  register: (
+    email: string,
+    password: string,
+    name?: string
+  ) => Promise<boolean>;
   logout: () => Promise<void>;
   refreshUser: () => Promise<void>;
 }
@@ -76,12 +81,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     return false;
   };
 
-  const register = async (email: string, password: string) => {
+  const register = async (email: string, password: string, name?: string) => {
     const res = await fetch(`${process.env.NEXTAUTH_URL}/api/auth/register`, {
       method: "POST",
       credentials: "include",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ email, password, name }),
     });
 
     if (res.ok) {
