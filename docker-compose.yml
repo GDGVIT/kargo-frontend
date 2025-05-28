@@ -1,0 +1,12 @@
+version: "3.8"
+
+services:
+  kargo-frontend:
+    image: ghcr.io/gdgvit/kargo-frontend:latest
+    # For local development, comment the above line and uncomment the build context below:
+    # build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
