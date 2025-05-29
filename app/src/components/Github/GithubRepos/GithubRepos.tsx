@@ -2,8 +2,8 @@
 
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import api, { baseURL } from "../../utils/api";
-import { useNotification } from "../Notification/Notification";
+import api from "../../../utils/api";
+import { useNotification } from "../../Notification/Notification";
 
 interface Repo {
   id: number;
@@ -23,17 +23,6 @@ interface RepoListProps {
   repos: Repo[];
   loading: boolean;
   error: string | null;
-}
-
-function InstallButton({ onInstall }: { onInstall: () => void }) {
-  return (
-    <button
-      onClick={onInstall}
-      className="px-4 py-2 bg-sky-600 hover:bg-sky-700 text-white rounded-lg font-medium"
-    >
-      Connect GitHub
-    </button>
-  );
 }
 
 function RepoList({ repos, loading, error }: RepoListProps) {
@@ -79,41 +68,10 @@ const GithubRepos: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchSavedInstallationId = async () => {
-      try {
-        const res = await api.get("/api/github/installation_id", {
-          withCredentials: true,
-        });
-
-        const savedInstallationId = res.data.installation_id;
-
-        if (savedInstallationId) {
-          setInstallationId(savedInstallationId);
-          localStorage.setItem("installation_id", savedInstallationId);
-        } else {
-          const url = new URL(window.location.href);
-          const paramInstallationId = url.searchParams.get("installation_id");
-          const localInstallationId = localStorage.getItem("installation_id");
-
-          const installationIdToUse =
-            paramInstallationId || localInstallationId;
-
-          if (installationIdToUse) {
-            localStorage.setItem("installation_id", installationIdToUse);
-            setInstallationId(installationIdToUse);
-
-            if (paramInstallationId) {
-              url.searchParams.delete("installation_id");
-              window.history.replaceState(null, "", url.toString());
-            }
-          }
-        }
-      } catch (err) {
-        console.error("Error fetching saved installation ID:", err);
-      }
-    };
-
-    fetchSavedInstallationId();
+    const localInstallationId = localStorage.getItem("installation_id");
+    if (localInstallationId) {
+      setInstallationId(localInstallationId);
+    }
   }, []);
 
   useEffect(() => {
@@ -163,19 +121,18 @@ const GithubRepos: React.FC = () => {
     fetchRepos();
   }, [installationId, notify]);
 
-  const handleInstall = () => {
-    window.location.href = baseURL + "/api/github/install";
-  };
+  if (!installationId) {
+    return (
+      <div className="max-w-xl mx-auto mt-8 p-6 bg-neutral-900 rounded-xl shadow-lg text-center text-zinc-400">
+        Please connect your GitHub on your profile page first.
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-xl mx-auto mt-8 p-6 bg-neutral-900 rounded-xl shadow-lg">
       <h2 className="text-xl font-bold mb-4 text-white">GitHub Repositories</h2>
-
-      {!installationId ? (
-        <InstallButton onInstall={handleInstall} />
-      ) : (
-        <RepoList repos={repos} loading={loading} error={error} />
-      )}
+      <RepoList repos={repos} loading={loading} error={error} />
     </div>
   );
 };

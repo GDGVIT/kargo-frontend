@@ -1,11 +1,11 @@
 import Profile from "../../components/Profile/Profile";
-import GithubRepos from "../../components/GithubRepos/GithubRepos";
+import GithubAuth from "../../components/Github/GithubAuth/GithubAuth";
 
 export default function ProfilePage() {
   return (
     <main>
       <Profile />
-      <GithubRepos />
+      <GithubAuth />
     </main>
   );
 }
