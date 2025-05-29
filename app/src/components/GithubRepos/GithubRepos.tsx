@@ -97,6 +97,20 @@ const GithubRepos: React.FC = () => {
       localStorage.setItem("installation_id", paramInstallationId);
       setInstallationId(paramInstallationId);
 
+      // ✅ Call backend to store installation ID to user
+      api
+        .get("/api/github/callback", {
+          params: { installation_id: paramInstallationId },
+          withCredentials: true,
+        })
+        .then(() => {
+          notify("GitHub connected successfully!", "success");
+        })
+        .catch((err) => {
+          notify("Failed to store GitHub installation.", "error");
+          console.error("Callback error:", err);
+        });
+
       url.searchParams.delete("installation_id");
       window.history.replaceState(null, "", url.toString());
     } else {
@@ -119,6 +133,7 @@ const GithubRepos: React.FC = () => {
       try {
         const res = await api.get("/api/github/repos", {
           params: { installation_id: installationId },
+          withCredentials: true,
         });
 
         const fetchedRepos: Repo[] = (res.data.repositories || []).map(
