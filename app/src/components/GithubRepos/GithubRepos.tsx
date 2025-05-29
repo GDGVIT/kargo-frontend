@@ -36,17 +36,6 @@ function InstallButton({ onInstall }: { onInstall: () => void }) {
   );
 }
 
-function DisconnectButton({ onDisconnect }: { onDisconnect: () => void }) {
-  return (
-    <button
-      onClick={onDisconnect}
-      className="mb-4 px-3 py-1 bg-red-600 hover:bg-red-700 text-white rounded-md text-sm"
-    >
-      Disconnect GitHub
-    </button>
-  );
-}
-
 function RepoList({ repos, loading, error }: RepoListProps) {
   if (loading)
     return <div className="text-zinc-300 mt-2">Loading repositories...</div>;
@@ -90,33 +79,41 @@ const GithubRepos: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const url = new URL(window.location.href);
-    const paramInstallationId = url.searchParams.get("installation_id");
-
-    if (paramInstallationId) {
-      localStorage.setItem("installation_id", paramInstallationId);
-      setInstallationId(paramInstallationId);
-
-      // ✅ Call backend to store installation ID to user
-      api
-        .get("/api/github/callback", {
-          params: { installation_id: paramInstallationId },
+    const fetchSavedInstallationId = async () => {
+      try {
+        const res = await api.get("/api/github/installation_id", {
           withCredentials: true,
-        })
-        .then(() => {
-          notify("GitHub connected successfully!", "success");
-        })
-        .catch((err) => {
-          notify("Failed to store GitHub installation.", "error");
-          console.error("Callback error:", err);
         });
 
-      url.searchParams.delete("installation_id");
-      window.history.replaceState(null, "", url.toString());
-    } else {
-      const storedId = localStorage.getItem("installation_id");
-      if (storedId) setInstallationId(storedId);
-    }
+        const savedInstallationId = res.data.installation_id;
+
+        if (savedInstallationId) {
+          setInstallationId(savedInstallationId);
+          localStorage.setItem("installation_id", savedInstallationId);
+        } else {
+          const url = new URL(window.location.href);
+          const paramInstallationId = url.searchParams.get("installation_id");
+          const localInstallationId = localStorage.getItem("installation_id");
+
+          const installationIdToUse =
+            paramInstallationId || localInstallationId;
+
+          if (installationIdToUse) {
+            localStorage.setItem("installation_id", installationIdToUse);
+            setInstallationId(installationIdToUse);
+
+            if (paramInstallationId) {
+              url.searchParams.delete("installation_id");
+              window.history.replaceState(null, "", url.toString());
+            }
+          }
+        }
+      } catch (err) {
+        console.error("Error fetching saved installation ID:", err);
+      }
+    };
+
+    fetchSavedInstallationId();
   }, []);
 
   useEffect(() => {
@@ -170,14 +167,6 @@ const GithubRepos: React.FC = () => {
     window.location.href = baseURL + "/api/github/install";
   };
 
-  const handleDisconnect = () => {
-    localStorage.removeItem("installation_id");
-    setInstallationId(null);
-    setRepos([]);
-    setError(null);
-    notify("Disconnected GitHub App", "info");
-  };
-
   return (
     <div className="max-w-xl mx-auto mt-8 p-6 bg-neutral-900 rounded-xl shadow-lg">
       <h2 className="text-xl font-bold mb-4 text-white">GitHub Repositories</h2>
@@ -185,10 +174,7 @@ const GithubRepos: React.FC = () => {
       {!installationId ? (
         <InstallButton onInstall={handleInstall} />
       ) : (
-        <>
-          <DisconnectButton onDisconnect={handleDisconnect} />
-          <RepoList repos={repos} loading={loading} error={error} />
-        </>
+        <RepoList repos={repos} loading={loading} error={error} />
       )}
     </div>
   );
