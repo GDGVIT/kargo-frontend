@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { AuthProvider } from "../components/Auth/AuthProvider/AuthProvider";
 import { NotificationProvider } from "../components/Notification/Notification";
+import Header from "../components/Header/Header";
 
 export const metadata: Metadata = {
   title: "Kargo",
@@ -18,7 +19,10 @@ export default function RootLayout({
     <html lang="en">
       <body className={`antialiased`}>
         <NotificationProvider>
-          <AuthProvider>{children}</AuthProvider>
+          <AuthProvider>
+            <Header />
+            {children}
+          </AuthProvider>
         </NotificationProvider>
       </body>
     </html>

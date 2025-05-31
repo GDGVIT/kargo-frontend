@@ -70,7 +70,14 @@ const GithubAuth: React.FC = () => {
       <div className="max-w-xl mx-auto mt-8 p-6 bg-neutral-900 rounded-xl shadow-lg">
         <h2 className="text-xl font-bold mb-4 text-white">GitHub Connected</h2>
         <p className="text-zinc-400">
-          Your GitHub app is installed and ready to use.
+          GitHub connected.{" "}
+          <a
+            href="/dashboard"
+            className="text-sky-400 underline hover:text-sky-300"
+          >
+            Go to dashboard
+          </a>
+          .
         </p>
       </div>
     );
