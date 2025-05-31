@@ -3,14 +3,16 @@
 import React, { useEffect, useState } from "react";
 import api, { baseURL } from "../../../utils/api";
 
-function InstallButton({ onInstall }: { onInstall: () => void }) {
+function InstallButton() {
   return (
-    <button
-      onClick={onInstall}
-      className="px-4 py-2 bg-sky-600 hover:bg-sky-700 text-white rounded-lg font-medium"
+    <a
+      href={baseURL + "/api/github/install"}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="px-4 py-2 bg-sky-600 hover:bg-sky-700 text-white rounded-lg font-medium inline-block text-center"
     >
       Connect GitHub
-    </button>
+    </a>
   );
 }
 
@@ -61,10 +63,6 @@ const GithubAuth: React.FC = () => {
     fetchSavedInstallationId();
   }, []);
 
-  const handleInstall = () => {
-    window.location.href = baseURL + "/api/github/install";
-  };
-
   if (installationId) {
     return (
       <div className="max-w-xl mx-auto mt-8 p-6 bg-neutral-900 rounded-xl shadow-lg">
@@ -86,7 +84,7 @@ const GithubAuth: React.FC = () => {
   return (
     <div className="max-w-xl mx-auto mt-8 p-6 bg-neutral-900 rounded-xl shadow-lg">
       <h2 className="text-xl font-bold mb-4 text-white">Connect GitHub</h2>
-      <InstallButton onInstall={handleInstall} />
+      <InstallButton />
     </div>
   );
 };
