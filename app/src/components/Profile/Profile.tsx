@@ -57,25 +57,24 @@ const Profile: React.FC = () => {
             )}
           </div>
           <div className="w-full text-gray-300">
-            <p className="mb-3">
-              <span className="font-medium text-gray-400">Name:</span>{" "}
-              {user.name}
-            </p>
-            <p className="mb-3">
-              <span className="font-medium text-gray-400">Email:</span>{" "}
-              {user.email}
-            </p>
-            <p className="mb-3">
-              <span className="font-medium text-gray-400">Username:</span>{" "}
-              {user.username || "N/A"}
-            </p>
+            <div className="mb-2">
+              <span className="font-semibold">Name:</span> {user.name}
+            </div>
+            <div className="mb-2">
+              <span className="font-semibold">Email:</span> {user.email}
+            </div>
+            {user.username && (
+              <div className="mb-2">
+                <span className="font-semibold">Username:</span> {user.username}
+              </div>
+            )}
+            <button
+              onClick={handleLogout}
+              className="mt-6 w-full py-2 rounded-md bg-red-600 hover:bg-red-500 text-white font-semibold transition"
+            >
+              Logout
+            </button>
           </div>
-          <button
-            onClick={handleLogout}
-            className="mt-6 px-6 py-2 bg-red-700 text-white rounded-md hover:bg-red-800 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-red-500"
-          >
-            Logout
-          </button>
         </div>
       </div>
     </NotificationProvider>
