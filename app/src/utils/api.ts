@@ -10,16 +10,6 @@ import axios from "axios";
 const baseURL =
   process.env.NEXT_PUBLIC_API_URL || "https://api.kargo.upayan.dev";
 
-if (typeof window !== "undefined") {
-  const frontendOrigin = window.location.origin;
-  if (!baseURL.startsWith(frontendOrigin)) {
-    // Warn developer in dev mode if origins mismatch
-    console.warn(
-      `WARNING: Frontend origin (${frontendOrigin}) does not match backend baseURL (${baseURL}).\nCookies may not be sent/received properly.\nEnsure CORS and cookie settings are correct on the backend.`
-    );
-  }
-}
-
 const instance = axios.create({
   baseURL,
   withCredentials: true,
