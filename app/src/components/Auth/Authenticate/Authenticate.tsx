@@ -3,7 +3,10 @@
 import { useState } from "react";
 import { useAuth } from "../AuthProvider/AuthProvider";
 import { motion } from "framer-motion";
-import { useNotification } from "../../Notification/Notification";
+import {
+  useNotification,
+  NotificationProvider,
+} from "../../Notification/Notification";
 import {
   FaGoogle,
   FaUser,
@@ -70,89 +73,91 @@ export default function Authenticate() {
   };
 
   return (
-    <section className="min-h-screen flex items-center justify-center bg-neutral-950 text-white px-4">
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        className="w-full min-w-sm max-w-md bg-neutral-900 rounded-2xl p-8 border border-neutral-800 space-y-6 shadow-2xl"
-      >
-        <h1 className="text-3xl font-semibold text-center text-slate-100">
-          {isLogin ? "Login" : "Register"}
-        </h1>
-
-        {!isLogin && (
-          <>
-            <Input
-              icon={<FaUserCircle />}
-              placeholder="Full Name"
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-            <Input
-              icon={<FaUser />}
-              placeholder="Username"
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-            />
-          </>
-        )}
-
-        <Input
-          icon={<FaEnvelope />}
-          placeholder="Email"
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-
-        <Input
-          icon={<FaLock />}
-          placeholder="Password"
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-
-        <button
-          onClick={handleSubmit}
-          className="w-full py-3 rounded-xl font-medium bg-slate-800 text-white hover:bg-slate-700 transition duration-300"
+    <NotificationProvider>
+      <section className="min-h-screen flex items-center justify-center bg-neutral-950 text-white px-4">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="w-full min-w-sm max-w-md bg-neutral-900 rounded-2xl p-8 border border-neutral-800 space-y-6 shadow-2xl"
         >
-          {isLogin ? "Login" : "Register"}
-        </button>
+          <h1 className="text-3xl font-semibold text-center text-slate-100">
+            {isLogin ? "Login" : "Register"}
+          </h1>
 
-        <div className="flex items-center justify-center my-2">
-          <div className="h-px w-full bg-neutral-700" />
-          <span className="mx-3 text-sm text-zinc-500">or</span>
-          <div className="h-px w-full bg-neutral-700" />
-        </div>
+          {!isLogin && (
+            <>
+              <Input
+                icon={<FaUserCircle />}
+                placeholder="Full Name"
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+              <Input
+                icon={<FaUser />}
+                placeholder="Username"
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+              />
+            </>
+          )}
 
-        <button
-          onClick={googleLogin}
-          className="flex items-center justify-center gap-3 w-full py-3 rounded-xl font-medium bg-neutral-800 text-zinc-200 hover:bg-neutral-700 transition duration-300 border border-neutral-700"
-        >
-          <FaGoogle className="text-lg" />
-          Continue with Google
-        </button>
+          <Input
+            icon={<FaEnvelope />}
+            placeholder="Email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
 
-        <p className="text-sm text-center text-neutral-400">
-          {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
+          <Input
+            icon={<FaLock />}
+            placeholder="Password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+
           <button
-            onClick={() => setIsLogin(!isLogin)}
-            className="text-blue-400 hover:text-blue-300 ml-1"
+            onClick={handleSubmit}
+            className="w-full py-3 rounded-xl font-medium bg-slate-800 text-white hover:bg-slate-700 transition duration-300"
           >
-            {isLogin ? "Register" : "Login"}
+            {isLogin ? "Login" : "Register"}
           </button>
-        </p>
 
-        {user && (
-          <div className="text-center text-sm text-emerald-400">
-            Welcome, {user.name || user.email}!
+          <div className="flex items-center justify-center my-2">
+            <div className="h-px w-full bg-neutral-700" />
+            <span className="mx-3 text-sm text-zinc-500">or</span>
+            <div className="h-px w-full bg-neutral-700" />
           </div>
-        )}
-      </motion.div>
-    </section>
+
+          <button
+            onClick={googleLogin}
+            className="flex items-center justify-center gap-3 w-full py-3 rounded-xl font-medium bg-neutral-800 text-zinc-200 hover:bg-neutral-700 transition duration-300 border border-neutral-700"
+          >
+            <FaGoogle className="text-lg" />
+            Continue with Google
+          </button>
+
+          <p className="text-sm text-center text-neutral-400">
+            {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
+            <button
+              onClick={() => setIsLogin(!isLogin)}
+              className="text-blue-400 hover:text-blue-300 ml-1"
+            >
+              {isLogin ? "Register" : "Login"}
+            </button>
+          </p>
+
+          {user && (
+            <div className="text-center text-sm text-emerald-400">
+              Welcome, {user.name || user.email}!
+            </div>
+          )}
+        </motion.div>
+      </section>
+    </NotificationProvider>
   );
 }

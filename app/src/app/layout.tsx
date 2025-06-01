@@ -16,15 +16,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`antialiased`}>
-        <NotificationProvider>
+    <NotificationProvider>
+      <html lang="en">
+        <body className={`antialiased`}>
           <AuthProvider>
             <Header />
             {children}
           </AuthProvider>
-        </NotificationProvider>
-      </body>
-    </html>
+        </body>
+      </html>
+    </NotificationProvider>
   );
 }

@@ -4,7 +4,10 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../../AuthProvider/AuthProvider";
 import { motion } from "framer-motion";
-import { useNotification } from "../../../Notification/Notification";
+import {
+  NotificationProvider,
+  useNotification,
+} from "../../../Notification/Notification";
 import { baseURL } from "../../../../utils/api";
 
 const SetUsername: React.FC = () => {
@@ -62,37 +65,39 @@ const SetUsername: React.FC = () => {
   };
 
   return (
-    <section className="min-h-screen flex items-center justify-center bg-neutral-950 text-white px-4">
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        className="max-w-md w-full bg-neutral-900 p-6 rounded-xl border border-neutral-800 space-y-5"
-      >
-        <h2 className="text-2xl font-bold text-center text-white">
-          Choose a Username
-        </h2>
+    <NotificationProvider>
+      <section className="min-h-screen flex items-center justify-center bg-neutral-950 text-white px-4">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="max-w-md w-full bg-neutral-900 p-6 rounded-xl border border-neutral-800 space-y-5"
+        >
+          <h2 className="text-2xl font-bold text-center text-white">
+            Choose a Username
+          </h2>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <input
-            type="text"
-            className="bg-neutral-800 border border-neutral-700 text-white p-3 w-full rounded placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Enter your username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
-          {error && <div className="text-red-400 text-sm">{error}</div>}
-          <button
-            type="submit"
-            className="w-full py-3 rounded-xl font-medium bg-white text-neutral-950 hover:bg-neutral-200 transition duration-300 disabled:opacity-50"
-            disabled={loading}
-          >
-            {loading ? "Setting..." : "Set Username"}
-          </button>
-        </form>
-      </motion.div>
-    </section>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <input
+              type="text"
+              className="bg-neutral-800 border border-neutral-700 text-white p-3 w-full rounded placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Enter your username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+            />
+            {error && <div className="text-red-400 text-sm">{error}</div>}
+            <button
+              type="submit"
+              className="w-full py-3 rounded-xl font-medium bg-white text-neutral-950 hover:bg-neutral-200 transition duration-300 disabled:opacity-50"
+              disabled={loading}
+            >
+              {loading ? "Setting..." : "Set Username"}
+            </button>
+          </form>
+        </motion.div>
+      </section>
+    </NotificationProvider>
   );
 };
 

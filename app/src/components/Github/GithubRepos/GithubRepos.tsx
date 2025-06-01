@@ -3,7 +3,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import api from "../../../utils/api";
-import { useNotification } from "../../Notification/Notification";
+import {
+  NotificationProvider,
+  useNotification,
+} from "../../Notification/Notification";
 
 interface Repo {
   id: number;
@@ -130,10 +133,14 @@ const GithubRepos: React.FC = () => {
   }
 
   return (
-    <div className="max-w-xl mx-auto mt-8 p-6 bg-neutral-900 rounded-xl shadow-lg">
-      <h2 className="text-xl font-bold mb-4 text-white">GitHub Repositories</h2>
-      <RepoList repos={repos} loading={loading} error={error} />
-    </div>
+    <NotificationProvider>
+      <div className="max-w-xl mx-auto mt-8 p-6 bg-neutral-900 rounded-xl shadow-lg">
+        <h2 className="text-xl font-bold mb-4 text-white">
+          GitHub Repositories
+        </h2>
+        <RepoList repos={repos} loading={loading} error={error} />
+      </div>
+    </NotificationProvider>
   );
 };
 
