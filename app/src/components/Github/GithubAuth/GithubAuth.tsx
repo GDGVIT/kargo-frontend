@@ -77,6 +77,16 @@ const GithubAuth: React.FC = () => {
           </a>
           .
         </p>
+        <p>
+          <a
+            href={baseURL + "/api/github/install"}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sky-400 underline hover:text-sky-300"
+          >
+            Reinstall GitHub App
+          </a>
+        </p>
       </div>
     );
   }
