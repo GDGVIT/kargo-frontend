@@ -45,6 +45,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     setLoading(true);
     try {
       const res = await fetch(`${baseURL}/api/auth/me`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
         credentials: "include",
       });
       if (res.ok) {
