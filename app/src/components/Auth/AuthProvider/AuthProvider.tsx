@@ -1,5 +1,12 @@
 "use client";
 
+// IMPORTANT: For authentication cookies to work:
+// - Always use credentials: 'include' in fetch requests
+// - Backend must set cookies with SameSite=None; Secure (for HTTPS/cross-origin)
+// - Backend must set Access-Control-Allow-Credentials: true
+// - Backend must set Access-Control-Allow-Origin to the exact frontend origin (not *)
+// - baseURL must match the backend you are running (local/prod)
+
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Loader from "../../Loader/Loader";
@@ -148,6 +155,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
     router.replace("/auth");
   };
+
+  if (typeof window !== "undefined" && typeof baseURL !== "undefined") {
+    const frontendOrigin = window.location.origin;
+    if (!baseURL.startsWith(frontendOrigin)) {
+      console.warn(
+        `WARNING: Frontend origin (${frontendOrigin}) does not match backend baseURL (${baseURL}).\nCookies may not be sent/received properly.\nEnsure CORS and cookie settings are correct on the backend.`
+      );
+    }
+  }
 
   return (
     <AuthContext.Provider
