@@ -7,6 +7,12 @@ import {
   NotificationProvider,
   useNotification,
 } from "../../Notification/Notification";
+import {
+  FaLock,
+  FaLockOpen,
+  FaExternalLinkAlt,
+  FaGithub,
+} from "react-icons/fa";
 
 interface Repo {
   id: number;
@@ -30,32 +36,78 @@ interface RepoListProps {
 
 function RepoList({ repos, loading, error }: RepoListProps) {
   if (loading)
-    return <div className="text-zinc-300 mt-2">Loading repositories...</div>;
+    return (
+      <div className="flex items-center justify-center mt-6 text-zinc-300">
+        <svg
+          className="animate-spin h-5 w-5 mr-2 text-sky-400"
+          viewBox="0 0 24 24"
+        >
+          <circle
+            className="opacity-25"
+            cx="12"
+            cy="12"
+            r="10"
+            stroke="currentColor"
+            strokeWidth="4"
+            fill="none"
+          />
+          <path
+            className="opacity-75"
+            fill="currentColor"
+            d="M4 12a8 8 0 018-8v8z"
+          />
+        </svg>
+        Loading repositories...
+      </div>
+    );
   if (error)
-    return <div className="text-red-500 mt-2 font-semibold">{error}</div>;
+    return (
+      <div className="flex items-center justify-center mt-6 text-red-500 font-semibold">
+        <FaGithub className="mr-2" /> {error}
+      </div>
+    );
   if (repos.length === 0)
-    return <div className="text-zinc-400 mt-4">No repositories found.</div>;
+    return (
+      <div className="flex items-center justify-center mt-6 text-zinc-400">
+        <FaGithub className="mr-2" /> No repositories found.
+      </div>
+    );
 
   return (
-    <ul className="mt-4 space-y-2">
+    <ul className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
       {repos.map((repo) => (
         <li
           key={repo.id}
-          className="flex items-center justify-between bg-neutral-800 rounded-lg px-4 py-2"
+          className="flex flex-col bg-neutral-800 rounded-lg px-4 py-3 shadow hover:shadow-lg transition-shadow border border-neutral-700"
         >
-          <a
-            href={repo.html_url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sky-400 hover:underline"
-          >
-            {repo.name}
-          </a>
-          {repo.private && (
-            <span className="ml-2 text-xs text-yellow-400 bg-yellow-900 rounded px-2 py-0.5">
-              Private
-            </span>
-          )}
+          <div className="flex items-center justify-between">
+            <a
+              href={repo.html_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sky-400 font-medium text-lg hover:underline flex items-center truncate"
+              title={repo.name}
+            >
+              <FaGithub className="mr-2" />
+              <span className="truncate">{repo.name}</span>
+              <FaExternalLinkAlt className="ml-2 text-xs opacity-70" />
+            </a>
+            {repo.private ? (
+              <span
+                className="ml-2 flex items-center text-xs text-yellow-400 bg-yellow-900 rounded px-2 py-0.5"
+                title="Private repository"
+              >
+                <FaLock className="mr-1" /> Private
+              </span>
+            ) : (
+              <span
+                className="ml-2 flex items-center text-xs text-green-400 bg-green-900 rounded px-2 py-0.5"
+                title="Public repository"
+              >
+                <FaLockOpen className="mr-1" /> Public
+              </span>
+            )}
+          </div>
         </li>
       ))}
     </ul>
@@ -126,18 +178,25 @@ const GithubRepos: React.FC = () => {
 
   if (!installationId) {
     return (
-      <div className="max-w-xl mx-auto mt-8 p-6 bg-neutral-900 rounded-xl shadow-lg text-center text-zinc-400">
-        Please connect your GitHub on your profile page first.
+      <div className="max-w-xl mx-auto mt-12 p-8 bg-neutral-900 rounded-xl shadow-lg text-center text-zinc-400 border border-neutral-700">
+        <FaGithub className="mx-auto mb-2 text-3xl text-zinc-500" />
+        <div className="text-lg font-semibold mb-1">GitHub not connected</div>
+        <div className="text-sm">
+          Please connect your GitHub on your profile page first.
+        </div>
       </div>
     );
   }
 
   return (
     <NotificationProvider>
-      <div className="max-w-xl mx-auto mt-8 p-6 bg-neutral-900 rounded-xl shadow-lg">
-        <h2 className="text-xl font-bold mb-4 text-white">
-          GitHub Repositories
-        </h2>
+      <div className="mx-auto mt-12 p-8 bg-neutral-900 rounded-xl shadow-lg border border-neutral-700">
+        <div className="flex items-center mb-6">
+          <FaGithub className="text-2xl text-sky-400 mr-3" />
+          <h2 className="text-2xl font-bold text-white tracking-tight">
+            GitHub Repositories
+          </h2>
+        </div>
         <RepoList repos={repos} loading={loading} error={error} />
       </div>
     </NotificationProvider>
