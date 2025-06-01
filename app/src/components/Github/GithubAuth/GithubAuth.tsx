@@ -16,6 +16,19 @@ function InstallButton() {
   );
 }
 
+function ReinstallButton() {
+  return (
+    <a
+      href={baseURL + "/api/github/install"}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="px-4 py-2 bg-sky-600 hover:bg-sky-700 text-white rounded-lg font-medium inline-block text-center"
+    >
+      Reinstall GitHub App
+    </a>
+  );
+}
+
 const GithubAuth: React.FC = () => {
   const [installationId, setInstallationId] = useState<string | null>(null);
 
@@ -77,16 +90,7 @@ const GithubAuth: React.FC = () => {
           </a>
           .
         </p>
-        <p>
-          <a
-            href={baseURL + "/api/github/install"}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sky-400 underline hover:text-sky-300"
-          >
-            Reinstall GitHub App
-          </a>
-        </p>
+        <ReinstallButton />
       </div>
     );
   }
