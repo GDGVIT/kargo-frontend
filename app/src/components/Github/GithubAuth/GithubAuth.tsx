@@ -34,47 +34,53 @@ const GithubAuth: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchInstallationIds = async () => {
+    const fetchAndSyncInstallationIds = async () => {
       try {
         const res = await api.get("/api/github/installation_id", {
           withCredentials: true,
         });
 
-        const savedInstallationIds = res.data.installation_ids || [];
+        const savedInstallationIds: string[] = res.data.installation_ids || [];
 
-        if (savedInstallationIds.length > 0) {
-          setInstallationIds(savedInstallationIds);
-          sessionStorage.setItem(
-            "installation_ids",
-            JSON.stringify(savedInstallationIds)
+        // IDs from URL param or sessionStorage
+        const url = new URL(window.location.href);
+        const paramId = url.searchParams.get("installation_id");
+        const sessionId = sessionStorage.getItem("installation_ids");
+        let idsFromClient: string[] = [];
+
+        if (paramId) idsFromClient.push(paramId);
+        else if (sessionId) idsFromClient = JSON.parse(sessionId);
+
+        // Merge existing and new installation IDs uniquely
+        const allInstallationIds = Array.from(
+          new Set([...savedInstallationIds, ...idsFromClient])
+        );
+
+        // Find new IDs that are not saved yet in backend
+        const newIdsToSave = allInstallationIds.filter(
+          (id) => !savedInstallationIds.includes(id)
+        );
+
+        // Save any new installation IDs to backend
+        for (const id of newIdsToSave) {
+          await api.post(
+            "/api/github/installation-id",
+            { installation_id: id },
+            { withCredentials: true }
           );
-        } else {
-          const url = new URL(window.location.href);
-          const paramId = url.searchParams.get("installation_id");
-          const sessionId = sessionStorage.getItem("installation_ids");
+        }
 
-          let ids: string[] = [];
+        // Update local state and sessionStorage with merged unique IDs
+        setInstallationIds(allInstallationIds);
+        sessionStorage.setItem(
+          "installation_ids",
+          JSON.stringify(allInstallationIds)
+        );
 
-          if (paramId) ids.push(paramId);
-          else if (sessionId) ids = JSON.parse(sessionId);
-
-          if (ids.length > 0) {
-            setInstallationIds(ids);
-            sessionStorage.setItem("installation_ids", JSON.stringify(ids));
-
-            for (const id of ids) {
-              await api.post(
-                "/api/github/installation-id",
-                { installation_id: id },
-                { withCredentials: true }
-              );
-            }
-
-            if (paramId) {
-              url.searchParams.delete("installation_id");
-              window.history.replaceState(null, "", url.toString());
-            }
-          }
+        // Remove installation_id from URL if present
+        if (paramId) {
+          url.searchParams.delete("installation_id");
+          window.history.replaceState(null, "", url.toString());
         }
       } catch (err) {
         console.error("Error loading GitHub installation IDs:", err);
@@ -82,7 +88,7 @@ const GithubAuth: React.FC = () => {
       }
     };
 
-    fetchInstallationIds();
+    fetchAndSyncInstallationIds();
   }, []);
 
   const isConnected = installationIds.length > 0;
