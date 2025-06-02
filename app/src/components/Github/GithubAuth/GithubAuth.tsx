@@ -49,7 +49,6 @@ const GithubAuth: React.FC = () => {
             JSON.stringify(savedInstallationIds)
           );
         } else {
-          // Try fallback logic if no IDs in DB
           const url = new URL(window.location.href);
           const paramId = url.searchParams.get("installation_id");
           const sessionId = sessionStorage.getItem("installation_ids");
@@ -63,7 +62,6 @@ const GithubAuth: React.FC = () => {
             setInstallationIds(ids);
             sessionStorage.setItem("installation_ids", JSON.stringify(ids));
 
-            // Save each installation ID to backend
             for (const id of ids) {
               await api.post(
                 "/api/github/installation-id",
@@ -72,7 +70,6 @@ const GithubAuth: React.FC = () => {
               );
             }
 
-            // Clean up URL
             if (paramId) {
               url.searchParams.delete("installation_id");
               window.history.replaceState(null, "", url.toString());
