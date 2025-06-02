@@ -30,80 +30,91 @@ function ReinstallButton() {
 }
 
 const GithubAuth: React.FC = () => {
-  const [installationId, setInstallationId] = useState<string | null>(null);
+  const [installationIds, setInstallationIds] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchSavedInstallationId = async () => {
+    const fetchInstallationIds = async () => {
       try {
         const res = await api.get("/api/github/installation_id", {
           withCredentials: true,
         });
 
-        const savedInstallationId = res.data.installation_id;
+        const savedInstallationIds = res.data.installation_ids || [];
 
-        if (savedInstallationId) {
-          setInstallationId(savedInstallationId);
-          localStorage.setItem("installation_id", savedInstallationId);
-          return;
-        }
-
-        const url = new URL(window.location.href);
-        const paramInstallationId = url.searchParams.get("installation_id");
-        const localInstallationId = localStorage.getItem("installation_id");
-
-        const installationIdToUse = paramInstallationId || localInstallationId;
-
-        if (installationIdToUse) {
-          setInstallationId(installationIdToUse);
-          localStorage.setItem("installation_id", installationIdToUse);
-
-          // Save installation ID to backend
-          await api.post(
-            "/api/github/installation-id",
-            { installation_id: installationIdToUse },
-            { withCredentials: true }
+        if (savedInstallationIds.length > 0) {
+          setInstallationIds(savedInstallationIds);
+          sessionStorage.setItem(
+            "installation_ids",
+            JSON.stringify(savedInstallationIds)
           );
+        } else {
+          // Try fallback logic if no IDs in DB
+          const url = new URL(window.location.href);
+          const paramId = url.searchParams.get("installation_id");
+          const sessionId = sessionStorage.getItem("installation_ids");
 
-          // Remove installation_id from URL params
-          if (paramInstallationId) {
-            url.searchParams.delete("installation_id");
-            window.history.replaceState(null, "", url.toString());
+          let ids: string[] = [];
+
+          if (paramId) ids.push(paramId);
+          else if (sessionId) ids = JSON.parse(sessionId);
+
+          if (ids.length > 0) {
+            setInstallationIds(ids);
+            sessionStorage.setItem("installation_ids", JSON.stringify(ids));
+
+            // Save each installation ID to backend
+            for (const id of ids) {
+              await api.post(
+                "/api/github/installation-id",
+                { installation_id: id },
+                { withCredentials: true }
+              );
+            }
+
+            // Clean up URL
+            if (paramId) {
+              url.searchParams.delete("installation_id");
+              window.history.replaceState(null, "", url.toString());
+            }
           }
         }
       } catch (err) {
-        console.error("Error saving installation ID:", err);
+        console.error("Error loading GitHub installation IDs:", err);
         setError("Failed to load GitHub installation info.");
       }
     };
 
-    fetchSavedInstallationId();
+    fetchInstallationIds();
   }, []);
 
-  if (installationId) {
-    return (
-      <div className="max-w-xl mx-auto mt-8 p-6 bg-neutral-900 rounded-xl shadow-lg">
-        <h2 className="text-xl font-bold mb-4 text-white">GitHub Connected</h2>
-        <p className="text-zinc-400">
-          GitHub connected.{" "}
-          <a
-            href="/dashboard"
-            className="text-sky-400 underline hover:text-sky-300"
-          >
-            Go to dashboard
-          </a>
-          .
-        </p>
-        <ReinstallButton />
-      </div>
-    );
-  }
+  const isConnected = installationIds.length > 0;
 
   return (
     <div className="max-w-xl mx-auto mt-8 p-6 bg-neutral-900 rounded-xl shadow-lg">
-      <h2 className="text-xl font-bold mb-4 text-white">Connect GitHub</h2>
+      <h2 className="text-xl font-bold mb-4 text-white">
+        {isConnected ? "GitHub Connected" : "Connect GitHub"}
+      </h2>
       {error && <p className="mb-4 text-red-500 font-medium">{error}</p>}
-      <InstallButton />
+      {isConnected ? (
+        <>
+          <p className="text-zinc-400 mb-4">
+            GitHub connected with {installationIds.length} installation
+            {installationIds.length > 1 ? "s" : ""}.
+            <br />
+            <a
+              href="/dashboard"
+              className="text-sky-400 underline hover:text-sky-300"
+            >
+              Go to dashboard
+            </a>
+            .
+          </p>
+          <ReinstallButton />
+        </>
+      ) : (
+        <InstallButton />
+      )}
     </div>
   );
 };

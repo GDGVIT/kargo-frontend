@@ -3,10 +3,7 @@
 import React, { useEffect, useState, useMemo } from "react";
 import axios from "axios";
 import api from "../../../utils/api";
-import {
-  NotificationProvider,
-  useNotification,
-} from "../../Notification/Notification";
+import { useNotification } from "../../Notification/Notification";
 import {
   FaLock,
   FaLockOpen,
@@ -124,7 +121,7 @@ function RepoList({ repos, loading, error }: RepoListProps) {
 const GithubRepos: React.FC = () => {
   const { notify } = useNotification();
 
-  const [installationId, setInstallationId] = useState<string | null>(null);
+  const [installationIds, setInstallationIds] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -136,17 +133,36 @@ const GithubRepos: React.FC = () => {
 
   const [allRepos, setAllRepos] = useState<Repo[]>([]);
 
+  // Fetch installation IDs from backend on mount
   useEffect(() => {
-    const localInstallationId = localStorage.getItem("installation_id");
-    if (localInstallationId) {
-      setInstallationId(localInstallationId);
-    }
+    const fetchInstallationIds = async () => {
+      try {
+        const res = await api.get("/api/github/installation_id", {
+          withCredentials: true,
+        });
+
+        const ids: string[] = res.data.installation_ids || [];
+
+        if (ids.length === 0) {
+          setError(
+            "No GitHub installations found. Please connect your GitHub first."
+          );
+        }
+
+        setInstallationIds(ids);
+      } catch (err) {
+        console.error("Failed to fetch installation IDs:", err);
+        setError("Failed to fetch GitHub installation IDs.");
+      }
+    };
+
+    fetchInstallationIds();
   }, []);
 
+  // Fetch repos for all installation IDs when they change
   useEffect(() => {
-    if (!installationId) {
+    if (installationIds.length === 0) {
       setAllRepos([]);
-      setError(null);
       setLoading(false);
       return;
     }
@@ -156,22 +172,38 @@ const GithubRepos: React.FC = () => {
       setError(null);
 
       try {
-        const res = await api.get("/api/github/repos", {
-          params: { installation_id: installationId },
-          withCredentials: true,
-        });
-
-        const fetchedRepos: Repo[] = (res.data.repositories || []).map(
-          (r: GithubRepoAPIResponse) => ({
-            id: r.id,
-            name: r.name,
-            html_url: r.html_url,
-            private: r.private,
-            owner_login: r.owner.login,
-          })
+        // Fetch repos for each installation ID in parallel
+        const repoResponses = await Promise.all(
+          installationIds.map((id) =>
+            api.get("/api/github/repos", {
+              params: { installation_id: id },
+              withCredentials: true,
+            })
+          )
         );
 
-        setAllRepos(fetchedRepos);
+        // Combine repos from all responses and dedupe by repo id
+        const combinedRepos: Repo[] = [];
+        const repoIds = new Set<number>();
+
+        for (const res of repoResponses) {
+          const repos: GithubRepoAPIResponse[] = res.data.repositories || [];
+
+          for (const r of repos) {
+            if (!repoIds.has(r.id)) {
+              repoIds.add(r.id);
+              combinedRepos.push({
+                id: r.id,
+                name: r.name,
+                html_url: r.html_url,
+                private: r.private,
+                owner_login: r.owner.login,
+              });
+            }
+          }
+        }
+
+        setAllRepos(combinedRepos);
         setPage(1);
       } catch (err: unknown) {
         let message = "Failed to fetch GitHub repositories.";
@@ -191,7 +223,7 @@ const GithubRepos: React.FC = () => {
     };
 
     fetchRepos();
-  }, [installationId, notify]);
+  }, [installationIds, notify]);
 
   const filteredRepos = useMemo(() => {
     let filtered = allRepos;
@@ -238,7 +270,16 @@ const GithubRepos: React.FC = () => {
     setPage((p) => Math.min(totalPages, p + 1));
   };
 
-  if (!installationId) {
+  if (error) {
+    return (
+      <div className="max-w-xl mx-auto mt-12 p-8 bg-neutral-900 rounded-xl shadow-lg text-center text-red-500 border border-red-600">
+        <FaGithub className="mx-auto mb-2 text-3xl" />
+        <div className="text-lg font-semibold mb-1">{error}</div>
+      </div>
+    );
+  }
+
+  if (installationIds.length === 0) {
     return (
       <div className="max-w-xl mx-auto mt-12 p-8 bg-neutral-900 rounded-xl shadow-lg text-center text-zinc-400 border border-neutral-700">
         <FaGithub className="mx-auto mb-2 text-3xl text-zinc-500" />
@@ -251,70 +292,63 @@ const GithubRepos: React.FC = () => {
   }
 
   return (
-    <NotificationProvider>
-      <div className="mx-auto mt-12 p-8 bg-neutral-900 rounded-xl shadow-lg border border-neutral-700 max-w-4xl">
-        <div className="flex items-center mb-6">
-          <FaGithub className="text-2xl text-sky-400 mr-3" />
-          <h2 className="text-2xl font-bold text-white tracking-tight">
-            GitHub Repositories
-          </h2>
-        </div>
-
-        {/* Controls */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 space-y-4 sm:space-y-0">
-          <input
-            type="text"
-            placeholder="Search repositories..."
-            value={searchTerm}
-            onChange={handleSearchChange}
-            className="w-full sm:w-1/2 px-4 py-2 rounded bg-neutral-800 text-white border border-neutral-700 focus:outline-none focus:ring-2 focus:ring-sky-400"
-          />
-          <div className="relative w-full sm:w-1/3">
-            <label htmlFor="owner-select" className="sr-only">
-              Filter by owner
-            </label>
-            <select
-              id="owner-select"
-              value={selectedOwner}
-              onChange={handleOwnerChange}
-              className="w-full px-4 py-2 rounded bg-neutral-800 text-white border border-neutral-700 focus:outline-none focus:ring-2 focus:ring-sky-400"
-            >
-              {owners.map((owner) => (
-                <option key={owner} value={owner}>
-                  {owner}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-
-        {/* Repo list */}
-        <RepoList repos={paginatedRepos} loading={loading} error={error} />
-
-        {/* Pagination */}
-        {totalPages > 1 && (
-          <div className="flex justify-center items-center mt-6 space-x-4 text-white select-none">
-            <button
-              onClick={handlePrevPage}
-              disabled={page === 1}
-              className={`px-4 py-2 rounded bg-sky-600 hover:bg-sky-700 disabled:bg-neutral-700 disabled:cursor-not-allowed`}
-            >
-              Prev
-            </button>
-            <span>
-              Page {page} of {totalPages}
-            </span>
-            <button
-              onClick={handleNextPage}
-              disabled={page === totalPages}
-              className={`px-4 py-2 rounded bg-sky-600 hover:bg-sky-700 disabled:bg-neutral-700 disabled:cursor-not-allowed`}
-            >
-              Next
-            </button>
-          </div>
-        )}
+    <div className="mx-auto mt-12 p-8 bg-neutral-900 rounded-xl shadow-lg border border-neutral-700 max-w-4xl">
+      <div className="flex items-center mb-6">
+        <FaGithub className="text-2xl text-sky-400 mr-3" />
+        <h2 className="text-2xl font-bold text-white tracking-tight">
+          GitHub Repositories
+        </h2>
       </div>
-    </NotificationProvider>
+
+      {/* Controls */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 space-y-4 sm:space-y-0">
+        <input
+          type="text"
+          placeholder="Search repositories..."
+          value={searchTerm}
+          onChange={handleSearchChange}
+          className="w-full sm:w-64 px-3 py-2 rounded border border-neutral-700 bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-sky-400"
+          autoComplete="off"
+        />
+        <select
+          value={selectedOwner}
+          onChange={handleOwnerChange}
+          className="w-full sm:w-48 px-3 py-2 rounded border border-neutral-700 bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-sky-400"
+          aria-label="Filter repositories by owner"
+        >
+          {owners.map((owner) => (
+            <option key={owner} value={owner}>
+              {owner}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <RepoList repos={paginatedRepos} loading={loading} error={error} />
+
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <div className="flex justify-center mt-8 space-x-4">
+          <button
+            onClick={handlePrevPage}
+            disabled={page === 1}
+            className="px-4 py-2 rounded bg-sky-600 text-white disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Previous
+          </button>
+          <span className="text-white pt-2">
+            Page {page} of {totalPages}
+          </span>
+          <button
+            onClick={handleNextPage}
+            disabled={page === totalPages}
+            className="px-4 py-2 rounded bg-sky-600 text-white disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Next
+          </button>
+        </div>
+      )}
+    </div>
   );
 };
 
