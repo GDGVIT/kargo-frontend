@@ -13,6 +13,7 @@ import {
   FaUserCircle,
   FaLock,
   FaEnvelope,
+  FaGithub,
 } from "react-icons/fa";
 import { baseURL } from "../../../utils/api";
 
@@ -72,6 +73,10 @@ export default function Authenticate() {
     window.location.href = `${baseURL}/api/auth/google`;
   };
 
+  const githubLogin = () => {
+    window.location.href = `${baseURL}/api/auth/github`;
+  };
+
   return (
     <NotificationProvider>
       <section className="min-h-screen flex items-center justify-center bg-neutral-950 text-white px-4">
@@ -82,26 +87,27 @@ export default function Authenticate() {
           className="w-full min-w-sm max-w-md bg-neutral-900 rounded-2xl p-8 border border-neutral-800 space-y-6 shadow-2xl"
         >
           <h1 className="text-3xl font-semibold text-center text-slate-100">
-            {isLogin ? "Login" : "Register"}
+            {isLogin ? "Sign In" : "Register"}
           </h1>
 
           {!isLogin && (
-            <>
-              <Input
-                icon={<FaUserCircle />}
-                placeholder="Full Name"
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-              <Input
-                icon={<FaUser />}
-                placeholder="Username"
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-              />
-            </>
+            <Input
+              icon={<FaUserCircle />}
+              placeholder="Full Name"
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+          )}
+
+          {!isLogin && (
+            <Input
+              icon={<FaUser />}
+              placeholder="Username"
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
           )}
 
           <Input
@@ -124,32 +130,44 @@ export default function Authenticate() {
             onClick={handleSubmit}
             className="w-full py-3 rounded-xl font-medium bg-slate-800 text-white hover:bg-slate-700 transition duration-300"
           >
-            {isLogin ? "Login" : "Register"}
+            {isLogin ? "Sign In" : "Register"}
           </button>
 
-          <div className="flex items-center justify-center my-2">
+          <div className="flex items-center justify-center my-2 gap-2">
             <div className="h-px w-full bg-neutral-700" />
-            <span className="mx-3 text-sm text-zinc-500">or</span>
+            <span className="text-xs text-zinc-400">or</span>
             <div className="h-px w-full bg-neutral-700" />
           </div>
 
           <button
             onClick={googleLogin}
-            className="flex items-center justify-center gap-3 w-full py-3 rounded-xl font-medium bg-neutral-800 text-zinc-200 hover:bg-neutral-700 transition duration-300 border border-neutral-700"
+            className="w-full flex items-center justify-center gap-2 py-2 rounded-xl font-medium bg-white text-neutral-900 hover:bg-neutral-200 transition duration-300 border border-neutral-300 mb-2"
+            type="button"
           >
-            <FaGoogle className="text-lg" />
+            <FaGoogle />
             Continue with Google
           </button>
 
-          <p className="text-sm text-center text-neutral-400">
-            {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
+          <button
+            onClick={githubLogin}
+            className="w-full flex items-center justify-center gap-2 py-2 rounded-xl font-medium bg-neutral-800 text-white hover:bg-neutral-700 transition duration-300 border border-neutral-700"
+            type="button"
+          >
+            <FaGithub className="w-5 h-5" />
+            Continue with GitHub
+          </button>
+
+          <div className="text-center mt-4">
             <button
-              onClick={() => setIsLogin(!isLogin)}
-              className="text-blue-400 hover:text-blue-300 ml-1"
+              type="button"
+              className="text-sky-400 hover:underline text-sm"
+              onClick={() => setIsLogin((v) => !v)}
             >
-              {isLogin ? "Register" : "Login"}
+              {isLogin
+                ? "Don't have an account? Register"
+                : "Already have an account? Sign In"}
             </button>
-          </p>
+          </div>
 
           {user && (
             <div className="text-center text-sm text-emerald-400">
