@@ -1,9 +1,8 @@
 "use client";
 
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { useRouter, usePathname } from "next/navigation";
-import Loader from "../../Loader/Loader";
 import { baseURL } from "../../../utils/api";
+import Loader from "../../Loader/Loader";
 
 interface User {
   name: string;
@@ -38,8 +37,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const router = useRouter();
-  const pathname = usePathname();
 
   const refreshUser = async () => {
     setLoading(true);
@@ -69,30 +66,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   useEffect(() => {
     refreshUser();
   }, []);
-
-  useEffect(() => {
-    if (loading) return;
-
-    if (!user) {
-      if (!pathname.startsWith("/auth")) {
-        router.replace("/auth");
-      }
-      return;
-    }
-
-    if (!user.username && pathname !== "/auth/onboarding") {
-      router.replace("/auth/onboarding");
-      return;
-    }
-
-    if (
-      user.username &&
-      pathname.startsWith("/auth") &&
-      pathname !== "/auth/onboarding"
-    ) {
-      router.replace("/profile");
-    }
-  }, [loading, user, pathname, router]);
 
   const login = async (email: string, password: string, username?: string) => {
     const res = await fetch(`${baseURL}/api/auth/login`, {
@@ -145,8 +118,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
           .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
       });
     }
-
-    router.replace("/auth");
   };
 
   return (
