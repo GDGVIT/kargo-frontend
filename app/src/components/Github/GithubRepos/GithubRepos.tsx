@@ -1,21 +1,16 @@
 "use client";
 
 import React, { useEffect, useState, useMemo } from "react";
-import {
-  FaGithub,
-  FaLock,
-  FaCodeBranch,
-  FaStar,
-  FaEye,
-  FaExclamationCircle,
-  FaUser,
-} from "react-icons/fa";
+import { FaGithub } from "react-icons/fa";
 import api from "../../../utils/api";
 import axios from "axios";
 import { useNotification } from "../../Notification/Notification";
-import Loader from "../../Loader/Loader";
+import HexagonLoader from "../../Loader/Hexagon/Hexagon";
 import { motion } from "framer-motion";
-import gsap from "gsap";
+import RepoPagination from "./RepoPagination/RepoPagination";
+import RepoSearchInput from "./RepoSearchInput/RepoSearchInput";
+import RepoOwnerFilter from "./RepoOwnerFilter/RepoOwnerFilter";
+import RepoList from "./RepoList/RepoList";
 
 export interface Repo {
   id: number;
@@ -37,210 +32,6 @@ export interface Repo {
   open_issues_count: number;
 }
 
-const RepoListItem: React.FC<{ repo: Repo }> = ({ repo }) => {
-  React.useEffect(() => {
-    gsap.fromTo(
-      `#repo-${repo.id}`,
-      { opacity: 0, y: 30 },
-      { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }
-    );
-  }, [repo.id]);
-
-  return (
-    <motion.li
-      id={`repo-${repo.id}`}
-      initial={{ opacity: 0, y: 30 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, type: "spring", bounce: 0.2 }}
-      className="flex flex-col sm:flex-row items-start sm:items-center justify-between px-4 py-3 border-b border-neutral-800 hover:bg-neutral-800/80 transition-colors group relative overflow-hidden"
-      style={{ position: "relative" }}
-    >
-      <div>
-        <a
-          href={repo.html_url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-sky-400 font-semibold hover:underline flex items-center gap-2"
-        >
-          <FaGithub className="text-lg" />
-          {repo.full_name}
-        </a>
-        <p className="text-sm text-zinc-400 mt-1 max-w-xl">
-          {repo.description || <i>No description</i>}
-        </p>
-        <p className="text-xs text-zinc-400 mt-1 font-mono flex items-center gap-2">
-          <FaUser className="inline-block mr-1" /> {repo.owner_login}
-          {repo.private && (
-            <span className="ml-2 px-2 py-0.5 bg-red-700 text-xs text-white rounded flex items-center gap-1">
-              <FaLock /> Private
-            </span>
-          )}
-          {repo.fork && (
-            <span className="ml-2 px-2 py-0.5 bg-neutral-700 text-xs text-white rounded flex items-center gap-1">
-              <FaCodeBranch /> Fork
-            </span>
-          )}
-        </p>
-      </div>
-      <div className="mt-2 sm:mt-0 text-xs text-zinc-400 text-right min-w-[180px] font-mono flex flex-col gap-1">
-        <div>
-          Language:{" "}
-          <span className="font-semibold text-white">
-            {repo.language || "N/A"}
-          </span>
-        </div>
-        <div className="flex gap-2 items-center justify-end">
-          <span className="flex items-center gap-1">
-            <FaStar /> {repo.stargazers_count}
-          </span>
-          <span className="flex items-center gap-1">
-            <FaCodeBranch /> {repo.forks_count}
-          </span>
-        </div>
-        <div className="flex gap-2 items-center justify-end">
-          <span className="flex items-center gap-1">
-            <FaEye /> {repo.watchers_count}
-          </span>
-          <span className="flex items-center gap-1">
-            <FaExclamationCircle /> {repo.open_issues_count}
-          </span>
-        </div>
-        <div>Created: {new Date(repo.created_at).toLocaleDateString()}</div>
-      </div>
-
-      <motion.div
-        className="absolute inset-0 pointer-events-none bg-gradient-to-r from-sky-900/10 to-sky-400/10 opacity-0 group-hover:opacity-100 z-0"
-        initial={{ opacity: 0 }}
-        whileHover={{ opacity: 1 }}
-        transition={{ duration: 0.3 }}
-      />
-    </motion.li>
-  );
-};
-
-const RepoList: React.FC<{ repos: Repo[] }> = ({ repos }) => (
-  <motion.ul
-    className="divide-y divide-neutral-800 bg-neutral-950 rounded-lg shadow-inner mb-6  overflow-auto"
-    style={{
-      scrollbarWidth: "none",
-      msOverflowStyle: "none",
-    }}
-    initial="hidden"
-    animate="visible"
-    variants={{
-      hidden: {},
-      visible: {
-        transition: {
-          staggerChildren: 0.07,
-        },
-      },
-    }}
-  >
-    {repos.length === 0 ? (
-      <motion.li
-        className="text-center text-zinc-400 py-8"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-      >
-        No repositories found.
-      </motion.li>
-    ) : (
-      repos.map((repo) => <RepoListItem key={repo.id} repo={repo} />)
-    )}
-  </motion.ul>
-);
-
-const RepoOwnerFilter: React.FC<{
-  owners: string[];
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-}> = ({ owners, value, onChange }) => (
-  <div className="flex flex-col">
-    <label
-      htmlFor="repo-owner-filter"
-      className="mb-1 text-sm font-medium text-zinc-300"
-    >
-      Repository owner filter
-    </label>
-    <motion.select
-      className="bg-neutral-800 text-white px-3 py-2 rounded border border-neutral-700 focus:outline-none focus:ring-2 focus:ring-sky-400 min-w-[140px] shadow-md"
-      value={value}
-      onChange={onChange}
-      id="repo-owner-filter"
-      name="repo-owner-filter"
-      whileFocus={{ scale: 1.04, borderColor: "#38bdf8" }}
-      whileHover={{ scale: 1.03, borderColor: "#38bdf8" }}
-      transition={{ type: "spring", stiffness: 300 }}
-    >
-      {owners.map((owner) => (
-        <option key={owner} value={owner}>
-          {owner}
-        </option>
-      ))}
-    </motion.select>
-  </div>
-);
-
-const RepoPagination: React.FC<{
-  page: number;
-  totalPages: number;
-  onPrev: () => void;
-  onNext: () => void;
-}> = ({ page, totalPages, onPrev, onNext }) => (
-  <motion.div
-    className="flex justify-center items-center mt-4 space-x-4"
-    initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
-  >
-    <motion.button
-      className="px-4 py-2 rounded bg-neutral-800 text-white disabled:opacity-50 border border-neutral-700 shadow-md"
-      onClick={onPrev}
-      disabled={page === 1}
-      aria-label="Previous page"
-      whileTap={{ scale: 0.95 }}
-      whileHover={{ scale: 1.05, backgroundColor: "#0ea5e9" }}
-      transition={{ type: "spring", stiffness: 300 }}
-    >
-      Previous
-    </motion.button>
-    <span
-      className="text-zinc-300 font-semibold tracking-wide"
-      aria-live="polite"
-      aria-atomic="true"
-    >
-      Page {page} of {totalPages}
-    </span>
-    <motion.button
-      className="px-4 py-2 rounded bg-neutral-800 text-white disabled:opacity-50 border border-neutral-700 shadow-md"
-      onClick={onNext}
-      disabled={page === totalPages || totalPages === 0}
-      aria-label="Next page"
-      whileTap={{ scale: 0.95 }}
-      whileHover={{ scale: 1.05, backgroundColor: "#0ea5e9" }}
-      transition={{ type: "spring", stiffness: 300 }}
-    >
-      Next
-    </motion.button>
-  </motion.div>
-);
-
-const RepoSearchInput: React.FC<{
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-}> = ({ value, onChange }) => (
-  <motion.input
-    type="text"
-    className="bg-neutral-800 text-white px-3 py-2 rounded border border-neutral-700 focus:outline-none focus:ring-2 focus:ring-sky-400 w-full sm:w-64 shadow-md"
-    placeholder="Search repositories..."
-    value={value}
-    onChange={onChange}
-    aria-label="Search repositories"
-    whileFocus={{ scale: 1.04, borderColor: "#38bdf8" }}
-    whileHover={{ scale: 1.03, borderColor: "#38bdf8" }}
-    transition={{ type: "spring", stiffness: 300 }}
-  />
-);
-
 const GithubRepos: React.FC = () => {
   const { notify } = useNotification();
 
@@ -260,7 +51,7 @@ const GithubRepos: React.FC = () => {
   useEffect(() => {
     const fetchInstallationIds = async () => {
       try {
-        const res = await api.get("/api/github/installation_id", {
+        const res = await api.get("/api/github/installation-id", {
           withCredentials: true,
         });
         const ids: string[] = res.data.installation_ids || [];
@@ -366,7 +157,7 @@ const GithubRepos: React.FC = () => {
   const handleNextPage = () => setPage((p) => Math.min(totalPages, p + 1));
 
   if (loading) {
-    return <Loader />;
+    return <HexagonLoader />;
   }
 
   if (error) {
@@ -385,6 +176,11 @@ const GithubRepos: React.FC = () => {
         <div className="text-lg font-semibold mb-1">GitHub not connected</div>
         <div className="text-sm">
           Please connect your GitHub on your profile page first.
+        </div>
+        <div className="text-xs text-orange-400 mt-4">
+          If your repositories are not showing up but your account is connected,
+          try uninstalling the GitHub app from your account first, then sign in
+          again through the profile page.
         </div>
       </div>
     );
@@ -415,6 +211,11 @@ const GithubRepos: React.FC = () => {
           value={selectedOwner}
           onChange={handleOwnerChange}
         />
+      </div>
+      <div className="text-xs text-orange-400 mb-4">
+        If your repositories are not showing up but your account is connected,
+        try uninstalling the GitHub app from your account first, then sign in
+        again through the profile page.
       </div>
       <RepoList repos={paginatedRepos} />
       <RepoPagination

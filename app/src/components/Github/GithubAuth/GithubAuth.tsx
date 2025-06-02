@@ -1,7 +1,10 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import api, { baseURL } from "../../../utils/api";
+import { motion, AnimatePresence } from "framer-motion";
+import { FaGithub } from "react-icons/fa";
+import gsap from "gsap";
 
 function InstallButton() {
   return (
@@ -9,8 +12,9 @@ function InstallButton() {
       href={`${baseURL}/api/github/install`}
       target="_blank"
       rel="noopener noreferrer"
-      className="px-4 py-2 bg-sky-600 hover:bg-sky-700 text-white rounded-lg font-medium inline-block text-center"
+      className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-sky-600 to-blue-700 hover:from-sky-700 hover:to-blue-800 text-white rounded-lg font-semibold shadow-lg transition-all duration-200"
     >
+      <FaGithub size={22} />
       Connect GitHub
     </a>
   );
@@ -22,8 +26,9 @@ function ReinstallButton() {
       href={`${baseURL}/api/github/install`}
       target="_blank"
       rel="noopener noreferrer"
-      className="px-4 py-2 bg-sky-600 hover:bg-sky-700 text-white rounded-lg font-medium inline-block text-center"
+      className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-sky-600 to-blue-700 hover:from-sky-700 hover:to-blue-800 text-white rounded-lg font-semibold shadow-lg transition-all duration-200"
     >
+      <FaGithub size={22} />
       Reinstall GitHub App
     </a>
   );
@@ -32,17 +37,17 @@ function ReinstallButton() {
 const GithubAuth: React.FC = () => {
   const [installationIds, setInstallationIds] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const iconRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const fetchAndSyncInstallationIds = async () => {
       try {
-        const res = await api.get("/api/github/installation_id", {
+        const res = await api.get("/api/github/installation-id", {
           withCredentials: true,
         });
 
         const savedInstallationIds: string[] = res.data.installation_ids || [];
 
-        // IDs from URL param or sessionStorage
         const url = new URL(window.location.href);
         const paramId = url.searchParams.get("installation_id");
         const sessionId = sessionStorage.getItem("installation_ids");
@@ -51,17 +56,14 @@ const GithubAuth: React.FC = () => {
         if (paramId) idsFromClient.push(paramId);
         else if (sessionId) idsFromClient = JSON.parse(sessionId);
 
-        // Merge existing and new installation IDs uniquely
         const allInstallationIds = Array.from(
           new Set([...savedInstallationIds, ...idsFromClient])
         );
 
-        // Find new IDs that are not saved yet in backend
         const newIdsToSave = allInstallationIds.filter(
           (id) => !savedInstallationIds.includes(id)
         );
 
-        // Save any new installation IDs to backend
         for (const id of newIdsToSave) {
           await api.post(
             "/api/github/installation-id",
@@ -70,14 +72,12 @@ const GithubAuth: React.FC = () => {
           );
         }
 
-        // Update local state and sessionStorage with merged unique IDs
         setInstallationIds(allInstallationIds);
         sessionStorage.setItem(
           "installation_ids",
           JSON.stringify(allInstallationIds)
         );
 
-        // Remove installation_id from URL if present
         if (paramId) {
           url.searchParams.delete("installation_id");
           window.history.replaceState(null, "", url.toString());
@@ -91,34 +91,100 @@ const GithubAuth: React.FC = () => {
     fetchAndSyncInstallationIds();
   }, []);
 
+  useEffect(() => {
+    if (iconRef.current) {
+      gsap.fromTo(
+        iconRef.current,
+        { scale: 0.7, rotate: -20, opacity: 0 },
+        {
+          scale: 1,
+          rotate: 0,
+          opacity: 1,
+          duration: 0.7,
+          ease: "back.out(1.7)",
+        }
+      );
+    }
+  }, [installationIds.length]);
+
   const isConnected = installationIds.length > 0;
 
   return (
-    <div className="max-w-xl mx-auto mt-8 p-6 bg-neutral-900 rounded-xl shadow-lg">
-      <h2 className="text-xl font-bold mb-4 text-white">
-        {isConnected ? "GitHub Connected" : "Connect GitHub"}
-      </h2>
-      {error && <p className="mb-4 text-red-500 font-medium">{error}</p>}
-      {isConnected ? (
-        <>
-          <p className="text-zinc-400 mb-4">
-            GitHub connected with {installationIds.length} installation
-            {installationIds.length > 1 ? "s" : ""}.
-            <br />
-            <a
-              href="/dashboard"
-              className="text-sky-400 underline hover:text-sky-300"
-            >
-              Go to dashboard
-            </a>
-            .
-          </p>
-          <ReinstallButton />
-        </>
-      ) : (
-        <InstallButton />
-      )}
-    </div>
+    <motion.div
+      className="max-w-xl mx-auto mt-12 p-8 bg-gradient-to-br from-neutral-900 to-neutral-800 rounded-2xl shadow-2xl border border-neutral-700"
+      initial={{ opacity: 0, y: 40 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, type: "spring" }}
+    >
+      <div className="flex flex-col items-center gap-2 mb-6">
+        <div ref={iconRef}>
+          <FaGithub size={48} className="text-white drop-shadow-lg" />
+        </div>
+        <motion.h2
+          className="text-2xl font-extrabold text-white tracking-tight"
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+        >
+          {isConnected ? "GitHub Connected" : "Connect GitHub"}
+        </motion.h2>
+      </div>
+      <AnimatePresence>
+        {error && (
+          <motion.p
+            className="mb-4 text-red-400 font-medium text-center"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+          >
+            {error}
+          </motion.p>
+        )}
+      </AnimatePresence>
+      <AnimatePresence>
+        {isConnected ? (
+          <motion.div
+            key="connected"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            transition={{ duration: 0.4 }}
+          >
+            <p className="text-zinc-300 mb-5 text-center">
+              GitHub connected with{" "}
+              <span className="font-bold text-sky-400">
+                {installationIds.length}
+              </span>{" "}
+              installation
+              {installationIds.length > 1 ? "s" : ""}.
+              <br />
+              <a
+                href="/dashboard"
+                className="text-sky-400 underline hover:text-sky-300 font-medium"
+              >
+                Go to dashboard
+              </a>
+              .
+            </p>
+            <div className="flex justify-center">
+              <ReinstallButton />
+            </div>
+          </motion.div>
+        ) : (
+          <motion.div
+            key="not-connected"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            transition={{ duration: 0.4 }}
+          >
+            <div className="flex justify-center">
+              <InstallButton />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
   );
 };
 
