@@ -6,7 +6,7 @@ import api, { baseURL } from "../../../utils/api";
 function InstallButton() {
   return (
     <a
-      href={baseURL + "/api/github/install"}
+      href={`${baseURL}/api/github/install`}
       target="_blank"
       rel="noopener noreferrer"
       className="px-4 py-2 bg-sky-600 hover:bg-sky-700 text-white rounded-lg font-medium inline-block text-center"
@@ -19,7 +19,7 @@ function InstallButton() {
 function ReinstallButton() {
   return (
     <a
-      href={baseURL + "/api/github/install"}
+      href={`${baseURL}/api/github/install`}
       target="_blank"
       rel="noopener noreferrer"
       className="px-4 py-2 bg-sky-600 hover:bg-sky-700 text-white rounded-lg font-medium inline-block text-center"
@@ -31,6 +31,7 @@ function ReinstallButton() {
 
 const GithubAuth: React.FC = () => {
   const [installationId, setInstallationId] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchSavedInstallationId = async () => {
@@ -57,12 +58,14 @@ const GithubAuth: React.FC = () => {
           setInstallationId(installationIdToUse);
           localStorage.setItem("installation_id", installationIdToUse);
 
+          // Save installation ID to backend
           await api.post(
             "/api/github/installation-id",
             { installation_id: installationIdToUse },
             { withCredentials: true }
           );
 
+          // Remove installation_id from URL params
           if (paramInstallationId) {
             url.searchParams.delete("installation_id");
             window.history.replaceState(null, "", url.toString());
@@ -70,6 +73,7 @@ const GithubAuth: React.FC = () => {
         }
       } catch (err) {
         console.error("Error saving installation ID:", err);
+        setError("Failed to load GitHub installation info.");
       }
     };
 
@@ -98,6 +102,7 @@ const GithubAuth: React.FC = () => {
   return (
     <div className="max-w-xl mx-auto mt-8 p-6 bg-neutral-900 rounded-xl shadow-lg">
       <h2 className="text-xl font-bold mb-4 text-white">Connect GitHub</h2>
+      {error && <p className="mb-4 text-red-500 font-medium">{error}</p>}
       <InstallButton />
     </div>
   );
