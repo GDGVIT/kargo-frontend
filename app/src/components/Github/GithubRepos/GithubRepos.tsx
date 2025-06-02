@@ -19,7 +19,7 @@ interface Repo {
   name: string;
   html_url: string;
   private: boolean;
-  owner_login: string; // added owner login
+  owner_login: string;
 }
 
 interface GithubRepoAPIResponse {
@@ -124,19 +124,16 @@ function RepoList({ repos, loading, error }: RepoListProps) {
 const GithubRepos: React.FC = () => {
   const { notify } = useNotification();
 
-  const [repos, setRepos] = useState<Repo[]>([]);
-  const [loading, setLoading] = useState(false);
   const [installationId, setInstallationId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
-  // Pagination and search state
   const [page, setPage] = useState(1);
   const perPage = 10;
 
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedOwner, setSelectedOwner] = useState<string>("All");
 
-  // Store all fetched repos for filtering/search (pagination will be client-side)
   const [allRepos, setAllRepos] = useState<Repo[]>([]);
 
   useEffect(() => {
@@ -148,9 +145,9 @@ const GithubRepos: React.FC = () => {
 
   useEffect(() => {
     if (!installationId) {
-      setRepos([]);
       setAllRepos([]);
       setError(null);
+      setLoading(false);
       return;
     }
 
@@ -196,7 +193,6 @@ const GithubRepos: React.FC = () => {
     fetchRepos();
   }, [installationId, notify]);
 
-  // Filter repos by search and owner, then paginate
   const filteredRepos = useMemo(() => {
     let filtered = allRepos;
 
@@ -219,13 +215,11 @@ const GithubRepos: React.FC = () => {
     page * perPage
   );
 
-  // Unique owners for dropdown
   const owners = useMemo(() => {
     const ownerSet = new Set(allRepos.map((r) => r.owner_login));
     return ["All", ...Array.from(ownerSet).sort()];
   }, [allRepos]);
 
-  // Handlers
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
     setPage(1);
@@ -275,17 +269,23 @@ const GithubRepos: React.FC = () => {
             onChange={handleSearchChange}
             className="w-full sm:w-1/2 px-4 py-2 rounded bg-neutral-800 text-white border border-neutral-700 focus:outline-none focus:ring-2 focus:ring-sky-400"
           />
-          <select
-            value={selectedOwner}
-            onChange={handleOwnerChange}
-            className="w-full sm:w-1/3 px-4 py-2 rounded bg-neutral-800 text-white border border-neutral-700 focus:outline-none focus:ring-2 focus:ring-sky-400"
-          >
-            {owners.map((owner) => (
-              <option key={owner} value={owner}>
-                {owner}
-              </option>
-            ))}
-          </select>
+          <div className="relative w-full sm:w-1/3">
+            <label htmlFor="owner-select" className="sr-only">
+              Filter by owner
+            </label>
+            <select
+              id="owner-select"
+              value={selectedOwner}
+              onChange={handleOwnerChange}
+              className="w-full px-4 py-2 rounded bg-neutral-800 text-white border border-neutral-700 focus:outline-none focus:ring-2 focus:ring-sky-400"
+            >
+              {owners.map((owner) => (
+                <option key={owner} value={owner}>
+                  {owner}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
 
         {/* Repo list */}
