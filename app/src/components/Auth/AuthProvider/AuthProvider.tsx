@@ -10,6 +10,11 @@ interface User {
   email: string;
   username?: string;
   profilePicture?: string;
+  oauth?: {
+    googleId?: string;
+    githubId?: string;
+  };
+  githubInstallationId?: string[];
 }
 
 interface AuthContextType {
