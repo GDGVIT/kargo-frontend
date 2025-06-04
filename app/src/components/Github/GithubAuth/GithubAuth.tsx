@@ -3,7 +3,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import api, { baseURL } from "../../../utils/api";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaGithub } from "react-icons/fa";
+import { FaGithub, FaCheckCircle, FaExclamationCircle } from "react-icons/fa";
 import gsap from "gsap";
 
 function InstallButton() {
@@ -121,23 +121,31 @@ const GithubAuth: React.FC = () => {
           <FaGithub size={48} className="text-white drop-shadow-lg" />
         </div>
         <motion.h2
-          className="text-2xl font-extrabold text-white tracking-tight"
+          className="text-2xl font-extrabold text-white tracking-tight flex items-center gap-2"
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
         >
-          {isConnected ? "GitHub Connected" : "Connect GitHub"}
+          {isConnected ? (
+            <>
+              <FaCheckCircle className="text-green-400" /> GitHub Connected
+            </>
+          ) : (
+            <>
+              <FaGithub className="text-white" /> Connect GitHub
+            </>
+          )}
         </motion.h2>
       </div>
       <AnimatePresence>
         {error && (
           <motion.p
-            className="mb-4 text-red-400 font-medium text-center"
+            className="mb-4 text-red-400 font-medium text-center flex items-center gap-2 justify-center"
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
           >
-            {error}
+            <FaExclamationCircle className="text-red-400" /> {error}
           </motion.p>
         )}
       </AnimatePresence>

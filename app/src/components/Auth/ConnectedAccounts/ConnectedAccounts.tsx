@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { FaGithub, FaGoogle, FaLock } from "react-icons/fa";
+import { FaGithub, FaGoogle, FaLock, FaCheckCircle } from "react-icons/fa";
 
 interface ConnectedAccountsProps {
   hasGoogle: boolean;
@@ -26,8 +26,8 @@ const ConnectedAccounts: React.FC<ConnectedAccountsProps> = ({
           <FaLock className="text-sky-400" />
           <span className="text-white font-medium">Email / Password</span>
         </div>
-        <span className="text-sm font-semibold text-emerald-400 select-none">
-          🔒 Connected
+        <span className="text-sm font-semibold text-emerald-400 select-none flex items-center gap-1">
+          <FaCheckCircle className="text-emerald-400" /> Connected
         </span>
       </div>
 
@@ -38,8 +38,8 @@ const ConnectedAccounts: React.FC<ConnectedAccountsProps> = ({
           <span className="text-white font-medium">Google</span>
         </div>
         {hasGoogle ? (
-          <span className="text-sm font-semibold text-emerald-400 select-none">
-            🔒 Connected
+          <span className="text-sm font-semibold text-emerald-400 select-none flex items-center gap-1">
+            <FaCheckCircle className="text-emerald-400" /> Connected
           </span>
         ) : (
           <button
@@ -62,8 +62,8 @@ const ConnectedAccounts: React.FC<ConnectedAccountsProps> = ({
           <span className="text-white font-medium">GitHub OAuth</span>
         </div>
         {hasGitHubOAuth ? (
-          <span className="text-sm font-semibold text-emerald-400 select-none">
-            🔒 Connected
+          <span className="text-sm font-semibold text-emerald-400 select-none flex items-center gap-1">
+            <FaCheckCircle className="text-emerald-400" /> Connected
           </span>
         ) : (
           <button
