@@ -13,7 +13,6 @@ import { useAuth } from "../Auth/AuthProvider/AuthProvider";
 import Loader from "../Loader/Loader";
 import { useNotification } from "../Notification/Notification";
 import GithubAuth from "../Github/GithubAuth/GithubAuth";
-import ConnectedAccounts from "../Auth/ConnectedAccounts/ConnectedAccounts";
 
 const Profile: React.FC = () => {
   const { user, loading, logout } = useAuth();
@@ -47,9 +46,6 @@ const Profile: React.FC = () => {
       </motion.div>
     );
   }
-
-  const hasGoogle = Boolean(user.oauth?.googleId);
-  const hasGitHubOAuth = Boolean(user.oauth?.githubId);
 
   return (
     <motion.div
@@ -100,11 +96,6 @@ const Profile: React.FC = () => {
 
         <GithubAuth />
       </div>
-
-      <ConnectedAccounts
-        hasGoogle={hasGoogle}
-        hasGitHubOAuth={hasGitHubOAuth}
-      />
     </motion.div>
   );
 };
