@@ -16,6 +16,8 @@ export default function ProtectRoutes({ children }: ProtectRoutesProps) {
   useEffect(() => {
     if (!loading && !user) {
       router.replace("/auth");
+    } else if (!loading && user && !user.username) {
+      router.replace("/auth/onboarding");
     }
   }, [loading, user, router]);
 
