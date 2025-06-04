@@ -3,6 +3,7 @@ import "./globals.css";
 import { AuthProvider } from "../components/Auth/AuthProvider/AuthProvider";
 import { NotificationProvider } from "../components/Notification/Notification";
 import Header from "../components/Header/Header";
+import AcceptCookies from "../components/AcceptCookies/AcceptCookies";
 
 export const metadata: Metadata = {
   title: "Kargo",
@@ -22,6 +23,7 @@ export default function RootLayout({
           <AuthProvider>
             <Header />
             {children}
+            <AcceptCookies />
           </AuthProvider>{" "}
         </NotificationProvider>
       </body>
