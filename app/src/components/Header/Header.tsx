@@ -8,16 +8,16 @@ export default function Header() {
         <Branding />
         <div className="flex items-center space-x-2">
           <a
-            href="/deploy"
-            className="px-3 py-2 text-sm text-zinc-300 hover:text-white transition rounded-md hover:bg-zinc-800"
-          >
-            Deploy
-          </a>
-          <a
             href="/dashboard"
             className="px-3 py-2 text-sm text-zinc-300 hover:text-white transition rounded-md hover:bg-zinc-800"
           >
             Dashboard
+          </a>
+          <a
+            href="/dockerize"
+            className="px-3 py-2 text-sm text-zinc-300 hover:text-white transition rounded-md hover:bg-zinc-800"
+          >
+            Dockerize
           </a>
           <div className="px-3 py-2">
             <Auth />
