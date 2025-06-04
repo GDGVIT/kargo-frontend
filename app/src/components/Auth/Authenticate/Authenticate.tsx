@@ -1,12 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "../AuthProvider/AuthProvider";
 import { motion } from "framer-motion";
-import {
-  useNotification,
-  NotificationProvider,
-} from "../../Notification/Notification";
+import { useNotification } from "../../Notification/Notification";
 import {
   FaGoogle,
   FaUser,
@@ -16,6 +13,7 @@ import {
   FaGithub,
 } from "react-icons/fa";
 import { baseURL } from "../../../utils/api";
+import { useRouter } from "next/navigation";
 
 const Input = ({
   icon,
@@ -38,8 +36,18 @@ export default function Authenticate() {
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
+  const [loading, setLoading] = useState(false);
+
   const { login, register, user } = useAuth();
   const { notify } = useNotification();
+  const router = useRouter();
+
+  // Redirect if already authenticated
+  useEffect(() => {
+    if (user) {
+      router.replace("/profile");
+    }
+  }, [user, router]);
 
   const handleSubmit = async () => {
     if (
@@ -50,22 +58,48 @@ export default function Authenticate() {
       return;
     }
 
-    let success = false;
+    setLoading(true);
 
-    if (isLogin) {
-      success = await login(email, password);
-    } else {
-      success = await register(email, password, name, username);
-    }
+    try {
+      let response;
+      if (isLogin) {
+        response = await login(email, password);
+      } else {
+        response = await register(email, password, name, username);
+      }
 
-    if (success) {
-      notify(isLogin ? "Logged in!" : "Registered and logged in!", "success");
-      setEmail("");
-      setPassword("");
-      setName("");
-      setUsername("");
-    } else {
-      notify(isLogin ? "Login failed" : "Registration failed", "error");
+      if (response === true) {
+        notify(
+          isLogin
+            ? "Logged in!"
+            : "Registered successfully. Please check your email to verify.",
+          "success"
+        );
+        if (!isLogin) {
+          // After register, ask user to verify email.
+          setIsLogin(true);
+        }
+
+        setEmail("");
+        setPassword("");
+        setName("");
+        setUsername("");
+      } else {
+        notify("Something went wrong.", "error");
+      }
+    } catch (err: unknown) {
+      let errorMsg = "Unexpected error.";
+      if (err && typeof err === "object") {
+        if (
+          "message" in err &&
+          typeof (err as { message: string }).message === "string"
+        ) {
+          errorMsg = (err as { message: string }).message;
+        }
+      }
+      notify(errorMsg, "error");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -78,104 +112,103 @@ export default function Authenticate() {
   };
 
   return (
-    <NotificationProvider>
-      <section className="min-h-screen flex items-center justify-center bg-neutral-950 text-white px-4">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="w-full min-w-sm max-w-md bg-neutral-900 rounded-2xl p-8 border border-neutral-800 space-y-6 shadow-2xl"
+    <section className="min-h-screen flex items-center justify-center bg-neutral-950 text-white px-4">
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="w-full min-w-sm max-w-md bg-neutral-900 rounded-2xl p-8 border border-neutral-800 space-y-6 shadow-2xl"
+      >
+        <h1 className="text-3xl font-semibold text-center text-slate-100">
+          {isLogin ? "Sign In" : "Register"}
+        </h1>
+
+        {!isLogin && (
+          <Input
+            icon={<FaUserCircle />}
+            placeholder="Full Name"
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+        )}
+
+        {!isLogin && (
+          <Input
+            icon={<FaUser />}
+            placeholder="Username"
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+        )}
+
+        <Input
+          icon={<FaEnvelope />}
+          placeholder="Email"
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+
+        <Input
+          icon={<FaLock />}
+          placeholder="Password"
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+
+        <button
+          onClick={handleSubmit}
+          disabled={loading}
+          className="w-full py-3 rounded-xl font-medium bg-slate-800 text-white hover:bg-slate-700 transition duration-300 disabled:opacity-50"
         >
-          <h1 className="text-3xl font-semibold text-center text-slate-100">
-            {isLogin ? "Sign In" : "Register"}
-          </h1>
+          {loading ? "Please wait..." : isLogin ? "Sign In" : "Register"}
+        </button>
 
-          {!isLogin && (
-            <Input
-              icon={<FaUserCircle />}
-              placeholder="Full Name"
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-          )}
+        <div className="flex items-center justify-center my-2 gap-2">
+          <div className="h-px w-full bg-neutral-700" />
+          <span className="text-xs text-zinc-400">or</span>
+          <div className="h-px w-full bg-neutral-700" />
+        </div>
 
-          {!isLogin && (
-            <Input
-              icon={<FaUser />}
-              placeholder="Username"
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-            />
-          )}
+        <button
+          onClick={googleLogin}
+          className="w-full flex items-center justify-center gap-2 py-2 rounded-xl font-medium bg-white text-neutral-900 hover:bg-neutral-200 transition duration-300 border border-neutral-300 mb-2"
+          type="button"
+        >
+          <FaGoogle />
+          Continue with Google
+        </button>
 
-          <Input
-            icon={<FaEnvelope />}
-            placeholder="Email"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
+        <button
+          onClick={githubLogin}
+          className="w-full flex items-center justify-center gap-2 py-2 rounded-xl font-medium bg-neutral-800 text-white hover:bg-neutral-700 transition duration-300 border border-neutral-700"
+          type="button"
+        >
+          <FaGithub className="w-5 h-5" />
+          Continue with GitHub
+        </button>
 
-          <Input
-            icon={<FaLock />}
-            placeholder="Password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-
+        <div className="text-center mt-4">
           <button
-            onClick={handleSubmit}
-            className="w-full py-3 rounded-xl font-medium bg-slate-800 text-white hover:bg-slate-700 transition duration-300"
-          >
-            {isLogin ? "Sign In" : "Register"}
-          </button>
-
-          <div className="flex items-center justify-center my-2 gap-2">
-            <div className="h-px w-full bg-neutral-700" />
-            <span className="text-xs text-zinc-400">or</span>
-            <div className="h-px w-full bg-neutral-700" />
-          </div>
-
-          <button
-            onClick={googleLogin}
-            className="w-full flex items-center justify-center gap-2 py-2 rounded-xl font-medium bg-white text-neutral-900 hover:bg-neutral-200 transition duration-300 border border-neutral-300 mb-2"
             type="button"
+            className="text-sky-400 hover:underline text-sm"
+            onClick={() => setIsLogin((v) => !v)}
           >
-            <FaGoogle />
-            Continue with Google
+            {isLogin
+              ? "Don't have an account? Register"
+              : "Already have an account? Sign In"}
           </button>
+        </div>
 
-          <button
-            onClick={githubLogin}
-            className="w-full flex items-center justify-center gap-2 py-2 rounded-xl font-medium bg-neutral-800 text-white hover:bg-neutral-700 transition duration-300 border border-neutral-700"
-            type="button"
-          >
-            <FaGithub className="w-5 h-5" />
-            Continue with GitHub
-          </button>
-
-          <div className="text-center mt-4">
-            <button
-              type="button"
-              className="text-sky-400 hover:underline text-sm"
-              onClick={() => setIsLogin((v) => !v)}
-            >
-              {isLogin
-                ? "Don't have an account? Register"
-                : "Already have an account? Sign In"}
-            </button>
+        {user && (
+          <div className="text-center text-sm text-emerald-400">
+            Welcome, {user.name || user.email}!
           </div>
-
-          {user && (
-            <div className="text-center text-sm text-emerald-400">
-              Welcome, {user.name || user.email}!
-            </div>
-          )}
-        </motion.div>
-      </section>
-    </NotificationProvider>
+        )}
+      </motion.div>
+    </section>
   );
 }
