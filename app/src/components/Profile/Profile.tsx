@@ -13,6 +13,7 @@ import { useAuth } from "../Auth/AuthProvider/AuthProvider";
 import Loader from "../Loader/Loader";
 import { useNotification } from "../Notification/Notification";
 import GithubAuth from "../Github/GithubAuth/GithubAuth";
+import PlanDetails from "./PlanDetails";
 
 const Profile: React.FC = () => {
   const { user, loading, logout } = useAuth();
@@ -75,6 +76,43 @@ const Profile: React.FC = () => {
         {user.username && (
           <div className="flex items-center gap-2 text-zinc-400 text-base select-text">
             <FaUser className="text-sky-400" />@{user.username}
+          </div>
+        )}
+        {/* Plan Section */}
+        {user.plan && (
+          <PlanDetails
+            planId={typeof user.plan === "string" ? user.plan : user.plan?._id}
+          />
+        )}
+        {/* Resource Allocation Section */}
+        {user.resources && (
+          <div className="w-full mt-4 p-4 bg-neutral-800 rounded-xl border border-neutral-700">
+            <div className="text-base font-semibold text-white mb-2 select-none">
+              Resource Allocation
+            </div>
+            <div className="flex flex-col gap-1 text-sm text-zinc-300">
+              {user.resources.requests && (
+                <div>
+                  <span className="font-medium text-zinc-400">Requests:</span>
+                  <span className="ml-2">
+                    CPU: {user.resources.requests.cpu || "-"} | Memory:{" "}
+                    {user.resources.requests.memory || "-"}
+                  </span>
+                </div>
+              )}
+              {user.resources.limits && (
+                <div>
+                  <span className="font-medium text-zinc-400">Limits:</span>
+                  <span className="ml-2">
+                    CPU: {user.resources.limits.cpu || "-"} | Memory:{" "}
+                    {user.resources.limits.memory || "-"}
+                  </span>
+                </div>
+              )}
+              {!user.resources.requests && !user.resources.limits && (
+                <div className="text-zinc-500">No resource allocation set.</div>
+              )}
+            </div>
           </div>
         )}
       </div>

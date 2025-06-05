@@ -3,6 +3,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { baseURL } from "../../../utils/api";
 import Loader from "../../Loader/Loader";
+import type { Plan } from "../../../types/Plan";
 
 interface User {
   name: string;
@@ -15,6 +16,11 @@ interface User {
     githubId?: string;
   };
   githubInstallationId?: string[];
+  resources?: {
+    requests?: { cpu?: string; memory?: string };
+    limits?: { cpu?: string; memory?: string };
+  };
+  plan?: string | Plan;
 }
 
 interface AuthContextType {
