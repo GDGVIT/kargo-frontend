@@ -482,6 +482,29 @@ export default function ConfigureApp({ appId }: { appId: string }) {
         >
           {saving ? "Saving..." : "Save Changes"}
         </button>
+        <button
+          type="button"
+          className="w-full py-3 rounded-lg bg-green-600 hover:bg-green-700 font-semibold text-lg shadow transition disabled:opacity-60 mt-2"
+          disabled={saving}
+          onClick={async () => {
+            setSaving(true);
+            setError("");
+            try {
+              const res = await axios.post(`/api/applications/${appId}/apply`);
+              alert(res.data.message || "Application applied successfully");
+            } catch (err) {
+              const error = err as unknown as {
+                response?: { data?: { message?: string } };
+              };
+              setError(
+                error?.response?.data?.message || "Failed to apply application"
+              );
+            }
+            setSaving(false);
+          }}
+        >
+          Apply (Deploy to Kubernetes)
+        </button>
         {error && (
           <div className="text-red-400 text-sm text-center animate-shake">
             {error}
