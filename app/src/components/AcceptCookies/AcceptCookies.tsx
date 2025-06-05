@@ -1,13 +1,21 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { MdCookie } from "react-icons/md";
 import { motion, AnimatePresence } from "framer-motion";
 
 const AcceptCookies: React.FC = () => {
-  const [visible, setVisible] = useState(true);
+  const [visible, setVisible] = useState(false);
 
-  const handleClose = () => setVisible(false);
+  useEffect(() => {
+    const accepted = localStorage.getItem("cookieAccepted");
+    if (!accepted) setVisible(true);
+  }, []);
+
+  const handleClose = () => {
+    localStorage.setItem("cookieAccepted", "true");
+    setVisible(false);
+  };
 
   return (
     <AnimatePresence>
