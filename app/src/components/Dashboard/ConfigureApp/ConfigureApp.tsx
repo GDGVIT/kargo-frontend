@@ -7,7 +7,7 @@ import type { Application } from "../../../types/Application";
 import { useAuth } from "../../Auth/AuthProvider/AuthProvider";
 
 const INGRESS_BASE_DOMAIN =
-  process.env.NEXT_PUBLIC_INGRESS_BASE_DOMAIN || "apps.kargo.local";
+  process.env.NEXT_PUBLIC_INGRESS_BASE_DOMAIN || "vitians.in";
 
 export default function ConfigureApp({ appId }: { appId: string }) {
   const { user } = useAuth();
