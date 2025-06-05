@@ -46,19 +46,19 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-950 to-gray-900 text-white p-6 flex flex-col items-center animate-fade-in">
+    <div className="min-h-screen  text-white p-6 flex flex-col items-center animate-fade-in">
       <h1 className="text-4xl font-extrabold mb-8 tracking-tight drop-shadow-lg animate-fade-in">
         Your Applications
       </h1>
       <form
         onSubmit={handleAdd}
-        className="bg-gray-900/80 backdrop-blur rounded-xl shadow-2xl p-8 w-full max-w-lg mb-12 space-y-6 animate-slide-in border border-gray-800"
+        className="bg-gray-900/90 backdrop-blur rounded-xl shadow-2xl p-8 w-full max-w-lg mb-12 space-y-6 animate-slide-in border border-gray-800"
       >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label className="block mb-1 font-medium">Name</label>
             <input
-              className="w-full p-3 rounded-lg bg-gray-800 border border-gray-700 focus:ring-2 focus:ring-blue-600 outline-none transition"
+              className="w-full p-3 rounded-lg  border border-gray-700 focus:ring-2 focus:ring-blue-600 outline-none transition"
               required
               value={form.name}
               onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
@@ -68,7 +68,7 @@ export default function Dashboard() {
           <div>
             <label className="block mb-1 font-medium">Image URL</label>
             <input
-              className="w-full p-3 rounded-lg bg-gray-800 border border-gray-700 focus:ring-2 focus:ring-blue-600 outline-none transition"
+              className="w-full p-3 rounded-lg  border border-gray-700 focus:ring-2 focus:ring-blue-600 outline-none transition"
               required
               value={form.imageUrl}
               onChange={(e) =>
@@ -80,7 +80,7 @@ export default function Dashboard() {
           <div>
             <label className="block mb-1 font-medium">Image Tag</label>
             <input
-              className="w-full p-3 rounded-lg bg-gray-800 border border-gray-700 focus:ring-2 focus:ring-blue-600 outline-none transition"
+              className="w-full p-3 rounded-lg  border border-gray-700 focus:ring-2 focus:ring-blue-600 outline-none transition"
               required
               value={form.imageTag}
               onChange={(e) =>
@@ -92,7 +92,7 @@ export default function Dashboard() {
           <div>
             <label className="block mb-1 font-medium">Registry Token</label>
             <input
-              className="w-full p-3 rounded-lg bg-gray-800 border border-gray-700 focus:ring-2 focus:ring-blue-600 outline-none transition"
+              className="w-full p-3 rounded-lg  border border-gray-700 focus:ring-2 focus:ring-blue-600 outline-none transition"
               required
               value={form.registryToken}
               onChange={(e) =>
@@ -136,7 +136,7 @@ export default function Dashboard() {
             ) => (
               <div
                 key={app._id}
-                className={`bg-gray-900/80 rounded-xl shadow-xl p-6 cursor-pointer hover:scale-[1.03] hover:shadow-2xl transition-transform border border-gray-800 group relative overflow-hidden animate-pop`}
+                className={`bg-gray-900/90 rounded-xl shadow-xl p-6 cursor-pointer hover:scale-[1.03] hover:shadow-2xl transition-transform border border-gray-800 group relative overflow-hidden animate-pop`}
                 onClick={() => router.push(`/dashboard/${app._id}`)}
                 data-animate-delay={idx * 60}
               >
