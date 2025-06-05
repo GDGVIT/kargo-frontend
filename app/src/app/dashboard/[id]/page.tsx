@@ -1,11 +1,11 @@
-"use client";
-
 import ConfigureApp from "../../../components/Dashboard/ConfigureApp";
 
-export default function DashboardAppConfigPage({
+export default async function DashboardAppConfigPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
+  searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
-  return <ConfigureApp appId={params.id} />;
+  const { id } = await params;
+  return <ConfigureApp appId={id} />;
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState, useRef } from "react";
+import Link from "next/link";
 import api, { baseURL } from "../../../utils/api";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaGithub, FaCheckCircle, FaExclamationCircle } from "react-icons/fa";
@@ -165,14 +166,13 @@ const GithubAuth: React.FC = () => {
               </span>{" "}
               installation
               {installationIds.length > 1 ? "s" : ""}.
-              <br />
-              <a
+              <Link
                 href="/dashboard"
                 className="text-sky-400 underline hover:text-sky-300 font-medium"
               >
                 Go to dashboard
-              </a>
-              .
+              </Link>
+              . .
             </p>
             <div className="flex justify-center">
               <ReinstallButton />

@@ -1,5 +1,6 @@
 import Auth from "./Auth/Auth";
 import Branding from "./Branding/Branding";
+import Link from "next/link";
 
 export default function Header() {
   return (
@@ -7,18 +8,18 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
         <Branding />
         <div className="flex items-center space-x-2">
-          <a
+          <Link
             href="/dashboard"
             className="px-3 py-2 text-sm text-zinc-300 hover:text-white transition rounded-md hover:bg-zinc-800"
           >
             Dashboard
-          </a>
-          <a
+          </Link>
+          <Link
             href="/dockerize"
             className="px-3 py-2 text-sm text-zinc-300 hover:text-white transition rounded-md hover:bg-zinc-800"
           >
             Dockerize
-          </a>
+          </Link>
           <div className="px-3 py-2">
             <Auth />
           </div>

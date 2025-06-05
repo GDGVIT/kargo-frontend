@@ -1,5 +1,5 @@
-// ConfigureApp.tsx
-// Modern config editor for a single app
+"use client";
+
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "../../utils/api";
@@ -7,7 +7,7 @@ import type { Application } from "../../types/Application";
 
 export default function ConfigureApp({ appId }: { appId: string }) {
   const [form, setForm] = useState<Application | null>(null);
-  const [envList, setEnvList] = useState<[string, string][]>([]); // local env array
+  const [envList, setEnvList] = useState<[string, string][]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
@@ -41,7 +41,7 @@ export default function ConfigureApp({ appId }: { appId: string }) {
     setError("");
     try {
       if (!form) return;
-      // Convert envList array back to object
+
       const envObj = envList.reduce(
         (acc, [k, v]) => (k ? { ...acc, [k]: v } : acc),
         {} as Record<string, string>
