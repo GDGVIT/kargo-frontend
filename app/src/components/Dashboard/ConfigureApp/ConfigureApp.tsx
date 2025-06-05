@@ -17,12 +17,34 @@ export default function ConfigureApp({ appId }: { appId: string }) {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
   const [subdomains, setSubdomains] = useState<string[]>([]);
+  const [resourceLimits, setResourceLimits] = useState<{
+    allowed: {
+      requests: { cpu: number; memory: number };
+      limits: { cpu: number; memory: number };
+    };
+    usage: {
+      requests: { cpu: number; memory: number };
+      limits: { cpu: number; memory: number };
+    };
+  } | null>(null);
   const router = useRouter();
 
   useEffect(() => {
     fetchApp();
     // eslint-disable-next-line
   }, [appId]);
+
+  useEffect(() => {
+    async function fetchLimits() {
+      try {
+        const res = await axios.get("/api/users/me/resource-usage");
+        setResourceLimits(res.data);
+      } catch {
+        setResourceLimits(null);
+      }
+    }
+    fetchLimits();
+  }, []);
 
   async function fetchApp() {
     setLoading(true);
@@ -75,6 +97,43 @@ export default function ConfigureApp({ appId }: { appId: string }) {
           subdomainMap[sub] = form.ports[idx].containerPort;
         }
       });
+      // Check resource limits before sending
+      if (resourceLimits) {
+        function parse(val: string | undefined) {
+          if (!val) return 0;
+          if (val.endsWith("m")) return parseInt(val) / 1000;
+          if (val.endsWith("Mi")) return parseInt(val);
+          if (val.endsWith("Gi")) return parseInt(val) * 1024;
+          return parseFloat(val);
+        }
+        const newUsage = { ...resourceLimits.usage };
+        // Subtract this app's current resources if editing
+        if (form.resources) {
+          newUsage.requests.cpu -= parse(form.resources.requests?.cpu);
+          newUsage.requests.memory -= parse(form.resources.requests?.memory);
+          newUsage.limits.cpu -= parse(form.resources.limits?.cpu);
+          newUsage.limits.memory -= parse(form.resources.limits?.memory);
+        }
+        // Add the new values
+        const reqCpu = parse(form.resources?.requests?.cpu);
+        const reqMem = parse(form.resources?.requests?.memory);
+        const limCpu = parse(form.resources?.limits?.cpu);
+        const limMem = parse(form.resources?.limits?.memory);
+        newUsage.requests.cpu += reqCpu;
+        newUsage.requests.memory += reqMem;
+        newUsage.limits.cpu += limCpu;
+        newUsage.limits.memory += limMem;
+        if (
+          newUsage.requests.cpu > resourceLimits.allowed.requests.cpu ||
+          newUsage.requests.memory > resourceLimits.allowed.requests.memory ||
+          newUsage.limits.cpu > resourceLimits.allowed.limits.cpu ||
+          newUsage.limits.memory > resourceLimits.allowed.limits.memory
+        ) {
+          setError("Resource allocation exceeds your allowed quota.");
+          setSaving(false);
+          return;
+        }
+      }
       await axios.put(`/api/applications/${appId}`, {
         ...form,
         env: envObj,
@@ -85,8 +144,12 @@ export default function ConfigureApp({ appId }: { appId: string }) {
         },
       });
       fetchApp();
-    } catch {
-      setError("Failed to save");
+    } catch (err) {
+      const error = err as unknown as {
+        response?: { data?: { message?: string } };
+      };
+      if (error?.response?.data?.message) setError(error.response.data.message);
+      else setError("Failed to save");
     }
     setSaving(false);
   }
@@ -265,6 +328,21 @@ export default function ConfigureApp({ appId }: { appId: string }) {
         </div>
         <div>
           <label className="mb-1 font-medium">Resources</label>
+          {resourceLimits && (
+            <div className="mb-2 text-xs text-gray-400">
+              Allowed Requests: CPU {resourceLimits.allowed.requests.cpu},
+              Memory {resourceLimits.allowed.requests.memory}Mi
+              <br />
+              Used: CPU {resourceLimits.usage.requests.cpu}, Memory{" "}
+              {resourceLimits.usage.requests.memory}Mi
+              <br />
+              Allowed Limits: CPU {resourceLimits.allowed.limits.cpu}, Memory{" "}
+              {resourceLimits.allowed.limits.memory}Mi
+              <br />
+              Used: CPU {resourceLimits.usage.limits.cpu}, Memory{" "}
+              {resourceLimits.usage.limits.memory}Mi
+            </div>
+          )}
           <div className="grid grid-cols-2 gap-4">
             <div>
               <div className="text-xs text-gray-400 mb-1">CPU Requests</div>
