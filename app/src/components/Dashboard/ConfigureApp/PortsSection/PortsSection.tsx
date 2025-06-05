@@ -4,6 +4,8 @@ interface Port {
   containerPort: number;
   name?: string;
   protocol?: string;
+  ingressEnabled?: boolean;
+  subdomain?: string;
 }
 
 interface User {
@@ -13,22 +15,18 @@ interface User {
 
 interface PortsSectionProps {
   ports: Port[];
-  subdomains: string[];
   user: User;
   INGRESS_BASE_DOMAIN: string;
   handlePortChange: (idx: number, field: string, value: string) => void;
-  handleSubdomainChange: (idx: number, value: string) => void;
   addPort: () => void;
   removePort: (idx: number) => void;
 }
 
 const PortsSection: React.FC<PortsSectionProps> = ({
   ports,
-  subdomains,
   user,
   INGRESS_BASE_DOMAIN,
   handlePortChange,
-  handleSubdomainChange,
   addPort,
   removePort,
 }) => (
@@ -76,17 +74,39 @@ const PortsSection: React.FC<PortsSectionProps> = ({
             <option value="TCP">TCP</option>
             <option value="UDP">UDP</option>
           </select>
-          <input
-            className="p-2 rounded border border-gray-700 w-40 text-sm"
-            value={subdomains[idx] || ""}
-            onChange={(e) => handleSubdomainChange(idx, e.target.value)}
-            placeholder="Subdomain (e.g. api, web)"
-            title="Subdomain for this port"
-          />
-          <span className="text-gray-400">
-            .{user?.username ?? "user"}
-            {INGRESS_BASE_DOMAIN}
-          </span>
+          <label className="flex items-center gap-1 text-xs">
+            <input
+              type="checkbox"
+              checked={!!port.ingressEnabled}
+              onChange={(e) =>
+                handlePortChange(
+                  idx,
+                  "ingressEnabled",
+                  e.target.checked ? "true" : "false"
+                )
+              }
+            />
+            Expose via Ingress
+          </label>
+          {port.ingressEnabled && (
+            <>
+              <input
+                className="p-2 rounded border border-gray-700 w-40 text-sm"
+                value={port.subdomain || ""}
+                onChange={(e) =>
+                  handlePortChange(idx, "subdomain", e.target.value)
+                }
+                placeholder="Subdomain (e.g. api, web)"
+                title="Subdomain for this port"
+              />
+              {port.subdomain && port.subdomain.trim() !== "" && (
+                <span className="text-gray-400">
+                  {port.subdomain}-{user?.username ?? "user"}
+                  {INGRESS_BASE_DOMAIN}
+                </span>
+              )}
+            </>
+          )}
           <button
             type="button"
             className="ml-2 px-2 py-1 bg-red-700 rounded text-xs hover:bg-red-800"
