@@ -2,15 +2,21 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import axios from "../../utils/api";
-import type { Application } from "../../types/Application";
+import axios from "../../../utils/api";
+import type { Application } from "../../../types/Application";
+import { useAuth } from "../../Auth/AuthProvider/AuthProvider";
+
+const INGRESS_BASE_DOMAIN =
+  process.env.NEXT_PUBLIC_INGRESS_BASE_DOMAIN || "apps.kargo.local";
 
 export default function ConfigureApp({ appId }: { appId: string }) {
+  const { user } = useAuth();
   const [form, setForm] = useState<Application | null>(null);
   const [envList, setEnvList] = useState<[string, string][]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
+  const [subdomains, setSubdomains] = useState<string[]>([]);
   const router = useRouter();
 
   useEffect(() => {
@@ -29,6 +35,23 @@ export default function ConfigureApp({ appId }: { appId: string }) {
         ports: app.ports || [],
       });
       setEnvList(app.env ? Object.entries(app.env) : []);
+      // Load subdomains from ingress.subdomains if present, else default to empty strings
+      setSubdomains(
+        app.ingress?.subdomains
+          ? app.ports?.map(
+              (port: {
+                containerPort: number;
+                name?: string;
+                protocol?: string;
+              }) => {
+                const found = Object.entries(app.ingress.subdomains).find(
+                  ([, p]) => p === port.containerPort
+                );
+                return found ? found[0] : "";
+              }
+            )
+          : (app.ports || []).map(() => "")
+      );
     } catch {
       setError("Failed to load app");
     }
@@ -41,14 +64,25 @@ export default function ConfigureApp({ appId }: { appId: string }) {
     setError("");
     try {
       if (!form) return;
-
       const envObj = envList.reduce(
         (acc, [k, v]) => (k ? { ...acc, [k]: v } : acc),
         {} as Record<string, string>
       );
+      // Build subdomain mapping: subdomain -> containerPort
+      const subdomainMap: Record<string, number> = {};
+      subdomains.forEach((sub, idx) => {
+        if (sub && form.ports && form.ports[idx]) {
+          subdomainMap[sub] = form.ports[idx].containerPort;
+        }
+      });
       await axios.put(`/api/applications/${appId}`, {
         ...form,
         env: envObj,
+        ingress: {
+          ...(form.ingress || {}),
+          host: form.ingress?.host || "",
+          subdomains: subdomainMap,
+        },
       });
       fetchApp();
     } catch {
@@ -107,6 +141,9 @@ export default function ConfigureApp({ appId }: { appId: string }) {
         : f
     );
   }
+  function handleSubdomainChange(idx: number, value: string) {
+    setSubdomains((prev) => prev.map((s, i) => (i === idx ? value : s)));
+  }
   function addPort() {
     setForm((f) =>
       f
@@ -119,11 +156,13 @@ export default function ConfigureApp({ appId }: { appId: string }) {
           }
         : f
     );
+    setSubdomains((prev) => [...prev, ""]);
   }
   function removePort(idx: number) {
     setForm((f) =>
       f ? { ...f, ports: (f.ports ?? []).filter((_, i) => i !== idx) } : f
     );
+    setSubdomains((prev) => prev.filter((_, i) => i !== idx));
   }
 
   if (loading)
@@ -321,6 +360,17 @@ export default function ConfigureApp({ appId }: { appId: string }) {
                   <option value="TCP">TCP</option>
                   <option value="UDP">UDP</option>
                 </select>
+                <input
+                  className="p-2 rounded border border-gray-700 w-40 text-sm"
+                  value={subdomains[idx] || ""}
+                  onChange={(e) => handleSubdomainChange(idx, e.target.value)}
+                  placeholder="Subdomain (e.g. api, web)"
+                  title="Subdomain for this port"
+                />
+                <span className="text-gray-400">
+                  .{user?.username ?? "user"}
+                  {INGRESS_BASE_DOMAIN}
+                </span>
                 <button
                   type="button"
                   className="ml-2 px-2 py-1 bg-red-700 rounded text-xs hover:bg-red-800"
@@ -333,7 +383,20 @@ export default function ConfigureApp({ appId }: { appId: string }) {
             ))}
           </div>
         </div>
-        {/* Add more advanced config fields as needed */}
+        <div>
+          <label className="mb-1 font-medium">Ingress Host (Domain)</label>
+          <input
+            className="w-full p-3 rounded-lg border border-gray-700 bg-gray-800 text-gray-400 cursor-not-allowed"
+            value={form.ingress?.host || ""}
+            readOnly
+            disabled
+            tabIndex={-1}
+            aria-readonly="true"
+            aria-label="Ingress Host (computed by backend)"
+            placeholder="Computed by backend"
+          />
+        </div>
+
         <button
           type="submit"
           className="w-full py-3 rounded-lg bg-blue-600 hover:bg-blue-700 font-semibold text-lg shadow transition disabled:opacity-60"

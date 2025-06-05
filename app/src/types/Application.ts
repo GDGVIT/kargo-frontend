@@ -48,6 +48,7 @@ export interface Application {
       hosts: string[];
       secretName: string;
     }>;
+    subdomains?: Record<string, number>; // subdomain -> containerPort
   };
   livenessProbe?: object;
   readinessProbe?: object;

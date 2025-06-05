@@ -1,4 +1,4 @@
-import ConfigureApp from "../../../components/Dashboard/ConfigureApp";
+import ConfigureApp from "../../../components/Dashboard/ConfigureApp/ConfigureApp";
 
 export default async function DashboardAppConfigPage({
   params,
