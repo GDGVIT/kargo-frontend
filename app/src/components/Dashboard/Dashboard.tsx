@@ -51,21 +51,28 @@ export default function Dashboard() {
   }
 
   return (
-    <div>
-      <h1>Your Applications</h1>
-      <form onSubmit={handleAdd}>
-        <div>
+    <div className="max-w-3xl mx-auto p-6 bg-gray-900 rounded-lg shadow-md mt-8 border border-gray-800">
+      <h1 className="text-2xl font-bold mb-6 text-gray-100">
+        Your Applications
+      </h1>
+      <form onSubmit={handleAdd} className="mb-8 space-y-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label>Name</label>
+            <label className="block text-sm font-medium text-gray-300 mb-1">
+              Name
+            </label>
             <input
               required
               value={form.name}
               onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
               placeholder="My App"
+              className="w-full px-3 py-2 border border-gray-700 bg-gray-800 text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-500"
             />
           </div>
           <div>
-            <label>Image URL</label>
+            <label className="block text-sm font-medium text-gray-300 mb-1">
+              Image URL
+            </label>
             <input
               required
               value={form.imageUrl}
@@ -73,10 +80,13 @@ export default function Dashboard() {
                 setForm((f) => ({ ...f, imageUrl: e.target.value }))
               }
               placeholder="registry.io/my-app"
+              className="w-full px-3 py-2 border border-gray-700 bg-gray-800 text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-500"
             />
           </div>
           <div>
-            <label>Image Tag</label>
+            <label className="block text-sm font-medium text-gray-300 mb-1">
+              Image Tag
+            </label>
             <input
               required
               value={form.imageTag}
@@ -84,10 +94,13 @@ export default function Dashboard() {
                 setForm((f) => ({ ...f, imageTag: e.target.value }))
               }
               placeholder="latest"
+              className="w-full px-3 py-2 border border-gray-700 bg-gray-800 text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-500"
             />
           </div>
           <div>
-            <label>Registry Token</label>
+            <label className="block text-sm font-medium text-gray-300 mb-1">
+              Registry Token
+            </label>
             <input
               required
               value={form.registryToken}
@@ -95,47 +108,66 @@ export default function Dashboard() {
                 setForm((f) => ({ ...f, registryToken: e.target.value }))
               }
               placeholder="ghp_..."
+              className="w-full px-3 py-2 border border-gray-700 bg-gray-800 text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-500"
             />
           </div>
         </div>
-        <button type="submit" disabled={loading}>
+        <button
+          type="submit"
+          disabled={loading}
+          className="mt-4 px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-60 disabled:cursor-not-allowed transition-colors font-semibold"
+        >
           {loading ? "Adding..." : "Add Application"}
         </button>
-        {error && <div>{error}</div>}
+        {error && (
+          <div className="mt-2 p-2 bg-red-900/60 text-red-200 rounded text-sm border border-red-700">
+            {error}
+          </div>
+        )}
       </form>
       <div>
         {loading ? (
-          <div>Loading...</div>
+          <div className="text-center text-gray-400">Loading...</div>
         ) : apps.length === 0 ? (
-          <div>No applications yet. Add your first app above!</div>
+          <div className="text-center text-gray-500">
+            No applications yet. Add your first app above!
+          </div>
         ) : (
-          apps.map(
-            (
-              app: {
-                _id: string;
-                name: string;
-                imageUrl: string;
-                imageTag: string;
-                registryToken: string;
-              },
-              idx: number
-            ) => (
-              <div
-                key={app._id}
-                className={`bg-gray-900/90 rounded-xl shadow-xl p-6 cursor-pointer hover:scale-[1.03] hover:shadow-2xl transition-transform border border-gray-800 group relative overflow-hidden animate-pop`}
-                onClick={() => router.push(`/dashboard/${app._id}`)}
-                data-animate-delay={idx * 60}
-              >
-                <div title="Active" />
-                <h2>{app.name}</h2>
-                <div>
-                  {app.imageUrl}:{app.imageTag}
+          <div className="grid gap-6">
+            {apps.map(
+              (
+                app: {
+                  _id: string;
+                  name: string;
+                  imageUrl: string;
+                  imageTag: string;
+                  registryToken: string;
+                },
+                idx: number
+              ) => (
+                <div
+                  key={app._id}
+                  className="bg-gray-800/90 rounded-xl shadow-xl p-6 cursor-pointer hover:scale-[1.03] hover:shadow-2xl transition-transform border border-gray-700 group relative overflow-hidden animate-pop"
+                  onClick={() => router.push(`/dashboard/${app._id}`)}
+                  data-animate-delay={idx * 60}
+                >
+                  <div title="Active" />
+                  <h2 className="text-lg font-semibold text-white mb-1">
+                    {app.name}
+                  </h2>
+                  <div className="text-gray-300 text-sm mb-1">
+                    {app.imageUrl}:{app.imageTag}
+                  </div>
+                  <div className="text-gray-400 text-xs mb-2 break-all">
+                    {app.registryToken}
+                  </div>
+                  <span className="text-blue-400 text-sm font-medium">
+                    Click to configure →
+                  </span>
                 </div>
-                <div>{app.registryToken}</div>
-                <span>Click to configure →</span>
-              </div>
-            )
-          )
+              )
+            )}
+          </div>
         )}
       </div>
     </div>

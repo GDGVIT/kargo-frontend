@@ -51,86 +51,130 @@ const PortsSection: React.FC<PortsSectionProps> = ({ ports, onChange }) => {
   };
 
   return (
-    <div>
-      <h3>Ports Configuration</h3>
+    <div className="mb-6">
+      <h3 className="text-sm font-medium text-gray-700 mb-2">
+        Ports Configuration
+      </h3>
       {localPorts.map(
         ({ id, containerPort, hostPort, protocol, description, subdomain }) => (
-          <div key={id}>
-            <label htmlFor={`containerPort-${id}`}>Container Port:</label>
-            <input
-              id={`containerPort-${id}`}
-              type="number"
-              min={1}
-              max={65535}
-              value={containerPort}
-              placeholder="Container Port"
-              onChange={(e) =>
-                updatePort(id, "containerPort", parseInt(e.target.value, 10))
-              }
-              required
-              title="Container port number (1-65535)"
-            />
-
-            <label htmlFor={`hostPort-${id}`}>Host Port:</label>
-            <input
-              id={`hostPort-${id}`}
-              type="number"
-              min={1}
-              max={65535}
-              value={hostPort}
-              placeholder="Host Port"
-              onChange={(e) =>
-                updatePort(id, "hostPort", parseInt(e.target.value, 10))
-              }
-              required
-              title="Host port number (1-65535)"
-            />
-
-            <label htmlFor={`protocol-${id}`}>Protocol:</label>
-            <select
-              id={`protocol-${id}`}
-              value={protocol}
-              onChange={(e) =>
-                updatePort(id, "protocol", e.target.value as "TCP" | "UDP")
-              }
-              title="Select protocol type"
-            >
-              <option value="TCP">TCP</option>
-              <option value="UDP">UDP</option>
-            </select>
-
-            <label htmlFor={`description-${id}`}>Description:</label>
-            <input
-              id={`description-${id}`}
-              type="text"
-              value={description || ""}
-              placeholder="Description (optional)"
-              onChange={(e) => updatePort(id, "description", e.target.value)}
-              title="Optional description of this port"
-            />
-
-            <label htmlFor={`subdomain-${id}`}>Subdomain:</label>
-            <input
-              id={`subdomain-${id}`}
-              type="text"
-              value={subdomain || ""}
-              placeholder="Subdomain (optional)"
-              onChange={(e) => updatePort(id, "subdomain", e.target.value)}
-              title="Custom subdomain for this port"
-            />
-
+          <div
+            key={id}
+            className="flex flex-wrap gap-2 items-end mb-3 border-b border-gray-100 pb-3"
+          >
+            <div className="flex flex-col">
+              <label
+                htmlFor={`containerPort-${id}`}
+                className="text-xs text-gray-600 mb-1"
+              >
+                Container Port:
+              </label>
+              <input
+                id={`containerPort-${id}`}
+                type="number"
+                min={1}
+                max={65535}
+                value={containerPort}
+                placeholder="Container Port"
+                onChange={(e) =>
+                  updatePort(id, "containerPort", parseInt(e.target.value, 10))
+                }
+                required
+                title="Container port number (1-65535)"
+                className="w-28 px-2 py-1 border border-gray-300 rounded focus:ring-2 focus:ring-blue-400 text-sm"
+              />
+            </div>
+            <div className="flex flex-col">
+              <label
+                htmlFor={`hostPort-${id}`}
+                className="text-xs text-gray-600 mb-1"
+              >
+                Host Port:
+              </label>
+              <input
+                id={`hostPort-${id}`}
+                type="number"
+                min={1}
+                max={65535}
+                value={hostPort}
+                placeholder="Host Port"
+                onChange={(e) =>
+                  updatePort(id, "hostPort", parseInt(e.target.value, 10))
+                }
+                required
+                title="Host port number (1-65535)"
+                className="w-28 px-2 py-1 border border-gray-300 rounded focus:ring-2 focus:ring-blue-400 text-sm"
+              />
+            </div>
+            <div className="flex flex-col">
+              <label
+                htmlFor={`protocol-${id}`}
+                className="text-xs text-gray-600 mb-1"
+              >
+                Protocol:
+              </label>
+              <select
+                id={`protocol-${id}`}
+                value={protocol}
+                onChange={(e) =>
+                  updatePort(id, "protocol", e.target.value as "TCP" | "UDP")
+                }
+                title="Select protocol type"
+                className="w-24 px-2 py-1 border border-gray-300 rounded focus:ring-2 focus:ring-blue-400 text-sm"
+              >
+                <option value="TCP">TCP</option>
+                <option value="UDP">UDP</option>
+              </select>
+            </div>
+            <div className="flex flex-col">
+              <label
+                htmlFor={`description-${id}`}
+                className="text-xs text-gray-600 mb-1"
+              >
+                Description:
+              </label>
+              <input
+                id={`description-${id}`}
+                type="text"
+                value={description || ""}
+                placeholder="Description (optional)"
+                onChange={(e) => updatePort(id, "description", e.target.value)}
+                title="Optional description of this port"
+                className="w-40 px-2 py-1 border border-gray-300 rounded focus:ring-2 focus:ring-blue-400 text-sm"
+              />
+            </div>
+            <div className="flex flex-col">
+              <label
+                htmlFor={`subdomain-${id}`}
+                className="text-xs text-gray-600 mb-1"
+              >
+                Subdomain:
+              </label>
+              <input
+                id={`subdomain-${id}`}
+                type="text"
+                value={subdomain || ""}
+                placeholder="Subdomain (optional)"
+                onChange={(e) => updatePort(id, "subdomain", e.target.value)}
+                title="Custom subdomain for this port"
+                className="w-40 px-2 py-1 border border-gray-300 rounded focus:ring-2 focus:ring-blue-400 text-sm"
+              />
+            </div>
             <button
               type="button"
               onClick={() => removePort(id)}
               aria-label={`Remove port configuration ${containerPort}`}
+              className="ml-2 px-2 py-1 text-red-500 hover:text-white hover:bg-red-500 rounded transition-colors text-xs"
             >
               Remove
             </button>
           </div>
         )
       )}
-
-      <button type="button" onClick={addPort}>
+      <button
+        type="button"
+        onClick={addPort}
+        className="mt-2 px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm"
+      >
         Add Port
       </button>
     </div>
