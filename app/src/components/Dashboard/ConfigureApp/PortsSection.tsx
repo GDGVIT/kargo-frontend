@@ -6,6 +6,7 @@ interface Port {
   hostPort: number;
   protocol: "TCP" | "UDP";
   description?: string;
+  subdomain?: string;
 }
 
 interface PortsSectionProps {
@@ -19,6 +20,7 @@ const defaultPort: Port = {
   hostPort: 80,
   protocol: "TCP",
   description: "",
+  subdomain: "",
 };
 
 const PortsSection: React.FC<PortsSectionProps> = ({ ports, onChange }) => {
@@ -52,7 +54,7 @@ const PortsSection: React.FC<PortsSectionProps> = ({ ports, onChange }) => {
     <div>
       <h3>Ports Configuration</h3>
       {localPorts.map(
-        ({ id, containerPort, hostPort, protocol, description }) => (
+        ({ id, containerPort, hostPort, protocol, description, subdomain }) => (
           <div key={id}>
             <label htmlFor={`containerPort-${id}`}>Container Port:</label>
             <input
@@ -105,6 +107,16 @@ const PortsSection: React.FC<PortsSectionProps> = ({ ports, onChange }) => {
               placeholder="Description (optional)"
               onChange={(e) => updatePort(id, "description", e.target.value)}
               title="Optional description of this port"
+            />
+
+            <label htmlFor={`subdomain-${id}`}>Subdomain:</label>
+            <input
+              id={`subdomain-${id}`}
+              type="text"
+              value={subdomain || ""}
+              placeholder="Subdomain (optional)"
+              onChange={(e) => updatePort(id, "subdomain", e.target.value)}
+              title="Custom subdomain for this port"
             />
 
             <button

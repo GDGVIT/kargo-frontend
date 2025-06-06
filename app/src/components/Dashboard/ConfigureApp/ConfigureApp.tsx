@@ -35,7 +35,6 @@ export default function ConfigureApp({ appId }: { appId: string }) {
   const [envList, setEnvList] = useState<[string, string][]>([]);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
-  const [subdomains, setSubdomains] = useState<string[]>([]);
   const [resourceLimits, setResourceLimits] = useState<{
     allowed: {
       requests: { cpu: number; memory: number };
@@ -75,16 +74,6 @@ export default function ConfigureApp({ appId }: { appId: string }) {
         ports: app.ports || [],
       });
       setEnvList(app.env ? Object.entries(app.env) : []);
-      setSubdomains(
-        app.ingress?.subdomains
-          ? app.ports?.map((port: { containerPort: number }) => {
-              const found = Object.entries(app.ingress.subdomains).find(
-                ([, p]) => p === port.containerPort
-              );
-              return found ? found[0] : "";
-            })
-          : (app.ports || []).map(() => "")
-      );
     } catch {
       setError("Failed to load app");
     }
@@ -100,13 +89,7 @@ export default function ConfigureApp({ appId }: { appId: string }) {
         (acc, [k, v]) => (k ? { ...acc, [k]: v } : acc),
         {} as Record<string, string>
       );
-      // Build subdomain mapping: subdomain -> containerPort
-      const subdomainMap: Record<string, number> = {};
-      subdomains.forEach((sub, idx) => {
-        if (sub && form.ports && form.ports[idx]) {
-          subdomainMap[sub] = form.ports[idx].containerPort;
-        }
-      });
+      const updatedPorts = form.ports || [];
       // Check resource limits before sending
       if (resourceLimits) {
         function parse(val: string | undefined) {
@@ -147,15 +130,7 @@ export default function ConfigureApp({ appId }: { appId: string }) {
       await axios.put(`/api/applications/${appId}`, {
         ...form,
         env: envObj,
-        ports: (form.ports || []).map((port, idx) => ({
-          ...port,
-          ingressEnabled: true,
-          subdomain: subdomains[idx] || "",
-        })),
-        ingress: {
-          ...(form.ingress || {}),
-          host: form.ingress?.host || "",
-        },
+        ports: updatedPorts,
       });
       fetchApp();
     } catch (err) {
@@ -302,6 +277,7 @@ export default function ConfigureApp({ appId }: { appId: string }) {
               protocol: p.protocol === "UDP" ? "UDP" : "TCP",
               description:
                 typeof p.description === "string" ? p.description : "",
+              subdomain: p.subdomain || "",
             } as Port;
           })}
           onChange={(updatedPorts) => {
@@ -309,9 +285,11 @@ export default function ConfigureApp({ appId }: { appId: string }) {
               f
                 ? {
                     ...f,
-                    // Intentionally omitting id before saving
-                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                    ports: updatedPorts.map(({ id: _, ...rest }) => rest),
+                    ports: updatedPorts.map((port) => {
+                      // Remove id before saving
+                      const { ...rest } = port;
+                      return { ...rest };
+                    }),
                   }
                 : f
             );
