@@ -82,7 +82,7 @@ export default function ConfigureApp({ appId }: { appId: string }) {
     }
   }
 
-  async function handleSave(e: React.FormEvent) {
+  async function handleSaveAndDeploy(e: React.FormEvent) {
     e.preventDefault();
     setSaving(true);
     setError("");
@@ -130,47 +130,47 @@ export default function ConfigureApp({ appId }: { appId: string }) {
           return;
         }
       }
+      // Save
       await axios.put(`/api/applications/${appId}`, {
         ...form,
         env: envObj,
         ports: updatedPorts,
       });
+      // Deploy
+      await axios.post(`/api/applications/${appId}/apply`);
       fetchApp();
-      notify("Application updated successfully!", "success");
+      notify("Application saved and deployed successfully!", "success");
     } catch (err) {
       const error = err as unknown as {
         response?: { data?: { message?: string } };
       };
       if (error?.response?.data?.message) setError(error.response.data.message);
-      else setError("Failed to save");
-      notify(error?.response?.data?.message || "Failed to save", "error");
+      else setError("Failed to save & deploy");
+      notify(
+        error?.response?.data?.message || "Failed to save & deploy",
+        "error"
+      );
     }
     setSaving(false);
   }
 
-  async function removeDeployment() {
+  async function handleDelete() {
+    if (
+      !window.confirm(
+        "Are you sure you want to delete this application and all its resources? This cannot be undone."
+      )
+    )
+      return;
     setSaving(true);
     setError("");
     try {
-      await axios.post(`/api/applications/${appId}/remove-deployment`);
-      fetchApp();
-      notify("Deployment removed successfully!", "success");
-    } catch {
-      setError("Failed to remove deployment");
-      notify("Failed to remove deployment", "error");
-    }
-    setSaving(false);
-  }
-  async function removeNamespace() {
-    setSaving(true);
-    setError("");
-    try {
-      await axios.post(`/api/applications/${appId}/remove-namespace`);
-      fetchApp();
-      notify("Namespace removed successfully!", "success");
-    } catch {
-      setError("Failed to remove namespace");
-      notify("Failed to remove namespace", "error");
+      await axios.delete(`/api/applications/${appId}/delete-all`);
+      notify("Application and all resources deleted!", "success");
+      router.push("/dashboard");
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (err) {
+      setError("Failed to delete application");
+      notify("Failed to delete application", "error");
     }
     setSaving(false);
   }
@@ -222,7 +222,7 @@ export default function ConfigureApp({ appId }: { appId: string }) {
       <h1 className="text-2xl font-bold mb-6 text-gray-100">
         Configure <span className="text-blue-400">{form?.name}</span>
       </h1>
-      <form onSubmit={handleSave} className="space-y-6">
+      <form onSubmit={handleSaveAndDeploy} className="space-y-6">
         <ImageFields
           imageUrl={form?.imageUrl || ""}
           imageTag={form?.imageTag || ""}
@@ -310,32 +310,8 @@ export default function ConfigureApp({ appId }: { appId: string }) {
         />
         <ActionButtons
           saving={saving}
-          onSave={handleSave}
-          onApply={async () => {
-            setSaving(true);
-            setError("");
-            try {
-              const res = await axios.post(`/api/applications/${appId}/apply`);
-              notify(
-                res.data.message || "Application applied successfully",
-                "success"
-              );
-            } catch (err) {
-              const error = err as unknown as {
-                response?: { data?: { message?: string } };
-              };
-              setError(
-                error?.response?.data?.message || "Failed to apply application"
-              );
-              notify(
-                error?.response?.data?.message || "Failed to apply application",
-                "error"
-              );
-            }
-            setSaving(false);
-          }}
-          onRemoveDeployment={removeDeployment}
-          onRemoveNamespace={removeNamespace}
+          onSaveAndDeploy={handleSaveAndDeploy}
+          onDelete={handleDelete}
         />
         <ErrorMessage error={error} />
       </form>
