@@ -5,9 +5,19 @@ import { useRouter } from "next/navigation";
 import axios from "../../../utils/api";
 import type { Application } from "../../../types/Application";
 import { useAuth } from "../../Auth/AuthProvider/AuthProvider";
+import ImageFields from "./ImageFields";
+import EnvVarsSection from "./EnvVarsSection";
+import ResourcesSection from "./ResourcesSection";
+import PortsSection from "./PortsSection";
+import IngressHostField from "./IngressHostField";
+import ActionButtons from "./ActionButtons";
+import ErrorMessage from "./ErrorMessage";
 
-const INGRESS_BASE_DOMAIN =
-  process.env.NEXT_PUBLIC_INGRESS_BASE_DOMAIN || "vitians.in";
+const getBaseDomain = () => {
+  let domain = process.env.NEXT_PUBLIC_INGRESS_BASE_DOMAIN || "vitians.in";
+  if (domain.startsWith(".")) domain = domain.slice(1);
+  return domain;
+};
 
 export default function ConfigureApp({ appId }: { appId: string }) {
   const { user } = useAuth();
@@ -137,10 +147,13 @@ export default function ConfigureApp({ appId }: { appId: string }) {
       await axios.put(`/api/applications/${appId}`, {
         ...form,
         env: envObj,
+        ports: (form.ports || []).map((port, idx) => ({
+          ...port,
+          subdomain: subdomains[idx] || "",
+        })),
         ingress: {
           ...(form.ingress || {}),
           host: form.ingress?.host || "",
-          subdomains: subdomainMap,
         },
       });
       fetchApp();
@@ -150,6 +163,29 @@ export default function ConfigureApp({ appId }: { appId: string }) {
       };
       if (error?.response?.data?.message) setError(error.response.data.message);
       else setError("Failed to save");
+    }
+    setSaving(false);
+  }
+
+  async function removeDeployment() {
+    setSaving(true);
+    setError("");
+    try {
+      await axios.post(`/api/applications/${appId}/remove-deployment`);
+      fetchApp();
+    } catch {
+      setError("Failed to remove deployment");
+    }
+    setSaving(false);
+  }
+  async function removeNamespace() {
+    setSaving(true);
+    setError("");
+    try {
+      await axios.post(`/api/applications/${appId}/remove-namespace`);
+      fetchApp();
+    } catch {
+      setError("Failed to remove namespace");
     }
     setSaving(false);
   }
@@ -249,6 +285,12 @@ export default function ConfigureApp({ appId }: { appId: string }) {
         App not found
       </div>
     );
+  if (!user)
+    return (
+      <div className="min-h-screen flex items-center justify-center  text-white animate-fade-in">
+        User not found
+      </div>
+    );
 
   return (
     <div className="min-h-screen  text-white p-6 flex flex-col items-center animate-fade-in">
@@ -265,248 +307,76 @@ export default function ConfigureApp({ appId }: { appId: string }) {
         onSubmit={handleSave}
         className="bg-gray-900/90 backdrop-blur rounded-xl shadow-2xl p-8 w-full max-w-2xl space-y-8 animate-slide-in border border-gray-800"
       >
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <label className="mb-1 font-medium">Image URL</label>
-            <input
-              className="w-full p-3 rounded-lg  border border-gray-700 focus:ring-2 focus:ring-blue-600 outline-none transition"
-              required
-              value={form.imageUrl}
-              onChange={(e) =>
-                setForm((f) => (f ? { ...f, imageUrl: e.target.value } : f))
-              }
-              placeholder="registry.io/my-app"
-            />
-          </div>
-          <div>
-            <label className="mb-1 font-medium">Image Tag</label>
-            <input
-              className="w-full p-3 rounded-lg  border border-gray-700 focus:ring-2 focus:ring-blue-600 outline-none transition"
-              required
-              value={form.imageTag}
-              onChange={(e) =>
-                setForm((f) => (f ? { ...f, imageTag: e.target.value } : f))
-              }
-              placeholder="latest"
-            />
-          </div>
-        </div>
-        <div>
-          <label className="mb-1 font-medium flex items-center justify-between">
-            Environment Variables
-            <button
-              type="button"
-              className="ml-2 px-2 py-1 bg-blue-700 rounded text-xs hover:bg-blue-800"
-              onClick={addEnvVar}
-            >
-              + Add
-            </button>
-          </label>
-          <div className="space-y-2">
-            {envList.length === 0 && (
-              <div className="text-gray-500 text-sm">
-                No environment variables
-              </div>
-            )}
-            {envList.map(([key, value], idx) => (
-              <div key={idx} className="flex gap-2 items-center">
-                <input
-                  className="p-2 rounded  border border-gray-700 flex-1 text-sm"
-                  placeholder="KEY"
-                  value={key}
-                  onChange={(e) => handleEnvChange(idx, e.target.value, value)}
-                />
-                <span className="text-gray-400">=</span>
-                <input
-                  className="p-2 rounded  border border-gray-700 flex-1 text-sm"
-                  placeholder="VALUE"
-                  value={value}
-                  onChange={(e) => handleEnvChange(idx, key, e.target.value)}
-                />
-                <button
-                  type="button"
-                  className="ml-2 px-2 py-1 bg-red-700 rounded text-xs hover:bg-red-800"
-                  onClick={() => removeEnvVar(idx)}
-                  title="Remove"
-                >
-                  ×
-                </button>
-              </div>
-            ))}
-          </div>
-        </div>
-        <div>
-          <label className="mb-1 font-medium">Resources</label>
-          {resourceLimits && (
-            <div className="mb-2 text-xs text-gray-400">
-              Allowed Requests: CPU {resourceLimits.allowed.requests.cpu},
-              Memory {resourceLimits.allowed.requests.memory}Mi
-              <br />
-              Used: CPU {resourceLimits.usage.requests.cpu}, Memory{" "}
-              {resourceLimits.usage.requests.memory}Mi
-              <br />
-              Allowed Limits: CPU {resourceLimits.allowed.limits.cpu}, Memory{" "}
-              {resourceLimits.allowed.limits.memory}Mi
-              <br />
-              Used: CPU {resourceLimits.usage.limits.cpu}, Memory{" "}
-              {resourceLimits.usage.limits.memory}Mi
-            </div>
-          )}
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <div className="text-xs text-gray-400 mb-1">CPU Requests</div>
-              <input
-                className="w-full p-2 rounded  border border-gray-700 text-sm"
-                value={form.resources?.requests?.cpu || ""}
-                onChange={(e) =>
-                  handleResourceChange("requests", "cpu", e.target.value)
+        <ImageFields
+          imageUrl={form.imageUrl}
+          imageTag={form.imageTag}
+          setImageUrl={(url) =>
+            setForm((f) => (f ? { ...f, imageUrl: url } : f))
+          }
+          setImageTag={(tag) =>
+            setForm((f) => (f ? { ...f, imageTag: tag } : f))
+          }
+        />
+        <EnvVarsSection
+          envList={envList}
+          handleEnvChange={handleEnvChange}
+          addEnvVar={addEnvVar}
+          removeEnvVar={removeEnvVar}
+        />
+        <ResourcesSection
+          resourceLimits={
+            resourceLimits
+              ? {
+                  allowed: {
+                    requests: {
+                      cpu: String(resourceLimits.allowed.requests.cpu),
+                      memory: String(resourceLimits.allowed.requests.memory),
+                    },
+                    limits: {
+                      cpu: String(resourceLimits.allowed.limits.cpu),
+                      memory: String(resourceLimits.allowed.limits.memory),
+                    },
+                  },
+                  usage: {
+                    requests: {
+                      cpu: String(resourceLimits.usage.requests.cpu),
+                      memory: String(resourceLimits.usage.requests.memory),
+                    },
+                    limits: {
+                      cpu: String(resourceLimits.usage.limits.cpu),
+                      memory: String(resourceLimits.usage.limits.memory),
+                    },
+                  },
                 }
-                placeholder="100m"
-              />
-            </div>
-            <div>
-              <div className="text-xs text-gray-400 mb-1">Memory Requests</div>
-              <input
-                className="w-full p-2 rounded  border border-gray-700 text-sm"
-                value={form.resources?.requests?.memory || ""}
-                onChange={(e) =>
-                  handleResourceChange("requests", "memory", e.target.value)
+              : {
+                  allowed: {
+                    requests: { cpu: "0", memory: "0" },
+                    limits: { cpu: "0", memory: "0" },
+                  },
+                  usage: {
+                    requests: { cpu: "0", memory: "0" },
+                    limits: { cpu: "0", memory: "0" },
+                  },
                 }
-                placeholder="128Mi"
-              />
-            </div>
-            <div>
-              <div className="text-xs text-gray-400 mb-1">CPU Limits</div>
-              <input
-                className="w-full p-2 rounded  border border-gray-700 text-sm"
-                value={form.resources?.limits?.cpu || ""}
-                onChange={(e) =>
-                  handleResourceChange("limits", "cpu", e.target.value)
-                }
-                placeholder="500m"
-              />
-            </div>
-            <div>
-              <div className="text-xs text-gray-400 mb-1">Memory Limits</div>
-              <input
-                className="w-full p-2 rounded  border border-gray-700 text-sm"
-                value={form.resources?.limits?.memory || ""}
-                onChange={(e) =>
-                  handleResourceChange("limits", "memory", e.target.value)
-                }
-                placeholder="512Mi"
-              />
-            </div>
-          </div>
-        </div>
-        <div>
-          <label className="mb-1 font-medium flex items-center justify-between">
-            Ports
-            <button
-              type="button"
-              className="ml-2 px-2 py-1 bg-blue-700 rounded text-xs hover:bg-blue-800"
-              onClick={addPort}
-            >
-              + Add
-            </button>
-          </label>
-          <div className="space-y-2">
-            {(form.ports ?? []).length === 0 && (
-              <div className="text-gray-500 text-sm">No ports defined</div>
-            )}
-            {(form.ports ?? []).map((port, idx) => (
-              <div key={idx} className="flex gap-2 items-center">
-                <input
-                  className="p-2 rounded  border border-gray-700 w-24 text-sm"
-                  type="number"
-                  min={1}
-                  max={65535}
-                  value={port.containerPort}
-                  onChange={(e) =>
-                    handlePortChange(idx, "containerPort", e.target.value)
-                  }
-                  placeholder="Port"
-                />
-                <input
-                  className="p-2 rounded  border border-gray-700 w-24 text-sm"
-                  value={port.name || ""}
-                  onChange={(e) =>
-                    handlePortChange(idx, "name", e.target.value)
-                  }
-                  placeholder="Name"
-                />
-                <select
-                  className="p-2 rounded  border border-gray-700 w-28 text-sm"
-                  value={port.protocol || "TCP"}
-                  onChange={(e) =>
-                    handlePortChange(idx, "protocol", e.target.value)
-                  }
-                  title="Protocol"
-                  aria-label="Protocol"
-                >
-                  <option value="TCP">TCP</option>
-                  <option value="UDP">UDP</option>
-                </select>
-                <input
-                  className="p-2 rounded border border-gray-700 w-40 text-sm"
-                  value={subdomains[idx] || ""}
-                  onChange={(e) => handleSubdomainChange(idx, e.target.value)}
-                  placeholder="Subdomain (e.g. api, web)"
-                  title="Subdomain for this port"
-                />
-                <span className="text-gray-400">
-                  .{user?.username ?? "user"}
-                  {INGRESS_BASE_DOMAIN}
-                </span>
-                <label className="flex items-center ml-2 text-xs">
-                  <input
-                    type="checkbox"
-                    checked={!!port.ingressEnabled}
-                    onChange={(e) =>
-                      handlePortChange(idx, "ingressEnabled", e.target.checked)
-                    }
-                    className="mr-1"
-                  />
-                  Ingress
-                </label>
-                <button
-                  type="button"
-                  className="ml-2 px-2 py-1 bg-red-700 rounded text-xs hover:bg-red-800"
-                  onClick={() => removePort(idx)}
-                  title="Remove"
-                >
-                  ×
-                </button>
-              </div>
-            ))}
-          </div>
-        </div>
-        <div>
-          <label className="mb-1 font-medium">Ingress Host (Domain)</label>
-          <input
-            className="w-full p-3 rounded-lg border border-gray-700 bg-gray-800 text-gray-400 cursor-not-allowed"
-            value={form.ingress?.host || ""}
-            readOnly
-            disabled
-            tabIndex={-1}
-            aria-readonly="true"
-            aria-label="Ingress Host (computed by backend)"
-            placeholder="Computed by backend"
-          />
-        </div>
-
-        <button
-          type="submit"
-          className="w-full py-3 rounded-lg bg-blue-600 hover:bg-blue-700 font-semibold text-lg shadow transition disabled:opacity-60"
-          disabled={saving}
-        >
-          {saving ? "Saving..." : "Save Changes"}
-        </button>
-        <button
-          type="button"
-          className="w-full py-3 rounded-lg bg-green-600 hover:bg-green-700 font-semibold text-lg shadow transition disabled:opacity-60 mt-2"
-          disabled={saving}
-          onClick={async () => {
+          }
+          resources={form.resources || { requests: {}, limits: {} }}
+          handleResourceChange={handleResourceChange}
+        />
+        <PortsSection
+          ports={form.ports ?? []}
+          subdomains={subdomains}
+          user={user}
+          getBaseDomain={getBaseDomain}
+          handlePortChange={handlePortChange}
+          handleSubdomainChange={handleSubdomainChange}
+          addPort={addPort}
+          removePort={removePort}
+        />
+        <IngressHostField host={form.ingress?.host || ""} />
+        <ActionButtons
+          saving={saving}
+          onSave={handleSave}
+          onApply={async () => {
             setSaving(true);
             setError("");
             try {
@@ -522,14 +392,10 @@ export default function ConfigureApp({ appId }: { appId: string }) {
             }
             setSaving(false);
           }}
-        >
-          Apply (Deploy to Kubernetes)
-        </button>
-        {error && (
-          <div className="text-red-400 text-sm text-center animate-shake">
-            {error}
-          </div>
-        )}
+          onRemoveDeployment={removeDeployment}
+          onRemoveNamespace={removeNamespace}
+        />
+        <ErrorMessage error={error} />
       </form>
     </div>
   );

@@ -5,28 +5,34 @@ interface Port {
   name?: string;
   protocol?: string;
   ingressEnabled?: boolean;
-  subdomain?: string;
 }
 
 interface User {
   username?: string;
-  // Add other user fields if needed
 }
 
 interface PortsSectionProps {
   ports: Port[];
+  subdomains: string[];
   user: User;
-  INGRESS_BASE_DOMAIN: string;
-  handlePortChange: (idx: number, field: string, value: string) => void;
+  getBaseDomain: () => string;
+  handlePortChange: (
+    idx: number,
+    field: string,
+    value: string | boolean
+  ) => void;
+  handleSubdomainChange: (idx: number, value: string) => void;
   addPort: () => void;
   removePort: (idx: number) => void;
 }
 
 const PortsSection: React.FC<PortsSectionProps> = ({
   ports,
+  subdomains,
   user,
-  INGRESS_BASE_DOMAIN,
+  getBaseDomain,
   handlePortChange,
+  handleSubdomainChange,
   addPort,
   removePort,
 }) => (
@@ -74,39 +80,35 @@ const PortsSection: React.FC<PortsSectionProps> = ({
             <option value="TCP">TCP</option>
             <option value="UDP">UDP</option>
           </select>
-          <label className="flex items-center gap-1 text-xs">
+          {port.ingressEnabled && (
+            <div className="flex gap-2 items-center mt-2">
+              <input
+                className="w-48 p-2 rounded border border-gray-700 bg-gray-900"
+                value={subdomains[idx] || ""}
+                onChange={(e) => handleSubdomainChange(idx, e.target.value)}
+                placeholder="Subdomain (optional)"
+              />
+              <span className="text-gray-400 text-sm">
+                Host:{" "}
+                {subdomains[idx] && subdomains[idx].trim() !== ""
+                  ? `${subdomains[idx]}.${
+                      user?.username || "user"
+                    }.${getBaseDomain()}`
+                  : `${user?.username || "user"}.${getBaseDomain()}`}
+              </span>
+            </div>
+          )}
+          <label className="flex items-center ml-2 text-xs">
             <input
               type="checkbox"
               checked={!!port.ingressEnabled}
               onChange={(e) =>
-                handlePortChange(
-                  idx,
-                  "ingressEnabled",
-                  e.target.checked ? "true" : "false"
-                )
+                handlePortChange(idx, "ingressEnabled", e.target.checked)
               }
+              className="mr-1"
             />
-            Expose via Ingress
+            Ingress
           </label>
-          {port.ingressEnabled && (
-            <>
-              <input
-                className="p-2 rounded border border-gray-700 w-40 text-sm"
-                value={port.subdomain || ""}
-                onChange={(e) =>
-                  handlePortChange(idx, "subdomain", e.target.value)
-                }
-                placeholder="Subdomain (e.g. api, web)"
-                title="Subdomain for this port"
-              />
-              {port.subdomain && port.subdomain.trim() !== "" && (
-                <span className="text-gray-400">
-                  {port.subdomain}-{user?.username ?? "user"}
-                  {INGRESS_BASE_DOMAIN}
-                </span>
-              )}
-            </>
-          )}
           <button
             type="button"
             className="ml-2 px-2 py-1 bg-red-700 rounded text-xs hover:bg-red-800"

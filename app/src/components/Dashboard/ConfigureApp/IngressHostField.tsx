@@ -1,10 +1,10 @@
 import React from "react";
 
-interface IngressHostSectionProps {
+interface IngressHostFieldProps {
   host: string;
 }
 
-const IngressHostSection: React.FC<IngressHostSectionProps> = ({ host }) => (
+const IngressHostField: React.FC<IngressHostFieldProps> = ({ host }) => (
   <div>
     <label className="mb-1 font-medium">Ingress Host (Domain)</label>
     <input
@@ -20,4 +20,4 @@ const IngressHostSection: React.FC<IngressHostSectionProps> = ({ host }) => (
   </div>
 );
 
-export default IngressHostSection;
+export default IngressHostField;

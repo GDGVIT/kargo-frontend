@@ -1,35 +1,34 @@
 import React from "react";
 
-interface FormResources {
-  requests?: {
-    cpu?: string;
-    memory?: string;
-  };
-  limits?: {
-    cpu?: string;
-    memory?: string;
-  };
-}
-
-interface ResourceMetric {
+interface ResourceLimitDetails {
   cpu: string;
   memory: string;
 }
 
 interface ResourceLimits {
   allowed: {
-    requests: ResourceMetric;
-    limits: ResourceMetric;
+    requests: ResourceLimitDetails;
+    limits: ResourceLimitDetails;
   };
   usage: {
-    requests: ResourceMetric;
-    limits: ResourceMetric;
+    requests: ResourceLimitDetails;
+    limits: ResourceLimitDetails;
   };
 }
 
+interface ResourceDetails {
+  cpu?: string;
+  memory?: string;
+}
+
+interface Resources {
+  requests?: ResourceDetails;
+  limits?: ResourceDetails;
+}
+
 interface ResourcesSectionProps {
-  form: { resources?: FormResources };
   resourceLimits: ResourceLimits;
+  resources: Resources;
   handleResourceChange: (
     section: "requests" | "limits",
     field: "cpu" | "memory",
@@ -38,8 +37,8 @@ interface ResourcesSectionProps {
 }
 
 const ResourcesSection: React.FC<ResourcesSectionProps> = ({
-  form,
   resourceLimits,
+  resources,
   handleResourceChange,
 }) => (
   <div>
@@ -64,7 +63,7 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
         <div className="text-xs text-gray-400 mb-1">CPU Requests</div>
         <input
           className="w-full p-2 rounded  border border-gray-700 text-sm"
-          value={form.resources?.requests?.cpu || ""}
+          value={resources?.requests?.cpu || ""}
           onChange={(e) =>
             handleResourceChange("requests", "cpu", e.target.value)
           }
@@ -75,7 +74,7 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
         <div className="text-xs text-gray-400 mb-1">Memory Requests</div>
         <input
           className="w-full p-2 rounded  border border-gray-700 text-sm"
-          value={form.resources?.requests?.memory || ""}
+          value={resources?.requests?.memory || ""}
           onChange={(e) =>
             handleResourceChange("requests", "memory", e.target.value)
           }
@@ -86,7 +85,7 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
         <div className="text-xs text-gray-400 mb-1">CPU Limits</div>
         <input
           className="w-full p-2 rounded  border border-gray-700 text-sm"
-          value={form.resources?.limits?.cpu || ""}
+          value={resources?.limits?.cpu || ""}
           onChange={(e) =>
             handleResourceChange("limits", "cpu", e.target.value)
           }
@@ -97,7 +96,7 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
         <div className="text-xs text-gray-400 mb-1">Memory Limits</div>
         <input
           className="w-full p-2 rounded  border border-gray-700 text-sm"
-          value={form.resources?.limits?.memory || ""}
+          value={resources?.limits?.memory || ""}
           onChange={(e) =>
             handleResourceChange("limits", "memory", e.target.value)
           }

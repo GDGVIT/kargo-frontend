@@ -1,13 +1,13 @@
 import React from "react";
 
-interface ImageInfoSectionProps {
+interface ImageFieldsProps {
   imageUrl: string;
   imageTag: string;
   setImageUrl: (url: string) => void;
   setImageTag: (tag: string) => void;
 }
 
-const ImageInfoSection: React.FC<ImageInfoSectionProps> = ({
+const ImageFields: React.FC<ImageFieldsProps> = ({
   imageUrl,
   imageTag,
   setImageUrl,
@@ -37,4 +37,4 @@ const ImageInfoSection: React.FC<ImageInfoSectionProps> = ({
   </div>
 );
 
-export default ImageInfoSection;
+export default ImageFields;
