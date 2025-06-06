@@ -23,6 +23,9 @@ export interface Application {
     name?: string;
     containerPort: number;
     protocol?: string;
+    ingressEnabled?: boolean;
+    subdomain?: string;
+    ingressHost?: string;
   }>;
   volumes?: Array<{
     name: string;

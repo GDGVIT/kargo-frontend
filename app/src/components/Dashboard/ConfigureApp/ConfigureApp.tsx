@@ -187,7 +187,11 @@ export default function ConfigureApp({ appId }: { appId: string }) {
     );
   }
 
-  function handlePortChange(idx: number, field: string, value: string) {
+  function handlePortChange(
+    idx: number,
+    field: string,
+    value: string | boolean
+  ) {
     setForm((f) =>
       f
         ? {
@@ -196,7 +200,12 @@ export default function ConfigureApp({ appId }: { appId: string }) {
               i === idx
                 ? {
                     ...port,
-                    [field]: field === "containerPort" ? Number(value) : value,
+                    [field]:
+                      field === "containerPort"
+                        ? Number(value)
+                        : field === "ingressEnabled"
+                        ? Boolean(value)
+                        : value,
                   }
                 : port
             ),
@@ -449,6 +458,17 @@ export default function ConfigureApp({ appId }: { appId: string }) {
                   .{user?.username ?? "user"}
                   {INGRESS_BASE_DOMAIN}
                 </span>
+                <label className="flex items-center ml-2 text-xs">
+                  <input
+                    type="checkbox"
+                    checked={!!port.ingressEnabled}
+                    onChange={(e) =>
+                      handlePortChange(idx, "ingressEnabled", e.target.checked)
+                    }
+                    className="mr-1"
+                  />
+                  Ingress
+                </label>
                 <button
                   type="button"
                   className="ml-2 px-2 py-1 bg-red-700 rounded text-xs hover:bg-red-800"
