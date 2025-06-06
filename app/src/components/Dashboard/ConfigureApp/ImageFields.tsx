@@ -13,11 +13,10 @@ const ImageFields: React.FC<ImageFieldsProps> = ({
   setImageUrl,
   setImageTag,
 }) => (
-  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+  <div>
     <div>
-      <label className="mb-1 font-medium">Image URL</label>
+      <label>Image URL</label>
       <input
-        className="w-full p-3 rounded-lg  border border-gray-700 focus:ring-2 focus:ring-blue-600 outline-none transition"
         required
         value={imageUrl}
         onChange={(e) => setImageUrl(e.target.value)}
@@ -25,9 +24,8 @@ const ImageFields: React.FC<ImageFieldsProps> = ({
       />
     </div>
     <div>
-      <label className="mb-1 font-medium">Image Tag</label>
+      <label>Image Tag</label>
       <input
-        className="w-full p-3 rounded-lg  border border-gray-700 focus:ring-2 focus:ring-blue-600 outline-none transition"
         required
         value={imageTag}
         onChange={(e) => setImageTag(e.target.value)}

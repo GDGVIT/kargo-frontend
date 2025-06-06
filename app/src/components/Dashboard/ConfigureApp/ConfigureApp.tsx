@@ -4,7 +4,25 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "../../../utils/api";
 import type { Application } from "../../../types/Application";
-import { useAuth } from "../../Auth/AuthProvider/AuthProvider";
+// Add Port type for local use
+interface Port {
+  id: string;
+  containerPort: number;
+  hostPort: number;
+  protocol: "TCP" | "UDP";
+  description?: string;
+}
+// Add a type for mapping ports with optional hostPort/description
+interface AppPort {
+  name?: string;
+  containerPort: number;
+  protocol?: string;
+  ingressEnabled?: boolean;
+  subdomain?: string;
+  ingressHost?: string;
+  hostPort?: number;
+  description?: string;
+}
 import ImageFields from "./ImageFields";
 import EnvVarsSection from "./EnvVarsSection";
 import ResourcesSection from "./ResourcesSection";
@@ -12,17 +30,9 @@ import PortsSection from "./PortsSection";
 import ActionButtons from "./ActionButtons";
 import ErrorMessage from "./ErrorMessage";
 
-const getBaseDomain = () => {
-  let domain = process.env.NEXT_PUBLIC_INGRESS_BASE_DOMAIN || "vitians.in";
-  if (domain.startsWith(".")) domain = domain.slice(1);
-  return domain;
-};
-
 export default function ConfigureApp({ appId }: { appId: string }) {
-  const { user } = useAuth();
   const [form, setForm] = useState<Application | null>(null);
   const [envList, setEnvList] = useState<[string, string][]>([]);
-  const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
   const [subdomains, setSubdomains] = useState<string[]>([]);
@@ -56,7 +66,6 @@ export default function ConfigureApp({ appId }: { appId: string }) {
   }, []);
 
   async function fetchApp() {
-    setLoading(true);
     try {
       const res = await axios.get(`/api/applications/${appId}`);
       const app = res.data.application;
@@ -66,27 +75,19 @@ export default function ConfigureApp({ appId }: { appId: string }) {
         ports: app.ports || [],
       });
       setEnvList(app.env ? Object.entries(app.env) : []);
-      // Load subdomains from ingress.subdomains if present, else default to empty strings
       setSubdomains(
         app.ingress?.subdomains
-          ? app.ports?.map(
-              (port: {
-                containerPort: number;
-                name?: string;
-                protocol?: string;
-              }) => {
-                const found = Object.entries(app.ingress.subdomains).find(
-                  ([, p]) => p === port.containerPort
-                );
-                return found ? found[0] : "";
-              }
-            )
+          ? app.ports?.map((port: { containerPort: number }) => {
+              const found = Object.entries(app.ingress.subdomains).find(
+                ([, p]) => p === port.containerPort
+              );
+              return found ? found[0] : "";
+            })
           : (app.ports || []).map(() => "")
       );
     } catch {
       setError("Failed to load app");
     }
-    setLoading(false);
   }
 
   async function handleSave(e: React.FormEvent) {
@@ -223,90 +224,19 @@ export default function ConfigureApp({ appId }: { appId: string }) {
     );
   }
 
-  function handlePortChange(
-    idx: number,
-    field: string,
-    value: string | boolean
-  ) {
-    setForm((f) =>
-      f
-        ? {
-            ...f,
-            ports: (f.ports ?? []).map((port, i) =>
-              i === idx
-                ? {
-                    ...port,
-                    [field]:
-                      field === "containerPort"
-                        ? Number(value)
-                        : field === "ingressEnabled"
-                        ? Boolean(value)
-                        : value,
-                  }
-                : port
-            ),
-          }
-        : f
-    );
-  }
-  function addPort() {
-    setForm((f) =>
-      f
-        ? {
-            ...f,
-            ports: [
-              ...(f.ports ?? []),
-              { containerPort: 80, name: "", protocol: "TCP" },
-            ],
-          }
-        : f
-    );
-    setSubdomains((prev) => [...prev, ""]);
-  }
-  function removePort(idx: number) {
-    setForm((f) =>
-      f ? { ...f, ports: (f.ports ?? []).filter((_, i) => i !== idx) } : f
-    );
-    setSubdomains((prev) => prev.filter((_, i) => i !== idx));
-  }
-
-  if (loading)
-    return (
-      <div className="min-h-screen flex items-center justify-center  text-white animate-fade-in">
-        Loading...
-      </div>
-    );
-  if (!form)
-    return (
-      <div className="min-h-screen flex items-center justify-center  text-white animate-fade-in">
-        App not found
-      </div>
-    );
-  if (!user)
-    return (
-      <div className="min-h-screen flex items-center justify-center  text-white animate-fade-in">
-        User not found
-      </div>
-    );
-
+  if (!form) return <div>App not found</div>;
   return (
-    <div className="min-h-screen  text-white p-6 flex flex-col items-center animate-fade-in">
-      <button
-        onClick={() => router.push("/dashboard")}
-        className="mb-8 text-blue-400 hover:underline text-lg self-start"
-      >
+    <div>
+      <button onClick={() => router.push("/dashboard")}>
         ← Back to Dashboard
       </button>
-      <h1 className="text-3xl font-extrabold mb-6 tracking-tight drop-shadow-lg animate-fade-in">
-        Configure <span className="text-blue-400">{form.name}</span>
+      <h1>
+        Configure <span>{form?.name}</span>
       </h1>
-      <form
-        onSubmit={handleSave}
-        className="bg-gray-900/90 backdrop-blur rounded-xl shadow-2xl p-8 w-full max-w-4xl space-y-8 animate-slide-in border border-gray-800"
-      >
+      <form onSubmit={handleSave}>
         <ImageFields
-          imageUrl={form.imageUrl}
-          imageTag={form.imageTag}
+          imageUrl={form?.imageUrl || ""}
+          imageTag={form?.imageTag || ""}
           setImageUrl={(url) =>
             setForm((f) => (f ? { ...f, imageUrl: url } : f))
           }
@@ -356,16 +286,36 @@ export default function ConfigureApp({ appId }: { appId: string }) {
                   },
                 }
           }
-          resources={form.resources || { requests: {}, limits: {} }}
+          resources={form?.resources || { requests: {}, limits: {} }}
           handleResourceChange={handleResourceChange}
         />
         <PortsSection
-          ports={form.ports ?? []}
-          user={user}
-          getBaseDomain={getBaseDomain}
-          handlePortChange={handlePortChange}
-          addPort={addPort}
-          removePort={removePort}
+          ports={(form?.ports ?? []).map((port, idx) => {
+            const p = port as AppPort;
+            return {
+              id: `${idx}-${p.containerPort}`,
+              containerPort: p.containerPort,
+              hostPort:
+                typeof p.hostPort === "number"
+                  ? p.hostPort
+                  : p.containerPort ?? 80,
+              protocol: p.protocol === "UDP" ? "UDP" : "TCP",
+              description:
+                typeof p.description === "string" ? p.description : "",
+            } as Port;
+          })}
+          onChange={(updatedPorts) => {
+            setForm((f) =>
+              f
+                ? {
+                    ...f,
+                    // Intentionally omitting id before saving
+                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                    ports: updatedPorts.map(({ id: _, ...rest }) => rest),
+                  }
+                : f
+            );
+          }}
         />
         <ActionButtons
           saving={saving}

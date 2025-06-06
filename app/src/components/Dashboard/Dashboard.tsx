@@ -46,19 +46,13 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen  text-white p-6 flex flex-col items-center animate-fade-in">
-      <h1 className="text-4xl font-extrabold mb-8 tracking-tight drop-shadow-lg animate-fade-in">
-        Your Applications
-      </h1>
-      <form
-        onSubmit={handleAdd}
-        className="bg-gray-900/90 backdrop-blur rounded-xl shadow-2xl p-8 w-full max-w-lg mb-12 space-y-6 animate-slide-in border border-gray-800"
-      >
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div>
+      <h1>Your Applications</h1>
+      <form onSubmit={handleAdd}>
+        <div>
           <div>
-            <label className="block mb-1 font-medium">Name</label>
+            <label>Name</label>
             <input
-              className="w-full p-3 rounded-lg  border border-gray-700 focus:ring-2 focus:ring-blue-600 outline-none transition"
               required
               value={form.name}
               onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
@@ -66,9 +60,8 @@ export default function Dashboard() {
             />
           </div>
           <div>
-            <label className="block mb-1 font-medium">Image URL</label>
+            <label>Image URL</label>
             <input
-              className="w-full p-3 rounded-lg  border border-gray-700 focus:ring-2 focus:ring-blue-600 outline-none transition"
               required
               value={form.imageUrl}
               onChange={(e) =>
@@ -78,9 +71,8 @@ export default function Dashboard() {
             />
           </div>
           <div>
-            <label className="block mb-1 font-medium">Image Tag</label>
+            <label>Image Tag</label>
             <input
-              className="w-full p-3 rounded-lg  border border-gray-700 focus:ring-2 focus:ring-blue-600 outline-none transition"
               required
               value={form.imageTag}
               onChange={(e) =>
@@ -90,9 +82,8 @@ export default function Dashboard() {
             />
           </div>
           <div>
-            <label className="block mb-1 font-medium">Registry Token</label>
+            <label>Registry Token</label>
             <input
-              className="w-full p-3 rounded-lg  border border-gray-700 focus:ring-2 focus:ring-blue-600 outline-none transition"
               required
               value={form.registryToken}
               onChange={(e) =>
@@ -102,26 +93,16 @@ export default function Dashboard() {
             />
           </div>
         </div>
-        <button
-          type="submit"
-          className="w-full py-3 rounded-lg bg-blue-600 hover:bg-blue-700 font-semibold text-lg shadow transition disabled:opacity-60"
-          disabled={loading}
-        >
+        <button type="submit" disabled={loading}>
           {loading ? "Adding..." : "Add Application"}
         </button>
-        {error && (
-          <div className="text-red-400 text-sm text-center animate-shake">
-            {error}
-          </div>
-        )}
+        {error && <div>{error}</div>}
       </form>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-6xl animate-fade-in">
+      <div>
         {loading ? (
-          <div className="col-span-full text-center text-lg">Loading...</div>
+          <div>Loading...</div>
         ) : apps.length === 0 ? (
-          <div className="col-span-full text-center text-gray-500 text-xl py-12 animate-fade-in">
-            No applications yet. Add your first app above!
-          </div>
+          <div>No applications yet. Add your first app above!</div>
         ) : (
           apps.map(
             (
@@ -140,22 +121,13 @@ export default function Dashboard() {
                 onClick={() => router.push(`/dashboard/${app._id}`)}
                 data-animate-delay={idx * 60}
               >
-                <div
-                  className="absolute right-4 top-4 w-2 h-2 rounded-full bg-green-500 animate-pulse"
-                  title="Active"
-                />
-                <h2 className="text-2xl font-bold mb-1 group-hover:text-blue-400 transition-colors">
-                  {app.name}
-                </h2>
-                <div className="text-gray-400 text-sm mb-2">
+                <div title="Active" />
+                <h2>{app.name}</h2>
+                <div>
                   {app.imageUrl}:{app.imageTag}
                 </div>
-                <div className="text-xs text-gray-500 truncate mb-2">
-                  {app.registryToken}
-                </div>
-                <span className="inline-block mt-2 text-blue-500 text-xs font-mono opacity-80 group-hover:opacity-100 transition">
-                  Click to configure →
-                </span>
+                <div>{app.registryToken}</div>
+                <span>Click to configure →</span>
               </div>
             )
           )

@@ -5,8 +5,6 @@ interface ErrorMessageProps {
 }
 
 const ErrorMessage: React.FC<ErrorMessageProps> = ({ error }) =>
-  error ? (
-    <div className="mt-4 text-red-400 text-center animate-shake">{error}</div>
-  ) : null;
+  error ? <div>{error}</div> : null;
 
 export default ErrorMessage;
