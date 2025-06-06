@@ -9,7 +9,6 @@ import ImageFields from "./ImageFields";
 import EnvVarsSection from "./EnvVarsSection";
 import ResourcesSection from "./ResourcesSection";
 import PortsSection from "./PortsSection";
-import IngressHostField from "./IngressHostField";
 import ActionButtons from "./ActionButtons";
 import ErrorMessage from "./ErrorMessage";
 
@@ -149,6 +148,7 @@ export default function ConfigureApp({ appId }: { appId: string }) {
         env: envObj,
         ports: (form.ports || []).map((port, idx) => ({
           ...port,
+          ingressEnabled: true,
           subdomain: subdomains[idx] || "",
         })),
         ingress: {
@@ -249,9 +249,6 @@ export default function ConfigureApp({ appId }: { appId: string }) {
         : f
     );
   }
-  function handleSubdomainChange(idx: number, value: string) {
-    setSubdomains((prev) => prev.map((s, i) => (i === idx ? value : s)));
-  }
   function addPort() {
     setForm((f) =>
       f
@@ -305,7 +302,7 @@ export default function ConfigureApp({ appId }: { appId: string }) {
       </h1>
       <form
         onSubmit={handleSave}
-        className="bg-gray-900/90 backdrop-blur rounded-xl shadow-2xl p-8 w-full max-w-2xl space-y-8 animate-slide-in border border-gray-800"
+        className="bg-gray-900/90 backdrop-blur rounded-xl shadow-2xl p-8 w-full max-w-4xl space-y-8 animate-slide-in border border-gray-800"
       >
         <ImageFields
           imageUrl={form.imageUrl}
@@ -364,15 +361,12 @@ export default function ConfigureApp({ appId }: { appId: string }) {
         />
         <PortsSection
           ports={form.ports ?? []}
-          subdomains={subdomains}
           user={user}
           getBaseDomain={getBaseDomain}
           handlePortChange={handlePortChange}
-          handleSubdomainChange={handleSubdomainChange}
           addPort={addPort}
           removePort={removePort}
         />
-        <IngressHostField host={form.ingress?.host || ""} />
         <ActionButtons
           saving={saving}
           onSave={handleSave}
