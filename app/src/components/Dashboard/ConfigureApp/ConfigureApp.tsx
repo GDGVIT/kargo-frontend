@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "../../../utils/api";
 import type { Application } from "../../../types/Application";
-// Add Port type for local use
+
 interface Port {
   id: string;
   containerPort: number;
@@ -12,7 +12,7 @@ interface Port {
   protocol: "TCP" | "UDP";
   description?: string;
 }
-// Add a type for mapping ports with optional hostPort/description
+
 interface AppPort {
   name?: string;
   containerPort: number;
@@ -29,6 +29,7 @@ import ResourcesSection from "./ResourcesSection";
 import PortsSection from "./PortsSection";
 import ActionButtons from "./ActionButtons";
 import ErrorMessage from "./ErrorMessage";
+import { useNotification } from "../../Notification/Notification";
 
 export default function ConfigureApp({ appId }: { appId: string }) {
   const [form, setForm] = useState<Application | null>(null);
@@ -46,6 +47,7 @@ export default function ConfigureApp({ appId }: { appId: string }) {
     };
   } | null>(null);
   const router = useRouter();
+  const { notify } = useNotification();
 
   useEffect(() => {
     fetchApp();
@@ -76,6 +78,7 @@ export default function ConfigureApp({ appId }: { appId: string }) {
       setEnvList(app.env ? Object.entries(app.env) : []);
     } catch {
       setError("Failed to load app");
+      notify("Failed to load app", "error");
     }
   }
 
@@ -90,7 +93,7 @@ export default function ConfigureApp({ appId }: { appId: string }) {
         {} as Record<string, string>
       );
       const updatedPorts = form.ports || [];
-      // Check resource limits before sending
+
       if (resourceLimits) {
         function parse(val: string | undefined) {
           if (!val) return 0;
@@ -100,14 +103,14 @@ export default function ConfigureApp({ appId }: { appId: string }) {
           return parseFloat(val);
         }
         const newUsage = { ...resourceLimits.usage };
-        // Subtract this app's current resources if editing
+
         if (form.resources) {
           newUsage.requests.cpu -= parse(form.resources.requests?.cpu);
           newUsage.requests.memory -= parse(form.resources.requests?.memory);
           newUsage.limits.cpu -= parse(form.resources.limits?.cpu);
           newUsage.limits.memory -= parse(form.resources.limits?.memory);
         }
-        // Add the new values
+
         const reqCpu = parse(form.resources?.requests?.cpu);
         const reqMem = parse(form.resources?.requests?.memory);
         const limCpu = parse(form.resources?.limits?.cpu);
@@ -133,12 +136,14 @@ export default function ConfigureApp({ appId }: { appId: string }) {
         ports: updatedPorts,
       });
       fetchApp();
+      notify("Application updated successfully!", "success");
     } catch (err) {
       const error = err as unknown as {
         response?: { data?: { message?: string } };
       };
       if (error?.response?.data?.message) setError(error.response.data.message);
       else setError("Failed to save");
+      notify(error?.response?.data?.message || "Failed to save", "error");
     }
     setSaving(false);
   }
@@ -149,8 +154,10 @@ export default function ConfigureApp({ appId }: { appId: string }) {
     try {
       await axios.post(`/api/applications/${appId}/remove-deployment`);
       fetchApp();
+      notify("Deployment removed successfully!", "success");
     } catch {
       setError("Failed to remove deployment");
+      notify("Failed to remove deployment", "error");
     }
     setSaving(false);
   }
@@ -160,8 +167,10 @@ export default function ConfigureApp({ appId }: { appId: string }) {
     try {
       await axios.post(`/api/applications/${appId}/remove-namespace`);
       fetchApp();
+      notify("Namespace removed successfully!", "success");
     } catch {
       setError("Failed to remove namespace");
+      notify("Failed to remove namespace", "error");
     }
     setSaving(false);
   }
@@ -286,7 +295,6 @@ export default function ConfigureApp({ appId }: { appId: string }) {
                 ? {
                     ...f,
                     ports: updatedPorts.map((port) => {
-                      // Remove id before saving
                       const { ...rest } = port;
                       return { ...rest };
                     }),
@@ -303,13 +311,20 @@ export default function ConfigureApp({ appId }: { appId: string }) {
             setError("");
             try {
               const res = await axios.post(`/api/applications/${appId}/apply`);
-              alert(res.data.message || "Application applied successfully");
+              notify(
+                res.data.message || "Application applied successfully",
+                "success"
+              );
             } catch (err) {
               const error = err as unknown as {
                 response?: { data?: { message?: string } };
               };
               setError(
                 error?.response?.data?.message || "Failed to apply application"
+              );
+              notify(
+                error?.response?.data?.message || "Failed to apply application",
+                "error"
               );
             }
             setSaving(false);

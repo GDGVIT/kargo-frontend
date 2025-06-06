@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "../../utils/api";
+import { useNotification } from "../Notification/Notification";
 
 export default function Dashboard() {
   const [apps, setApps] = useState([]);
@@ -15,6 +16,7 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const router = useRouter();
+  const { notify } = useNotification();
 
   useEffect(() => {
     fetchApps();
@@ -27,6 +29,7 @@ export default function Dashboard() {
       setApps(res.data.applications);
     } catch {
       setError("Failed to load apps");
+      notify("Failed to load apps", "error");
     }
     setLoading(false);
   }
@@ -39,8 +42,10 @@ export default function Dashboard() {
       await axios.post("/api/applications", form);
       setForm({ name: "", imageUrl: "", imageTag: "", registryToken: "" });
       fetchApps();
+      notify("Application added successfully!", "success");
     } catch {
       setError("Failed to add app");
+      notify("Failed to add app", "error");
     }
     setLoading(false);
   }
