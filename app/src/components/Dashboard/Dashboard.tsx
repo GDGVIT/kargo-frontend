@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import axios from "../../utils/api";
 import { useNotification } from "../Notification/Notification";
 import Modal from "../Modal/Modal";
+import type { RegistryCredential } from "../Credentials/Credentials";
 
 export default function Dashboard() {
   const [apps, setApps] = useState([]);
@@ -12,10 +13,12 @@ export default function Dashboard() {
     name: "",
     imageUrl: "",
     imageTag: "",
-    registryToken: "",
   });
   const [loading, setLoading] = useState(false);
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
+  const [credentials, setCredentials] = useState<RegistryCredential[]>([]);
+  const [selectedCredential, setSelectedCredential] =
+    useState<RegistryCredential | null>(null);
   const router = useRouter();
   const { notify } = useNotification();
 
@@ -34,6 +37,12 @@ export default function Dashboard() {
     fetchApps();
   }, [fetchApps]);
 
+  useEffect(() => {
+    axios
+      .get("/api/users/me/credentials")
+      .then((res) => setCredentials(res.data.credentials));
+  }, []);
+
   function isValidAppName(name: string) {
     return /^[a-z0-9]([-a-z0-9]*[a-z0-9])?$/.test(name);
   }
@@ -51,7 +60,7 @@ export default function Dashboard() {
     }
     try {
       await axios.post("/api/applications", form);
-      setForm({ name: "", imageUrl: "", imageTag: "", registryToken: "" });
+      setForm({ name: "", imageUrl: "", imageTag: "" });
       fetchApps();
       notify("Application added successfully!", "success");
     } catch {
@@ -120,19 +129,54 @@ export default function Dashboard() {
               className="w-full px-3 py-2 border border-gray-700 bg-gray-800 text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-500"
             />
           </div>
+
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-1">
-              Registry Token
+            <label
+              className="block text-sm font-medium text-gray-300 mb-1"
+              htmlFor="registry-credential"
+            >
+              Registry Credential
             </label>
-            <input
+            <select
+              id="registry-credential"
               required
-              value={form.registryToken}
-              onChange={(e) =>
-                setForm((f) => ({ ...f, registryToken: e.target.value }))
+              title="Registry Credential"
+              value={
+                selectedCredential
+                  ? selectedCredential.name +
+                    ":" +
+                    selectedCredential.registryType
+                  : ""
               }
-              placeholder="ghp_..."
-              className="w-full px-3 py-2 border border-gray-700 bg-gray-800 text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-500"
-            />
+              onChange={(e) => {
+                const [name, registryType] = e.target.value.split(":");
+                const cred = credentials.find(
+                  (c) => c.name === name && c.registryType === registryType
+                );
+                setSelectedCredential(cred || null);
+                setForm((f) => ({
+                  ...f,
+                  registryToken: cred ? cred.token : "",
+                }));
+              }}
+              className="w-full px-3 py-2 border border-gray-700 bg-gray-800 text-gray-100 rounded-md"
+            >
+              <option value="">Select a credential</option>
+              {credentials.map((cred) => (
+                <option
+                  key={cred.name + cred.registryType}
+                  value={cred.name + ":" + cred.registryType}
+                >
+                  {cred.name} [{cred.registryType}] ({cred.username})
+                </option>
+              ))}
+            </select>
+            <a
+              href="/credentials"
+              className="text-xs text-blue-400 hover:underline mt-1 inline-block"
+            >
+              Manage credentials
+            </a>
           </div>
         </div>
         <button
@@ -184,7 +228,6 @@ export default function Dashboard() {
                   name: string;
                   imageUrl: string;
                   imageTag: string;
-                  registryToken: string;
                 },
                 idx: number
               ) => (
@@ -201,9 +244,7 @@ export default function Dashboard() {
                   <div className="text-gray-300 text-sm mb-1">
                     {app.imageUrl}:{app.imageTag}
                   </div>
-                  <div className="text-gray-400 text-xs mb-2 break-all">
-                    {app.registryToken}
-                  </div>
+
                   <span className="text-blue-400 text-sm font-medium">
                     Click to configure →
                   </span>
