@@ -30,13 +30,13 @@ interface AuthContextType {
     email: string,
     password: string,
     username?: string
-  ) => Promise<boolean>;
+  ) => Promise<{ success: boolean; message: string }>;
   register: (
     email: string,
     password: string,
     name?: string,
     username?: string
-  ) => Promise<boolean>;
+  ) => Promise<{ success: boolean; message: string }>;
   logout: () => Promise<void>;
   refreshUser: () => Promise<void>;
 }
@@ -86,11 +86,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       body: JSON.stringify({ email, password, username }),
     });
 
+    const data = await res.json().catch(() => ({}));
     if (res.ok) {
       await refreshUser();
-      return true;
+      return { success: true, message: data.message || "Login successful!" };
     }
-    return false;
+    return { success: false, message: data.message || "Login failed." };
   };
 
   const register = async (
@@ -106,11 +107,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       body: JSON.stringify({ email, password, name, username }),
     });
 
+    const data = await res.json().catch(() => ({}));
     if (res.ok) {
       await refreshUser();
-      return true;
+      return {
+        success: true,
+        message: data.message || "Registration successful!",
+      };
     }
-    return false;
+    return { success: false, message: data.message || "Registration failed." };
   };
 
   const logout = async () => {

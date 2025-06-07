@@ -118,23 +118,22 @@ export default function Authenticate() {
         );
       }
 
-      if (response === true) {
+      if (response && response.success) {
         notify(
-          isLogin
-            ? "Logged in successfully!"
-            : "Registered successfully. Please check your email to verify.",
+          response.message ||
+            (isLogin
+              ? "Logged in successfully!"
+              : "Registered successfully. Please check your email to verify."),
           "success"
         );
         if (!isLogin) setIsLogin(true);
-
-        // Clear inputs
         setEmail("");
         setPassword("");
         setConfirmPassword("");
         setName("");
         setUsername("");
       } else {
-        notify("Something went wrong.", "error");
+        notify(response?.message || "Something went wrong.", "error");
       }
     } catch (err: unknown) {
       let errorMsg = "Unexpected error.";
