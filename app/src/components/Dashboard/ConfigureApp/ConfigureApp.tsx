@@ -48,6 +48,7 @@ export default function ConfigureApp({ appId }: { appId: string }) {
     };
   } | null>(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [activeTab, setActiveTab] = useState("Image");
   const router = useRouter();
   const { notify } = useNotification();
 
@@ -206,136 +207,190 @@ export default function ConfigureApp({ appId }: { appId: string }) {
   }
 
   if (!form)
-    return <div className="text-center text-gray-300">App not found</div>;
+    return (
+      <div className="text-center text-gray-400 bg-black min-h-[60vh] flex items-center justify-center rounded-lg border border-gray-800 shadow-lg">
+        App not found
+      </div>
+    );
   return (
-    <div className="max-w-2xl mx-auto p-6 bg-gray-900 rounded-lg shadow-md mt-8 border border-gray-800">
+    <div className="max-w-2xl mx-auto p-8 bg-black rounded-2xl shadow-2xl mt-10 border border-gray-800/80 relative">
       <button
         type="button"
         onClick={() => router.push("/dashboard")}
-        className="flex items-center gap-2 text-gray-400 hover:text-blue-400 font-medium mb-6 transition-colors"
+        className="flex items-center gap-2 text-gray-400 hover:text-blue-400 font-medium mb-8 transition-colors"
       >
         <span className="text-lg">←</span> Back to Dashboard
       </button>
-      <h1 className="text-2xl font-bold mb-6 text-gray-100">
+      <h1 className="text-3xl font-extrabold mb-8 text-gray-100 tracking-tight">
         Configure <span className="text-blue-400">{form?.name}</span>
       </h1>
-      <form onSubmit={handleSaveAndDeploy} className="space-y-6">
-        <ImageFields
-          imageUrl={form?.imageUrl || ""}
-          imageTag={form?.imageTag || ""}
-          setImageUrl={(url) =>
-            setForm((f) => (f ? { ...f, imageUrl: url } : f))
-          }
-          setImageTag={(tag) =>
-            setForm((f) => (f ? { ...f, imageTag: tag } : f))
-          }
-        />
-        <EnvVarsSection
-          envList={envList}
-          handleEnvChange={handleEnvChange}
-          addEnvVar={addEnvVar}
-          removeEnvVar={removeEnvVar}
-        />
-        <ResourcesSection
-          resourceLimits={
-            resourceLimits
-              ? {
-                  allowed: {
-                    requests: {
-                      cpu: String(resourceLimits.allowed.requests.cpu),
-                      memory: String(resourceLimits.allowed.requests.memory),
-                    },
-                    limits: {
-                      cpu: String(resourceLimits.allowed.limits.cpu),
-                      memory: String(resourceLimits.allowed.limits.memory),
-                    },
-                  },
-                  usage: {
-                    requests: {
-                      cpu: String(resourceLimits.usage.requests.cpu),
-                      memory: String(resourceLimits.usage.requests.memory),
-                    },
-                    limits: {
-                      cpu: String(resourceLimits.usage.limits.cpu),
-                      memory: String(resourceLimits.usage.limits.memory),
-                    },
-                  },
-                }
-              : {
-                  allowed: {
-                    requests: { cpu: "0", memory: "0" },
-                    limits: { cpu: "0", memory: "0" },
-                  },
-                  usage: {
-                    requests: { cpu: "0", memory: "0" },
-                    limits: { cpu: "0", memory: "0" },
-                  },
-                }
-          }
-          resources={form?.resources || { requests: {}, limits: {} }}
-          handleResourceChange={handleResourceChange}
-        />
-        <PortsSection
-          ports={(form?.ports ?? []).map((port, idx) => {
-            const p = port as AppPort;
-            return {
-              id: `${idx}-${p.containerPort}`,
-              containerPort: p.containerPort,
-              hostPort:
-                typeof p.hostPort === "number"
-                  ? p.hostPort
-                  : p.containerPort ?? 80,
-              protocol: p.protocol === "UDP" ? "UDP" : "TCP",
-              description:
-                typeof p.description === "string" ? p.description : "",
-              subdomain: p.subdomain || "",
-            } as Port;
-          })}
-          onChange={(updatedPorts) => {
-            setForm((f) =>
-              f
-                ? {
-                    ...f,
-                    ports: updatedPorts.map((port) => {
-                      const { ...rest } = port;
-                      return { ...rest };
-                    }),
-                  }
-                : f
-            );
-          }}
-        />
-        <ActionButtons
-          saving={saving}
-          onSaveAndDeploy={handleSaveAndDeploy}
-          onRequestDelete={() => setShowDeleteModal(true)}
-        />
+      {/* Tabs Navigation */}
+      <div className="flex gap-3 mb-8 border-b border-gray-800/70">
+        {Object.entries({
+          Image: "Image",
+          Env: "Environment",
+          Resources: "Resources",
+          Ports: "Ports",
+        }).map(([key, label]) => (
+          <button
+            key={key}
+            className={`px-6 py-2 font-semibold rounded-t-lg transition-all duration-200 focus:outline-none text-base shadow-sm
+              ${
+                activeTab === key
+                  ? "bg-gradient-to-r from-blue-700 via-blue-500 to-blue-400 text-white border-b-2 border-blue-400 shadow-lg z-10"
+                  : "bg-gray-900 text-gray-400 hover:text-blue-300 hover:bg-gray-800 border-b-2 border-transparent"
+              }
+            `}
+            onClick={() => setActiveTab(key)}
+            type="button"
+            style={{
+              boxShadow:
+                activeTab === key ? "0 2px 16px 0 #2563eb55" : undefined,
+            }}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
+      <form onSubmit={handleSaveAndDeploy} className="space-y-8">
+        {/* Tab Content */}
+        {activeTab === "Image" && (
+          <div className="bg-gray-900/80 rounded-xl p-6 border border-gray-800 shadow-inner">
+            <ImageFields
+              imageUrl={form?.imageUrl || ""}
+              imageTag={form?.imageTag || ""}
+              setImageUrl={(url) =>
+                setForm((f) => (f ? { ...f, imageUrl: url } : f))
+              }
+              setImageTag={(tag) =>
+                setForm((f) => (f ? { ...f, imageTag: tag } : f))
+              }
+            />
+          </div>
+        )}
+        {activeTab === "Env" && (
+          <div className="bg-gray-900/80 rounded-xl p-6 border border-gray-800 shadow-inner">
+            <EnvVarsSection
+              envList={envList}
+              handleEnvChange={handleEnvChange}
+              addEnvVar={addEnvVar}
+              removeEnvVar={removeEnvVar}
+            />
+          </div>
+        )}
+        {activeTab === "Resources" && (
+          <div className="bg-gray-900/80 rounded-xl p-6 border border-gray-800 shadow-inner">
+            <ResourcesSection
+              resourceLimits={
+                resourceLimits
+                  ? {
+                      allowed: {
+                        requests: {
+                          cpu: String(resourceLimits.allowed.requests.cpu),
+                          memory: String(
+                            resourceLimits.allowed.requests.memory
+                          ),
+                        },
+                        limits: {
+                          cpu: String(resourceLimits.allowed.limits.cpu),
+                          memory: String(resourceLimits.allowed.limits.memory),
+                        },
+                      },
+                      usage: {
+                        requests: {
+                          cpu: String(resourceLimits.usage.requests.cpu),
+                          memory: String(resourceLimits.usage.requests.memory),
+                        },
+                        limits: {
+                          cpu: String(resourceLimits.usage.limits.cpu),
+                          memory: String(resourceLimits.usage.limits.memory),
+                        },
+                      },
+                    }
+                  : {
+                      allowed: {
+                        requests: { cpu: "0", memory: "0" },
+                        limits: { cpu: "0", memory: "0" },
+                      },
+                      usage: {
+                        requests: { cpu: "0", memory: "0" },
+                        limits: { cpu: "0", memory: "0" },
+                      },
+                    }
+              }
+              resources={form?.resources || { requests: {}, limits: {} }}
+              handleResourceChange={handleResourceChange}
+            />
+          </div>
+        )}
+        {activeTab === "Ports" && (
+          <div className="bg-gray-900/80 rounded-xl p-6 border border-gray-800 shadow-inner">
+            <PortsSection
+              ports={(form?.ports ?? []).map((port, idx) => {
+                const p = port as AppPort;
+                return {
+                  id: `${idx}-${p.containerPort}`,
+                  containerPort: p.containerPort,
+                  hostPort:
+                    typeof p.hostPort === "number"
+                      ? p.hostPort
+                      : p.containerPort ?? 80,
+                  protocol: p.protocol === "UDP" ? "UDP" : "TCP",
+                  description:
+                    typeof p.description === "string" ? p.description : "",
+                  subdomain: p.subdomain || "",
+                } as Port;
+              })}
+              onChange={(updatedPorts) => {
+                setForm((f) =>
+                  f
+                    ? {
+                        ...f,
+                        ports: updatedPorts.map((port) => {
+                          const { ...rest } = port;
+                          return { ...rest };
+                        }),
+                      }
+                    : f
+                );
+              }}
+            />
+          </div>
+        )}
+        {/* Action Buttons and Error Message always visible */}
+        <div className="flex flex-col gap-4 mt-8">
+          <ActionButtons
+            saving={saving}
+            onSaveAndDeploy={handleSaveAndDeploy}
+            onRequestDelete={() => setShowDeleteModal(true)}
+          />
+          <ErrorMessage error={error} />
+        </div>
         <Modal
           open={showDeleteModal}
           onClose={() => setShowDeleteModal(false)}
           title="Delete Application"
         >
-          <div className="text-red-200 mb-4">
+          <div className="text-red-200 mb-4 text-base font-medium">
             Are you sure you want to delete this application and all its
             resources? This cannot be undone.
           </div>
           <div className="flex gap-3 justify-end">
             <button
               onClick={() => setShowDeleteModal(false)}
-              className="px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-600"
+              className="px-5 py-2 bg-gray-800 text-gray-200 rounded-lg hover:bg-gray-700 border border-gray-700 transition-colors"
             >
               Cancel
             </button>
             <button
               onClick={handleDelete}
-              className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 font-semibold"
+              className="px-5 py-2 bg-gradient-to-r from-red-700 via-red-600 to-red-500 text-white rounded-lg hover:from-red-800 hover:to-red-600 font-semibold border border-red-700 shadow-md transition-colors"
               disabled={saving}
             >
               {saving ? "Deleting..." : "Delete"}
             </button>
           </div>
         </Modal>
-        <ErrorMessage error={error} />
       </form>
     </div>
   );
