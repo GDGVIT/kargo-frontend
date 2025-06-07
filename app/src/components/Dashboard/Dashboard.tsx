@@ -13,6 +13,7 @@ export default function Dashboard() {
     name: "",
     imageUrl: "",
     imageTag: "",
+    credentials: [] as RegistryCredential[],
   });
   const [loading, setLoading] = useState(false);
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
@@ -59,8 +60,11 @@ export default function Dashboard() {
       return;
     }
     try {
-      await axios.post("/api/applications", form);
-      setForm({ name: "", imageUrl: "", imageTag: "" });
+      await axios.post("/api/applications", {
+        ...form,
+        credentials: selectedCredential ? [selectedCredential] : [],
+      });
+      setForm({ name: "", imageUrl: "", imageTag: "", credentials: [] });
       fetchApps();
       notify("Application added successfully!", "success");
     } catch {
@@ -156,7 +160,7 @@ export default function Dashboard() {
                 setSelectedCredential(cred || null);
                 setForm((f) => ({
                   ...f,
-                  registryToken: cred ? cred.token : "",
+                  credentials: cred ? [cred] : [],
                 }));
               }}
               className="w-full px-3 py-2 border border-gray-700 bg-gray-800 text-gray-100 rounded-md"

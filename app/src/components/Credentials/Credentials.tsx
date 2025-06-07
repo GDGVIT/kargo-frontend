@@ -45,10 +45,20 @@ export default function Credentials({
     e.preventDefault();
     setLoading(true);
     setError(null);
+    // Prevent duplicate name+registryType
+    if (
+      credentials.some(
+        (c) => c.name === form.name && c.registryType === form.registryType
+      )
+    ) {
+      setError("Credential with this name and registry type already exists.");
+      setLoading(false);
+      return;
+    }
     try {
       await axios.post("/api/users/me/credentials", form);
       setForm({ name: "", registryType: "dockerhub", username: "", token: "" });
-      fetchCredentials();
+      await fetchCredentials(); // Await to ensure UI updates after add
     } catch {
       setError("Failed to save credential");
     }
@@ -62,7 +72,7 @@ export default function Credentials({
       await axios.delete("/api/users/me/credentials", {
         data: { name: cred.name, registryType: cred.registryType },
       });
-      fetchCredentials();
+      await fetchCredentials(); // Await to ensure UI updates after delete
     } catch {
       setError("Failed to delete credential");
     }
