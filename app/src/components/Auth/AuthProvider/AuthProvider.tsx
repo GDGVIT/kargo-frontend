@@ -21,6 +21,7 @@ interface User {
     limits?: { cpu?: string; memory?: string };
   };
   plan?: string | Plan;
+  role?: string;
 }
 
 interface AuthContextType {
