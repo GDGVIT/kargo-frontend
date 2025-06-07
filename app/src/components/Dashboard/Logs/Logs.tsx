@@ -46,6 +46,14 @@ export default function Logs({ id }: LogsProps) {
     }
   }, [logs]);
 
+  function getLogLineColor(line: string) {
+    if (/error|fail|exception/i.test(line)) return "text-red-400";
+    if (/warn/i.test(line)) return "text-yellow-400";
+    if (/info/i.test(line)) return "text-blue-400";
+    if (/debug/i.test(line)) return "text-purple-400";
+    return "text-green-400";
+  }
+
   return (
     <div className="flex justify-center items-center min-h-screen">
       <div className="mx-auto p-6 bg-gray-900 rounded-lg shadow-md mt-8 border border-gray-800 max-w-6xl w-full">
@@ -57,9 +65,18 @@ export default function Logs({ id }: LogsProps) {
         </div>
         <pre
           ref={logsRef}
-          className="bg-gray-950 text-green-400 rounded p-4 overflow-auto h-96 text-xs border border-gray-800 font-mono"
+          className="bg-gray-950 rounded p-4 overflow-auto h-96 text-xs border border-gray-800 font-mono"
         >
-          {logs || "No logs yet."}
+          {logs
+            ? logs.split("\n").map((line, idx) =>
+                line ? (
+                  <span key={idx} className={getLogLineColor(line)}>
+                    {line}
+                    <br />
+                  </span>
+                ) : null
+              )
+            : "No logs yet."}
         </pre>
       </div>
     </div>
