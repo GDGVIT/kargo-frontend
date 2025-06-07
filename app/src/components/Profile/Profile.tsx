@@ -53,31 +53,49 @@ const Profile: React.FC = () => {
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.7 }}
-      className="max-w-lg mx-auto mt-12 p-8 bg-neutral-900 rounded-3xl shadow-2xl border border-neutral-800 flex flex-col items-center gap-8"
+      className="w-full max-w-3xl mx-auto mt-8 sm:mt-12 px-2 sm:px-8 py-6 bg-gradient-to-br from-neutral-900/90 via-neutral-950/80 to-zinc-900/80 rounded-3xl shadow-2xl border border-neutral-800 flex flex-col md:flex-row md:items-start md:gap-8 items-center gap-8 backdrop-blur-lg"
+      style={{ boxShadow: "0 8px 32px 0 rgba(31, 38, 135, 0.25)" }}
     >
-      <motion.div
-        initial={{ scale: 0.8, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ delay: 0.2, duration: 0.5, type: "spring" }}
-        className="relative"
-      >
-        <FaUserIcon className="w-28 h-28 text-zinc-500 bg-zinc-800 rounded-full p-4 border-4 border-zinc-700" />
-      </motion.div>
-
-      <div className="w-full flex flex-col items-center gap-1">
-        <div className="flex items-center gap-3 text-2xl font-semibold text-white select-text">
-          <FaUser className="text-sky-400" />
-          {user.name}
-        </div>
-        <div className="flex items-center gap-2 text-zinc-300 text-base select-text">
-          <FaEnvelope className="text-sky-400" />
-          {user.email}
-        </div>
-        {user.username && (
-          <div className="flex items-center gap-2 text-zinc-400 text-base select-text">
-            <FaUser className="text-sky-400" />@{user.username}
+      {/* Left: Avatar and Basic Info */}
+      <div className="flex flex-col items-center md:items-start gap-4 w-full md:w-1/3">
+        <motion.div
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ delay: 0.2, duration: 0.5, type: "spring" }}
+          className="relative"
+        >
+          <div className="bg-gradient-to-tr from-sky-700/40 via-zinc-800/80 to-sky-900/30 rounded-full p-2 shadow-lg">
+            <FaUserIcon className="w-28 h-28 text-zinc-300 bg-zinc-800 rounded-full p-4 border-4 border-sky-700/40 shadow-xl transition-colors duration-300" />
           </div>
-        )}
+        </motion.div>
+        <div className="flex flex-col items-center md:items-start gap-1 w-full">
+          <div className="flex flex-wrap items-center gap-3 text-2xl font-bold text-white select-text drop-shadow-sm">
+            <FaUser className="text-sky-400 animate-pulse" />
+            <span className="truncate max-w-[220px]">{user.name}</span>
+          </div>
+          <div className="flex flex-wrap items-center gap-2 text-zinc-300 text-base select-text">
+            <FaEnvelope className="text-sky-400" />
+            <span className="truncate max-w-[240px]">{user.email}</span>
+          </div>
+          {user.username && (
+            <div className="flex flex-wrap items-center gap-2 text-zinc-400 text-base select-text">
+              <FaUser className="text-sky-400" />@{user.username}
+            </div>
+          )}
+        </div>
+        <motion.button
+          whileHover={{ scale: 1.07, backgroundColor: "#f43f5e" }}
+          whileTap={{ scale: 0.97 }}
+          onClick={handleLogout}
+          className="flex items-center gap-3 px-8 py-3 bg-gradient-to-r from-rose-600 via-rose-700 to-rose-800 hover:from-rose-500 hover:to-rose-700 text-white rounded-xl font-semibold shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-rose-500 mt-2 w-full md:w-auto justify-center"
+          aria-label="Logout"
+        >
+          <FaSignOutAlt className="text-xl animate-bounce" /> Logout
+        </motion.button>
+      </div>
+
+      {/* Right: Details and Integrations */}
+      <div className="flex flex-col gap-4 w-full md:w-2/3">
         {/* Plan Section */}
         {user.plan && (
           <PlanDetails
@@ -86,7 +104,12 @@ const Profile: React.FC = () => {
         )}
         {/* Resource Allocation Section */}
         {user.resources && (
-          <div className="w-full mt-4 p-4 bg-neutral-800 rounded-xl border border-neutral-700">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3, duration: 0.5 }}
+            className="w-full p-4 bg-gradient-to-br from-neutral-800/80 to-zinc-900/80 rounded-xl border border-neutral-700 shadow-md"
+          >
             <div className="text-base font-semibold text-white mb-2 select-none">
               Resource Allocation
             </div>
@@ -113,26 +136,13 @@ const Profile: React.FC = () => {
                 <div className="text-zinc-500">No resource allocation set.</div>
               )}
             </div>
-          </div>
+          </motion.div>
         )}
-      </div>
+        {/* GitHub Integration */}
 
-      <motion.button
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        onClick={handleLogout}
-        className="flex items-center gap-3 px-6 py-3 bg-rose-600 hover:bg-rose-500 text-white rounded-xl font-semibold shadow-lg transition-colors focus:outline-none focus:ring-2 focus:ring-rose-500"
-        aria-label="Logout"
-      >
-        <FaSignOutAlt className="text-xl" /> Logout
-      </motion.button>
-
-      <div className="w-full mt-8 pt-6 ">
-        <h3 className="text-lg font-semibold text-white mb-4 select-none">
-          GitHub App Integration
-        </h3>
-
-        <GithubAuth />
+        <div className="rounded-xl bg-neutral-900/80 border border-sky-800 p-4 shadow-inner">
+          <GithubAuth />
+        </div>
       </div>
     </motion.div>
   );

@@ -34,10 +34,21 @@ export default function Dashboard() {
     setLoading(false);
   }
 
+  function isValidAppName(name: string) {
+    return /^[a-z0-9]([-a-z0-9]*[a-z0-9])?$/.test(name);
+  }
+
   async function handleAdd(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setLoading(true);
     setError("");
+    if (!isValidAppName(form.name)) {
+      setError(
+        "Application name must be lowercase, alphanumeric, and may contain hyphens. No underscores or uppercase letters allowed."
+      );
+      setLoading(false);
+      return;
+    }
     try {
       await axios.post("/api/applications", form);
       setForm({ name: "", imageUrl: "", imageTag: "", registryToken: "" });

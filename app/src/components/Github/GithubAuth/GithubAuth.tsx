@@ -111,12 +111,7 @@ const GithubAuth: React.FC = () => {
   const isConnected = installationIds.length > 0;
 
   return (
-    <motion.div
-      className="max-w-xl mx-auto mt-12 p-8 bg-gradient-to-br from-neutral-900 to-neutral-800 rounded-2xl shadow-2xl border border-neutral-700"
-      initial={{ opacity: 0, y: 40 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, type: "spring" }}
-    >
+    <>
       <div className="flex flex-col items-center gap-2 mb-6">
         <div ref={iconRef}>
           <FaGithub size={48} className="text-white drop-shadow-lg" />
@@ -192,7 +187,7 @@ const GithubAuth: React.FC = () => {
           </motion.div>
         )}
       </AnimatePresence>
-    </motion.div>
+    </>
   );
 };
 
