@@ -3,13 +3,13 @@ import React from "react";
 interface ActionButtonsProps {
   saving: boolean;
   onSaveAndDeploy: (e: React.FormEvent) => void;
-  onDelete: () => void;
+  onRequestDelete: () => void;
 }
 
 const ActionButtons: React.FC<ActionButtonsProps> = ({
   saving,
   onSaveAndDeploy,
-  onDelete,
+  onRequestDelete,
 }) => (
   <div className="flex flex-wrap gap-3 mt-6">
     <button
@@ -23,7 +23,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
     <button
       type="button"
       disabled={saving}
-      onClick={onDelete}
+      onClick={onRequestDelete}
       className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 disabled:opacity-60 disabled:cursor-not-allowed transition-colors"
     >
       Delete Application

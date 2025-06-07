@@ -30,6 +30,7 @@ import PortsSection from "./PortsSection";
 import ActionButtons from "./ActionButtons";
 import ErrorMessage from "./ErrorMessage";
 import { useNotification } from "../../Notification/Notification";
+import Modal from "../../Modal/Modal";
 
 export default function ConfigureApp({ appId }: { appId: string }) {
   const [form, setForm] = useState<Application | null>(null);
@@ -46,6 +47,7 @@ export default function ConfigureApp({ appId }: { appId: string }) {
       limits: { cpu: number; memory: number };
     };
   } | null>(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const router = useRouter();
   const { notify } = useNotification();
 
@@ -155,24 +157,19 @@ export default function ConfigureApp({ appId }: { appId: string }) {
   }
 
   async function handleDelete() {
-    if (
-      !window.confirm(
-        "Are you sure you want to delete this application and all its resources? This cannot be undone."
-      )
-    )
-      return;
     setSaving(true);
     setError("");
     try {
       await axios.delete(`/api/applications/${appId}/delete-all`);
       notify("Application and all resources deleted!", "success");
       router.push("/dashboard");
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (err) {
       setError("Failed to delete application");
       notify("Failed to delete application", "error");
+      console.log(err);
     }
     setSaving(false);
+    setShowDeleteModal(false);
   }
 
   function handleEnvChange(idx: number, key: string, value: string) {
@@ -311,8 +308,33 @@ export default function ConfigureApp({ appId }: { appId: string }) {
         <ActionButtons
           saving={saving}
           onSaveAndDeploy={handleSaveAndDeploy}
-          onDelete={handleDelete}
+          onRequestDelete={() => setShowDeleteModal(true)}
         />
+        <Modal
+          open={showDeleteModal}
+          onClose={() => setShowDeleteModal(false)}
+          title="Delete Application"
+        >
+          <div className="text-red-200 mb-4">
+            Are you sure you want to delete this application and all its
+            resources? This cannot be undone.
+          </div>
+          <div className="flex gap-3 justify-end">
+            <button
+              onClick={() => setShowDeleteModal(false)}
+              className="px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-600"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handleDelete}
+              className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 font-semibold"
+              disabled={saving}
+            >
+              {saving ? "Deleting..." : "Delete"}
+            </button>
+          </div>
+        </Modal>
         <ErrorMessage error={error} />
       </form>
     </div>

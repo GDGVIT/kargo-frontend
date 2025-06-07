@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import axios from "../../utils/api";
 import { useNotification } from "../Notification/Notification";
+import Modal from "../Modal/Modal";
 
 export default function Dashboard() {
   const [apps, setApps] = useState([]);
@@ -14,25 +15,24 @@ export default function Dashboard() {
     registryToken: "",
   });
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
   const router = useRouter();
   const { notify } = useNotification();
 
-  useEffect(() => {
-    fetchApps();
-  }, []);
-
-  async function fetchApps() {
+  const fetchApps = useCallback(async () => {
     setLoading(true);
     try {
       const res = await axios.get("/api/applications");
       setApps(res.data.applications);
     } catch {
-      setError("Failed to load apps");
       notify("Failed to load apps", "error");
     }
     setLoading(false);
-  }
+  }, [notify]);
+
+  useEffect(() => {
+    fetchApps();
+  }, [fetchApps]);
 
   function isValidAppName(name: string) {
     return /^[a-z0-9]([-a-z0-9]*[a-z0-9])?$/.test(name);
@@ -41,10 +41,10 @@ export default function Dashboard() {
   async function handleAdd(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setLoading(true);
-    setError("");
     if (!isValidAppName(form.name)) {
-      setError(
-        "Application name must be lowercase, alphanumeric, and may contain hyphens. No underscores or uppercase letters allowed."
+      notify(
+        "Application name must be lowercase, alphanumeric, and may contain hyphens. No underscores or uppercase letters allowed.",
+        "error"
       );
       setLoading(false);
       return;
@@ -55,10 +55,22 @@ export default function Dashboard() {
       fetchApps();
       notify("Application added successfully!", "success");
     } catch {
-      setError("Failed to add app");
       notify("Failed to add app", "error");
     }
     setLoading(false);
+  }
+
+  async function handleDeleteApp(id: string) {
+    setLoading(true);
+    try {
+      await axios.delete(`/api/applications/${id}`);
+      fetchApps();
+      notify("Application deleted successfully!", "success");
+    } catch {
+      notify("Failed to delete app", "error");
+    }
+    setLoading(false);
+    setConfirmDeleteId(null);
   }
 
   return (
@@ -130,12 +142,32 @@ export default function Dashboard() {
         >
           {loading ? "Adding..." : "Add Application"}
         </button>
-        {error && (
-          <div className="mt-2 p-2 bg-red-900/60 text-red-200 rounded text-sm border border-red-700">
-            {error}
-          </div>
-        )}
       </form>
+      <Modal
+        open={!!confirmDeleteId}
+        onClose={() => setConfirmDeleteId(null)}
+        title="Delete Application"
+      >
+        <div className="text-red-200 mb-4">
+          Are you sure you want to delete this application? This action cannot
+          be undone.
+        </div>
+        <div className="flex gap-3 justify-end">
+          <button
+            onClick={() => setConfirmDeleteId(null)}
+            className="px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-600"
+          >
+            Cancel
+          </button>
+          <button
+            onClick={() => handleDeleteApp(confirmDeleteId!)}
+            className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 font-semibold"
+            disabled={loading}
+          >
+            {loading ? "Deleting..." : "Delete"}
+          </button>
+        </div>
+      </Modal>
       <div>
         {loading ? (
           <div className="text-center text-gray-400">Loading...</div>
@@ -175,6 +207,25 @@ export default function Dashboard() {
                   <span className="text-blue-400 text-sm font-medium">
                     Click to configure →
                   </span>
+                  <button
+                    className="absolute top-3 right-3 text-red-400 hover:text-red-600 bg-transparent border-none p-1"
+                    title="Delete app"
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setConfirmDeleteId(app._id);
+                    }}
+                  >
+                    <svg width="18" height="18" fill="none" viewBox="0 0 24 24">
+                      <path
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M3 6h18M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2m2 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6h14z"
+                      />
+                    </svg>
+                  </button>
                 </div>
               )
             )}
