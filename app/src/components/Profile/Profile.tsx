@@ -53,8 +53,7 @@ const Profile: React.FC = () => {
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.7 }}
-      className="w-full max-w-3xl mx-auto mt-8 sm:mt-12 px-2 sm:px-8 py-6 bg-gradient-to-br from-neutral-900/90 via-neutral-950/80 to-zinc-900/80 rounded-3xl shadow-2xl border border-neutral-800 flex flex-col md:flex-row md:items-start md:gap-8 items-center gap-8 backdrop-blur-lg"
-      style={{ boxShadow: "0 8px 32px 0 rgba(31, 38, 135, 0.25)" }}
+      className="w-full max-w-3xl mx-auto mt-8 sm:mt-12 px-2 sm:px-8 py-6 flex flex-col md:flex-row md:items-start md:gap-8 items-center gap-8 backdrop-blur-lg"
     >
       {/* Left: Avatar and Basic Info */}
       <div className="flex flex-col items-center md:items-start gap-4 w-full md:w-1/3">
@@ -108,11 +107,8 @@ const Profile: React.FC = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 0.5 }}
-            className="w-full p-4 bg-gradient-to-br from-neutral-800/80 to-zinc-900/80 rounded-xl border border-neutral-700 shadow-md"
+            className="w-full p-4 "
           >
-            <div className="text-base font-semibold text-white mb-2 select-none">
-              Resource Allocation
-            </div>
             <div className="flex flex-col gap-1 text-sm text-zinc-300">
               {user.resources.requests && (
                 <div>

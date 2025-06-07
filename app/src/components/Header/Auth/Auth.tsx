@@ -10,13 +10,21 @@ export default function Auth() {
 
   if (user) {
     return (
-      <div className="flex items-center gap-2">
-        <button
-          onClick={() => (window.location.href = "/profile")}
-          className="px-4 py-1.5 text-sm bg-green-600 hover:bg-green-500 text-white rounded-md transition"
-        >
-          Profile
-        </button>
+      <div
+        className="flex items-center gap-2 cursor-pointer"
+        onClick={() => (window.location.href = "/profile")}
+      >
+        {user.profilePicture && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={user.profilePicture}
+            alt={user.name || user.username || "User"}
+            className="w-8 h-8 rounded-full object-cover border border-gray-300"
+          />
+        )}
+        <span className="text-sm font-medium">
+          {user.name || user.username || user.email}
+        </span>
       </div>
     );
   }
@@ -24,7 +32,7 @@ export default function Auth() {
   return (
     <button
       onClick={() => (window.location.href = "/auth")}
-      className="px-4 py-1.5 text-sm bg-blue-600 hover:bg-blue-500 text-white rounded-md transition"
+      className="px-4 py-1.5 text-sm rounded-md transition"
     >
       Sign In
     </button>

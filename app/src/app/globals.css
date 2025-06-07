@@ -5,9 +5,14 @@
   src: url("../../public/fonts/Montserrat-Regular.ttf") format("truetype");
 }
 
+@font-face {
+  font-family: "AirbnbCereal_W_Bd";
+  src: url("../../public/fonts/AirbnbCereal_W_Bd.otf") format("opentype");
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #1f2432;
+  --foreground: #ffffff;
 
   --screen-horizontal-margin: clamp(1rem, 5vw, 4rem);
   --screen-vertical-margin: 0;
@@ -50,20 +55,12 @@
   --box-shadow-default: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 html,
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: "Montserrat-Regular", sans-serif;
   scroll-behavior: smooth;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -72,9 +69,10 @@ body {
 }
 
 main {
-  min-height: 100vh;
+  min-height: calc(100vh - 100px);
   margin: 0 var(--screen-horizontal-margin);
   padding: 0 var(--padding-medium);
+  margin-left: calc(200px + var(--margin-medium));
   display: flex;
   flex-direction: column;
   justify-content: center;
