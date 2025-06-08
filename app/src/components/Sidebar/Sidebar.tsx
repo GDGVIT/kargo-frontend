@@ -3,32 +3,32 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Branding from "./Branding/Branding";
-import axios from "../../utils/api";
-import { FiHome, FiServer, FiUser } from "react-icons/fi";
+import { FiBarChart2, FiKey, FiShield } from "react-icons/fi";
+import { FaDocker } from "react-icons/fa";
+import { useAuth } from "../Auth/AuthProvider/AuthProvider";
 
 export default function Sidebar() {
+  const { user, loading } = useAuth();
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
-    async function fetchUser() {
-      try {
-        const res = await axios.get("/api/auth/me");
-        const role = res.data?.user?.role;
-        setIsAdmin(role === "admin" || role === "superadmin");
-      } catch {
-        setIsAdmin(false);
-      }
+    if (!user) {
+      setIsAdmin(false);
+      return;
     }
-    fetchUser();
-  }, []);
+    setIsAdmin(user.role === "admin" || user.role === "superadmin");
+  }, [user]);
 
   const navItems = [
-    { href: "/dashboard", label: "Dashboard", icon: <FiHome /> },
-    { href: "/dockerize", label: "Dockerize", icon: <FiServer /> },
+    { href: "/dashboard", label: "Dashboard", icon: <FiBarChart2 /> },
+    { href: "/dockerize", label: "Dockerize", icon: <FaDocker /> },
+    { href: "/credentials", label: "Credentials", icon: <FiKey /> },
     ...(isAdmin
-      ? [{ href: "/admin", label: "Admin", icon: <FiUser />, admin: true }]
+      ? [{ href: "/admin", label: "Admin", icon: <FiShield />, admin: true }]
       : []),
   ];
+
+  if (loading || !user) return null;
 
   return (
     <>
@@ -40,11 +40,13 @@ export default function Sidebar() {
             <Link
               key={label}
               href={href}
-              className={`flex items-center gap-3 px-3 py-2 text-sm rounded-md transition ${
-                admin
-                  ? "text-amber-400 hover:bg-amber-500/20 hover:text-white"
-                  : "text-zinc-300 hover:bg-zinc-800 hover:text-white"
-              }`}
+              className={`flex items-center gap-3 px-3 py-2 text-sm rounded-md transition
+                ${
+                  admin
+                    ? "text-amber-400 hover:bg-amber-500/20 hover:text-white"
+                    : "text-[var(--foreground)] hover:bg-[var(--background)]/70 hover:text-[var(--text-link-hover-color)]"
+                }
+              `}
             >
               <span className="text-lg">{icon}</span>
               <span>{label}</span>

@@ -53,10 +53,10 @@ const Profile: React.FC = () => {
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.7 }}
-      className="w-full max-w-3xl mx-auto mt-8 sm:mt-12 px-2 sm:px-8 py-6 flex flex-col md:flex-row md:items-start md:gap-8 items-center gap-8 backdrop-blur-lg"
+      className="w-full max-w-5xl mx-auto mt-8 sm:mt-12 px-2 sm:px-6 py-6 flex flex-col md:flex-row md:items-start md:gap-8 items-stretch gap-8 backdrop-blur-lg"
     >
       {/* Left: Avatar and Basic Info */}
-      <div className="flex flex-col items-center md:items-start gap-4 w-full md:w-1/3">
+      <div className="flex flex-col items-center md:items-start gap-4 w-full md:w-1/3 min-w-[220px] max-w-full md:max-w-xs">
         <motion.div
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
@@ -68,17 +68,27 @@ const Profile: React.FC = () => {
           </div>
         </motion.div>
         <div className="flex flex-col items-center md:items-start gap-1 w-full">
-          <div className="flex flex-wrap items-center gap-3 text-2xl font-bold text-white select-text drop-shadow-sm">
-            <FaUser className="text-sky-400 animate-pulse" />
-            <span className="truncate max-w-[220px]">{user.name}</span>
+          <div className="flex flex-wrap items-center gap-3 text-2xl font-bold text-white select-text drop-shadow-sm w-full">
+            <FaUser className="text-sky-400 animate-pulse flex-shrink-0" />
+            <span
+              className="break-words flex-1 min-w-0"
+              style={{ wordBreak: "break-word" }}
+            >
+              {user.name}
+            </span>
           </div>
-          <div className="flex flex-wrap items-center gap-2 text-zinc-300 text-base select-text">
-            <FaEnvelope className="text-sky-400" />
-            <span className="truncate max-w-[240px]">{user.email}</span>
+          <div className="flex flex-wrap items-center gap-2 text-zinc-300 text-base select-text w-full">
+            <FaEnvelope className="text-sky-400 flex-shrink-0" />
+            <span
+              className="break-words flex-1 min-w-0"
+              style={{ wordBreak: "break-word" }}
+            >
+              {user.email}
+            </span>
           </div>
           {user.username && (
-            <div className="flex flex-wrap items-center gap-2 text-zinc-400 text-base select-text">
-              <FaUser className="text-sky-400" />@{user.username}
+            <div className="flex flex-wrap items-center gap-2 text-zinc-400 text-base select-text w-full">
+              <FaUser className="text-sky-400 flex-shrink-0" />@{user.username}
             </div>
           )}
         </div>
@@ -94,49 +104,15 @@ const Profile: React.FC = () => {
       </div>
 
       {/* Right: Details and Integrations */}
-      <div className="flex flex-col gap-4 w-full md:w-2/3">
+      <div className="flex flex-col gap-4 w-full md:w-2/3 min-w-0">
         {/* Plan Section */}
         {user.plan && (
           <PlanDetails
             planId={typeof user.plan === "string" ? user.plan : user.plan?._id}
           />
         )}
-        {/* Resource Allocation Section */}
-        {user.resources && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 0.5 }}
-            className="w-full p-4 "
-          >
-            <div className="flex flex-col gap-1 text-sm text-zinc-300">
-              {user.resources.requests && (
-                <div>
-                  <span className="font-medium text-zinc-400">Requests:</span>
-                  <span className="ml-2">
-                    CPU: {user.resources.requests.cpu || "-"} | Memory:{" "}
-                    {user.resources.requests.memory || "-"}
-                  </span>
-                </div>
-              )}
-              {user.resources.limits && (
-                <div>
-                  <span className="font-medium text-zinc-400">Limits:</span>
-                  <span className="ml-2">
-                    CPU: {user.resources.limits.cpu || "-"} | Memory:{" "}
-                    {user.resources.limits.memory || "-"}
-                  </span>
-                </div>
-              )}
-              {!user.resources.requests && !user.resources.limits && (
-                <div className="text-zinc-500">No resource allocation set.</div>
-              )}
-            </div>
-          </motion.div>
-        )}
         {/* GitHub Integration */}
-
-        <div className="rounded-xl bg-neutral-900/80 border border-sky-800 p-4 shadow-inner">
+        <div className="rounded-xl bg-neutral-900/80 border border-sky-800 p-4 shadow-inner min-w-0">
           <GithubAuth />
         </div>
       </div>

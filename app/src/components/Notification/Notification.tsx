@@ -68,17 +68,21 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const iconMap: Record<NotificationType, React.ReactElement> = {
-    success: <CheckCircle className="text-emerald-400" size={20} />,
-    error: <AlertCircle className="text-rose-400" size={20} />,
-    info: <Info className="text-sky-400" size={20} />,
-    warning: <AlertTriangle className="text-yellow-400" size={20} />,
+    success: (
+      <CheckCircle className="text-emerald-400 drop-shadow-lg" size={24} />
+    ),
+    error: <AlertCircle className="text-rose-400 drop-shadow-lg" size={24} />,
+    info: <Info className="text-sky-400 drop-shadow-lg" size={24} />,
+    warning: (
+      <AlertTriangle className="text-yellow-400 drop-shadow-lg" size={24} />
+    ),
   };
 
   return (
     <NotificationContext.Provider value={{ notify }}>
       {children}
       <motion.div
-        className="fixed bottom-4 right-4 z-50 flex flex-col-reverse space-y-2 space-y-reverse"
+        className="fixed bottom-6 right-6 z-50 flex flex-col-reverse gap-4"
         initial={false}
         animate="animate"
         exit="exit"
@@ -89,32 +93,39 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
             <motion.div
               key={n.id}
               layout
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 40, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 40, scale: 0.95 }}
               transition={{
-                duration: 0.4,
-                delay: index * 0.1,
+                duration: 0.5,
+                type: "spring",
+                stiffness: 300,
+                damping: 30,
+                delay: index * 0.08,
               }}
               className={clsx(
-                "flex items-start gap-3 px-4 py-3 rounded-xl border w-80 shadow-xl backdrop-blur-md bg-neutral-900/90",
+                "relative flex items-center gap-3 px-4 py-1.5 rounded-xl border w-96 shadow-2xl backdrop-blur-lg min-h-0 h-auto",
+                "bg-[var(--card-background)] border border-opacity-40",
                 {
-                  "border-emerald-500/30": n.type === "success",
-                  "border-rose-500/30": n.type === "error",
-                  "border-sky-500/30": n.type === "info",
-                  "border-yellow-400/30": n.type === "warning",
+                  "border-emerald-400/40": n.type === "success",
+                  "border-rose-400/40": n.type === "error",
+                  "border-sky-400/40": n.type === "info",
+                  "border-yellow-400/40": n.type === "warning",
                 }
               )}
+              style={{ boxShadow: "var(--box-shadow-default)" }}
             >
-              <div className="pt-0.5">{iconMap[n.type]}</div>
-              <span className="flex-1 text-sm text-zinc-200">{n.message}</span>
+              <div className="pt-0.5 flex-shrink-0">{iconMap[n.type]}</div>
+              <span className="flex-1 text-base font-semibold text-[var(--foreground)] drop-shadow-sm">
+                {n.message}
+              </span>
               <button
                 onClick={() => removeNotification(n.id)}
                 title="Close notification"
                 aria-label="Close notification"
-                className="opacity-80 hover:opacity-100 transition-opacity"
+                className="ml-2 rounded-full p-1 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[var(--text-link-color)] hover:bg-[var(--background)]/30 hover:scale-110"
               >
-                <X className="w-4 h-4 text-zinc-400 hover:text-white" />
+                <X className="w-5 h-5 text-zinc-400 hover:text-white transition-colors" />
               </button>
             </motion.div>
           ))}

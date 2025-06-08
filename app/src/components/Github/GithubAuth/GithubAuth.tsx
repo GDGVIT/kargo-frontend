@@ -9,29 +9,39 @@ import gsap from "gsap";
 
 function InstallButton() {
   return (
-    <a
-      href={`${baseURL}/api/github/install`}
-      target="_blank"
-      rel="noopener noreferrer"
+    <button
+      onClick={() =>
+        window.open(
+          `${baseURL}/api/github/install`,
+          "_blank",
+          "noopener,noreferrer"
+        )
+      }
       className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-sky-600 to-blue-700 hover:from-sky-700 hover:to-blue-800 text-white rounded-lg font-semibold shadow-lg transition-all duration-200"
+      type="button"
     >
       <FaGithub size={22} />
       Connect GitHub
-    </a>
+    </button>
   );
 }
 
 function ReinstallButton() {
   return (
-    <a
-      href={`${baseURL}/api/github/install`}
-      target="_blank"
-      rel="noopener noreferrer"
+    <button
+      onClick={() =>
+        window.open(
+          `${baseURL}/api/github/install`,
+          "_blank",
+          "noopener,noreferrer"
+        )
+      }
       className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-sky-600 to-blue-700 hover:from-sky-700 hover:to-blue-800 text-white rounded-lg font-semibold shadow-lg transition-all duration-200"
+      type="button"
     >
       <FaGithub size={22} />
       Reinstall GitHub App
-    </a>
+    </button>
   );
 }
 

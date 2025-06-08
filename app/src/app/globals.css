@@ -15,6 +15,7 @@
   --foreground: #ffffff;
 
   --card-background: #2f3646;
+  --theme-blue: #12d6d1;
 
   --screen-horizontal-margin: clamp(1rem, 5vw, 4rem);
   --screen-vertical-margin: 0;
@@ -112,4 +113,120 @@ select {
     color: #a0aec0;
     opacity: 1;
   }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--foreground);
+  margin-top: var(--margin-large);
+  margin-bottom: var(--margin-medium);
+  line-height: 1.2;
+}
+
+h1 {
+  font-size: var(--font-size-huge);
+  font-weight: var(--font-weight-bold);
+}
+h2 {
+  font-size: var(--font-size-large);
+  font-weight: var(--font-weight-bold);
+}
+h3 {
+  font-size: 1.5rem;
+  font-weight: var(--font-weight-bold);
+}
+h4 {
+  font-size: 1.25rem;
+  font-weight: var(--font-weight-normal);
+}
+h5 {
+  font-size: 1.1rem;
+  font-weight: var(--font-weight-normal);
+}
+h6 {
+  font-size: 1rem;
+  font-weight: var(--font-weight-light);
+}
+
+p {
+  color: var(--foreground);
+  margin: var(--margin-small) 0;
+  line-height: 1.7;
+}
+
+a {
+  color: var(--text-link-color);
+  transition: color var(--transition-fast);
+}
+a:hover {
+  color: var(--text-link-hover-color);
+}
+
+ul,
+ol {
+  margin: var(--margin-medium) 0 var(--margin-medium) var(--margin-large);
+  padding: 0;
+  color: var(--foreground);
+}
+
+li {
+  margin-bottom: var(--margin-tiny);
+  line-height: 1.6;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid #3a4152;
+  margin: var(--margin-large) 0;
+}
+
+blockquote {
+  border-left: 4px solid var(--theme-blue);
+  background: var(--card-background);
+  color: var(--foreground);
+  margin: var(--margin-medium) 0;
+  padding: var(--padding-small) var(--padding-medium);
+  font-style: italic;
+}
+
+code,
+pre {
+  background: #23283a;
+  color: #e0e6f0;
+  border-radius: var(--border-radius-tiny);
+  font-family: "Fira Mono", "Consolas", monospace;
+  font-size: 0.95em;
+}
+pre {
+  padding: var(--padding-small);
+  overflow-x: auto;
+}
+
+img {
+  max-width: 100%;
+  border-radius: var(--border-radius-small);
+  box-shadow: var(--box-shadow-default);
+  margin: var(--margin-small) 0;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--card-background);
+  color: var(--foreground);
+  margin: var(--margin-medium) 0;
+}
+th,
+td {
+  border: 1px solid #3a4152;
+  padding: var(--padding-small);
+  text-align: left;
+}
+th {
+  background: #23283a;
+  font-weight: var(--font-weight-bold);
 }

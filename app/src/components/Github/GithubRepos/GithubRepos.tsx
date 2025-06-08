@@ -5,7 +5,7 @@ import { FaGithub } from "react-icons/fa";
 import api from "../../../utils/api";
 import axios from "axios";
 import { useNotification } from "../../Notification/Notification";
-import HexagonLoader from "../../Loader/Hexagon/Hexagon";
+import Loader from "../../Loader/Loader";
 import { motion } from "framer-motion";
 import RepoPagination from "./RepoPagination/RepoPagination";
 import RepoSearchInput from "./RepoSearchInput/RepoSearchInput";
@@ -157,7 +157,7 @@ const GithubRepos: React.FC = () => {
   const handleNextPage = () => setPage((p) => Math.min(totalPages, p + 1));
 
   if (loading) {
-    return <HexagonLoader />;
+    return <Loader />;
   }
 
   if (error) {

@@ -23,30 +23,35 @@ const Modal: React.FC<ModalProps> = ({
     <AnimatePresence>
       {open && (
         <motion.div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-[var(--background)]/70 backdrop-blur-[3px]"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
         >
           <motion.div
             className={clsx(
-              "bg-gray-900 rounded-xl shadow-2xl border border-gray-700 p-6 w-full max-w-md relative",
+              "bg-[var(--card-background)] rounded-2xl shadow-2xl border border-[var(--foreground)]/10 p-8 w-full max-w-lg relative flex flex-col",
               className
             )}
-            initial={{ scale: 0.95, opacity: 0 }}
+            initial={{ scale: 0.92, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.95, opacity: 0 }}
-            transition={{ duration: 0.2 }}
+            exit={{ scale: 0.92, opacity: 0 }}
+            transition={{
+              type: "spring",
+              stiffness: 260,
+              damping: 22,
+              duration: 0.28,
+            }}
             role="dialog"
             aria-modal="true"
           >
             {showCloseButton && (
               <button
                 onClick={onClose}
-                className="absolute top-3 right-3 text-gray-400 hover:text-white focus:outline-none"
+                className="absolute top-4 right-4 text-zinc-400 hover:text-white focus:outline-none rounded-full p-1 transition-all duration-200 focus:ring-2 focus:ring-[var(--text-link-color)] hover:bg-[var(--background)]/30 hover:scale-110"
                 aria-label="Close modal"
               >
-                <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
+                <svg width="22" height="22" fill="none" viewBox="0 0 24 24">
                   <path
                     stroke="currentColor"
                     strokeWidth="2"
@@ -58,9 +63,11 @@ const Modal: React.FC<ModalProps> = ({
               </button>
             )}
             {title && (
-              <h2 className="text-lg font-semibold text-white mb-4">{title}</h2>
+              <h2 className="text-xl font-bold text-[var(--foreground)] mb-5 tracking-tight drop-shadow-sm">
+                {title}
+              </h2>
             )}
-            <div>{children}</div>
+            <div className="text-[var(--foreground)]">{children}</div>
           </motion.div>
         </motion.div>
       )}
