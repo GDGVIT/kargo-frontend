@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import Auth from "./Auth/Auth";
 import { useAuth } from "../Auth/AuthProvider/AuthProvider";
 import Link from "next/link";
+import { MdArrowForwardIos } from "react-icons/md";
 
 const HEADER_HEIGHT = 64;
 
@@ -27,22 +28,36 @@ const Header: React.FC = () => {
 
   return (
     <header className={headerClass} style={{ height: HEADER_HEIGHT }}>
-      <h2 className="text-xl font-bold tracking-tight flex items-center overflow-hidden whitespace-nowrap">
+      <h2
+        className="text-xl font-bold tracking-tight flex items-center overflow-hidden whitespace-nowrap h-full"
+        style={{ margin: 0 }}
+      >
         <Link href="/">
-          <span className="text-[#9DA3B3] text-base font-normal select-none mr-1 pl-5">
+          <span className="text-[#9DA3B3] text-base font-normal select-none mr-1 pl-5 flex items-center h-full">
             Kargo
           </span>
         </Link>
-        <span className="hidden md:flex text-zinc-100 text-base font-normal items-center gap-1 overflow-hidden">
-          {pathSegments.map((segment, idx) => (
+
+        {pathSegments.map((segment, idx) => {
+          const href = "/" + pathSegments.slice(0, idx + 1).join("/");
+          return (
             <React.Fragment key={idx}>
-              <span className="mx-1 select-none">/</span>
-              <span className="truncate">{segment}</span>
+              <MdArrowForwardIos className="text-xs mx-1" />
+              <Link href={href}>
+                <span className="text-[#9DA3B3] text-base font-normal select-none mx-1 flex items-center h-full">
+                  {segment
+                    .split("-")
+                    .map((s) => s.charAt(0).toUpperCase() + s.slice(1))
+                    .join(" ")}
+                </span>
+              </Link>
             </React.Fragment>
-          ))}
-        </span>
+          );
+        })}
       </h2>
-      <Auth />
+      <div className="flex items-center h-full">
+        <Auth />
+      </div>
     </header>
   );
 };
