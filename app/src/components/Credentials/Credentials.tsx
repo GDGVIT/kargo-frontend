@@ -80,7 +80,7 @@ export default function Credentials({
   };
 
   return (
-    <div className="max-w-xl mx-auto p-6 bg-gray-900 rounded-lg shadow-md mt-8 border border-gray-800">
+    <div className="max-w-xl mx-auto p-6 mt-8">
       <h2 className="text-xl font-bold mb-4 text-gray-100">
         Registry Credentials
       </h2>

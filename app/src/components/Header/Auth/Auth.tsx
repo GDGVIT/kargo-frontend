@@ -30,7 +30,7 @@ export default function Auth() {
     return (
       <div className="relative" ref={dropdownRef}>
         <div
-          className="flex items-center gap-2 cursor-pointer px-2 py-1 rounded-md hover:bg-[#23283a] transition"
+          className="flex items-center gap-2 cursor-pointer px-2 py-1 hover:bg-[#2e354b] transition"
           onClick={() => setOpen((v) => !v)}
         >
           {user.profilePicture && (

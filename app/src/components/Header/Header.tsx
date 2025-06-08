@@ -1,17 +1,15 @@
 "use client";
+
 import React from "react";
-import { usePathname } from "next/navigation";
 import Auth from "./Auth/Auth";
 import { useAuth } from "../Auth/AuthProvider/AuthProvider";
 import Link from "next/link";
-import { MdArrowForwardIos } from "react-icons/md";
+import Breadcrumbs from "./Breadcrumbs/Breadcrumbs";
 
 const HEADER_HEIGHT = 64;
 
 const Header: React.FC = () => {
   const { user } = useAuth();
-  const pathname = usePathname();
-  const pathSegments = pathname.split("/").filter(Boolean);
 
   const headerClass = `
     fixed top-0 right-0
@@ -37,23 +35,7 @@ const Header: React.FC = () => {
             Kargo
           </span>
         </Link>
-
-        {pathSegments.map((segment, idx) => {
-          const href = "/" + pathSegments.slice(0, idx + 1).join("/");
-          return (
-            <React.Fragment key={idx}>
-              <MdArrowForwardIos className="text-xs mx-1" />
-              <Link href={href}>
-                <span className="text-[#9DA3B3] text-base font-normal select-none mx-1 flex items-center h-full">
-                  {segment
-                    .split("-")
-                    .map((s) => s.charAt(0).toUpperCase() + s.slice(1))
-                    .join(" ")}
-                </span>
-              </Link>
-            </React.Fragment>
-          );
-        })}
+        <Breadcrumbs />
       </h2>
       <div className="flex items-center h-full">
         <Auth />
