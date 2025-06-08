@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { RepoSearchInputProps } from "../../../../types/Repo";
+import RepoSearchInputProps from "../../../../types/RepoSearchInputProps";
 
 const RepoSearchInput: React.FC<RepoSearchInputProps> = ({
   value,

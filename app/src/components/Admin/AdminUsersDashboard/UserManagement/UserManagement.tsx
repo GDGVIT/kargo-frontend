@@ -1,7 +1,7 @@
 import React from "react";
 import UserTable from "../UserTable/UserTable";
 import { Card } from "../../../ui/Card/Card";
-import type { UserManagementProps } from "../../../../types/User";
+import type UserManagementProps from "../../../../types/UserManagementProps";
 
 const UserManagement: React.FC<UserManagementProps> = ({
   users,
