@@ -10,7 +10,7 @@ import {
 } from "react-icons/fa";
 
 import { useAuth } from "../Auth/AuthProvider/AuthProvider";
-import Loader from "../Loader/Loader";
+import Loader from "../ui/Loader/Loader";
 import { useNotification } from "../ui/Notification/Notification";
 import GithubAuth from "../Github/GithubAuth/GithubAuth";
 import PlanDetails from "./PlanDetails";

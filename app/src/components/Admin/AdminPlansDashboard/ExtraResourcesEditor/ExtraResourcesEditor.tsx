@@ -1,4 +1,5 @@
 import React from "react";
+import { Input } from "../../../ui/Input/Input";
 
 interface ExtraResourcesEditorProps {
   userId: string;
@@ -23,28 +24,28 @@ const ExtraResourcesEditor: React.FC<ExtraResourcesEditorProps> = ({
 }) => (
   <div className="space-y-1">
     <div className="flex gap-2 mb-1">
-      <input
-        className="w-20 p-1 rounded bg-neutral-800 border border-neutral-700 text-xs text-white"
+      <Input
+        className="w-20 text-xs"
         placeholder="Req CPU"
         value={data.requestsCpu}
         onChange={(e) => onChange("requestsCpu", e.target.value)}
       />
-      <input
-        className="w-24 p-1 rounded bg-neutral-800 border border-neutral-700 text-xs text-white"
+      <Input
+        className="w-24 text-xs"
         placeholder="Req Mem"
         value={data.requestsMemory}
         onChange={(e) => onChange("requestsMemory", e.target.value)}
       />
     </div>
     <div className="flex gap-2 mb-1">
-      <input
-        className="w-20 p-1 rounded bg-neutral-800 border border-neutral-700 text-xs text-white"
+      <Input
+        className="w-20 text-xs"
         placeholder="Lim CPU"
         value={data.limitsCpu}
         onChange={(e) => onChange("limitsCpu", e.target.value)}
       />
-      <input
-        className="w-24 p-1 rounded bg-neutral-800 border border-neutral-700 text-xs text-white"
+      <Input
+        className="w-24 text-xs"
         placeholder="Lim Mem"
         value={data.limitsMemory}
         onChange={(e) => onChange("limitsMemory", e.target.value)}

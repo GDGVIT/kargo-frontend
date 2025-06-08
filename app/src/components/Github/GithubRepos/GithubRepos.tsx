@@ -5,7 +5,7 @@ import { FaGithub } from "react-icons/fa";
 import api from "../../../utils/api";
 import axios from "axios";
 import { useNotification } from "../../ui/Notification/Notification";
-import Loader from "../../Loader/Loader";
+import Loader from "../../ui/Loader/Loader";
 import { motion } from "framer-motion";
 import RepoPagination from "./RepoPagination/RepoPagination";
 import RepoSearchInput from "./RepoSearchInput/RepoSearchInput";

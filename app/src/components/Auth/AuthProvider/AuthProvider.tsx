@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { baseURL } from "../../../utils/api";
-import Loader from "../../Loader/Loader";
+import Loader from "../../ui/Loader/Loader";
 import type { Plan } from "../../../types/Plan";
 
 interface User {

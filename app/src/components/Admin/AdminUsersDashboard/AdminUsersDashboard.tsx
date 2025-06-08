@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import axios from "../../../utils/api";
 import type { Plan } from "../../../types/Plan";
 import UserManagement from "./UserManagement/UserManagement";
+import { AnimatedButton } from "../../ui/AnimatedButton/AnimatedButton";
+import { useNotification } from "../../ui/Notification/Notification";
 
 interface User {
   _id: string;
@@ -41,6 +43,7 @@ export default function AdminUsersDashboard() {
   const [extraResourcesSaving, setExtraResourcesSaving] = useState<
     string | null
   >(null);
+  const { notify } = useNotification();
 
   useEffect(() => {
     async function fetchUsers() {
@@ -77,8 +80,12 @@ export default function AdminUsersDashboard() {
       setUsers((prev) =>
         prev.map((u) => (u._id === userId ? { ...u, role: newRole } : u))
       );
+      notify(
+        `Role updated to ${newRole.charAt(0).toUpperCase() + newRole.slice(1)}`,
+        "success"
+      );
     } catch {
-      alert("Failed to update role");
+      notify("Failed to update role", "error");
     } finally {
       setRoleUpdating(null);
     }
@@ -91,8 +98,9 @@ export default function AdminUsersDashboard() {
       setUsers((prev) =>
         prev.map((u) => (u._id === userId ? { ...u, plan: planId } : u))
       );
+      notify("Plan assigned successfully", "success");
     } catch {
-      alert("Failed to assign plan");
+      notify("Failed to assign plan", "error");
     } finally {
       setPlanAssigning(null);
     }
@@ -150,46 +158,50 @@ export default function AdminUsersDashboard() {
 
   function getRoleActions(user: User) {
     if (!currentUserId || user._id === currentUserId) return null;
+    const isDisabled = roleUpdating === user._id;
+    const disabledClass = isDisabled
+      ? "opacity-60 cursor-not-allowed pointer-events-none"
+      : "";
     if (user.role === "user") {
       return (
-        <button
-          className="px-2 py-1 bg-amber-500 text-xs rounded hover:bg-amber-600 mr-2"
-          disabled={roleUpdating === user._id}
+        <AnimatedButton
+          className={`!px-2 !py-1 !text-xs !rounded !bg-amber-500 hover:!bg-amber-600 mr-2 ${disabledClass}`}
           onClick={() => handleRoleChange(user._id, "admin")}
+          icon={null}
         >
           Promote to Admin
-        </button>
+        </AnimatedButton>
       );
     }
     if (user.role === "admin") {
       return (
         <>
-          <button
-            className="px-2 py-1 bg-zinc-700 text-xs rounded hover:bg-zinc-800 mr-2"
-            disabled={roleUpdating === user._id}
+          <AnimatedButton
+            className={`!px-2 !py-1 !text-xs !rounded !bg-zinc-700 hover:!bg-zinc-800 mr-2 ${disabledClass}`}
             onClick={() => handleRoleChange(user._id, "user")}
+            icon={null}
           >
             Demote to User
-          </button>
-          <button
-            className="px-2 py-1 bg-amber-500 text-xs rounded hover:bg-amber-600"
-            disabled={roleUpdating === user._id}
+          </AnimatedButton>
+          <AnimatedButton
+            className={`!px-2 !py-1 !text-xs !rounded !bg-amber-500 hover:!bg-amber-600 ${disabledClass}`}
             onClick={() => handleRoleChange(user._id, "superadmin")}
+            icon={null}
           >
             Promote to Superadmin
-          </button>
+          </AnimatedButton>
         </>
       );
     }
     if (user.role === "superadmin") {
       return (
-        <button
-          className="px-2 py-1 bg-zinc-700 text-xs rounded hover:bg-zinc-800"
-          disabled={roleUpdating === user._id}
+        <AnimatedButton
+          className={`!px-2 !py-1 !text-xs !rounded !bg-zinc-700 hover:!bg-zinc-800 ${disabledClass}`}
           onClick={() => handleRoleChange(user._id, "admin")}
+          icon={null}
         >
           Demote to Admin
-        </button>
+        </AnimatedButton>
       );
     }
     return null;

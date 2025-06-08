@@ -1,4 +1,8 @@
 import React from "react";
+import Modal from "../../../ui/Modal/Modal";
+import { Input } from "../../../ui/Input/Input";
+import { Textarea } from "../../../ui/Textarea/Textarea";
+import { AnimatedButton } from "../../../ui/AnimatedButton/AnimatedButton";
 
 interface PlanForm {
   name: string;
@@ -46,97 +50,68 @@ const PlanFormModal: React.FC<PlanFormModalProps> = ({
 }) => {
   if (!show) return null;
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
-      <form
-        className="bg-neutral-900 p-8 rounded-xl border border-neutral-700 w-full max-w-lg space-y-4 relative"
-        onSubmit={onSubmit}
-      >
-        <button
-          type="button"
-          className="absolute top-3 right-3 text-zinc-400 hover:text-white"
-          onClick={onClose}
-        >
-          ✕
-        </button>
-        <h3 className="text-lg font-bold mb-2">
-          {editingPlan ? "Edit Plan" : "New Plan"}
-        </h3>
-        <div>
-          <label className="block mb-1">Name</label>
-          <input
-            className="w-full p-2 rounded bg-neutral-800 border border-neutral-700 text-white"
-            value={planForm.name}
+    <Modal
+      open={show}
+      onClose={onClose}
+      title={editingPlan ? "Edit Plan" : "New Plan"}
+    >
+      <form onSubmit={onSubmit} className="space-y-4">
+        <Input
+          label="Name"
+          value={planForm.name}
+          onChange={(e) => setPlanForm((f) => ({ ...f, name: e.target.value }))}
+          required
+          placeholder="Plan name"
+          title="Plan name"
+        />
+        <Textarea
+          label="Description"
+          value={planForm.description}
+          onChange={(e) =>
+            setPlanForm((f) => ({ ...f, description: e.target.value }))
+          }
+          placeholder="Description"
+          title="Description"
+        />
+        <div className="flex gap-4">
+          <Input
+            label="Requests CPU"
+            value={planForm.requestsCpu}
             onChange={(e) =>
-              setPlanForm((f) => ({ ...f, name: e.target.value }))
+              setPlanForm((f) => ({ ...f, requestsCpu: e.target.value }))
             }
-            required
-            placeholder="Plan name"
-            title="Plan name"
+            placeholder="CPU"
+            title="Requests CPU"
           />
-        </div>
-        <div>
-          <label className="block mb-1">Description</label>
-          <textarea
-            className="w-full p-2 rounded bg-neutral-800 border border-neutral-700 text-white"
-            value={planForm.description}
+          <Input
+            label="Requests Memory"
+            value={planForm.requestsMemory}
             onChange={(e) =>
-              setPlanForm((f) => ({ ...f, description: e.target.value }))
+              setPlanForm((f) => ({ ...f, requestsMemory: e.target.value }))
             }
-            placeholder="Description"
-            title="Description"
+            placeholder="Memory"
+            title="Requests Memory"
           />
         </div>
         <div className="flex gap-4">
-          <div className="flex-1">
-            <label className="block mb-1">Requests CPU</label>
-            <input
-              className="w-full p-2 rounded bg-neutral-800 border border-neutral-700 text-white"
-              value={planForm.requestsCpu}
-              onChange={(e) =>
-                setPlanForm((f) => ({ ...f, requestsCpu: e.target.value }))
-              }
-              placeholder="CPU"
-              title="Requests CPU"
-            />
-          </div>
-          <div className="flex-1">
-            <label className="block mb-1">Requests Memory</label>
-            <input
-              className="w-full p-2 rounded bg-neutral-800 border border-neutral-700 text-white"
-              value={planForm.requestsMemory}
-              onChange={(e) =>
-                setPlanForm((f) => ({ ...f, requestsMemory: e.target.value }))
-              }
-              placeholder="Memory"
-              title="Requests Memory"
-            />
-          </div>
-        </div>
-        <div className="flex gap-4">
-          <div className="flex-1">
-            <label className="block mb-1">Limits CPU</label>
-            <input
-              className="w-full p-2 rounded bg-neutral-800 border border-neutral-700 text-white"
-              value={planForm.limitsCpu}
-              onChange={(e) =>
-                setPlanForm((f) => ({ ...f, limitsCpu: e.target.value }))
-              }
-              placeholder="CPU"
-              title="Limits CPU"
-            />
-          </div>
-          <div className="flex-1">
-            <label className="block mb-1">Limits Memory</label>
-            <input
-              className="w-full p-2 rounded bg-neutral-800 border border-neutral-700 text-white"
-              value={planForm.limitsMemory}
-              onChange={(e) =>
-                setPlanForm((f) => ({ ...f, limitsMemory: e.target.value }))
-              }
-              placeholder="Memory"
-              title="Limits Memory"
-            />
-          </div>
+          <Input
+            label="Limits CPU"
+            value={planForm.limitsCpu}
+            onChange={(e) =>
+              setPlanForm((f) => ({ ...f, limitsCpu: e.target.value }))
+            }
+            placeholder="CPU"
+            title="Limits CPU"
+          />
+          <Input
+            label="Limits Memory"
+            value={planForm.limitsMemory}
+            onChange={(e) =>
+              setPlanForm((f) => ({ ...f, limitsMemory: e.target.value }))
+            }
+            placeholder="Memory"
+            title="Limits Memory"
+          />
         </div>
         <div className="flex gap-4 items-center">
           <label className="flex items-center gap-2">
@@ -161,19 +136,18 @@ const PlanFormModal: React.FC<PlanFormModalProps> = ({
           </label>
         </div>
         {planFormError && <div className="text-red-500">{planFormError}</div>}
-        <button
-          type="submit"
-          className="w-full py-2 rounded bg-sky-600 text-white font-semibold hover:bg-sky-700 disabled:opacity-50"
-          disabled={planFormLoading}
+        <AnimatedButton
+          className="w-full py-2 !rounded !bg-sky-600 hover:!bg-sky-700 font-semibold"
+          icon={null}
         >
           {planFormLoading
             ? "Saving..."
             : editingPlan
             ? "Update Plan"
             : "Create Plan"}
-        </button>
+        </AnimatedButton>
       </form>
-    </div>
+    </Modal>
   );
 };
 

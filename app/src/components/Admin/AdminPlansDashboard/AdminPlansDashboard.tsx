@@ -5,6 +5,8 @@ import axios from "../../../utils/api";
 import type { Plan } from "../../../types/Plan";
 import PlanTable from "./PlansTable/PlanTable";
 import PlanFormModal from "./PlanFormModal/PlanFormModal";
+import { AnimatedButton } from "../../ui/AnimatedButton/AnimatedButton";
+import { useNotification } from "../../ui/Notification/Notification";
 
 export default function AdminPlansDashboard() {
   const [plans, setPlans] = useState<Plan[]>([]);
@@ -24,6 +26,7 @@ export default function AdminPlansDashboard() {
   });
   const [planFormLoading, setPlanFormLoading] = useState(false);
   const [planFormError, setPlanFormError] = useState("");
+  const { notify } = useNotification();
 
   useEffect(() => {
     async function fetchPlans() {
@@ -95,9 +98,11 @@ export default function AdminPlansDashboard() {
         setPlans((prev) =>
           prev.map((p) => (p._id === editingPlan._id ? res.data.plan : p))
         );
+        notify("Plan updated successfully", "success");
       } else {
         const res = await axios.post("/api/plans", planData);
         setPlans((prev) => [...prev, res.data.plan]);
+        notify("Plan created successfully", "success");
       }
       setShowPlanForm(false);
     } catch (err) {
@@ -119,18 +124,19 @@ export default function AdminPlansDashboard() {
       } else {
         setPlanFormError("Failed to save plan");
       }
+      notify("Failed to save plan", "error");
     } finally {
       setPlanFormLoading(false);
     }
   }
 
   async function handlePlanDelete(planId: string) {
-    if (!window.confirm("Are you sure you want to delete this plan?")) return;
     try {
       await axios.delete(`/api/plans/${planId}`);
       setPlans((prev) => prev.filter((p) => p._id !== planId));
+      notify("Plan deleted successfully", "success");
     } catch {
-      alert("Failed to delete plan");
+      notify("Failed to delete plan", "error");
     }
   }
 
@@ -140,12 +146,13 @@ export default function AdminPlansDashboard() {
       <div className="mb-10">
         <div className="flex items-center justify-between mb-2">
           <h2 className="text-xl font-semibold">Plans</h2>
-          <button
-            className="px-4 py-2 bg-sky-600 text-white rounded hover:bg-sky-700"
+          <AnimatedButton
+            className="px-4 py-2 !rounded !bg-sky-600 hover:!bg-sky-700"
             onClick={() => openPlanForm()}
+            icon={null}
           >
             + New Plan
-          </button>
+          </AnimatedButton>
         </div>
         <PlanTable
           plans={plans}

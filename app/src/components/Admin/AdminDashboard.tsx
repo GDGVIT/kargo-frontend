@@ -1,21 +1,23 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { Card } from "../ui/Card/Card";
+import { AnimatedButton } from "../ui/AnimatedButton/AnimatedButton";
 
 export default function AdminDashboard() {
   const router = useRouter();
 
   return (
     <div className="min-h-[60vh] flex items-center justify-center bg-[var(--background)] py-12">
-      <div className="bg-[var(--card-background)] shadow-xl rounded-2xl p-10 w-full max-w-md flex flex-col items-center gap-8 border border-[#23283a]">
+      <Card className="shadow-xl rounded-2xl p-10 w-full max-w-md flex flex-col items-center gap-8 border border-[#23283a]">
         <h1 className="text-3xl font-bold mb-2 text-[var(--foreground)] tracking-tight">
           Admin Dashboard
         </h1>
         <div className="flex flex-col gap-6 w-full">
-          <button
-            type="button"
-            className="w-full px-6 py-4 bg-[var(--theme-blue)] text-[var(--background)] rounded-lg text-lg font-semibold shadow hover:bg-cyan-400 hover:scale-[1.03] active:scale-100 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-cyan-400"
+          <AnimatedButton
+            className="w-full px-6 py-4 !bg-[var(--theme-blue)] !text-[var(--foreground)] text-lg font-semibold shadow hover:!bg-cyan-400 hover:scale-[1.03] active:scale-100 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-cyan-400"
             onClick={() => router.push("/admin/users")}
+            icon={null}
           >
             <span className="flex items-center justify-center gap-2">
               <svg
@@ -34,11 +36,11 @@ export default function AdminDashboard() {
               </svg>
               Manage Users
             </span>
-          </button>
-          <button
-            type="button"
-            className="w-full px-6 py-4 bg-[#3a4152] text-[var(--foreground)] rounded-lg text-lg font-semibold shadow hover:bg-[#23283a] hover:scale-[1.03] active:scale-100 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-[var(--theme-blue)]"
+          </AnimatedButton>
+          <AnimatedButton
+            className="w-full px-6 py-4 !bg-[#3a4152] !text-[var(--foreground)] text-lg font-semibold shadow hover:!bg-[#23283a] hover:scale-[1.03] active:scale-100 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-[var(--theme-blue)]"
             onClick={() => router.push("/admin/plans")}
+            icon={null}
           >
             <span className="flex items-center justify-center gap-2">
               <svg
@@ -57,9 +59,9 @@ export default function AdminDashboard() {
               </svg>
               Manage Plans
             </span>
-          </button>
+          </AnimatedButton>
         </div>
-      </div>
+      </Card>
     </div>
   );
 }
