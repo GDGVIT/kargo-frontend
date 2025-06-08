@@ -284,9 +284,7 @@ const GithubRepos: React.FC = () => {
             <p className="mt-4 text-sky-300">
               Generating Dockerfile and docker-compose.yml...
               <br />
-              <span className="text-xs text-zinc-400 block mt-2">
-                This may take a few minutes for large repositories.
-              </span>
+              This may take a minute or two for large repositories.
             </p>
           </div>
         </div>
