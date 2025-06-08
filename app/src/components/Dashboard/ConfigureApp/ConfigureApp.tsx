@@ -207,13 +207,9 @@ export default function ConfigureApp({ appId }: { appId: string }) {
   }
 
   if (!form)
-    return (
-      <div className="text-center text-gray-400 bg-black min-h-[60vh] flex items-center justify-center rounded-lg border border-gray-800 shadow-lg">
-        App not found
-      </div>
-    );
+    return <div className="text-center text-gray-400 ">App not found</div>;
   return (
-    <div className="max-w-2xl mx-auto p-8 bg-black rounded-2xl shadow-2xl mt-10 border border-gray-800/80 relative">
+    <div className="w-full p-8 rounded-2xl mt-10">
       <button
         type="button"
         onClick={() => router.push("/dashboard")}
@@ -254,8 +250,8 @@ export default function ConfigureApp({ appId }: { appId: string }) {
       </div>
       <form onSubmit={handleSaveAndDeploy} className="space-y-8">
         {/* Tab Content */}
-        {activeTab === "Image" && (
-          <div className="bg-gray-900/80 rounded-xl p-6 border border-gray-800 shadow-inner">
+        <div className="p-6 ">
+          {activeTab === "Image" && (
             <ImageFields
               imageUrl={form?.imageUrl || ""}
               imageTag={form?.imageTag || ""}
@@ -266,20 +262,16 @@ export default function ConfigureApp({ appId }: { appId: string }) {
                 setForm((f) => (f ? { ...f, imageTag: tag } : f))
               }
             />
-          </div>
-        )}
-        {activeTab === "Env" && (
-          <div className="bg-gray-900/80 rounded-xl p-6 border border-gray-800 shadow-inner">
+          )}
+          {activeTab === "Env" && (
             <EnvVarsSection
               envList={envList}
               handleEnvChange={handleEnvChange}
               addEnvVar={addEnvVar}
               removeEnvVar={removeEnvVar}
             />
-          </div>
-        )}
-        {activeTab === "Resources" && (
-          <div className="bg-gray-900/80 rounded-xl p-6 border border-gray-800 shadow-inner">
+          )}
+          {activeTab === "Resources" && (
             <ResourcesSection
               resourceLimits={
                 resourceLimits
@@ -321,10 +313,8 @@ export default function ConfigureApp({ appId }: { appId: string }) {
               resources={form?.resources || { requests: {}, limits: {} }}
               handleResourceChange={handleResourceChange}
             />
-          </div>
-        )}
-        {activeTab === "Ports" && (
-          <div className="bg-gray-900/80 rounded-xl p-6 border border-gray-800 shadow-inner">
+          )}
+          {activeTab === "Ports" && (
             <PortsSection
               ports={(form?.ports ?? []).map((port, idx) => {
                 const p = port as AppPort;
@@ -355,8 +345,8 @@ export default function ConfigureApp({ appId }: { appId: string }) {
                 );
               }}
             />
-          </div>
-        )}
+          )}
+        </div>
         {/* Action Buttons and Error Message always visible */}
         <div className="flex flex-col gap-4 mt-8">
           <ActionButtons

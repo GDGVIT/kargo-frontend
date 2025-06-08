@@ -28,8 +28,8 @@ const EnvVarsSection: React.FC<EnvVarsSectionProps> = ({
 
   return (
     <div className="mb-6">
-      <label className="text-sm font-medium text-gray-700 mb-2 flex items-center justify-between">
-        <span>Environment Variables</span>
+      <label className="text-gray-400 mb-2 flex items-center justify-between">
+        <h3 className="text-gray-400 mb-2">Environment Variables</h3>
         <div className="flex gap-2">
           <button
             type="button"
@@ -106,7 +106,6 @@ const EnvVarsSection: React.FC<EnvVarsSectionProps> = ({
                   if (pastedKey) handleEnvChange(idx, pastedKey, pastedValue);
                 }
               }}
-              className="px-2 py-1 border border-gray-300 rounded focus:ring-2 focus:ring-blue-400 text-sm min-w-[120px] resize-y"
               title="Only letters, numbers, and underscores allowed. No =, spaces, or special chars."
               rows={1}
             />
@@ -174,7 +173,6 @@ const EnvVarsSection: React.FC<EnvVarsSectionProps> = ({
                 value={value}
                 type="password"
                 onChange={(e) => handleEnvChange(idx, key, e.target.value)}
-                className="px-2 py-1 border border-gray-300 rounded focus:ring-2 focus:ring-blue-400 text-sm"
               />
             )}
             <button

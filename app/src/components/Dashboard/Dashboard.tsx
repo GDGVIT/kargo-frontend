@@ -5,21 +5,11 @@ import { useRouter } from "next/navigation";
 import axios from "../../utils/api";
 import { useNotification } from "../Notification/Notification";
 import Modal from "../Modal/Modal";
-import type { RegistryCredential } from "../Credentials/Credentials";
 
 export default function Dashboard() {
   const [apps, setApps] = useState([]);
-  const [form, setForm] = useState({
-    name: "",
-    imageUrl: "",
-    imageTag: "",
-    credentials: [] as RegistryCredential[],
-  });
   const [loading, setLoading] = useState(false);
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
-  const [credentials, setCredentials] = useState<RegistryCredential[]>([]);
-  const [selectedCredential, setSelectedCredential] =
-    useState<RegistryCredential | null>(null);
   const router = useRouter();
   const { notify } = useNotification();
 
@@ -38,41 +28,6 @@ export default function Dashboard() {
     fetchApps();
   }, [fetchApps]);
 
-  useEffect(() => {
-    axios
-      .get("/api/users/me/credentials")
-      .then((res) => setCredentials(res.data.credentials));
-  }, []);
-
-  function isValidAppName(name: string) {
-    return /^[a-z0-9]([-a-z0-9]*[a-z0-9])?$/.test(name);
-  }
-
-  async function handleAdd(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    setLoading(true);
-    if (!isValidAppName(form.name)) {
-      notify(
-        "Application name must be lowercase, alphanumeric, and may contain hyphens. No underscores or uppercase letters allowed.",
-        "error"
-      );
-      setLoading(false);
-      return;
-    }
-    try {
-      await axios.post("/api/applications", {
-        ...form,
-        credentials: selectedCredential ? [selectedCredential] : [],
-      });
-      setForm({ name: "", imageUrl: "", imageTag: "", credentials: [] });
-      fetchApps();
-      notify("Application added successfully!", "success");
-    } catch {
-      notify("Failed to add app", "error");
-    }
-    setLoading(false);
-  }
-
   async function handleDeleteApp(id: string) {
     setLoading(true);
     try {
@@ -87,110 +42,17 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="max-w-3xl mx-auto p-6 bg-gray-900 rounded-lg shadow-md mt-8 border border-gray-800">
-      <h1 className="text-2xl font-bold mb-6 text-gray-100">
-        Your Applications
-      </h1>
-      <form onSubmit={handleAdd} className="mb-8 space-y-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-300 mb-1">
-              Name
-            </label>
-            <input
-              required
-              value={form.name}
-              onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
-              placeholder="My App"
-              className="w-full px-3 py-2 border border-gray-700 bg-gray-800 text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-500"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-300 mb-1">
-              Image URL
-            </label>
-            <input
-              required
-              value={form.imageUrl}
-              onChange={(e) =>
-                setForm((f) => ({ ...f, imageUrl: e.target.value }))
-              }
-              placeholder="registry.io/my-app"
-              className="w-full px-3 py-2 border border-gray-700 bg-gray-800 text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-500"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-300 mb-1">
-              Image Tag
-            </label>
-            <input
-              required
-              value={form.imageTag}
-              onChange={(e) =>
-                setForm((f) => ({ ...f, imageTag: e.target.value }))
-              }
-              placeholder="latest"
-              className="w-full px-3 py-2 border border-gray-700 bg-gray-800 text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-500"
-            />
-          </div>
-
-          <div>
-            <label
-              className="block text-sm font-medium text-gray-300 mb-1"
-              htmlFor="registry-credential"
-            >
-              Registry Credential
-            </label>
-            <select
-              id="registry-credential"
-              required
-              title="Registry Credential"
-              value={
-                selectedCredential
-                  ? selectedCredential.name +
-                    ":" +
-                    selectedCredential.registryType
-                  : ""
-              }
-              onChange={(e) => {
-                const [name, registryType] = e.target.value.split(":");
-                const cred = credentials.find(
-                  (c) => c.name === name && c.registryType === registryType
-                );
-                setSelectedCredential(cred || null);
-                setForm((f) => ({
-                  ...f,
-                  credentials: cred ? [cred] : [],
-                }));
-              }}
-              className="w-full px-3 py-2 border border-gray-700 bg-gray-800 text-gray-100 rounded-md"
-            >
-              <option value="">Select a credential</option>
-              {credentials.map((cred) => (
-                <option
-                  key={cred.name + cred.registryType}
-                  value={cred.name + ":" + cred.registryType}
-                >
-                  {cred.name} [{cred.registryType}] ({cred.username})
-                </option>
-              ))}
-            </select>
-            <a
-              href="/credentials"
-              className="text-xs text-blue-400 hover:underline mt-1 inline-block"
-            >
-              Manage credentials
-            </a>
-          </div>
-        </div>
+    <div className="max-w-4xl mx-auto p-6 mt-8 ">
+      <div className="flex items-center justify-between mb-6">
+        <h1 className="text-2xl font-bold text-gray-100">Your Applications</h1>
         <button
-          type="submit"
-          disabled={loading}
-          className="mt-4 px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-60 disabled:cursor-not-allowed transition-colors font-semibold"
+          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors font-semibold"
+          onClick={() => router.push("/dashboard/add")}
+          type="button"
         >
-          {loading ? "Adding..." : "Add Application"}
+          Add Application
         </button>
-      </form>
+      </div>
       <Modal
         open={!!confirmDeleteId}
         onClose={() => setConfirmDeleteId(null)}
@@ -221,10 +83,11 @@ export default function Dashboard() {
           <div className="text-center text-gray-400">Loading...</div>
         ) : apps.length === 0 ? (
           <div className="text-center text-gray-500">
-            No applications yet. Add your first app above!
+            No applications yet. Click &quot;Add Application&quot; to create
+            your first app!
           </div>
         ) : (
-          <div className="grid gap-6">
+          <div className="grid gap-6 ">
             {apps.map(
               (
                 app: {
@@ -237,7 +100,7 @@ export default function Dashboard() {
               ) => (
                 <div
                   key={app._id}
-                  className="bg-gray-800/90 rounded-xl shadow-xl p-6 cursor-pointer hover:scale-[1.03] hover:shadow-2xl transition-transform border border-gray-700 group relative overflow-hidden animate-pop"
+                  className="bg-[var(--card-background)] rounded-xl shadow-xl p-6 cursor-pointer hover:scale-[1.03] hover:shadow-2xl transition-transform border border-gray-700 group relative overflow-hidden animate-pop"
                   onClick={() => router.push(`/dashboard/${app._id}`)}
                   data-animate-delay={idx * 60}
                 >

@@ -51,9 +51,7 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
 
   return (
     <div className="mb-6">
-      <label className="block text-sm font-medium text-gray-200 mb-2">
-        Resources
-      </label>
+      <h3 className="text-gray-400 mb-2">Resources</h3>
       {resourceLimits && (
         <div className="text-xs text-gray-400 mb-3 space-y-1">
           <div>
@@ -113,7 +111,6 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
                 );
               }}
               placeholder="100"
-              className="w-full px-2 py-1 border border-gray-700 bg-black text-gray-100 rounded focus:ring-2 focus:ring-blue-400 text-sm"
               inputMode="numeric"
               pattern="[0-9]*"
             />
@@ -134,7 +131,6 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
                 );
               }}
               placeholder="128"
-              className="w-full px-2 py-1 border border-gray-700 bg-black text-gray-100 rounded focus:ring-2 focus:ring-blue-400 text-sm"
               inputMode="numeric"
               pattern="[0-9]*"
             />
@@ -155,7 +151,6 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
                 );
               }}
               placeholder="500"
-              className="w-full px-2 py-1 border border-gray-700 bg-black text-gray-100 rounded focus:ring-2 focus:ring-blue-400 text-sm"
               inputMode="numeric"
               pattern="[0-9]*"
             />
@@ -176,7 +171,6 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
                 );
               }}
               placeholder="512"
-              className="w-full px-2 py-1 border border-gray-700 bg-black text-gray-100 rounded focus:ring-2 focus:ring-blue-400 text-sm"
               inputMode="numeric"
               pattern="[0-9]*"
             />

@@ -57,12 +57,9 @@ const PortsSection: React.FC<PortsSectionProps> = ({ ports, onChange }) => {
 
   return (
     <div className="mb-6">
-      <h3 className="text-sm font-medium text-gray-700 mb-2">
-        Ports Configuration
-      </h3>
+      <h3 className="text-gray-400 mb-2">Ports Configuration</h3>
       {localPorts.map(
         ({ id, containerPort, hostPort, protocol, description, subdomain }) => {
-          // Extract only the subdomain segment for the input
           let subdomainSegment = "";
           if (subdomain) {
             const regex = new RegExp(
@@ -72,7 +69,6 @@ const PortsSection: React.FC<PortsSectionProps> = ({ ports, onChange }) => {
             if (match) {
               subdomainSegment = match[1];
             } else if (!subdomain.includes(`.${username}.${ingressBaseUrl}`)) {
-              // If not a full domain, treat as segment
               subdomainSegment = subdomain;
             }
           }
@@ -107,7 +103,6 @@ const PortsSection: React.FC<PortsSectionProps> = ({ ports, onChange }) => {
                   }
                   required
                   title="Container port number (1-65535)"
-                  className="w-28 px-2 py-1 border border-gray-300 rounded focus:ring-2 focus:ring-blue-400 text-sm"
                 />
               </div>
               <div className="flex flex-col">
@@ -129,7 +124,6 @@ const PortsSection: React.FC<PortsSectionProps> = ({ ports, onChange }) => {
                   }
                   required
                   title="Host port number (1-65535)"
-                  className="w-28 px-2 py-1 border border-gray-300 rounded focus:ring-2 focus:ring-blue-400 text-sm"
                 />
               </div>
               <div className="flex flex-col">
@@ -146,7 +140,6 @@ const PortsSection: React.FC<PortsSectionProps> = ({ ports, onChange }) => {
                     updatePort(id, "protocol", e.target.value as "TCP" | "UDP")
                   }
                   title="Select protocol type"
-                  className="w-24 px-2 py-1 border border-gray-300 rounded focus:ring-2 focus:ring-blue-400 text-sm"
                 >
                   <option value="TCP">TCP</option>
                   <option value="UDP">UDP</option>
@@ -168,7 +161,6 @@ const PortsSection: React.FC<PortsSectionProps> = ({ ports, onChange }) => {
                     updatePort(id, "description", e.target.value)
                   }
                   title="Optional description of this port"
-                  className="w-40 px-2 py-1 border border-gray-300 rounded focus:ring-2 focus:ring-blue-400 text-sm"
                 />
               </div>
               <div className="flex flex-col">
@@ -194,11 +186,9 @@ const PortsSection: React.FC<PortsSectionProps> = ({ ports, onChange }) => {
                     value={subdomainSegment}
                     placeholder="Subdomain (optional)"
                     onChange={(e) => {
-                      // Always store only the segment in state
                       updatePort(id, "subdomain", e.target.value);
                     }}
                     title="Custom subdomain for this port"
-                    className="w-32 px-2 py-1 border border-gray-300 rounded focus:ring-2 focus:ring-blue-400 text-sm"
                   />
                   <span className="ml-1 text-gray-500 text-sm">
                     .{username}.{ingressBaseUrl}

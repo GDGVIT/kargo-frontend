@@ -7,5 +7,9 @@ export default async function DashboardAppConfigPage({
   searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   const { id } = await params;
-  return <ConfigureApp appId={id} />;
+  return (
+    <main>
+      <ConfigureApp appId={id} />
+    </main>
+  );
 }

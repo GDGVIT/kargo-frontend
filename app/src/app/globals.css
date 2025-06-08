@@ -14,6 +14,8 @@
   --background: #1f2432;
   --foreground: #ffffff;
 
+  --card-background: #2f3646;
+
   --screen-horizontal-margin: clamp(1rem, 5vw, 4rem);
   --screen-vertical-margin: 0;
 
@@ -66,10 +68,11 @@ body {
   justify-content: space-between;
   font-size: var(--font-size-medium);
   font-weight: var(--font-weight-normal);
+  min-height: 100vh;
 }
 
 main {
-  min-height: calc(100vh - 100px);
+  min-height: 100vh;
   margin: 0 var(--screen-horizontal-margin);
   padding: 0 var(--padding-medium);
   margin-left: calc(200px + var(--margin-medium));
@@ -86,4 +89,23 @@ button {
 
 button:hover {
   cursor: pointer;
+}
+
+label {
+  color: var(--foreground);
+}
+
+input,
+textarea,
+select {
+  background: #293040;
+  color: var(--foreground);
+  width: 100%;
+  padding: var(--padding-tiny) var(--padding-small);
+  border-radius: var(--border-radius-small);
+  border: 2px solid #7b8191;
+  ::placeholder {
+    color: #a0aec0;
+    opacity: 1;
+  }
 }
