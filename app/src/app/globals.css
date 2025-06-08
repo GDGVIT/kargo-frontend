@@ -73,13 +73,17 @@ body {
 
 main {
   min-height: 100vh;
-  margin: 0 var(--screen-horizontal-margin);
-  padding: 0 var(--padding-medium);
-  margin-left: calc(200px + var(--margin-medium));
+  padding: var(--padding-medium);
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: stretch;
+}
+
+@media (max-width: 768px) {
+  main {
+    padding-bottom: 4.5rem;
+  }
 }
 
 button {

@@ -5,6 +5,7 @@ import { NotificationProvider } from "../components/Notification/Notification";
 import Header from "../components/Header/Header";
 import Sidebar from "../components/Sidebar/Sidebar";
 import AcceptCookies from "../components/AcceptCookies/AcceptCookies";
+import LayoutWrapper from "../components/LayoutWrapper/LayoutWrapper";
 
 export const metadata: Metadata = {
   title: "Kargo",
@@ -32,9 +33,12 @@ export default function RootLayout({
       <body className={`antialiased`}>
         <NotificationProvider>
           <AuthProvider>
-            <Header />
             <Sidebar />
-            {children}
+            <LayoutWrapper>
+              {" "}
+              <Header />
+              {children}
+            </LayoutWrapper>
             <AcceptCookies />
           </AuthProvider>{" "}
         </NotificationProvider>
