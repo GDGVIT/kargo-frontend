@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState, useMemo, useCallback } from "react";
 import { FaGithub } from "react-icons/fa";
 import api from "../../../utils/api";
 import axios from "axios";
@@ -11,7 +11,7 @@ import RepoPagination from "./RepoPagination/RepoPagination";
 import RepoSearchInput from "./RepoSearchInput/RepoSearchInput";
 import RepoOwnerFilter from "./RepoOwnerFilter/RepoOwnerFilter";
 import RepoList from "./RepoList/RepoList";
-import DockerModal from "./DockerModal";
+import DockerModal from "./DockerModal/DockerModal";
 
 export interface Repo {
   id: number;
@@ -168,35 +168,38 @@ const GithubRepos: React.FC = () => {
   const handlePrevPage = () => setPage((p) => Math.max(1, p - 1));
   const handleNextPage = () => setPage((p) => Math.min(totalPages, p + 1));
 
-  const handleDockerize = async (repo: Repo) => {
-    setDockerizingRepoId(repo.id);
-    try {
-      notify(`Dockerizing ${repo.full_name}...`, "info");
-      const res = await api.post("/api/applications/run-docker", {
-        url: repo.html_url,
-      });
-      setDockerizingRepoId(null);
-      if (res.data.dockerfile || res.data.dockerCompose) {
-        setDockerModal({
-          open: true,
-          dockerfile: res.data.dockerfile,
-          dockerCompose: res.data.dockerCompose,
-          repoName: repo.full_name,
+  const handleDockerize = useCallback(
+    async (repo: Repo) => {
+      setDockerizingRepoId(repo.id);
+      try {
+        notify(`Dockerizing ${repo.full_name}...`, "info");
+        const res = await api.post("/api/applications/run-docker", {
+          url: repo.html_url,
         });
-      } else {
-        notify("No Dockerfile or docker-compose.yml generated.", "warning");
+        setDockerizingRepoId(null);
+        if (res.data.dockerfile || res.data.dockerCompose) {
+          setDockerModal({
+            open: true,
+            dockerfile: res.data.dockerfile,
+            dockerCompose: res.data.dockerCompose,
+            repoName: repo.full_name,
+          });
+        } else {
+          notify("No Dockerfile or docker-compose.yml generated.", "warning");
+        }
+      } catch (err) {
+        setDockerizingRepoId(null);
+        let message = "Failed to dockerize repository.";
+        if (axios.isAxiosError(err)) {
+          message = err.response?.data?.error || message;
+        } else if (err instanceof Error) {
+          message = err.message;
+        }
+        notify(message, "error");
       }
-    } catch (err) {
-      setDockerizingRepoId(null);
-      let message = "Failed to dockerize repository.";
-      if (axios.isAxiosError(err)) {
-        message = err.response?.data?.error || message;
-      } else if (err instanceof Error) {
-        message = err.message;
-      }
-      notify(message, "error");
-    }
-  };
+    },
+    [notify]
+  );
 
   if (loading) {
     return <Loader />;
