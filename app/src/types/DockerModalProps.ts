@@ -1,4 +1,3 @@
-// Types for DockerModalProps
 export default interface DockerModalProps {
   open: boolean;
   dockerfile?: string;

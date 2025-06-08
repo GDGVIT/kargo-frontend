@@ -1,4 +1,3 @@
-// Props for the ExtraResourcesEditor component
 export default interface ExtraResourcesEditorProps {
   userId: string;
   data: {

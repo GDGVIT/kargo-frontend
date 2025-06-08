@@ -1,7 +1,6 @@
 import Plan from "./Plan";
 
-// Props for the PlanTable component
-export interface PlanTableProps {
+export default interface PlanTableProps {
   plans: Plan[];
   planLoading: boolean;
   planError: string;

@@ -1,8 +1,7 @@
 import Plan from "./Plan";
 import PlanForm from "./PlanForm";
 
-// Props for the PlanFormModal component
-export interface PlanFormModalProps {
+export default interface PlanFormModalProps {
   show: boolean;
   onClose: () => void;
   onSubmit: (e: React.FormEvent) => void;

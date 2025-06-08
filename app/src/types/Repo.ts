@@ -1,4 +1,3 @@
-// Types for GitHub Repositories
 export default interface Repo {
   id: number;
   name: string;

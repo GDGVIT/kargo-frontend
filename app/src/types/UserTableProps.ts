@@ -1,7 +1,6 @@
 import User from "./User";
 import ExtraResourcesEditState from "./ExtraResourcesEditState";
 
-// UserTableProps for UserTable component
 export default interface UserTableProps {
   users: User[];
   plans: { _id: string; name: string; isDefault?: boolean }[];

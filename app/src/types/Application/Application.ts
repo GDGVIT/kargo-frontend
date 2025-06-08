@@ -2,7 +2,6 @@ import Probe from "./Probe";
 import Toleration from "./Toleration";
 import Affinity from "./Affinity";
 
-// Application type representing an application in the system
 export default interface Application {
   _id: string;
   name: string;

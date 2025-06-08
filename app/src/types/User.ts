@@ -1,7 +1,6 @@
 import ExtraResource from "./ExtraResource";
 import RegistryCredential from "./RegistryCredential";
 
-// User type representing a user in the system
 export default interface User {
   _id: string;
   email: string;

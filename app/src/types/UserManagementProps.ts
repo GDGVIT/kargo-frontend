@@ -1,7 +1,6 @@
 import User from "./User";
 import ExtraResourcesEditState from "./ExtraResourcesEditState";
 
-// UserManagementProps for UserManagement component
 export default interface UserManagementProps {
   users: User[];
   plans: { _id: string; name: string; isDefault?: boolean }[];
