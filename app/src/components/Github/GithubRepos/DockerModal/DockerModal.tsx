@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FaTimes, FaCopy, FaDocker } from "react-icons/fa";
-import DockerModalProps from "../../../../types/DockerModalProps";
+import DockerModalProps from "../../../../types/DockerModalProps/DockerModalProps";
 
 const DockerModal: React.FC<DockerModalProps> = ({
   open,

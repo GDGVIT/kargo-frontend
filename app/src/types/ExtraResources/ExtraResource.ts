@@ -1,4 +1,4 @@
-import Resource from "./Resource";
+import Resource from "../Resource/Resource";
 
 export default interface ExtraResource {
   requests?: Resource;

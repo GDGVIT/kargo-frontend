@@ -1,5 +1,5 @@
-import ExtraResource from "./ExtraResource";
-import RegistryCredential from "./RegistryCredential";
+import ExtraResource from "../ExtraResources/ExtraResource";
+import RegistryCredential from "../RegistryCredential/RegistryCredential";
 
 export default interface User {
   _id: string;

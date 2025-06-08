@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import axios from "../../../utils/api";
-import type Plan from "../../../types/Plan";
-import type User from "../../../types/User";
+import type Plan from "../../../types/Plan/Plan";
+import type User from "../../../types/User/User";
 import UserManagement from "./UserManagement/UserManagement";
 import { AnimatedButton } from "../../ui/AnimatedButton/AnimatedButton";
 import { useNotification } from "../../ui/Notification/Notification";

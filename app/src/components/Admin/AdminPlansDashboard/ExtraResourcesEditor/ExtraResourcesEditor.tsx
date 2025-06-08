@@ -1,6 +1,6 @@
 import React from "react";
 import { Input } from "../../../ui/Input/Input";
-import type ExtraResourcesEditorProps from "../../../../types/ExtraResourcesEditorProps";
+import type ExtraResourcesEditorProps from "../../../../types/ExtraResources/ExtraResourcesEditorProps";
 
 const ExtraResourcesEditor: React.FC<ExtraResourcesEditorProps> = ({
   data,

@@ -12,7 +12,7 @@ import RepoSearchInput from "./RepoSearchInput/RepoSearchInput";
 import RepoOwnerFilter from "./RepoOwnerFilter/RepoOwnerFilter";
 import RepoList from "./RepoList/RepoList";
 import DockerModal from "./DockerModal/DockerModal";
-import Repo from "../../../types/Repo";
+import Repo from "../../../types/Repo/Repo";
 
 const GithubRepos: React.FC = () => {
   const { notify } = useNotification();

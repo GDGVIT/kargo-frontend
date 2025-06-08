@@ -1,7 +1,7 @@
 import User from "./User";
-import ExtraResourcesEditState from "./ExtraResourcesEditState";
+import ExtraResourcesEditState from "../ExtraResources/ExtraResourcesEditState";
 
-export default interface UserManagementProps {
+export default interface UserTableProps {
   users: User[];
   plans: { _id: string; name: string; isDefault?: boolean }[];
   planAssigning: string | null;

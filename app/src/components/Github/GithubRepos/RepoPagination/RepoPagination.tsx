@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import RepoPaginationProps from "../../../../types/RepoPaginationProps";
+import RepoPaginationProps from "../../../../types/Repo/RepoPaginationProps";
 
 const RepoPagination: React.FC<RepoPaginationProps> = ({
   page,

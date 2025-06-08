@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import axios from "../../../utils/api";
-import type Plan from "../../../types/Plan";
+import type Plan from "../../../types/Plan/Plan";
 import PlanTable from "./PlansTable/PlanTable";
 import PlanFormModal from "./PlanFormModal/PlanFormModal";
 import { AnimatedButton } from "../../ui/AnimatedButton/AnimatedButton";
