@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "../../../utils/api";
-import type { Application } from "../../../types/Application";
+import type Application from "../../../types/Application/Application";
 
 interface Port {
   id: string;

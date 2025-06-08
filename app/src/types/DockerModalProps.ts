@@ -1,5 +1,5 @@
-// Types for DockerModal
-export interface DockerModalProps {
+// Types for DockerModalProps
+export default interface DockerModalProps {
   open: boolean;
   dockerfile?: string;
   dockerCompose?: string;

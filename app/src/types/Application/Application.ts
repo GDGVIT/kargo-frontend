@@ -1,5 +1,9 @@
+import Probe from "./Probe";
+import Toleration from "./Toleration";
+import Affinity from "./Affinity";
+
 // Application type representing an application in the system
-export interface Application {
+export default interface Application {
   _id: string;
   name: string;
   imageUrl: string;
@@ -47,14 +51,4 @@ export interface Application {
   }>;
   createdAt: string;
   updatedAt: string;
-}
-
-export interface Probe {
-  [key: string]: unknown;
-}
-export interface Toleration {
-  [key: string]: unknown;
-}
-export interface Affinity {
-  [key: string]: unknown;
 }
