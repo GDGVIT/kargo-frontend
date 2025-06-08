@@ -4,29 +4,20 @@ export interface Application {
   name: string;
   imageUrl: string;
   imageTag: string;
-  registryToken: string;
   namespace?: string;
   deploymentName?: string;
   serviceName?: string;
-  ingressHost?: string;
   env?: Record<string, string>;
+  owner?: string;
   resources?: {
-    requests?: {
-      cpu?: string;
-      memory?: string;
-    };
-    limits?: {
-      cpu?: string;
-      memory?: string;
-    };
+    requests?: { cpu?: string; memory?: string };
+    limits?: { cpu?: string; memory?: string };
   };
   ports?: Array<{
     name?: string;
     containerPort: number;
     protocol?: string;
-    ingressEnabled?: boolean;
     subdomain?: string;
-    ingressHost?: string;
   }>;
   volumes?: Array<{
     name: string;
@@ -39,30 +30,31 @@ export interface Application {
     readOnly?: boolean;
     secretItems?: Array<{ key: string; path: string }>;
   }>;
-  ingress?: {
-    enabled: boolean;
-    host?: string;
-    paths?: Array<{
-      path: string;
-      pathType?: string;
-      servicePort?: number;
-    }>;
-    annotations?: Record<string, string>;
-    tls?: Array<{
-      hosts: string[];
-      secretName: string;
-    }>;
-    subdomains?: Record<string, number>; // subdomain -> containerPort
-  };
-  livenessProbe?: object;
-  readinessProbe?: object;
+  livenessProbe?: Probe;
+  readinessProbe?: Probe;
   command?: string[];
   args?: string[];
   labels?: Record<string, string>;
   annotations?: Record<string, string>;
   nodeSelector?: Record<string, string>;
-  tolerations?: object[];
-  affinity?: object;
+  tolerations?: Toleration[];
+  affinity?: Affinity;
+  credentials?: Array<{
+    name: string;
+    registryType: string;
+    username: string;
+    token: string;
+  }>;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface Probe {
+  [key: string]: unknown;
+}
+export interface Toleration {
+  [key: string]: unknown;
+}
+export interface Affinity {
+  [key: string]: unknown;
 }

@@ -57,7 +57,10 @@ export default function AdminUsersDashboard() {
     fetchPlans();
   }, []);
 
-  async function handleRoleChange(userId: string, newRole: string) {
+  async function handleRoleChange(
+    userId: string,
+    newRole: "user" | "admin" | "superadmin"
+  ) {
     setRoleUpdating(userId);
     try {
       await axios.put(`/api/users/${userId}/role`, { role: newRole });

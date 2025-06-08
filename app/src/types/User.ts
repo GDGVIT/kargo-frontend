@@ -10,16 +10,25 @@ export interface ExtraResource {
   limits?: Resource;
 }
 
+// RegistryCredential type for user registry credentials
+export interface RegistryCredential {
+  name: string;
+  registryType: "dockerhub" | "github" | "gitlab" | "other";
+  username: string;
+  token: string;
+}
+
 // User type representing a user in the system
 export interface User {
   _id: string;
   email: string;
   username?: string;
   name?: string;
-  role?: string;
+  role?: "user" | "admin" | "superadmin";
   resources?: ExtraResource;
   extraResources?: ExtraResource;
   plan?: string | { _id: string; name: string; isDefault?: boolean };
+  credentials?: RegistryCredential[];
 }
 
 // UserRoleAction type for role actions in the user table
