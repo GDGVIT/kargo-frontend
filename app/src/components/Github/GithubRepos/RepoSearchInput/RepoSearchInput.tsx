@@ -1,10 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-
-interface RepoSearchInputProps {
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-}
+import { RepoSearchInputProps } from "../../../../types/GithubRepos";
 
 const RepoSearchInput: React.FC<RepoSearchInputProps> = ({
   value,

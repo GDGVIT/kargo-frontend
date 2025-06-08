@@ -3,60 +3,7 @@ import ExtraResourcesEditor from "../../AdminPlansDashboard/ExtraResourcesEditor
 import { Card } from "../../../ui/Card/Card";
 import { Select } from "../../../ui/Select/Select";
 import { AnimatedButton } from "../../../ui/AnimatedButton/AnimatedButton";
-
-interface Resource {
-  cpu?: string;
-  memory?: string;
-}
-
-interface ExtraResource {
-  requests?: Resource;
-  limits?: Resource;
-}
-
-interface User {
-  _id: string;
-  email: string;
-  username?: string;
-  name?: string;
-  role?: string;
-  resources?: ExtraResource;
-  extraResources?: ExtraResource;
-  plan?: string | { _id: string; name: string; isDefault?: boolean };
-}
-
-interface Plan {
-  _id: string;
-  name: string;
-  isDefault?: boolean;
-}
-
-interface ExtraResourcesEditState {
-  [userId: string]: {
-    requestsCpu: string;
-    requestsMemory: string;
-    limitsCpu: string;
-    limitsMemory: string;
-  };
-}
-
-interface UserTableProps {
-  users: User[];
-  plans: Plan[];
-  planAssigning: string | null;
-  extraResourcesEdit: ExtraResourcesEditState;
-  extraResourcesSaving: string | null;
-  onPlanAssign: (userId: string, planId: string) => void;
-  onOpenExtraResourcesEdit: (user: User) => void;
-  onExtraResourcesChange: (
-    userId: string,
-    field: string,
-    value: string
-  ) => void;
-  onExtraResourcesSave: (userId: string) => void;
-  onExtraResourcesCancel: (userId: string) => void;
-  getRoleActions: (user: User) => React.ReactNode;
-}
+import type { UserTableProps } from "../../../../types/User";
 
 const UserTable: React.FC<UserTableProps> = ({
   users,

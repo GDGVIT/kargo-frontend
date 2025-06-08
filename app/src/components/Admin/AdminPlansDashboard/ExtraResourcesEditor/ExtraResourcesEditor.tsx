@@ -1,19 +1,6 @@
 import React from "react";
 import { Input } from "../../../ui/Input/Input";
-
-interface ExtraResourcesEditorProps {
-  userId: string;
-  data: {
-    requestsCpu: string;
-    requestsMemory: string;
-    limitsCpu: string;
-    limitsMemory: string;
-  };
-  onChange: (field: string, value: string) => void;
-  onSave: () => void;
-  onCancel: () => void;
-  saving: boolean;
-}
+import type { ExtraResourcesEditorProps } from "../../../../types/Plan";
 
 const ExtraResourcesEditor: React.FC<ExtraResourcesEditorProps> = ({
   data,

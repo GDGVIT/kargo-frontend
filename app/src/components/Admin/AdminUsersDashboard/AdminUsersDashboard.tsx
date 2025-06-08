@@ -3,26 +3,10 @@
 import { useEffect, useState } from "react";
 import axios from "../../../utils/api";
 import type { Plan } from "../../../types/Plan";
+import type { User } from "../../../types/User";
 import UserManagement from "./UserManagement/UserManagement";
 import { AnimatedButton } from "../../ui/AnimatedButton/AnimatedButton";
 import { useNotification } from "../../ui/Notification/Notification";
-
-interface User {
-  _id: string;
-  email: string;
-  username?: string;
-  name?: string;
-  role?: string;
-  resources?: {
-    requests?: { cpu?: string; memory?: string };
-    limits?: { cpu?: string; memory?: string };
-  };
-  extraResources?: {
-    requests?: { cpu?: string; memory?: string };
-    limits?: { cpu?: string; memory?: string };
-  };
-  plan?: string | Plan;
-}
 
 export default function AdminUsersDashboard() {
   const [users, setUsers] = useState<User[]>([]);

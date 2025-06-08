@@ -10,7 +10,7 @@ import {
   FaUser,
 } from "react-icons/fa";
 import gsap from "gsap";
-import { Repo } from "../GithubRepos";
+import { Repo } from "../../../../types/GithubRepos";
 
 const RepoListItem: React.FC<{ repo: Repo; actions?: React.ReactNode }> = ({
   repo,

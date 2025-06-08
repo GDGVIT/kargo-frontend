@@ -1,3 +1,4 @@
+// Application type representing an application in the system
 export interface Application {
   _id: string;
   name: string;

@@ -3,40 +3,7 @@ import Modal from "../../../ui/Modal/Modal";
 import { Input } from "../../../ui/Input/Input";
 import { Textarea } from "../../../ui/Textarea/Textarea";
 import { AnimatedButton } from "../../../ui/AnimatedButton/AnimatedButton";
-
-interface PlanForm {
-  name: string;
-  description: string;
-  requestsCpu: string;
-  requestsMemory: string;
-  limitsCpu: string;
-  limitsMemory: string;
-  isDefault: boolean;
-  isActive: boolean;
-}
-
-interface Plan {
-  _id: string;
-  name: string;
-  description?: string;
-  resources?: {
-    requests?: { cpu?: string; memory?: string };
-    limits?: { cpu?: string; memory?: string };
-  };
-  isDefault?: boolean;
-  isActive?: boolean;
-}
-
-interface PlanFormModalProps {
-  show: boolean;
-  onClose: () => void;
-  onSubmit: (e: React.FormEvent) => void;
-  planForm: PlanForm;
-  setPlanForm: React.Dispatch<React.SetStateAction<PlanForm>>;
-  planFormLoading: boolean;
-  planFormError: string;
-  editingPlan: Plan | null;
-}
+import type { PlanFormModalProps } from "../../../../types/Plan";
 
 const PlanFormModal: React.FC<PlanFormModalProps> = ({
   show,

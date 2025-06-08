@@ -1,12 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-
-interface RepoPaginationProps {
-  page: number;
-  totalPages: number;
-  onPrev: () => void;
-  onNext: () => void;
-}
+import { RepoPaginationProps } from "../../../../types/GithubRepos";
 
 const RepoPagination: React.FC<RepoPaginationProps> = ({
   page,

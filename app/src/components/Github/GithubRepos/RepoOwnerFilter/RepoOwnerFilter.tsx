@@ -1,11 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-
-interface RepoOwnerFilterProps {
-  owners: string[];
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-}
+import { RepoOwnerFilterProps } from "../../../../types/GithubRepos";
 
 const RepoOwnerFilter: React.FC<RepoOwnerFilterProps> = ({
   owners,

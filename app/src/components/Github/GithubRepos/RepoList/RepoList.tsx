@@ -1,14 +1,12 @@
 import React from "react";
 import { motion } from "framer-motion";
 import RepoListItem from "../RepoListItem/RepoListItem";
-import { Repo } from "../GithubRepos";
+import { Repo } from "../../../../types/GithubRepos";
 
-interface RepoListProps {
+const RepoList: React.FC<{
   repos: Repo[];
   renderActions?: (repo: Repo) => React.ReactNode;
-}
-
-const RepoList: React.FC<RepoListProps> = ({ repos, renderActions }) => (
+}> = ({ repos, renderActions }) => (
   <motion.ul
     className="divide-y divide-neutral-800 bg-neutral-950 rounded-lg shadow-inner mb-6  overflow-auto"
     style={{

@@ -2,26 +2,7 @@ import React from "react";
 import { Card } from "../../../ui/Card/Card";
 import { AnimatedButton } from "../../../ui/AnimatedButton/AnimatedButton";
 import Loader from "../../../ui/Loader/Loader";
-
-interface Plan {
-  _id: string;
-  name: string;
-  description?: string;
-  resources?: {
-    requests?: { cpu?: string; memory?: string };
-    limits?: { cpu?: string; memory?: string };
-  };
-  isDefault?: boolean;
-  isActive?: boolean;
-}
-
-interface PlanTableProps {
-  plans: Plan[];
-  planLoading: boolean;
-  planError: string;
-  onEdit: (plan: Plan) => void;
-  onDelete: (planId: string) => void;
-}
+import type { PlanTableProps } from "../../../../types/Plan";
 
 const PlanTable: React.FC<PlanTableProps> = ({
   plans,

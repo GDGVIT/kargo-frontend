@@ -2,11 +2,7 @@ import React, { useEffect, useState } from "react";
 import { FaCrown } from "react-icons/fa";
 import axios from "../../utils/api";
 import type { Plan } from "../../types/Plan";
-
-interface PlanDetailsProps {
-  planId?: string;
-  planObj?: Plan;
-}
+import type { PlanDetailsProps } from "../../types/Plan";
 
 const PlanDetails: React.FC<PlanDetailsProps> = ({ planId, planObj }) => {
   const [plan, setPlan] = useState<Plan | null>(planObj || null);
@@ -14,7 +10,7 @@ const PlanDetails: React.FC<PlanDetailsProps> = ({ planId, planObj }) => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (planObj) return; // If planObj is provided, skip fetch
+    if (planObj) return;
     if (!planId) return;
     setLoading(true);
     setError(null);
