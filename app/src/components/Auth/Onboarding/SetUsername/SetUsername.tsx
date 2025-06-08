@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 import {
   NotificationProvider,
   useNotification,
-} from "../../../Notification/Notification";
+} from "../../../ui/Notification/Notification";
 import { baseURL } from "../../../../utils/api";
 
 const SetUsername: React.FC = () => {

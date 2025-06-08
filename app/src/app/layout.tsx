@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { AuthProvider } from "../components/Auth/AuthProvider/AuthProvider";
-import { NotificationProvider } from "../components/Notification/Notification";
+import { NotificationProvider } from "../components/ui/Notification/Notification";
 import Header from "../components/Header/Header";
 import Sidebar from "../components/Sidebar/Sidebar";
 import AcceptCookies from "../components/AcceptCookies/AcceptCookies";

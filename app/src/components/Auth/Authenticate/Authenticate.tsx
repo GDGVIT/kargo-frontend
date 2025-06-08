@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../AuthProvider/AuthProvider";
 import { motion, AnimatePresence } from "framer-motion";
-import { useNotification } from "../../Notification/Notification";
+import { useNotification } from "../../ui/Notification/Notification";
 import {
   FaUser,
   FaUserCircle,

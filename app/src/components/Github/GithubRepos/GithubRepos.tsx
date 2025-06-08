@@ -4,7 +4,7 @@ import React, { useEffect, useState, useMemo, useCallback } from "react";
 import { FaGithub } from "react-icons/fa";
 import api from "../../../utils/api";
 import axios from "axios";
-import { useNotification } from "../../Notification/Notification";
+import { useNotification } from "../../ui/Notification/Notification";
 import Loader from "../../Loader/Loader";
 import { motion } from "framer-motion";
 import RepoPagination from "./RepoPagination/RepoPagination";

@@ -29,8 +29,8 @@ import ResourcesSection from "./ResourcesSection";
 import PortsSection from "./PortsSection";
 import ActionButtons from "./ActionButtons";
 import ErrorMessage from "./ErrorMessage";
-import { useNotification } from "../../Notification/Notification";
-import Modal from "../../Modal/Modal";
+import { useNotification } from "../../ui/Notification/Notification";
+import Modal from "../../ui/Modal/Modal";
 
 export default function ConfigureApp({ appId }: { appId: string }) {
   const [form, setForm] = useState<Application | null>(null);

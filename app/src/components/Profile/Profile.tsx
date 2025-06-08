@@ -11,7 +11,7 @@ import {
 
 import { useAuth } from "../Auth/AuthProvider/AuthProvider";
 import Loader from "../Loader/Loader";
-import { useNotification } from "../Notification/Notification";
+import { useNotification } from "../ui/Notification/Notification";
 import GithubAuth from "../Github/GithubAuth/GithubAuth";
 import PlanDetails from "./PlanDetails";
 

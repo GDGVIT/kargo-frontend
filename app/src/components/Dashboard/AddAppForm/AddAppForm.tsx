@@ -3,7 +3,7 @@
 import { useState } from "react";
 import axios from "../../../utils/api";
 import { useRouter } from "next/navigation";
-import { useNotification } from "../../Notification/Notification";
+import { useNotification } from "../../ui/Notification/Notification";
 import type { RegistryCredential } from "../../Credentials/Credentials";
 import { useEffect } from "react";
 

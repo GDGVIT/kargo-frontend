@@ -3,8 +3,8 @@
 import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import axios from "../../utils/api";
-import { useNotification } from "../Notification/Notification";
-import Modal from "../Modal/Modal";
+import { useNotification } from "../ui/Notification/Notification";
+import Modal from "../ui/Modal/Modal";
 
 export default function Dashboard() {
   const [apps, setApps] = useState([]);
