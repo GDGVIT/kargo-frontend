@@ -11,6 +11,7 @@ import RepoPagination from "./RepoPagination/RepoPagination";
 import RepoSearchInput from "./RepoSearchInput/RepoSearchInput";
 import RepoOwnerFilter from "./RepoOwnerFilter/RepoOwnerFilter";
 import RepoList from "./RepoList/RepoList";
+import DockerModal from "./DockerModal";
 
 export interface Repo {
   id: number;
@@ -230,52 +231,13 @@ const GithubRepos: React.FC = () => {
   return (
     <>
       {/* Docker Modal */}
-      {dockerModal.open && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60">
-          <div className="bg-neutral-900 rounded-lg shadow-lg p-6 max-w-2xl w-full relative">
-            <button
-              className="absolute top-2 right-2 text-zinc-400 hover:text-white text-xl"
-              onClick={() => setDockerModal({ open: false })}
-              aria-label="Close"
-            >
-              &times;
-            </button>
-            <h2 className="text-lg font-bold mb-4 text-sky-400">
-              Dockerization for {dockerModal.repoName}
-            </h2>
-            {dockerModal.dockerfile && (
-              <div className="mb-4">
-                <h3 className="font-semibold text-white mb-1">Dockerfile</h3>
-                <pre className="bg-neutral-800 rounded p-3 text-sm overflow-x-auto text-green-200">
-                  {dockerModal.dockerfile}
-                </pre>
-              </div>
-            )}
-            {dockerModal.dockerCompose && (
-              <div>
-                <h3 className="font-semibold text-white mb-1">
-                  docker-compose.yml
-                </h3>
-                <pre className="bg-neutral-800 rounded p-3 text-sm overflow-x-auto text-yellow-200">
-                  {dockerModal.dockerCompose}
-                </pre>
-              </div>
-            )}
-            {!dockerModal.dockerfile && !dockerModal.dockerCompose && (
-              <div className="text-center text-red-400 mt-6">
-                <p className="mb-2 font-semibold">
-                  No Dockerfile or docker-compose.yml could be generated for
-                  this repository.
-                </p>
-                <p className="text-xs text-zinc-400">
-                  This may be due to an unsupported project structure or missing
-                  configuration files in the repository.
-                </p>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
+      <DockerModal
+        open={dockerModal.open}
+        dockerfile={dockerModal.dockerfile}
+        dockerCompose={dockerModal.dockerCompose}
+        repoName={dockerModal.repoName}
+        onClose={() => setDockerModal({ open: false })}
+      />
       {/* Loader while dockerizing */}
       {dockerizingRepoId && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60">
