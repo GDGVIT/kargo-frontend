@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export default function Hero() {
   return (
-    <section className="relative w-full min-h-screen  text-white flex items-center justify-center px-6">
+    <section className="relative flex flex-col items-center justify-center min-h-screen w-full px-6 text-white">
       <div className="max-w-5xl w-full text-center space-y-6">
         <motion.h1
           initial={{ opacity: 0, y: 30 }}
