@@ -12,7 +12,10 @@ import {
 import gsap from "gsap";
 import { Repo } from "../GithubRepos";
 
-const RepoListItem: React.FC<{ repo: Repo }> = ({ repo }) => {
+const RepoListItem: React.FC<{ repo: Repo; actions?: React.ReactNode }> = ({
+  repo,
+  actions,
+}) => {
   React.useEffect(() => {
     gsap.fromTo(
       `#repo-${repo.id}`,
@@ -81,6 +84,7 @@ const RepoListItem: React.FC<{ repo: Repo }> = ({ repo }) => {
           </span>
         </div>
         <div>Created: {new Date(repo.created_at).toLocaleDateString()}</div>
+        {actions && <div className="mt-2 flex justify-end">{actions}</div>}
       </div>
 
       <motion.div

@@ -11,6 +11,7 @@ import RepoPagination from "./RepoPagination/RepoPagination";
 import RepoSearchInput from "./RepoSearchInput/RepoSearchInput";
 import RepoOwnerFilter from "./RepoOwnerFilter/RepoOwnerFilter";
 import RepoList from "./RepoList/RepoList";
+import DockerModal from "./DockerModal";
 
 export interface Repo {
   id: number;
@@ -47,6 +48,17 @@ const GithubRepos: React.FC = () => {
   const [selectedOwner, setSelectedOwner] = useState<string>("All");
 
   const [allRepos, setAllRepos] = useState<Repo[]>([]);
+  const [dockerModal, setDockerModal] = useState<{
+    open: boolean;
+    dockerfile?: string;
+    dockerCompose?: string;
+    repoName?: string;
+  }>({
+    open: false,
+  });
+  const [dockerizingRepoId, setDockerizingRepoId] = useState<number | null>(
+    null
+  );
 
   useEffect(() => {
     const fetchInstallationIds = async () => {
@@ -156,6 +168,36 @@ const GithubRepos: React.FC = () => {
   const handlePrevPage = () => setPage((p) => Math.max(1, p - 1));
   const handleNextPage = () => setPage((p) => Math.min(totalPages, p + 1));
 
+  const handleDockerize = async (repo: Repo) => {
+    setDockerizingRepoId(repo.id);
+    try {
+      notify(`Dockerizing ${repo.full_name}...`, "info");
+      const res = await api.post("/api/applications/run-docker", {
+        url: repo.html_url,
+      });
+      setDockerizingRepoId(null);
+      if (res.data.dockerfile || res.data.dockerCompose) {
+        setDockerModal({
+          open: true,
+          dockerfile: res.data.dockerfile,
+          dockerCompose: res.data.dockerCompose,
+          repoName: repo.full_name,
+        });
+      } else {
+        notify("No Dockerfile or docker-compose.yml generated.", "warning");
+      }
+    } catch (err) {
+      setDockerizingRepoId(null);
+      let message = "Failed to dockerize repository.";
+      if (axios.isAxiosError(err)) {
+        message = err.response?.data?.error || message;
+      } else if (err instanceof Error) {
+        message = err.message;
+      }
+      notify(message, "error");
+    }
+  };
+
   if (loading) {
     return <Loader />;
   }
@@ -187,44 +229,78 @@ const GithubRepos: React.FC = () => {
   }
 
   return (
-    <motion.div
-      className="mx-auto mt-12 p-8"
-      initial={{ opacity: 0, y: 40 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.7, type: "spring", bounce: 0.2 }}
-    >
-      <motion.div
-        className="flex items-center mb-6"
-        initial={{ opacity: 0, x: -30 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ delay: 0.2 }}
-      >
-        <FaGithub className="text-2xl text-sky-400 mr-3 animate-pulse" />
-        <h2 className="text-2xl font-bold tracking-tight bg-gradient-to-r from-sky-400 to-blue-600 bg-clip-text text-transparent">
-          GitHub Repositories
-        </h2>
-      </motion.div>
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 space-y-4 sm:space-y-0">
-        <RepoSearchInput value={searchTerm} onChange={handleSearchChange} />
-        <RepoOwnerFilter
-          owners={owners}
-          value={selectedOwner}
-          onChange={handleOwnerChange}
-        />
-      </div>
-      <div className="text-xs text-orange-400 mb-4">
-        If your repositories are not showing up but your account is connected,
-        try uninstalling the GitHub app from your account first, then sign in
-        again through the profile page.
-      </div>
-      <RepoList repos={paginatedRepos} />
-      <RepoPagination
-        page={page}
-        totalPages={totalPages}
-        onPrev={handlePrevPage}
-        onNext={handleNextPage}
+    <>
+      {/* Docker Modal */}
+      <DockerModal
+        open={dockerModal.open}
+        dockerfile={dockerModal.dockerfile}
+        dockerCompose={dockerModal.dockerCompose}
+        repoName={dockerModal.repoName}
+        onClose={() => setDockerModal({ open: false })}
       />
-    </motion.div>
+      {/* Loader while dockerizing */}
+      {dockerizingRepoId && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60">
+          <div className="bg-neutral-900 rounded-lg shadow-lg p-8 flex flex-col items-center">
+            <Loader />
+            <p className="mt-4 text-sky-300">
+              Generating Dockerfile and docker-compose.yml...
+              <br />
+              This may take a minute or two for large repositories.
+            </p>
+          </div>
+        </div>
+      )}
+      <motion.div
+        className="mx-auto mt-12 p-8"
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, type: "spring", bounce: 0.2 }}
+      >
+        <motion.div
+          className="flex items-center mb-6"
+          initial={{ opacity: 0, x: -30 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.2 }}
+        >
+          <FaGithub className="text-2xl text-sky-400 mr-3 animate-pulse" />
+          <h2 className="text-2xl font-bold tracking-tight bg-gradient-to-r from-sky-400 to-blue-600 bg-clip-text text-transparent">
+            GitHub Repositories
+          </h2>
+        </motion.div>
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 space-y-4 sm:space-y-0">
+          <RepoSearchInput value={searchTerm} onChange={handleSearchChange} />
+          <RepoOwnerFilter
+            owners={owners}
+            value={selectedOwner}
+            onChange={handleOwnerChange}
+          />
+        </div>
+        <div className="text-xs text-orange-400 mb-4">
+          If your repositories are not showing up but your account is connected,
+          try uninstalling the GitHub app from your account first, then sign in
+          again through the profile page.
+        </div>
+        <RepoList
+          repos={paginatedRepos}
+          renderActions={(repo: Repo) => (
+            <button
+              className="px-3 py-1 bg-sky-700 hover:bg-sky-800 text-white rounded text-xs font-semibold mt-2"
+              onClick={() => handleDockerize(repo)}
+              disabled={!!dockerizingRepoId}
+            >
+              Dockerize
+            </button>
+          )}
+        />
+        <RepoPagination
+          page={page}
+          totalPages={totalPages}
+          onPrev={handlePrevPage}
+          onNext={handleNextPage}
+        />
+      </motion.div>
+    </>
   );
 };
 

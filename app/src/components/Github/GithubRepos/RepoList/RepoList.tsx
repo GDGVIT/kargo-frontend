@@ -3,7 +3,12 @@ import { motion } from "framer-motion";
 import RepoListItem from "../RepoListItem/RepoListItem";
 import { Repo } from "../GithubRepos";
 
-const RepoList: React.FC<{ repos: Repo[] }> = ({ repos }) => (
+interface RepoListProps {
+  repos: Repo[];
+  renderActions?: (repo: Repo) => React.ReactNode;
+}
+
+const RepoList: React.FC<RepoListProps> = ({ repos, renderActions }) => (
   <motion.ul
     className="divide-y divide-neutral-800 bg-neutral-950 rounded-lg shadow-inner mb-6  overflow-auto"
     style={{
@@ -30,7 +35,13 @@ const RepoList: React.FC<{ repos: Repo[] }> = ({ repos }) => (
         No repositories found.
       </motion.li>
     ) : (
-      repos.map((repo) => <RepoListItem key={repo.id} repo={repo} />)
+      repos.map((repo) => (
+        <RepoListItem
+          key={repo.id}
+          repo={repo}
+          actions={renderActions ? renderActions(repo) : undefined}
+        />
+      ))
     )}
   </motion.ul>
 );
