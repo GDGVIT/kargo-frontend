@@ -31,7 +31,7 @@ export default function Auth() {
       <div className="relative" ref={dropdownRef}>
         <div
           className="flex items-center gap-2 cursor-pointer px-2 py-1 hover:bg-[#2e354b] transition"
-          onClick={() => setOpen((v) => !v)}
+          onClick={() => (window.location.href = "/profile")}
         >
           {user.profilePicture && (
             // eslint-disable-next-line @next/next/no-img-element
@@ -43,6 +43,40 @@ export default function Auth() {
           )}
           <span className="text-sm font-medium block whitespace-nowrap">
             {user.name || user.username || user.email}
+          </span>
+          <span
+            className="ml-1 flex items-center justify-center w-7 h-7 rounded-full hover:bg-[#23283a] transition"
+            onClick={(e) => {
+              e.stopPropagation();
+              setOpen((v) => !v);
+            }}
+            tabIndex={0}
+            aria-label="Open user menu"
+            role="button"
+          >
+            <motion.svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              animate={{ rotate: open ? 180 : 0, scale: open ? 1.2 : 1 }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+              style={{ display: "block" }}
+            >
+              <motion.path
+                d="M6 10L12 16L18 10"
+                stroke="#9DA3B3"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                initial={false}
+                animate={{
+                  stroke: open ? "#fff" : "#9DA3B3",
+                }}
+                transition={{ duration: 0.2 }}
+              />
+            </motion.svg>
           </span>
         </div>
         <AnimatePresence>
