@@ -17,4 +17,5 @@ export default interface UserTableProps {
   onExtraResourcesSave: (userId: string) => void;
   onExtraResourcesCancel: (userId: string) => void;
   getRoleActions: (user: User) => React.ReactNode;
+  currentUserId?: string | null;
 }

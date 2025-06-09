@@ -66,12 +66,12 @@ const SetUsername: React.FC = () => {
 
   return (
     <NotificationProvider>
-      <section className="min-h-screen flex items-center justify-center bg-neutral-950 text-white px-4">
+      <section className="min-h-screen flex items-center justify-center px-4">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="max-w-md w-full bg-neutral-900 p-6 rounded-xl border border-neutral-800 space-y-5"
+          className="max-w-md w-fullspace-y-5"
         >
           <h2 className="text-2xl font-bold text-center text-white">
             Choose a Username

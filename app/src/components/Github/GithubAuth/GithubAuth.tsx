@@ -4,12 +4,13 @@ import React, { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import api, { baseURL } from "../../../utils/api";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaGithub, FaCheckCircle, FaExclamationCircle } from "react-icons/fa";
+import { FaGithub, FaExclamationCircle } from "react-icons/fa";
 import gsap from "gsap";
+import { AnimatedButton } from "../../ui/AnimatedButton/AnimatedButton";
 
 function InstallButton() {
   return (
-    <button
+    <AnimatedButton
       onClick={() =>
         window.open(
           `${baseURL}/api/github/install`,
@@ -17,18 +18,19 @@ function InstallButton() {
           "noopener,noreferrer"
         )
       }
-      className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-sky-600 to-blue-700 hover:from-sky-700 hover:to-blue-800 text-white rounded-lg font-semibold shadow-lg transition-all duration-200"
+      icon={<FaGithub size={22} />}
+      className="px-5 py-2.5"
       type="button"
+      variant="primary"
     >
-      <FaGithub size={22} />
       Connect GitHub
-    </button>
+    </AnimatedButton>
   );
 }
 
 function ReinstallButton() {
   return (
-    <button
+    <AnimatedButton
       onClick={() =>
         window.open(
           `${baseURL}/api/github/install`,
@@ -36,12 +38,13 @@ function ReinstallButton() {
           "noopener,noreferrer"
         )
       }
-      className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-sky-600 to-blue-700 hover:from-sky-700 hover:to-blue-800 text-white rounded-lg font-semibold shadow-lg transition-all duration-200"
+      icon={<FaGithub size={22} />}
+      className="px-5 py-2.5"
       type="button"
+      variant="primary"
     >
-      <FaGithub size={22} />
       Reinstall GitHub App
-    </button>
+    </AnimatedButton>
   );
 }
 
@@ -126,22 +129,6 @@ const GithubAuth: React.FC = () => {
         <div ref={iconRef}>
           <FaGithub size={48} className="text-white drop-shadow-lg" />
         </div>
-        <motion.h2
-          className="text-2xl font-extrabold text-white tracking-tight flex items-center gap-2"
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-        >
-          {isConnected ? (
-            <>
-              <FaCheckCircle className="text-green-400" /> GitHub Connected
-            </>
-          ) : (
-            <>
-              <FaGithub className="text-white" /> Connect GitHub
-            </>
-          )}
-        </motion.h2>
       </div>
       <AnimatePresence>
         {error && (
@@ -171,13 +158,13 @@ const GithubAuth: React.FC = () => {
               </span>{" "}
               installation
               {installationIds.length > 1 ? "s" : ""}.
+              <br />
               <Link
                 href="/dashboard"
                 className="text-sky-400 underline hover:text-sky-300 font-medium"
               >
                 Go to dashboard
               </Link>
-              . .
             </p>
             <div className="flex justify-center">
               <ReinstallButton />

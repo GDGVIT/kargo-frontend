@@ -130,7 +130,6 @@ export default function AddAppForm() {
           </label>
           <Select
             id="registry-credential"
-            required
             title="Registry Credential"
             value={
               selectedCredential

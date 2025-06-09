@@ -17,6 +17,7 @@ const UserTable: React.FC<UserTableProps> = ({
   onExtraResourcesSave,
   onExtraResourcesCancel,
   getRoleActions,
+  currentUserId, // <-- add this prop
 }) => (
   <Card>
     <table className="w-full border text-sm">
@@ -92,7 +93,11 @@ const UserTable: React.FC<UserTableProps> = ({
                     : user.plan?._id || ""
                 }
                 onChange={(e) => onPlanAssign(user._id, e.target.value)}
-                disabled={planAssigning === user._id}
+                // Allow self-assignment only if current user is superadmin
+                disabled={
+                  planAssigning === user._id ||
+                  (currentUserId === user._id && user.role !== "superadmin")
+                }
                 aria-label="Select plan for user"
                 className="min-w-[120px]"
               />
