@@ -49,8 +49,17 @@ const Profile: React.FC = () => {
       {/* Left: Avatar and Basic Info */}
       <Card className="flex flex-col items-center md:items-start gap-4 w-full md:w-1/3 min-w-[220px] max-w-full md:max-w-xs p-6">
         <div className="relative">
-          <div className="bg-zinc-800 rounded-full p-2 shadow">
-            <FaUserIcon className="w-24 h-24 text-zinc-300 bg-zinc-800 rounded-full p-4 border-4 border-sky-700/40 shadow transition-colors duration-300" />
+          <div>
+            {user.profilePicture ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={user.profilePicture}
+                alt="Profile"
+                className="w-24 h-24 rounded-full"
+              />
+            ) : (
+              <FaUserIcon className="w-24 h-24 text-zinc-300 bg-zinc-800 rounded-full p-4 border-4 border-sky-700/40 shadow transition-colors duration-300" />
+            )}
           </div>
         </div>
         <div className="flex flex-col items-center md:items-start gap-1 w-full">

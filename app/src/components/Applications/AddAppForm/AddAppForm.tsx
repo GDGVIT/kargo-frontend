@@ -74,7 +74,7 @@ export default function AddAppForm() {
       });
       setForm({ name: "", imageUrl: "", imageTag: "", credentials: [] });
       notify("Application added successfully!", "success");
-      router.push("/dashboard");
+      router.push("/applications");
     } catch {
       notify("Failed to add app", "error");
     }

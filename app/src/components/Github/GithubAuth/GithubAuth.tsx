@@ -160,10 +160,10 @@ const GithubAuth: React.FC = () => {
               {installationIds.length > 1 ? "s" : ""}.
               <br />
               <Link
-                href="/dashboard"
+                href="/applications"
                 className="text-sky-400 underline hover:text-sky-300 font-medium"
               >
-                Go to dashboard
+                Go to Applications
               </Link>
             </p>
             <div className="flex justify-center">

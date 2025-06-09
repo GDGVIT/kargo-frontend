@@ -8,7 +8,7 @@ import Modal from "../ui/Modal/Modal";
 import { AnimatedButton } from "../ui/AnimatedButton/AnimatedButton";
 import { FaTrash } from "react-icons/fa";
 
-export default function Dashboard() {
+export default function Applications() {
   const [apps, setApps] = useState([]);
   const [loading, setLoading] = useState(false);
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
@@ -48,7 +48,7 @@ export default function Dashboard() {
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold text-gray-100">Your Applications</h1>
         <AnimatedButton
-          onClick={() => router.push("/dashboard/add")}
+          onClick={() => router.push("/applications/add")}
           className="!px-4 !py-2 !h-auto !min-w-0 !text-base"
           icon={null}
           variant="primary"
@@ -110,7 +110,7 @@ export default function Dashboard() {
                 <div
                   key={app._id}
                   className="bg-[var(--card-background)] rounded-xl shadow-xl p-6 cursor-pointer hover:scale-[1.03] hover:shadow-2xl transition-transform border border-gray-700 group relative overflow-hidden animate-pop"
-                  onClick={() => router.push(`/dashboard/${app._id}`)}
+                  onClick={() => router.push(`/applications/${app._id}`)}
                   data-animate-delay={idx * 60}
                 >
                   <div title="Active" />

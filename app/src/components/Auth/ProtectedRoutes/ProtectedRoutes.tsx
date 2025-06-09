@@ -23,7 +23,7 @@ export default function ProtectRoutes({ children }: ProtectRoutesProps) {
       user.role !== "admin" &&
       user.role !== "superadmin"
     ) {
-      router.replace("/dashboard");
+      router.replace("/applications");
     }
   }, [loading, user, router, pathname]);
 

@@ -23,7 +23,7 @@ export default function Sidebar() {
   }, [user]);
 
   const navItems = [
-    { href: "/dashboard", label: "Dashboard", icon: <FiBarChart2 /> },
+    { href: "/applications", label: "Applications", icon: <FiBarChart2 /> },
     { href: "/dockerize", label: "Dockerize", icon: <FaDocker /> },
     { href: "/credentials", label: "Credentials", icon: <FiKey /> },
     ...(isAdmin

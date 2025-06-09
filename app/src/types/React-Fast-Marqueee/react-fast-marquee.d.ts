@@ -1,4 +1,3 @@
-// TypeScript declaration for 'react-fast-marquee' (minimal, for default import)
 declare module "react-fast-marquee" {
   import * as React from "react";
   interface MarqueeProps extends React.HTMLAttributes<HTMLDivElement> {

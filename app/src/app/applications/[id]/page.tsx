@@ -1,6 +1,6 @@
-import ConfigureApp from "../../../components/Dashboard/ConfigureApp/ConfigureApp";
+import ConfigureApp from "../../../components/Applications/ConfigureApp/ConfigureApp";
 
-export default async function DashboardAppConfigPage({
+export default async function ApplicationConfigPage({
   params,
 }: {
   params: Promise<{ id: string }>;

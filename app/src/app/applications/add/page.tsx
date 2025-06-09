@@ -1,4 +1,4 @@
-import AddAppForm from "../../../components/Dashboard/AddAppForm/AddAppForm";
+import AddAppForm from "../../../components/Applications/AddAppForm/AddAppForm";
 
 export default function AddAppPage() {
   return (

@@ -141,7 +141,7 @@ export default function ConfigureApp({ appId }: { appId: string }) {
     try {
       await axios.delete(`/api/applications/${appId}/delete-all`);
       notify("Application and all resources deleted!", "success");
-      router.push("/dashboard");
+      router.push("/applications");
     } catch (err) {
       notify("Failed to delete application", "error");
       console.log(err);
@@ -194,11 +194,11 @@ export default function ConfigureApp({ appId }: { appId: string }) {
     <div className="w-full p-8 rounded-2xl mt-10">
       <AnimatedButton
         type="button"
-        onClick={() => router.push("/dashboard")}
+        onClick={() => router.push("/applications")}
         className="flex items-center gap-2 text-gray-400 hover:text-blue-400 font-medium mb-8 transition-colors !bg-transparent !shadow-none !px-0 !py-0"
         icon={null}
       >
-        <span className="text-lg">←</span> Back to Dashboard
+        <span className="text-lg">←</span> Back to Application
       </AnimatedButton>
       <h1 className="text-3xl font-extrabold mb-8 text-gray-100 tracking-tight">
         Configure <span className="text-blue-400">{form?.name}</span>
