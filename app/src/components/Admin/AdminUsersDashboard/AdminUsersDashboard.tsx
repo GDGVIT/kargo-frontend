@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import axios from "../../../utils/api";
-import type { Plan } from "../../../types/Plan";
-import type { User } from "../../../types/User";
+import type Plan from "../../../types/Plan/Plan";
+import type User from "../../../types/User/User";
 import UserManagement from "./UserManagement/UserManagement";
 import { AnimatedButton } from "../../ui/AnimatedButton/AnimatedButton";
 import { useNotification } from "../../ui/Notification/Notification";
@@ -57,7 +57,10 @@ export default function AdminUsersDashboard() {
     fetchPlans();
   }, []);
 
-  async function handleRoleChange(userId: string, newRole: string) {
+  async function handleRoleChange(
+    userId: string,
+    newRole: "user" | "admin" | "superadmin"
+  ) {
     setRoleUpdating(userId);
     try {
       await axios.put(`/api/users/${userId}/role`, { role: newRole });

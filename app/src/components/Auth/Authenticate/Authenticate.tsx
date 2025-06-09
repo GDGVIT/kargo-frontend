@@ -15,21 +15,7 @@ import { baseURL } from "../../../utils/api";
 import { useRouter } from "next/navigation";
 import { FcGoogle } from "react-icons/fc";
 import Image from "next/image";
-
-const Input = ({
-  icon,
-  ...props
-}: React.InputHTMLAttributes<HTMLInputElement> & {
-  icon: React.ReactNode;
-}) => (
-  <div className="flex items-center px-4 py-2 mb-3 w-full max-w-lg">
-    <span className="text-zinc-400 mr-4">{icon}</span>
-    <input
-      className="bg-transparent outline-none w-full text-white placeholder-zinc-500 text-lg"
-      {...props}
-    />
-  </div>
-);
+import { Input } from "../../ui/Input/Input";
 
 const tabVariants = {
   active: { borderBottomWidth: 3, borderColor: "#38bdf8" },
@@ -59,13 +45,11 @@ export default function Authenticate() {
     /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
 
   const handleSubmit = async () => {
-    // Trim inputs for validation
     const trimmedEmail = email.trim();
     const trimmedPassword = password.trim();
     const trimmedName = name.trim();
     const trimmedUsername = username.trim();
 
-    // Check mandatory fields
     if (isLogin) {
       if (!trimmedEmail || !trimmedPassword) {
         notify("Please fill in all fields.", "warning");
@@ -83,13 +67,11 @@ export default function Authenticate() {
       }
     }
 
-    // Email validation
     if (!validateEmail(trimmedEmail)) {
       notify("Please enter a valid email address.", "warning");
       return;
     }
 
-    // Password length check
     if (trimmedPassword.length < 6) {
       notify("Password must be at least 6 characters.", "warning");
       return;

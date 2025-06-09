@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FaTimes, FaCopy, FaDocker } from "react-icons/fa";
-import { DockerModalProps } from "../../../../types/DockerModal";
+import DockerModalProps from "../../../../types/DockerModalProps/DockerModalProps";
 
 const DockerModal: React.FC<DockerModalProps> = ({
   open,
@@ -25,31 +25,31 @@ const DockerModal: React.FC<DockerModalProps> = ({
   const formatContent = (content?: string) => {
     if (!content) return "";
     let formatted = content.trim();
-    // Remove leading/trailing \n and quotes
+
     formatted = formatted.replace(/^\\n+|\\n+$/g, "");
-    // Remove leading # No codebase provided and following newlines
+
     formatted = formatted.replace(/^# No codebase provided\s*\n?/i, "");
-    // Remove any escaped single/double quotes at start/end
+
     formatted = formatted.replace(/^['"]|['"]$/g, "");
-    // Replace all \n with real newlines
+
     formatted = formatted.replace(/\\n/g, "\n");
-    // Remove accidental double newlines
+
     formatted = formatted.replace(/\n{3,}/g, "\n\n");
-    // Remove trailing whitespace on each line
+
     formatted = formatted
       .split("\n")
       .map((line) => line.trimEnd())
       .join("\n");
-    // Remove extra single quotes around YAML keys/values (common in AI output)
+
     formatted = formatted.replace(/'([^']+)'/g, "$1");
-    // Remove extra backslashes before quotes
+
     formatted = formatted.replace(/\\'/g, "'").replace(/\\"/g, '"');
-    // Remove any leading or trailing single/double quotes on each line
+
     formatted = formatted
       .split("\n")
       .map((line) => line.replace(/^['"]|['"]$/g, ""))
       .join("\n");
-    // Remove escaped numbers like \3\ (common in AI YAML output)
+
     formatted = formatted.replace(/\\(\d+)\\/g, "$1");
     return formatted;
   };

@@ -1,10 +1,6 @@
 import React from "react";
 
-interface ActionButtonsProps {
-  saving: boolean;
-  onSaveAndDeploy: (e: React.FormEvent) => void;
-  onRequestDelete: () => void;
-}
+import type ActionButtonsProps from "../../../types/Application/ActionButtonProps/ActionButtonProps";
 
 const ActionButtons: React.FC<ActionButtonsProps> = ({
   saving,

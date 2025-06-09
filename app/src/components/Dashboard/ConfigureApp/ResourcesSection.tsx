@@ -1,40 +1,6 @@
 import React from "react";
 
-interface ResourceLimitDetails {
-  cpu: string;
-  memory: string;
-}
-
-interface ResourceLimits {
-  allowed: {
-    requests: ResourceLimitDetails;
-    limits: ResourceLimitDetails;
-  };
-  usage: {
-    requests: ResourceLimitDetails;
-    limits: ResourceLimitDetails;
-  };
-}
-
-interface ResourceDetails {
-  cpu?: string;
-  memory?: string;
-}
-
-interface Resources {
-  requests?: ResourceDetails;
-  limits?: ResourceDetails;
-}
-
-interface ResourcesSectionProps {
-  resourceLimits: ResourceLimits;
-  resources: Resources;
-  handleResourceChange: (
-    section: "requests" | "limits",
-    field: "cpu" | "memory",
-    value: string
-  ) => void;
-}
+import type ResourcesSectionProps from "../../../types/Application/Resources/ResourcesSectionProps/ResourcesSectionProps";
 
 const sanitizeNumber = (val: string) => val.replace(/[^\d.]/g, "");
 
@@ -43,7 +9,6 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
   resources,
   handleResourceChange,
 }) => {
-  // Helper to extract numeric part from value with suffix
   const getNumeric = (val: string | undefined, suffix: string) => {
     if (!val) return "";
     return val.endsWith(suffix) ? val.slice(0, -suffix.length) : val;

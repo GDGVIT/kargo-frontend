@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { FaCrown } from "react-icons/fa";
 import axios from "../../utils/api";
-import type { Plan } from "../../types/Plan";
-import type { PlanDetailsProps } from "../../types/Plan";
+import type Plan from "../../types/Plan/Plan";
+import type PlanDetailsProps from "../../types/Plan/PlanDetailsProps";
 
 const PlanDetails: React.FC<PlanDetailsProps> = ({ planId, planObj }) => {
   const [plan, setPlan] = useState<Plan | null>(planObj || null);

@@ -3,44 +3,8 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { baseURL } from "../../../utils/api";
 import Loader from "../../ui/Loader/Loader";
-import type { Plan } from "../../../types/Plan";
-
-interface User {
-  name: string;
-  _id: string;
-  email: string;
-  username?: string;
-  profilePicture?: string;
-  oauth?: {
-    googleId?: string;
-    githubId?: string;
-  };
-  githubInstallationId?: string[];
-  resources?: {
-    requests?: { cpu?: string; memory?: string };
-    limits?: { cpu?: string; memory?: string };
-  };
-  plan?: string | Plan;
-  role?: string;
-}
-
-interface AuthContextType {
-  user: User | null;
-  loading: boolean;
-  login: (
-    email: string,
-    password: string,
-    username?: string
-  ) => Promise<{ success: boolean; message: string }>;
-  register: (
-    email: string,
-    password: string,
-    name?: string,
-    username?: string
-  ) => Promise<{ success: boolean; message: string }>;
-  logout: () => Promise<void>;
-  refreshUser: () => Promise<void>;
-}
+import type User from "../../../types/User/User";
+import type AuthContextType from "../../../types/Auth/AuthContextType/AuthContextType";
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 

@@ -3,7 +3,7 @@ import ExtraResourcesEditor from "../../AdminPlansDashboard/ExtraResourcesEditor
 import { Card } from "../../../ui/Card/Card";
 import { Select } from "../../../ui/Select/Select";
 import { AnimatedButton } from "../../../ui/AnimatedButton/AnimatedButton";
-import type { UserTableProps } from "../../../../types/User";
+import type UserTableProps from "../../../../types/User/UserTableProps";
 
 const UserTable: React.FC<UserTableProps> = ({
   users,

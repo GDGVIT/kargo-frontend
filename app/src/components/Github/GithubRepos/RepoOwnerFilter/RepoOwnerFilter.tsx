@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { RepoOwnerFilterProps } from "../../../../types/GithubRepos";
+import RepoOwnerFilterProps from "../../../../types/Repo/RepoOwnerFilterProps";
 
 const RepoOwnerFilter: React.FC<RepoOwnerFilterProps> = ({
   owners,
