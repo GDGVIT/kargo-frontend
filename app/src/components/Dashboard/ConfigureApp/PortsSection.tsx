@@ -1,19 +1,7 @@
 import React, { useState } from "react";
 import { useAuth } from "../../Auth/AuthProvider/AuthProvider";
-
-interface Port {
-  id: string;
-  containerPort: number;
-  hostPort: number;
-  protocol: "TCP" | "UDP";
-  description?: string;
-  subdomain?: string;
-}
-
-interface PortsSectionProps {
-  ports: Port[];
-  onChange: (ports: Port[]) => void;
-}
+import type Port from "../../../types/Application/Port/Port";
+import type PortsSectionProps from "../../../types/Application/Port/PortSectionProps/PortSectionProps";
 
 const defaultPort: Port = {
   id: "",

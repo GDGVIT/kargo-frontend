@@ -1,11 +1,5 @@
 import React from "react";
-
-interface ImageFieldsProps {
-  imageUrl: string;
-  imageTag: string;
-  setImageUrl: (url: string) => void;
-  setImageTag: (tag: string) => void;
-}
+import type ImageFieldsProps from "../../../types/Application/ImageFieldProps/ImageFieldProps";
 
 const ImageFields: React.FC<ImageFieldsProps> = ({
   imageUrl,

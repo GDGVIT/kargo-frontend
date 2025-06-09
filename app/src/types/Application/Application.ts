@@ -1,6 +1,6 @@
-import Probe from "./Probe";
-import Toleration from "./Toleration";
-import Affinity from "./Affinity";
+import Probe from "./Probe/Probe";
+import Toleration from "./Toleration/Toleration";
+import Affinity from "./Affinity/Affinity";
 
 export default interface Application {
   _id: string;

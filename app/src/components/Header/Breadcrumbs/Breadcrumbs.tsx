@@ -11,24 +11,26 @@ const Breadcrumbs: React.FC = () => {
     typeof pathname === "string" ? pathname.split("/").filter(Boolean) : [];
 
   return (
-    <>
-      {pathSegments.map((segment, idx) => {
-        const href = "/" + pathSegments.slice(0, idx + 1).join("/");
-        return (
-          <React.Fragment key={idx}>
-            <MdArrowForwardIos className="text-xs mx-1" />
-            <Link href={href}>
-              <span className="text-[#9DA3B3] text-base font-normal select-none mx-1 flex items-center h-full">
-                {segment
-                  .split("-")
-                  .map((s: string) => s.charAt(0).toUpperCase() + s.slice(1))
-                  .join(" ")}
-              </span>
-            </Link>
-          </React.Fragment>
-        );
-      })}
-    </>
+    <div className="flex items-center">
+      <span className="hidden sm:flex items-center">
+        {pathSegments.map((segment, idx) => {
+          const href = "/" + pathSegments.slice(0, idx + 1).join("/");
+          return (
+            <React.Fragment key={idx}>
+              <MdArrowForwardIos className="text-xs mx-1" />
+              <Link href={href}>
+                <span className="text-[#9DA3B3] text-base font-normal select-none mx-1 flex items-center h-full">
+                  {segment
+                    .split("-")
+                    .map((s: string) => s.charAt(0).toUpperCase() + s.slice(1))
+                    .join(" ")}
+                </span>
+              </Link>
+            </React.Fragment>
+          );
+        })}
+      </span>
+    </div>
   );
 };
 

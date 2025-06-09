@@ -4,25 +4,8 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "../../../utils/api";
 import type Application from "../../../types/Application/Application";
-
-interface Port {
-  id: string;
-  containerPort: number;
-  hostPort: number;
-  protocol: "TCP" | "UDP";
-  description?: string;
-}
-
-interface AppPort {
-  name?: string;
-  containerPort: number;
-  protocol?: string;
-  ingressEnabled?: boolean;
-  subdomain?: string;
-  ingressHost?: string;
-  hostPort?: number;
-  description?: string;
-}
+import type Port from "../../../types/Application/Port/Port";
+import type AppPort from "../../../types/Application/AppPort/AppPort";
 import ImageFields from "./ImageFields";
 import EnvVarsSection from "./EnvVarsSection";
 import ResourcesSection from "./ResourcesSection";

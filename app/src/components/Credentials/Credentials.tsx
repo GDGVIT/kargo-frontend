@@ -9,14 +9,8 @@ import { Card } from "../ui/Card/Card";
 import { FaDocker, FaGithub, FaGitlab, FaKey } from "react-icons/fa";
 import { useNotification } from "../ui/Notification/Notification";
 import Modal from "../ui/Modal/Modal";
-
-export type RegistryType = "dockerhub" | "github" | "gitlab" | "other";
-export interface RegistryCredential {
-  name: string;
-  registryType: RegistryType;
-  username: string;
-  token: string;
-}
+import type RegistryType from "../../types/Registry/RegistryType/RegistryType";
+import type RegistryCredential from "../../types/Registry/RegistryCredential/RegistryCredential";
 
 export default function Credentials({
   onSelect,
@@ -55,7 +49,7 @@ export default function Credentials({
   const handleAdd = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    // Prevent duplicate name+registryType
+
     if (
       credentials.some(
         (c) => c.name === form.name && c.registryType === form.registryType
@@ -71,7 +65,7 @@ export default function Credentials({
     try {
       await axios.post("/api/users/me/credentials", form);
       setForm({ name: "", registryType: "dockerhub", username: "", token: "" });
-      await fetchCredentials(); // Await to ensure UI updates after add
+      await fetchCredentials();
       notify("Credential added successfully!", "success");
     } catch {
       notify("Failed to save credential", "error");
@@ -85,7 +79,7 @@ export default function Credentials({
       await axios.delete("/api/users/me/credentials", {
         data: { name: cred.name, registryType: cred.registryType },
       });
-      await fetchCredentials(); // Await to ensure UI updates after delete
+      await fetchCredentials();
       notify("Credential deleted successfully!", "success");
     } catch {
       notify("Failed to delete credential", "error");

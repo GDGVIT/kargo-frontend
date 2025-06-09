@@ -1,12 +1,6 @@
 import React from "react";
 import { FiTrash2 } from "react-icons/fi";
-
-interface EnvVarsSectionProps {
-  envList: [string, string][];
-  handleEnvChange: (idx: number, key: string, value: string) => void;
-  addEnvVar: () => void;
-  removeEnvVar: (idx: number) => void;
-}
+import type EnvVarsSectionProps from "../../../types/Application/EnvVarsSectionProps/EnvVarsSectionProps";
 
 const EnvVarsSection: React.FC<EnvVarsSectionProps> = ({
   envList,

@@ -1,6 +1,8 @@
+import RegistryType from "../RegistryType/RegistryType";
+
 export default interface RegistryCredential {
   name: string;
-  registryType: "dockerhub" | "github" | "gitlab" | "other";
+  registryType: RegistryType;
   username: string;
   token: string;
 }

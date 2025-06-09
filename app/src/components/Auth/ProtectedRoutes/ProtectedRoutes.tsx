@@ -4,10 +4,7 @@ import React, { useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { useAuth } from "../AuthProvider/AuthProvider";
 import Loader from "../../ui/Loader/Loader";
-
-interface ProtectRoutesProps {
-  children: React.ReactNode;
-}
+import type ProtectRoutesProps from "../../../types/ProtectRoutesProps/ProtectRoutesProps";
 
 export default function ProtectRoutes({ children }: ProtectRoutesProps) {
   const { user, loading } = useAuth();

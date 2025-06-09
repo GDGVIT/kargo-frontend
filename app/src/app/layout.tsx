@@ -35,12 +35,11 @@ export default function RootLayout({
           <AuthProvider>
             <Sidebar />
             <LayoutWrapper>
-              {" "}
               <Header />
               {children}
             </LayoutWrapper>
             <AcceptCookies />
-          </AuthProvider>{" "}
+          </AuthProvider>
         </NotificationProvider>
       </body>
     </html>
