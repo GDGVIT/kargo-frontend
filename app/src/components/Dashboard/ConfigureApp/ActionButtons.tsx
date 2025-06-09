@@ -1,4 +1,5 @@
 import React from "react";
+import { AnimatedButton } from "../../ui/AnimatedButton/AnimatedButton";
 
 import type ActionButtonsProps from "../../../types/Application/ActionButtonProps/ActionButtonProps";
 
@@ -8,33 +9,39 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
   onRequestDelete,
 }) => (
   <div className="flex flex-wrap gap-3 mt-6">
-    <button
+    <AnimatedButton
       type="submit"
       disabled={saving}
       onClick={onSaveAndDeploy}
-      className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-60 disabled:cursor-not-allowed transition-colors"
+      className="!px-4 !py-2"
+      icon={null}
+      variant="primary"
     >
       {saving ? "Saving..." : "Save & Deploy"}
-    </button>
-    <button
+    </AnimatedButton>
+    <AnimatedButton
       type="button"
       disabled={saving}
       onClick={onRequestDelete}
-      className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 disabled:opacity-60 disabled:cursor-not-allowed transition-colors"
+      className="!px-4 !py-2"
+      icon={null}
+      variant="danger"
     >
       Delete Application
-    </button>
-    <button
+    </AnimatedButton>
+    <AnimatedButton
       type="button"
-      className="px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-800 transition-colors"
+      className="!px-4 !py-2"
       onClick={() => {
         if (typeof window !== "undefined" && window.location.pathname) {
           window.location.assign(window.location.pathname + "/logs");
         }
       }}
+      icon={null}
+      variant="secondary"
     >
       Logs
-    </button>
+    </AnimatedButton>
   </div>
 );
 

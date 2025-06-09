@@ -14,6 +14,7 @@ import ActionButtons from "./ActionButtons";
 import ErrorMessage from "./ErrorMessage";
 import { useNotification } from "../../ui/Notification/Notification";
 import Modal from "../../ui/Modal/Modal";
+import { AnimatedButton } from "../../ui/AnimatedButton/AnimatedButton";
 
 export default function ConfigureApp({ appId }: { appId: string }) {
   const [form, setForm] = useState<Application | null>(null);
@@ -193,13 +194,14 @@ export default function ConfigureApp({ appId }: { appId: string }) {
     return <div className="text-center text-gray-400 ">App not found</div>;
   return (
     <div className="w-full p-8 rounded-2xl mt-10">
-      <button
+      <AnimatedButton
         type="button"
         onClick={() => router.push("/dashboard")}
-        className="flex items-center gap-2 text-gray-400 hover:text-blue-400 font-medium mb-8 transition-colors"
+        className="flex items-center gap-2 text-gray-400 hover:text-blue-400 font-medium mb-8 transition-colors !bg-transparent !shadow-none !px-0 !py-0"
+        icon={null}
       >
         <span className="text-lg">←</span> Back to Dashboard
-      </button>
+      </AnimatedButton>
       <h1 className="text-3xl font-extrabold mb-8 text-gray-100 tracking-tight">
         Configure <span className="text-blue-400">{form?.name}</span>
       </h1>
@@ -349,19 +351,25 @@ export default function ConfigureApp({ appId }: { appId: string }) {
             resources? This cannot be undone.
           </div>
           <div className="flex gap-3 justify-end">
-            <button
+            <AnimatedButton
               onClick={() => setShowDeleteModal(false)}
-              className="px-5 py-2 bg-gray-800 text-gray-200 rounded-lg hover:bg-gray-700 border border-gray-700 transition-colors"
+              className="!bg-gray-800 hover:!bg-gray-700 !text-gray-200 !border !border-gray-700"
+              icon={null}
+              title="Cancel"
+              variant="secondary"
             >
               Cancel
-            </button>
-            <button
+            </AnimatedButton>
+            <AnimatedButton
               onClick={handleDelete}
-              className="px-5 py-2 bg-gradient-to-r from-red-700 via-red-600 to-red-500 text-white rounded-lg hover:from-red-800 hover:to-red-600 font-semibold border border-red-700 shadow-md transition-colors"
+              className="font-semibold !border !border-red-700 !shadow-md"
               disabled={saving}
+              icon={null}
+              title="Delete"
+              variant="danger"
             >
               {saving ? "Deleting..." : "Delete"}
-            </button>
+            </AnimatedButton>
           </div>
         </Modal>
       </form>

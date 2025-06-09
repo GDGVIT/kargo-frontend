@@ -73,12 +73,13 @@ body {
 }
 
 main {
-  min-height: 100vh;
+  margin: auto 0;
   padding: var(--padding-medium);
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: stretch;
+  min-height: 100%;
 }
 
 @media (max-width: 768px) {

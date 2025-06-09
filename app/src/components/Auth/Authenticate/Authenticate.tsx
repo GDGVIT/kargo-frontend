@@ -135,7 +135,7 @@ export default function Authenticate() {
   };
 
   return (
-    <section className="min-h-screen flex items-center justify-center px-6 py-12">
+    <section className="flex items-center justify-center px-6 py-12">
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}

@@ -3,6 +3,7 @@ import "./globals.css";
 import { AuthProvider } from "../components/Auth/AuthProvider/AuthProvider";
 import { NotificationProvider } from "../components/ui/Notification/Notification";
 import Header from "../components/Header/Header";
+import Footer from "../components/Footer/Footer";
 import Sidebar from "../components/Sidebar/Sidebar";
 import AcceptCookies from "../components/AcceptCookies/AcceptCookies";
 import LayoutWrapper from "../components/LayoutWrapper/LayoutWrapper";
@@ -37,6 +38,7 @@ export default function RootLayout({
             <LayoutWrapper>
               <Header />
               {children}
+              <Footer />
             </LayoutWrapper>
             <AcceptCookies />
           </AuthProvider>

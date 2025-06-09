@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import { motion } from "framer-motion";
 import {
   FaSignOutAlt,
   FaEnvelope,
@@ -14,6 +13,8 @@ import Loader from "../ui/Loader/Loader";
 import { useNotification } from "../ui/Notification/Notification";
 import GithubAuth from "../Github/GithubAuth/GithubAuth";
 import PlanDetails from "./PlanDetails";
+import Card from "../ui/Card/Card";
+import { AnimatedButton } from "../ui/AnimatedButton/AnimatedButton";
 
 const Profile: React.FC = () => {
   const { user, loading, logout } = useAuth();
@@ -34,42 +35,27 @@ const Profile: React.FC = () => {
 
   if (!user) {
     return (
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        className="flex flex-col items-center justify-center min-h-[60vh]"
-      >
+      <Card className="flex flex-col items-center justify-center min-h-[60vh]">
         <FaUserIcon className="text-7xl text-zinc-600 mb-5" />
         <div className="text-center py-8 text-gray-400 text-lg font-semibold">
           You are not logged in.
         </div>
-      </motion.div>
+      </Card>
     );
   }
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.7 }}
-      className="w-full max-w-5xl mx-auto mt-8 sm:mt-12 px-2 sm:px-6 py-6 flex flex-col md:flex-row md:items-start md:gap-8 items-stretch gap-8 backdrop-blur-lg"
-    >
+    <div className="w-full max-w-5xl mx-auto mt-8 sm:mt-12 px-2 sm:px-6 py-6 flex flex-col md:flex-row md:items-start md:gap-8 items-stretch gap-8">
       {/* Left: Avatar and Basic Info */}
-      <div className="flex flex-col items-center md:items-start gap-4 w-full md:w-1/3 min-w-[220px] max-w-full md:max-w-xs">
-        <motion.div
-          initial={{ scale: 0.8, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ delay: 0.2, duration: 0.5, type: "spring" }}
-          className="relative"
-        >
-          <div className="bg-gradient-to-tr from-sky-700/40 via-zinc-800/80 to-sky-900/30 rounded-full p-2 shadow-lg">
-            <FaUserIcon className="w-28 h-28 text-zinc-300 bg-zinc-800 rounded-full p-4 border-4 border-sky-700/40 shadow-xl transition-colors duration-300" />
+      <Card className="flex flex-col items-center md:items-start gap-4 w-full md:w-1/3 min-w-[220px] max-w-full md:max-w-xs p-6">
+        <div className="relative">
+          <div className="bg-zinc-800 rounded-full p-2 shadow">
+            <FaUserIcon className="w-24 h-24 text-zinc-300 bg-zinc-800 rounded-full p-4 border-4 border-sky-700/40 shadow transition-colors duration-300" />
           </div>
-        </motion.div>
+        </div>
         <div className="flex flex-col items-center md:items-start gap-1 w-full">
-          <div className="flex flex-wrap items-center gap-3 text-2xl font-bold text-white select-text drop-shadow-sm w-full">
-            <FaUser className="text-sky-400 animate-pulse flex-shrink-0" />
+          <div className="flex flex-wrap items-center gap-3 text-xl font-bold text-white select-text w-full">
+            <FaUser className="text-sky-400 flex-shrink-0" />
             <span
               className="break-words flex-1 min-w-0"
               style={{ wordBreak: "break-word" }}
@@ -92,19 +78,17 @@ const Profile: React.FC = () => {
             </div>
           )}
         </div>
-        <motion.button
-          whileHover={{ scale: 1.07, backgroundColor: "#f43f5e" }}
-          whileTap={{ scale: 0.97 }}
+        <AnimatedButton
           onClick={handleLogout}
-          className="flex items-center gap-3 px-8 py-3 bg-gradient-to-r from-rose-600 via-rose-700 to-rose-800 hover:from-rose-500 hover:to-rose-700 text-white rounded-xl font-semibold shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-rose-500 mt-2 w-full md:w-auto justify-center"
-          aria-label="Logout"
+          icon={<FaSignOutAlt className="text-lg" />}
+          className="mt-2 w-full md:w-auto justify-center"
+          variant="danger"
         >
-          <FaSignOutAlt className="text-xl animate-bounce" /> Logout
-        </motion.button>
-      </div>
-
+          Logout
+        </AnimatedButton>
+      </Card>
       {/* Right: Details and Integrations */}
-      <div className="flex flex-col gap-4 w-full md:w-2/3 min-w-0">
+      <div className="flex flex-col gap-4 w-full md:w-2/3 justify-start">
         {/* Plan Section */}
         {user.plan && (
           <PlanDetails
@@ -112,11 +96,11 @@ const Profile: React.FC = () => {
           />
         )}
         {/* GitHub Integration */}
-        <div className="rounded-xl bg-neutral-900/80 border border-sky-800 p-4 shadow-inner min-w-0">
+        <Card className="p-4">
           <GithubAuth />
-        </div>
+        </Card>
       </div>
-    </motion.div>
+    </div>
   );
 };
 

@@ -6,7 +6,7 @@ interface CardProps {
   className?: string;
 }
 
-export const Card = ({ children, className = "" }: CardProps) => {
+const Card = ({ children, className = "" }: CardProps) => {
   const cardRef = useRef(null);
   useEffect(() => {
     gsap.fromTo(
@@ -24,3 +24,5 @@ export const Card = ({ children, className = "" }: CardProps) => {
     </div>
   );
 };
+
+export default Card;

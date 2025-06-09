@@ -5,7 +5,7 @@ import axios from "../../utils/api";
 import { Input } from "../ui/Input/Input";
 import { Select } from "../ui/Select/Select";
 import { AnimatedButton } from "../ui/AnimatedButton/AnimatedButton";
-import { Card } from "../ui/Card/Card";
+import Card from "../ui/Card/Card";
 import { FaDocker, FaGithub, FaGitlab, FaKey } from "react-icons/fa";
 import { useNotification } from "../ui/Notification/Notification";
 import Modal from "../ui/Modal/Modal";

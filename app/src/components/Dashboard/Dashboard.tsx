@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import axios from "../../utils/api";
 import { useNotification } from "../ui/Notification/Notification";
 import Modal from "../ui/Modal/Modal";
+import { AnimatedButton } from "../ui/AnimatedButton/AnimatedButton";
+import { FaTrash } from "react-icons/fa";
 
 export default function Dashboard() {
   const [apps, setApps] = useState([]);
@@ -45,13 +47,14 @@ export default function Dashboard() {
     <div className="max-w-4xl mx-auto p-6 mt-8 ">
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold text-gray-100">Your Applications</h1>
-        <button
-          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors font-semibold"
+        <AnimatedButton
           onClick={() => router.push("/dashboard/add")}
-          type="button"
+          className="!px-4 !py-2 !h-auto !min-w-0 !text-base"
+          icon={null}
+          variant="primary"
         >
           Add Application
-        </button>
+        </AnimatedButton>
       </div>
       <Modal
         open={!!confirmDeleteId}
@@ -63,19 +66,25 @@ export default function Dashboard() {
           be undone.
         </div>
         <div className="flex gap-3 justify-end">
-          <button
+          <AnimatedButton
             onClick={() => setConfirmDeleteId(null)}
-            className="px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-600"
+            className=""
+            icon={null}
+            title="Cancel"
+            variant="secondary"
           >
             Cancel
-          </button>
-          <button
+          </AnimatedButton>
+          <AnimatedButton
             onClick={() => handleDeleteApp(confirmDeleteId!)}
-            className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 font-semibold"
+            className="font-semibold"
+            icon={<FaTrash />}
             disabled={loading}
+            title="Delete"
+            variant="danger"
           >
             {loading ? "Deleting..." : "Delete"}
-          </button>
+          </AnimatedButton>
         </div>
       </Modal>
       <div>
@@ -115,25 +124,18 @@ export default function Dashboard() {
                   <span className="text-blue-400 text-sm font-medium">
                     Click to configure →
                   </span>
-                  <button
-                    className="absolute top-3 right-3 text-red-400 hover:text-red-600 bg-transparent border-none p-1"
-                    title="Delete app"
-                    type="button"
+                  <AnimatedButton
+                    className="absolute top-3 right-3 !bg-transparent !text-red-400 hover:!text-red-600 !px-2 !py-1 !h-auto !min-w-0"
+                    icon={<FaTrash />}
                     onClick={(e) => {
                       e.stopPropagation();
                       setConfirmDeleteId(app._id);
                     }}
+                    title="Delete app"
+                    variant="danger"
                   >
-                    <svg width="18" height="18" fill="none" viewBox="0 0 24 24">
-                      <path
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M3 6h18M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2m2 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6h14z"
-                      />
-                    </svg>
-                  </button>
+                    <span className="sr-only">Delete app</span>
+                  </AnimatedButton>
                 </div>
               )
             )}
