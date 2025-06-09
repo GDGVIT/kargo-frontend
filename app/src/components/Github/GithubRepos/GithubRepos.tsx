@@ -8,8 +8,9 @@ import { useNotification } from "../../ui/Notification/Notification";
 import Loader from "../../ui/Loader/Loader";
 import { motion } from "framer-motion";
 import RepoPagination from "./RepoPagination/RepoPagination";
-import RepoSearchInput from "./RepoSearchInput/RepoSearchInput";
-import RepoOwnerFilter from "./RepoOwnerFilter/RepoOwnerFilter";
+import { AnimatedButton } from "../../ui/AnimatedButton/AnimatedButton";
+import { Input } from "../../ui/Input/Input";
+import { Select } from "../../ui/Select/Select";
 import RepoList from "./RepoList/RepoList";
 import DockerModal from "./DockerModal/DockerModal";
 import Repo from "../../../types/Repo/Repo";
@@ -71,66 +72,38 @@ const GithubRepos: React.FC = () => {
       setLoading(true);
       setError(null);
       try {
-        const repoResponses = await Promise.all(
-          installationIds.map((id) =>
-            api
-              .get("/api/github/repos", {
-                params: { installation_id: id },
-                withCredentials: true,
-              })
-              .catch((err) => err)
-          )
-        );
-        const combinedRepos: Repo[] = [];
-        const repoIds = new Set<number>();
-        let removedInstallations: string[] = [];
-        let removedInstallationsError = false;
-        for (const res of repoResponses) {
-          if (res instanceof Error || res?.isAxiosError) {
-            // Axios error
-            const errorData = res?.response?.data;
-            if (
-              errorData?.removedInstallationIds &&
-              Array.isArray(errorData.removedInstallationIds)
-            ) {
-              removedInstallations = [
-                ...removedInstallations,
-                ...errorData.removedInstallationIds,
-              ];
-              removedInstallationsError = true;
-            }
-            continue;
-          }
-          const repos: Repo[] = res.data.repositories || [];
-          for (const r of repos) {
-            if (!repoIds.has(r.id)) {
-              repoIds.add(r.id);
-              combinedRepos.push(r);
-            }
-          }
-        }
-        setAllRepos(combinedRepos);
+        // Fetch all repos in a single call using installation_ids param
+        const res = await api.get("/api/github/repos", {
+          params: { installation_ids: installationIds.join(",") },
+          withCredentials: true,
+        });
+        const repos: Repo[] = res.data.repositories || [];
+        setAllRepos(repos);
         setPage(1);
-        if (removedInstallationsError) {
-          setError(
-            "Some GitHub installations were invalid and have been removed. Please reconnect GitHub if needed."
-          );
-          // Refresh installation IDs to update UI
-          const res = await api.get("/api/github/installation-id", {
-            withCredentials: true,
-          });
-          setInstallationIds(res.data.installation_ids || []);
-        }
       } catch (err: unknown) {
         let message = "Failed to fetch GitHub repositories.";
+        let removedInstallationsError = false;
         if (axios.isAxiosError(err)) {
           message = err.response?.data?.error || message;
+          if (
+            err.response?.data?.removedInstallationIds &&
+            Array.isArray(err.response.data.removedInstallationIds)
+          ) {
+            removedInstallationsError = true;
+          }
         } else if (err instanceof Error) {
           message = err.message;
         }
         setError(message);
         setAllRepos([]);
         notify(message, "error");
+        if (removedInstallationsError) {
+          // Refresh installation IDs to update UI
+          const res = await api.get("/api/github/installation-id", {
+            withCredentials: true,
+          });
+          setInstallationIds(res.data.installation_ids || []);
+        }
       } finally {
         setLoading(false);
       }
@@ -282,11 +255,19 @@ const GithubRepos: React.FC = () => {
           </h2>
         </motion.div>
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 space-y-4 sm:space-y-0">
-          <RepoSearchInput value={searchTerm} onChange={handleSearchChange} />
-          <RepoOwnerFilter
-            owners={owners}
+          {/* Replace RepoSearchInput with Input */}
+          <Input
+            value={searchTerm}
+            onChange={handleSearchChange}
+            placeholder="Search repositories..."
+            className="w-full sm:w-64 shadow-md"
+          />
+          {/* Replace RepoOwnerFilter with Select */}
+          <Select
             value={selectedOwner}
             onChange={handleOwnerChange}
+            options={owners.map((owner) => ({ value: owner, label: owner }))}
+            className="min-w-[140px] shadow-md"
           />
         </div>
         <div className="text-xs text-orange-400 mb-4">
@@ -297,13 +278,15 @@ const GithubRepos: React.FC = () => {
         <RepoList
           repos={paginatedRepos}
           renderActions={(repo: Repo) => (
-            <button
-              className="px-3 py-1 bg-sky-700 hover:bg-sky-800 text-white rounded text-xs font-semibold mt-2"
+            <AnimatedButton
               onClick={() => handleDockerize(repo)}
               disabled={!!dockerizingRepoId}
+              variant="primary"
+              icon={null}
+              className="mt-2 px-3 py-1 text-xs"
             >
               Dockerize
-            </button>
+            </AnimatedButton>
           )}
         />
         <RepoPagination

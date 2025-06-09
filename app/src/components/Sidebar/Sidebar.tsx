@@ -43,7 +43,7 @@ export default function Sidebar() {
             initial={{ x: -60, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             exit={{ x: -60, opacity: 0 }}
-            transition={{ type: "spring", stiffness: 200, damping: 25 }}
+            transition={{ type: "tween", duration: 0.8, ease: "easeInOut" }}
             className="hidden md:flex fixed top-0 left-0 z-40 h-full w-52 bg-[#242837] border-r border-[#2C313F] shadow-sm flex-col px-4 py-6"
           >
             <Branding />

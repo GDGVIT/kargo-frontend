@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { FaTimes, FaCopy, FaDocker } from "react-icons/fa";
 import DockerModalProps from "../../../../types/DockerModalProps/DockerModalProps";
+import { DockerfileParser } from "dockerfile-ast";
+import yaml from "js-yaml";
 
 const DockerModal: React.FC<DockerModalProps> = ({
   open,
@@ -54,8 +56,55 @@ const DockerModal: React.FC<DockerModalProps> = ({
     return formatted;
   };
 
+  const validateDockerfile = (content?: string) => {
+    if (!content) return { valid: false, error: "No Dockerfile content" };
+    try {
+      DockerfileParser.parse(content);
+      return { valid: true };
+    } catch (e) {
+      return {
+        valid: false,
+        error: e instanceof Error ? e.message : String(e),
+      };
+    }
+  };
+
+  const validateDockerCompose = (content?: string) => {
+    if (!content)
+      return { valid: false, error: "No docker-compose.yml content" };
+    try {
+      yaml.load(content);
+      return { valid: true };
+    } catch (e: unknown) {
+      return {
+        valid: false,
+        error: e instanceof Error ? e.message : String(e),
+      };
+    }
+  };
+
+  const formatDockerCompose = (content?: string) => {
+    if (!content) return "";
+    try {
+      const obj = yaml.load(content);
+      return yaml.dump(obj, { noRefs: true, lineWidth: 120 });
+    } catch {
+      return content;
+    }
+  };
+
   const renderTabContent = () => {
     if (activeTab === "dockerfile" && dockerfile) {
+      const validation = validateDockerfile(dockerfile);
+      if (!validation.valid) {
+        return (
+          <div className="text-center text-red-400 mt-6">
+            <p className="mb-2 font-semibold">
+              Invalid Dockerfile: {validation.error}
+            </p>
+          </div>
+        );
+      }
       return (
         <div className="relative">
           <button
@@ -64,25 +113,35 @@ const DockerModal: React.FC<DockerModalProps> = ({
           >
             <FaCopy /> {copied === "dockerfile" ? "Copied!" : "Copy"}
           </button>
-          <pre className="bg-neutral-800 rounded p-4 text-sm overflow-x-auto text-blue-200 whitespace-pre-wrap border border-blue-700 shadow-inner mt-6">
+          <pre className="bg-neutral-800 p-4 text-sm overflow-x-auto text-blue-200 whitespace-pre-wrap border border-blue-700 shadow-inner mt-6">
             {formatContent(dockerfile)}
           </pre>
         </div>
       );
     }
     if (activeTab === "dockerCompose" && dockerCompose) {
+      const validation = validateDockerCompose(dockerCompose);
+      if (!validation.valid) {
+        return (
+          <div className="text-center text-red-400 mt-6">
+            <p className="mb-2 font-semibold">
+              Invalid docker-compose.yml: {validation.error}
+            </p>
+          </div>
+        );
+      }
       return (
         <div className="relative">
           <button
             className="absolute top-2 right-2 text-xs px-2 py-1 bg-pink-700 hover:bg-pink-800 text-white rounded flex items-center gap-1"
             onClick={() =>
-              handleCopy(formatContent(dockerCompose), "dockerCompose")
+              handleCopy(formatDockerCompose(dockerCompose), "dockerCompose")
             }
           >
             <FaCopy /> {copied === "dockerCompose" ? "Copied!" : "Copy"}
           </button>
-          <pre className="bg-neutral-800 rounded p-4 text-sm overflow-x-auto text-pink-200 whitespace-pre-wrap border border-pink-700 shadow-inner mt-6">
-            {formatContent(dockerCompose)}
+          <pre className="bg-neutral-800 p-4 text-sm overflow-x-auto text-pink-200 whitespace-pre-wrap border border-pink-700 shadow-inner mt-6">
+            {formatDockerCompose(dockerCompose)}
           </pre>
         </div>
       );
@@ -102,7 +161,7 @@ const DockerModal: React.FC<DockerModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70">
+    <div className="fixed inset-0 z-60 flex items-center justify-center bg-black bg-opacity-70">
       <div className="bg-neutral-900 rounded-2xl shadow-2xl p-8 max-w-2xl w-full relative border-2 border-sky-700 animate-fadeIn">
         <button
           className="absolute top-4 right-4 text-zinc-400 hover:text-white text-2xl"
