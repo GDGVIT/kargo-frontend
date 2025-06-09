@@ -1,4 +1,5 @@
 import React from "react";
+import { Input } from "../../ui/Input/Input";
 
 import type ResourcesSectionProps from "../../../types/Application/Resources/ResourcesSectionProps/ResourcesSectionProps";
 
@@ -65,7 +66,7 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
         <div>
           <div className="text-xs text-gray-400 mb-1">CPU Requests</div>
           <div className="flex items-center gap-1">
-            <input
+            <Input
               value={getNumeric(resources?.requests?.cpu, "m")}
               onChange={(e) => {
                 const sanitized = sanitizeNumber(e.target.value);
@@ -78,6 +79,8 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
               placeholder="100"
               inputMode="numeric"
               pattern="[0-9]*"
+              label="CPU Requests"
+              className="!mb-0"
             />
             <span className="text-gray-400">m</span>
           </div>
@@ -85,7 +88,7 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
         <div>
           <div className="text-xs text-gray-400 mb-1">Memory Requests</div>
           <div className="flex items-center gap-1">
-            <input
+            <Input
               value={getNumeric(resources?.requests?.memory, "Mi")}
               onChange={(e) => {
                 const sanitized = sanitizeNumber(e.target.value);
@@ -98,6 +101,8 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
               placeholder="128"
               inputMode="numeric"
               pattern="[0-9]*"
+              label="Memory Requests"
+              className="!mb-0"
             />
             <span className="text-gray-400">Mi</span>
           </div>
@@ -105,7 +110,7 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
         <div>
           <div className="text-xs text-gray-400 mb-1">CPU Limits</div>
           <div className="flex items-center gap-1">
-            <input
+            <Input
               value={getNumeric(resources?.limits?.cpu, "m")}
               onChange={(e) => {
                 const sanitized = sanitizeNumber(e.target.value);
@@ -118,6 +123,8 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
               placeholder="500"
               inputMode="numeric"
               pattern="[0-9]*"
+              label="CPU Limits"
+              className="!mb-0"
             />
             <span className="text-gray-400">m</span>
           </div>
@@ -125,7 +132,7 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
         <div>
           <div className="text-xs text-gray-400 mb-1">Memory Limits</div>
           <div className="flex items-center gap-1">
-            <input
+            <Input
               value={getNumeric(resources?.limits?.memory, "Mi")}
               onChange={(e) => {
                 const sanitized = sanitizeNumber(e.target.value);
@@ -138,6 +145,8 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
               placeholder="512"
               inputMode="numeric"
               pattern="[0-9]*"
+              label="Memory Limits"
+              className="!mb-0"
             />
             <span className="text-gray-400">Mi</span>
           </div>

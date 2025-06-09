@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import api from "../../../utils/api";
 import type LogsProps from "../../../types/Application/LogsProps/LogsProps";
+
 export default function Logs({ id }: LogsProps) {
   const [logs, setLogs] = useState<string>("");
   const [connected, setConnected] = useState(false);

@@ -1,6 +1,9 @@
 import React from "react";
 import { FiTrash2 } from "react-icons/fi";
+import { FaPlus, FaEye, FaEyeSlash } from "react-icons/fa";
 import type EnvVarsSectionProps from "../../../types/Application/EnvVarsSectionProps/EnvVarsSectionProps";
+import { AnimatedButton } from "../../ui/AnimatedButton/AnimatedButton";
+import { Input } from "../../ui/Input/Input";
 
 const EnvVarsSection: React.FC<EnvVarsSectionProps> = ({
   envList,
@@ -10,173 +13,129 @@ const EnvVarsSection: React.FC<EnvVarsSectionProps> = ({
 }) => {
   const [showValues, setShowValues] = React.useState(false);
 
-  // Helper to sanitize env var names
   const sanitizeKey = (key: string) =>
     key.replace(/[^a-zA-Z0-9_]/g, "").replace(/^\d+/, "");
 
-  // Handler for single key input
   const handleKeyInput = (idx: number, rawKey: string, value: string) => {
     const key = sanitizeKey(rawKey);
     handleEnvChange(idx, key, value);
   };
 
+  const handlePaste = (
+    e: React.ClipboardEvent<HTMLInputElement>,
+    idx: number,
+    envList: [string, string][],
+    handleEnvChange: (idx: number, key: string, value: string) => void,
+    addEnvVar: () => void,
+    sanitizeKey: (key: string) => string
+  ) => {
+    const paste = e.clipboardData.getData("text");
+    if (paste.includes("=")) {
+      e.preventDefault();
+      const lines = paste.split(/\r?\n/).filter(Boolean);
+      let didAdd = false;
+      lines.forEach((line, i) => {
+        const trimmed = line.trim();
+        if (!trimmed || trimmed.startsWith("#") || trimmed.startsWith("//"))
+          return;
+        const eqIdx = trimmed.indexOf("=");
+        if (eqIdx === -1) return;
+        let pastedKey = trimmed.slice(0, eqIdx).trim();
+        const pastedValue = trimmed.slice(eqIdx + 1).trim();
+        pastedKey = sanitizeKey(pastedKey);
+        if (!pastedKey) return;
+        if (i === 0) {
+          handleEnvChange(idx, pastedKey, pastedValue);
+        } else {
+          addEnvVar();
+          setTimeout(() => {
+            handleEnvChange(
+              envList.length + (didAdd ? i - 1 : 0),
+              pastedKey,
+              pastedValue
+            );
+          }, 0);
+          didAdd = true;
+        }
+      });
+    } else if (paste.includes("\t") || paste.includes(",")) {
+      e.preventDefault();
+      let pastedKey = "";
+      let pastedValue = "";
+      if (paste.includes("\t")) {
+        [pastedKey, pastedValue] = paste.split("\t");
+      } else {
+        [pastedKey, pastedValue] = paste.split(",");
+      }
+      pastedKey = sanitizeKey((pastedKey || "").trim());
+      pastedValue = (pastedValue || "").trim();
+      if (pastedKey) handleEnvChange(idx, pastedKey, pastedValue);
+    }
+  };
+
   return (
     <div className="mb-6">
-      <label className="text-gray-400 mb-2 flex items-center justify-between">
-        <h3 className="text-gray-400 mb-2">Environment Variables</h3>
-        <div className="flex gap-2">
-          <button
-            type="button"
-            onClick={addEnvVar}
-            className="px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 text-xs"
-          >
-            + Add
-          </button>
-          <button
-            type="button"
-            onClick={() => setShowValues((v) => !v)}
-            className="px-2 py-1 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 text-xs border border-gray-300"
-          >
-            {showValues ? "Hide Values" : "Show Values"}
-          </button>
-        </div>
-      </label>
-      <div className="space-y-2">
+      <h3 className="text-gray-400 mb-2">Environment Variables</h3>
+      <div className="flex gap-2">
+        <AnimatedButton
+          type="button"
+          onClick={addEnvVar}
+          className="!px-2 !py-1 !text-xs"
+          icon={<FaPlus />}
+        >
+          Add
+        </AnimatedButton>
+        <AnimatedButton
+          type="button"
+          onClick={() => setShowValues((v) => !v)}
+          className="!px-2 !py-1 !text-xs !bg-gray-200 !text-gray-700 hover:!bg-gray-300 border border-gray-300"
+          icon={showValues ? <FaEyeSlash /> : <FaEye />}
+        >
+          {showValues ? "Hide Values" : "Show Values"}
+        </AnimatedButton>
+      </div>
+
+      <div className="space-y-2 mt-2">
         {envList.length === 0 && (
           <div className="text-gray-400">No environment variables</div>
         )}
         {envList.map(([key, value], idx) => (
-          <div key={idx} className="flex items-center gap-2">
-            <textarea
+          <div
+            key={idx}
+            className="flex items-baseline gap-3 w-full min-h-8 py-1"
+          >
+            <Input
               placeholder="KEY"
               value={key}
               onChange={(e) => handleKeyInput(idx, e.target.value, value)}
-              onPaste={(e) => {
-                const paste = e.clipboardData.getData("text");
-                if (paste.includes("=")) {
-                  e.preventDefault();
-                  const lines = paste.split(/\r?\n/).filter(Boolean);
-                  let didAdd = false;
-                  lines.forEach((line, i) => {
-                    const trimmed = line.trim();
-                    if (
-                      !trimmed ||
-                      trimmed.startsWith("#") ||
-                      trimmed.startsWith("//")
-                    )
-                      return;
-                    const eqIdx = trimmed.indexOf("=");
-                    if (eqIdx === -1) return;
-                    let pastedKey = trimmed.slice(0, eqIdx).trim();
-                    const pastedValue = trimmed.slice(eqIdx + 1).trim();
-                    pastedKey = sanitizeKey(pastedKey);
-                    if (!pastedKey) return;
-                    if (i === 0) {
-                      handleEnvChange(idx, pastedKey, pastedValue);
-                    } else {
-                      addEnvVar();
-                      setTimeout(() => {
-                        handleEnvChange(
-                          envList.length + (didAdd ? i - 1 : 0),
-                          pastedKey,
-                          pastedValue
-                        );
-                      }, 0);
-                      didAdd = true;
-                    }
-                  });
-                } else if (paste.includes("\t") || paste.includes(",")) {
-                  // Support tab or comma separated paste for key,value
-                  e.preventDefault();
-                  let pastedKey = "";
-                  let pastedValue = "";
-                  if (paste.includes("\t")) {
-                    [pastedKey, pastedValue] = paste.split("\t");
-                  } else {
-                    [pastedKey, pastedValue] = paste.split(",");
-                  }
-                  pastedKey = sanitizeKey((pastedKey || "").trim());
-                  pastedValue = (pastedValue || "").trim();
-                  if (pastedKey) handleEnvChange(idx, pastedKey, pastedValue);
-                }
-              }}
-              title="Only letters, numbers, and underscores allowed. No =, spaces, or special chars."
-              rows={1}
+              onPaste={(e) =>
+                handlePaste(
+                  e,
+                  idx,
+                  envList,
+                  handleEnvChange,
+                  addEnvVar,
+                  sanitizeKey
+                )
+              }
             />
-            <span>=</span>
-            {showValues ? (
-              <textarea
-                placeholder="VALUE"
-                value={value}
-                onChange={(e) => handleEnvChange(idx, key, e.target.value)}
-                onPaste={(e) => {
-                  const paste = e.clipboardData.getData("text");
-                  if (paste.includes("=")) {
-                    e.preventDefault();
-                    const lines = paste.split(/\r?\n/).filter(Boolean);
-                    let didAdd = false;
-                    lines.forEach((line, i) => {
-                      const trimmed = line.trim();
-                      if (
-                        !trimmed ||
-                        trimmed.startsWith("#") ||
-                        trimmed.startsWith("//")
-                      )
-                        return;
-                      const eqIdx = trimmed.indexOf("=");
-                      if (eqIdx === -1) return;
-                      let pastedKey = trimmed.slice(0, eqIdx).trim();
-                      const pastedValue = trimmed.slice(eqIdx + 1).trim();
-                      pastedKey = sanitizeKey(pastedKey);
-                      if (!pastedKey) return;
-                      if (i === 0) {
-                        handleEnvChange(idx, pastedKey, pastedValue);
-                      } else {
-                        addEnvVar();
-                        setTimeout(() => {
-                          handleEnvChange(
-                            envList.length + (didAdd ? i - 1 : 0),
-                            pastedKey,
-                            pastedValue
-                          );
-                        }, 0);
-                        didAdd = true;
-                      }
-                    });
-                  } else if (paste.includes("\t") || paste.includes(",")) {
-                    // Support tab or comma separated paste for key,value
-                    e.preventDefault();
-                    let pastedKey = "";
-                    let pastedValue = "";
-                    if (paste.includes("\t")) {
-                      [pastedKey, pastedValue] = paste.split("\t");
-                    } else {
-                      [pastedKey, pastedValue] = paste.split(",");
-                    }
-                    pastedKey = sanitizeKey((pastedKey || "").trim());
-                    pastedValue = (pastedValue || "").trim();
-                    if (pastedKey) handleEnvChange(idx, pastedKey, pastedValue);
-                  }
-                }}
-                className="px-2 py-1 border border-gray-300 rounded focus:ring-2 focus:ring-blue-400 text-sm min-w-[120px] resize-y"
-                rows={1}
-              />
-            ) : (
-              <input
-                placeholder="VALUE"
-                value={value}
-                type="password"
-                onChange={(e) => handleEnvChange(idx, key, e.target.value)}
-              />
-            )}
-            <button
+
+            <Input
+              placeholder="VALUE"
+              value={value}
+              onChange={(e) => handleEnvChange(idx, key, e.target.value)}
+              type={showValues ? "text" : "password"}
+            />
+
+            <AnimatedButton
               type="button"
               onClick={() => removeEnvVar(idx)}
+              icon={<FiTrash2 />}
               title="Remove"
-              className="ml-1 px-2 py-1 text-red-500 hover:text-white hover:bg-red-500 rounded transition-colors text-xs flex items-center justify-center"
+              variant="danger"
             >
-              <FiTrash2 />
-            </button>
+              Remove
+            </AnimatedButton>
           </div>
         ))}
       </div>

@@ -5,7 +5,7 @@ import axios from "../../utils/api";
 import { Input } from "../ui/Input/Input";
 import { Select } from "../ui/Select/Select";
 import { AnimatedButton } from "../ui/AnimatedButton/AnimatedButton";
-import { Card } from "../ui/Card/Card";
+import Card from "../ui/Card/Card";
 import { FaDocker, FaGithub, FaGitlab, FaKey } from "react-icons/fa";
 import { useNotification } from "../ui/Notification/Notification";
 import Modal from "../ui/Modal/Modal";
@@ -168,20 +168,24 @@ export default function Credentials({
           ?
         </div>
         <div className="flex gap-3 justify-end">
-          <button
-            className="px-4 py-2 rounded bg-gray-600 text-white hover:bg-gray-700"
+          <AnimatedButton
+            className="!px-4 !py-2 !rounded text-base"
+            variant="secondary"
             onClick={() => setConfirmDelete(null)}
             disabled={loading}
+            icon={null}
           >
             Cancel
-          </button>
-          <button
-            className="px-4 py-2 rounded bg-red-700 text-white hover:bg-red-800"
+          </AnimatedButton>
+          <AnimatedButton
+            className="!px-4 !py-2 !rounded text-base"
+            variant="danger"
             onClick={() => confirmDelete && handleDelete(confirmDelete)}
             disabled={loading}
+            icon={null}
           >
             {loading ? "Deleting..." : "Delete"}
-          </button>
+          </AnimatedButton>
         </div>
       </Modal>
       <div>

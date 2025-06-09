@@ -1,6 +1,6 @@
 import React from "react";
 import ExtraResourcesEditor from "../../AdminPlansDashboard/ExtraResourcesEditor/ExtraResourcesEditor";
-import { Card } from "../../../ui/Card/Card";
+import Card from "../../../ui/Card/Card";
 import { Select } from "../../../ui/Select/Select";
 import { AnimatedButton } from "../../../ui/AnimatedButton/AnimatedButton";
 import type UserTableProps from "../../../../types/User/UserTableProps";
@@ -17,6 +17,7 @@ const UserTable: React.FC<UserTableProps> = ({
   onExtraResourcesSave,
   onExtraResourcesCancel,
   getRoleActions,
+  currentUserId, // <-- add this prop
 }) => (
   <Card>
     <table className="w-full border text-sm">
@@ -38,12 +39,11 @@ const UserTable: React.FC<UserTableProps> = ({
             <td className="p-2">
               {user.role || ""}
               <div className="mt-1 flex flex-wrap gap-1">
-                {/* Use AnimatedButton for all role actions */}
                 {getRoleActions(user) &&
                   React.Children.map(getRoleActions(user), (action, idx) => {
                     if (!action) return null;
                     if (!React.isValidElement(action)) return action;
-                    // If already an AnimatedButton, just render
+
                     const typeName =
                       typeof action.type === "function"
                         ? action.type.name
@@ -51,7 +51,7 @@ const UserTable: React.FC<UserTableProps> = ({
                     if (typeName === "AnimatedButton") {
                       return action;
                     }
-                    // Otherwise, wrap in AnimatedButton if it's a button
+
                     if (
                       typeof action.type === "string" &&
                       action.type === "button"
@@ -93,7 +93,11 @@ const UserTable: React.FC<UserTableProps> = ({
                     : user.plan?._id || ""
                 }
                 onChange={(e) => onPlanAssign(user._id, e.target.value)}
-                disabled={planAssigning === user._id}
+                // Allow self-assignment only if current user is superadmin
+                disabled={
+                  planAssigning === user._id ||
+                  (currentUserId === user._id && user.role !== "superadmin")
+                }
                 aria-label="Select plan for user"
                 className="min-w-[120px]"
               />

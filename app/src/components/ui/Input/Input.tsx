@@ -19,13 +19,13 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         {icon && <span className="text-zinc-400 mr-4">{icon}</span>}
         <input
           ref={ref}
-          className={`bg-[#293040] text-[var(--foreground)] w-full px-3 py-2 rounded border-2 border-[#7b8191] focus:border-[var(--theme-blue)] outline-none transition-colors duration-200 ${
+          className={`bg-[#293040] text-[var(--foreground)] w-full px-3 py-3 rounded border-2 border-[#7b8191] focus:border-[var(--theme-blue)] outline-none transition-colors duration-200 ${
             error ? "border-red-500" : ""
           } ${className} ${
             icon
               ? "bg-transparent outline-none text-white placeholder-zinc-500 text-lg"
               : ""
-          }`}
+          } !mb-0 !min-h-[40px] !max-h-[40px] !resize-none`}
           {...props}
         />
       </div>

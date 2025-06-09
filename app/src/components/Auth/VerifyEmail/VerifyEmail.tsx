@@ -62,7 +62,7 @@ export default function VerifyEmailPage() {
   }, [notify, router]); // Only run once on mount
 
   return (
-    <div className="max-w-md mx-auto p-8 mt-16 bg-neutral-900 rounded-2xl shadow-2xl border border-neutral-800 text-center text-white">
+    <div className="max-w-md mx-auto p-8 mt-16 text-center text-white">
       <h1 className="text-2xl font-bold mb-4">Email Verification</h1>
       {status === "pending" && (
         <p className="text-zinc-300">Verifying your email...</p>

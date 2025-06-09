@@ -2,10 +2,11 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
+import Marquee from "react-fast-marquee";
 
 export default function Hero() {
   return (
-    <section className="relative flex flex-col items-center justify-center min-h-screen w-full px-6 text-white">
+    <section className="relative flex flex-col items-center justify-center w-full px-6 text-white">
       <div className="max-w-5xl w-full text-center space-y-6">
         <motion.h1
           initial={{ opacity: 0, y: 30 }}
@@ -13,8 +14,23 @@ export default function Hero() {
           transition={{ duration: 0.8 }}
           className="text-4xl md:text-6xl font-semibold leading-tight tracking-tight text-white"
         >
-          Seamless Docker App Deployment.
+          Kargo
         </motion.h1>
+
+        <Marquee
+          gradient={true}
+          gradientColor="var(--background)"
+          gradientWidth={60}
+          speed={25}
+          className="my-8 text-xl md:text-2xl font-semibold text-gray-300 max-w-2xl mx-auto"
+        >
+          Effortless Docker Application
+          Deployment&nbsp;&nbsp;|&nbsp;&nbsp;Enterprise-Grade
+          Security&nbsp;&nbsp;|&nbsp;&nbsp;Automated, AI-Driven
+          Configuration&nbsp;&nbsp;|&nbsp;&nbsp;Kubernetes-Native
+          Scalability&nbsp;&nbsp;|&nbsp;&nbsp;Robust Infrastructure
+          Management&nbsp;&nbsp;|&nbsp;&nbsp;Accelerate Your Cloud Journey
+        </Marquee>
 
         <motion.p
           initial={{ opacity: 0, y: 20 }}

@@ -2,6 +2,10 @@ import React, { useState } from "react";
 import { useAuth } from "../../Auth/AuthProvider/AuthProvider";
 import type Port from "../../../types/Application/Port/Port";
 import type PortsSectionProps from "../../../types/Application/Port/PortSectionProps/PortSectionProps";
+import { Input } from "../../ui/Input/Input";
+import { Select } from "../../ui/Select/Select";
+import { AnimatedButton } from "../../ui/AnimatedButton/AnimatedButton";
+import { FaTrash, FaPlus } from "react-icons/fa";
 
 const defaultPort: Port = {
   id: "",
@@ -75,7 +79,7 @@ const PortsSection: React.FC<PortsSectionProps> = ({ ports, onChange }) => {
                 >
                   Container Port:
                 </label>
-                <input
+                <Input
                   id={`containerPort-${id}`}
                   type="number"
                   min={1}
@@ -91,6 +95,8 @@ const PortsSection: React.FC<PortsSectionProps> = ({ ports, onChange }) => {
                   }
                   required
                   title="Container port number (1-65535)"
+                  label="Container Port"
+                  className="!mb-0"
                 />
               </div>
               <div className="flex flex-col">
@@ -100,7 +106,7 @@ const PortsSection: React.FC<PortsSectionProps> = ({ ports, onChange }) => {
                 >
                   Host Port:
                 </label>
-                <input
+                <Input
                   id={`hostPort-${id}`}
                   type="number"
                   min={1}
@@ -112,6 +118,8 @@ const PortsSection: React.FC<PortsSectionProps> = ({ ports, onChange }) => {
                   }
                   required
                   title="Host port number (1-65535)"
+                  label="Host Port"
+                  className="!mb-0"
                 />
               </div>
               <div className="flex flex-col">
@@ -121,17 +129,18 @@ const PortsSection: React.FC<PortsSectionProps> = ({ ports, onChange }) => {
                 >
                   Protocol:
                 </label>
-                <select
+                <Select
                   id={`protocol-${id}`}
                   value={protocol}
-                  onChange={(e) =>
-                    updatePort(id, "protocol", e.target.value as "TCP" | "UDP")
-                  }
+                  onChange={(e) => updatePort(id, "protocol", e.target.value)}
                   title="Select protocol type"
-                >
-                  <option value="TCP">TCP</option>
-                  <option value="UDP">UDP</option>
-                </select>
+                  label="Protocol"
+                  options={[
+                    { value: "TCP", label: "TCP" },
+                    { value: "UDP", label: "UDP" },
+                  ]}
+                  className="!mb-0"
+                />
               </div>
               <div className="flex flex-col">
                 <label
@@ -140,15 +149,14 @@ const PortsSection: React.FC<PortsSectionProps> = ({ ports, onChange }) => {
                 >
                   Description:
                 </label>
-                <input
-                  id={`description-${id}`}
-                  type="text"
-                  value={description || ""}
-                  placeholder="Description (optional)"
+                <Input
+                  value={description}
                   onChange={(e) =>
                     updatePort(id, "description", e.target.value)
                   }
-                  title="Optional description of this port"
+                  placeholder="Description (optional)"
+                  label="Description"
+                  className="!mb-0"
                 />
               </div>
               <div className="flex flex-col">
@@ -168,40 +176,45 @@ const PortsSection: React.FC<PortsSectionProps> = ({ ports, onChange }) => {
                   </a>
                 </span>
                 <div className="flex items-center">
-                  <input
-                    id={`subdomain-${id}`}
-                    type="text"
+                  <Input
                     value={subdomainSegment}
-                    placeholder="Subdomain (optional)"
                     onChange={(e) => {
-                      updatePort(id, "subdomain", e.target.value);
+                      const newSub = e.target.value
+                        ? `${e.target.value}.${username}.${ingressBaseUrl}`
+                        : "";
+                      updatePort(id, "subdomain", newSub);
                     }}
-                    title="Custom subdomain for this port"
+                    placeholder="Subdomain (optional)"
+                    label="Subdomain"
+                    className="!mb-0"
                   />
                   <span className="ml-1 text-gray-500 text-sm">
                     .{username}.{ingressBaseUrl}
                   </span>
                 </div>
               </div>
-              <button
+              <AnimatedButton
                 type="button"
                 onClick={() => removePort(id)}
-                aria-label={`Remove port configuration ${containerPort}`}
-                className="ml-2 px-2 py-1 text-red-500 hover:text-white hover:bg-red-500 rounded transition-colors text-xs"
+                className="!px-2 !py-1 !text-xs"
+                icon={<FaTrash />}
+                title="Remove port"
+                variant="danger"
               >
                 Remove
-              </button>
+              </AnimatedButton>
             </div>
           );
         }
       )}
-      <button
+      <AnimatedButton
         type="button"
         onClick={addPort}
-        className="mt-2 px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm"
+        icon={<FaPlus />}
+        variant="primary"
       >
         Add Port
-      </button>
+      </AnimatedButton>
     </div>
   );
 };

@@ -11,15 +11,16 @@ import EnvVarsSection from "./EnvVarsSection";
 import ResourcesSection from "./ResourcesSection";
 import PortsSection from "./PortsSection";
 import ActionButtons from "./ActionButtons";
-import ErrorMessage from "./ErrorMessage";
 import { useNotification } from "../../ui/Notification/Notification";
 import Modal from "../../ui/Modal/Modal";
+import { AnimatedButton } from "../../ui/AnimatedButton/AnimatedButton";
+import { FaDatabase, FaDocker, FaLeaf, FaNetworkWired } from "react-icons/fa";
+import Loader from "../../ui/Loader/Loader";
 
 export default function ConfigureApp({ appId }: { appId: string }) {
   const [form, setForm] = useState<Application | null>(null);
   const [envList, setEnvList] = useState<[string, string][]>([]);
   const [saving, setSaving] = useState(false);
-  const [error, setError] = useState("");
   const [resourceLimits, setResourceLimits] = useState<{
     allowed: {
       requests: { cpu: number; memory: number };
@@ -63,7 +64,6 @@ export default function ConfigureApp({ appId }: { appId: string }) {
       });
       setEnvList(app.env ? Object.entries(app.env) : []);
     } catch {
-      setError("Failed to load app");
       notify("Failed to load app", "error");
     }
   }
@@ -71,7 +71,6 @@ export default function ConfigureApp({ appId }: { appId: string }) {
   async function handleSaveAndDeploy(e: React.FormEvent) {
     e.preventDefault();
     setSaving(true);
-    setError("");
     try {
       if (!form) return;
       const envObj = envList.reduce(
@@ -111,7 +110,7 @@ export default function ConfigureApp({ appId }: { appId: string }) {
           newUsage.limits.cpu > resourceLimits.allowed.limits.cpu ||
           newUsage.limits.memory > resourceLimits.allowed.limits.memory
         ) {
-          setError("Resource allocation exceeds your allowed quota.");
+          notify("Resource allocation exceeds your allowed quota.", "error");
           setSaving(false);
           return;
         }
@@ -130,25 +129,20 @@ export default function ConfigureApp({ appId }: { appId: string }) {
       const error = err as unknown as {
         response?: { data?: { message?: string } };
       };
-      if (error?.response?.data?.message) setError(error.response.data.message);
-      else setError("Failed to save & deploy");
-      notify(
-        error?.response?.data?.message || "Failed to save & deploy",
-        "error"
-      );
+      if (error?.response?.data?.message)
+        notify(error.response.data.message, "error");
+      else notify("Failed to save & deploy", "error");
     }
     setSaving(false);
   }
 
   async function handleDelete() {
     setSaving(true);
-    setError("");
     try {
       await axios.delete(`/api/applications/${appId}/delete-all`);
       notify("Application and all resources deleted!", "success");
       router.push("/dashboard");
     } catch (err) {
-      setError("Failed to delete application");
       notify("Failed to delete application", "error");
       console.log(err);
     }
@@ -189,27 +183,49 @@ export default function ConfigureApp({ appId }: { appId: string }) {
     );
   }
 
-  if (!form)
+  if (!form && !saving)
     return <div className="text-center text-gray-400 ">App not found</div>;
+
+  if (saving || (!form && !saving)) {
+    return <Loader />;
+  }
+
   return (
     <div className="w-full p-8 rounded-2xl mt-10">
-      <button
+      <AnimatedButton
         type="button"
         onClick={() => router.push("/dashboard")}
-        className="flex items-center gap-2 text-gray-400 hover:text-blue-400 font-medium mb-8 transition-colors"
+        className="flex items-center gap-2 text-gray-400 hover:text-blue-400 font-medium mb-8 transition-colors !bg-transparent !shadow-none !px-0 !py-0"
+        icon={null}
       >
         <span className="text-lg">←</span> Back to Dashboard
-      </button>
+      </AnimatedButton>
       <h1 className="text-3xl font-extrabold mb-8 text-gray-100 tracking-tight">
         Configure <span className="text-blue-400">{form?.name}</span>
       </h1>
       {/* Tabs Navigation */}
       <div className="flex gap-3 mb-8 border-b border-gray-800/70">
         {Object.entries({
-          Image: "Image",
-          Env: "Environment",
-          Resources: "Resources",
-          Ports: "Ports",
+          Image: (
+            <span className="flex items-center gap-2">
+              <FaDocker className="text-blue-300" /> Image
+            </span>
+          ),
+          Env: (
+            <span className="flex items-center gap-2">
+              <FaLeaf className="text-green-400" /> Environment
+            </span>
+          ),
+          Resources: (
+            <span className="flex items-center gap-2">
+              <FaDatabase className="text-blue-300" /> Resources
+            </span>
+          ),
+          Ports: (
+            <span className="flex items-center gap-2">
+              <FaNetworkWired className="text-yellow-300" /> Ports
+            </span>
+          ),
         }).map(([key, label]) => (
           <button
             key={key}
@@ -337,7 +353,6 @@ export default function ConfigureApp({ appId }: { appId: string }) {
             onSaveAndDeploy={handleSaveAndDeploy}
             onRequestDelete={() => setShowDeleteModal(true)}
           />
-          <ErrorMessage error={error} />
         </div>
         <Modal
           open={showDeleteModal}
@@ -349,19 +364,25 @@ export default function ConfigureApp({ appId }: { appId: string }) {
             resources? This cannot be undone.
           </div>
           <div className="flex gap-3 justify-end">
-            <button
+            <AnimatedButton
               onClick={() => setShowDeleteModal(false)}
-              className="px-5 py-2 bg-gray-800 text-gray-200 rounded-lg hover:bg-gray-700 border border-gray-700 transition-colors"
+              className="!bg-gray-800 hover:!bg-gray-700 !text-gray-200 !border !border-gray-700"
+              icon={null}
+              title="Cancel"
+              variant="secondary"
             >
               Cancel
-            </button>
-            <button
+            </AnimatedButton>
+            <AnimatedButton
               onClick={handleDelete}
-              className="px-5 py-2 bg-gradient-to-r from-red-700 via-red-600 to-red-500 text-white rounded-lg hover:from-red-800 hover:to-red-600 font-semibold border border-red-700 shadow-md transition-colors"
+              className="font-semibold !border !border-red-700 !shadow-md"
               disabled={saving}
+              icon={null}
+              title="Delete"
+              variant="danger"
             >
               {saving ? "Deleting..." : "Delete"}
-            </button>
+            </AnimatedButton>
           </div>
         </Modal>
       </form>
