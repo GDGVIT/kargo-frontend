@@ -67,6 +67,12 @@ export default function AddAppForm() {
       setLoading(false);
       return;
     }
+    if (!form.imageUrl || form.imageUrl.trim() === "") {
+      notify("No image found. Please dockerize your app first.", "error");
+      router.push("/dockerize");
+      setLoading(false);
+      return;
+    }
     try {
       await axios.post("/api/applications", {
         ...form,
@@ -107,6 +113,12 @@ export default function AddAppForm() {
             }
             placeholder="registry.io/my-app"
           />
+          <a
+            href="/dockerize"
+            className="underline text-yellow-300 hover:text-yellow-200 ml-1 text-xs"
+          >
+            Dockerize your app
+          </a>
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-300 mb-1">

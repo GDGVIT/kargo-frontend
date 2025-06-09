@@ -160,10 +160,10 @@ const GithubAuth: React.FC = () => {
               {installationIds.length > 1 ? "s" : ""}.
               <br />
               <Link
-                href="/applications"
+                href="/dockerize"
                 className="text-sky-400 underline hover:text-sky-300 font-medium"
               >
-                Go to Applications
+                Dockerize your app!
               </Link>
             </p>
             <div className="flex justify-center">
