@@ -29,7 +29,7 @@ const NotificationContext = createContext<NotificationContextType | undefined>(
   undefined
 );
 
-export const useNotification = () => {
+const useNotification = () => {
   const context = useContext(NotificationContext);
   if (!context) {
     throw new Error(
@@ -134,3 +134,5 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
     </NotificationContext.Provider>
   );
 };
+
+export default useNotification;

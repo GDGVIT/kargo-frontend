@@ -5,7 +5,7 @@ import type Plan from "../../types/Plan/Plan";
 import type PlanDetailsProps from "../../types/Plan/PlanDetailsProps";
 import Card from "../ui/Card/Card";
 import Loader from "../ui/Loader/Loader";
-import { useNotification } from "../ui/Notification/Notification";
+import useNotification from "../ui/Notification/Notification";
 
 const PlanDetails: React.FC<PlanDetailsProps> = ({ planId, planObj }) => {
   const [plan, setPlan] = useState<Plan | null>(planObj || null);

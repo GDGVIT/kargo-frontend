@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { useAuth } from "../../Auth/AuthProvider/AuthProvider";
 import type Port from "../../../types/Application/Port/Port";
 import type PortsSectionProps from "../../../types/Application/Port/PortSectionProps/PortSectionProps";
-import { Input } from "../../ui/Input/Input";
-import { Select } from "../../ui/Select/Select";
-import { AnimatedButton } from "../../ui/AnimatedButton/AnimatedButton";
+import Input from "../../ui/Input/Input";
+import Select from "../../ui/Select/Select";
+import AnimatedButton from "../../ui/AnimatedButton/AnimatedButton";
 import { FaTrash, FaPlus } from "react-icons/fa";
 
 const defaultPort: Port = {

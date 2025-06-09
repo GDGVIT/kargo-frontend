@@ -13,7 +13,7 @@ interface AnimatedButtonProps {
   variant?: "primary" | "danger" | "secondary" | "success" | "warning";
 }
 
-export const AnimatedButton = ({
+const AnimatedButton = ({
   children,
   onClick,
   icon = <FaArrowRight />,
@@ -102,3 +102,5 @@ export const AnimatedButton = ({
     </motion.button>
   );
 };
+
+export default AnimatedButton;

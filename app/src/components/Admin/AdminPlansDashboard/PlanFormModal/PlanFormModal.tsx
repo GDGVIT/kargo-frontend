@@ -1,8 +1,8 @@
 import React from "react";
 import Modal from "../../../ui/Modal/Modal";
-import { Input } from "../../../ui/Input/Input";
-import { Textarea } from "../../../ui/Textarea/Textarea";
-import { AnimatedButton } from "../../../ui/AnimatedButton/AnimatedButton";
+import Input from "../../../ui/Input/Input";
+import Textarea from "../../../ui/Textarea/Textarea";
+import AnimatedButton from "../../../ui/AnimatedButton/AnimatedButton";
 import type PlanFormModalProps from "../../../../types/Plan/PlanFormModalProps";
 
 const PlanFormModal: React.FC<PlanFormModalProps> = ({

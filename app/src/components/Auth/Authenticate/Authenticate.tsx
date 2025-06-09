@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../AuthProvider/AuthProvider";
 import { motion, AnimatePresence } from "framer-motion";
-import { useNotification } from "../../ui/Notification/Notification";
+import useNotification from "../../ui/Notification/Notification";
 import {
   FaUser,
   FaUserCircle,
@@ -15,7 +15,7 @@ import { baseURL } from "../../../utils/api";
 import { useRouter } from "next/navigation";
 import { FcGoogle } from "react-icons/fc";
 import Image from "next/image";
-import { Input } from "../../ui/Input/Input";
+import Input from "../../ui/Input/Input";
 
 const tabVariants = {
   active: { borderBottomWidth: 3, borderColor: "#38bdf8" },

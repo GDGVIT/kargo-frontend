@@ -7,7 +7,7 @@ export interface TextareaProps
   className?: string;
 }
 
-export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
+const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
   ({ label, error, className = "", ...props }, ref) => (
     <div className="mb-4 w-full">
       {label && (
@@ -27,3 +27,5 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
   )
 );
 Textarea.displayName = "Textarea";
+
+export default Textarea;

@@ -4,9 +4,8 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../../AuthProvider/AuthProvider";
 import { motion } from "framer-motion";
-import {
+import useNotification, {
   NotificationProvider,
-  useNotification,
 } from "../../../ui/Notification/Notification";
 import { baseURL } from "../../../../utils/api";
 

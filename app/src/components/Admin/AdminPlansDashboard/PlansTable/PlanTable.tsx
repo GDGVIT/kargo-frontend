@@ -1,6 +1,6 @@
 import React from "react";
 import Card from "../../../ui/Card/Card";
-import { AnimatedButton } from "../../../ui/AnimatedButton/AnimatedButton";
+import AnimatedButton from "../../../ui/AnimatedButton/AnimatedButton";
 import Loader from "../../../ui/Loader/Loader";
 import type PlanTableProps from "../../../../types/Plan/PlanTableProps";
 import { FaEdit, FaTrash, FaCheckCircle, FaRegCircle } from "react-icons/fa";

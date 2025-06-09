@@ -1,5 +1,5 @@
 import React from "react";
-import { AnimatedButton } from "../../ui/AnimatedButton/AnimatedButton";
+import AnimatedButton from "../../ui/AnimatedButton/AnimatedButton";
 import { FaSave, FaTrash, FaBook } from "react-icons/fa";
 import type ActionButtonsProps from "../../../types/Application/ActionButtonProps/ActionButtonProps";
 

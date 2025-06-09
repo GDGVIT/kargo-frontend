@@ -1,5 +1,5 @@
 import React from "react";
-import { Input } from "../../ui/Input/Input";
+import Input from "../../ui/Input/Input";
 
 import type ResourcesSectionProps from "../../../types/Application/Resources/ResourcesSectionProps/ResourcesSectionProps";
 

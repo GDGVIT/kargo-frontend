@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import Card from "../ui/Card/Card";
-import { AnimatedButton } from "../ui/AnimatedButton/AnimatedButton";
+import AnimatedButton from "../ui/AnimatedButton/AnimatedButton";
 import { FaUsers, FaClipboardList } from "react-icons/fa";
 
 export default function AdminDashboard() {

@@ -3,9 +3,9 @@
 import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import axios from "../../utils/api";
-import { useNotification } from "../ui/Notification/Notification";
+import useNotification from "../ui/Notification/Notification";
 import Modal from "../ui/Modal/Modal";
-import { AnimatedButton } from "../ui/AnimatedButton/AnimatedButton";
+import AnimatedButton from "../ui/AnimatedButton/AnimatedButton";
 import { FaTrash } from "react-icons/fa";
 
 export default function Applications() {

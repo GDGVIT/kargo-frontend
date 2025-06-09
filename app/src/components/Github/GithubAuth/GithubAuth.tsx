@@ -6,7 +6,7 @@ import api, { baseURL } from "../../../utils/api";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaGithub, FaExclamationCircle } from "react-icons/fa";
 import gsap from "gsap";
-import { AnimatedButton } from "../../ui/AnimatedButton/AnimatedButton";
+import AnimatedButton from "../../ui/AnimatedButton/AnimatedButton";
 
 function InstallButton() {
   return (

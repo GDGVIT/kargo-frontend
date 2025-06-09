@@ -11,9 +11,9 @@ import EnvVarsSection from "./EnvVarsSection";
 import ResourcesSection from "./ResourcesSection";
 import PortsSection from "./PortsSection";
 import ActionButtons from "./ActionButtons";
-import { useNotification } from "../../ui/Notification/Notification";
+import useNotification from "../../ui/Notification/Notification";
 import Modal from "../../ui/Modal/Modal";
-import { AnimatedButton } from "../../ui/AnimatedButton/AnimatedButton";
+import AnimatedButton from "../../ui/AnimatedButton/AnimatedButton";
 import { FaDatabase, FaDocker, FaLeaf, FaNetworkWired } from "react-icons/fa";
 import Loader from "../../ui/Loader/Loader";
 

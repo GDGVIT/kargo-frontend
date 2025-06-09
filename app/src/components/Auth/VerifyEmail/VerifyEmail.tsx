@@ -3,7 +3,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import api from "../../../utils/api";
-import { useNotification } from "../../ui/Notification/Notification";
+import useNotification from "../../ui/Notification/Notification";
 
 export default function VerifyEmailPage() {
   const [status, setStatus] = useState<"pending" | "success" | "error">(
