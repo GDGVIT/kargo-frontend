@@ -73,15 +73,34 @@ const GithubRepos: React.FC = () => {
       try {
         const repoResponses = await Promise.all(
           installationIds.map((id) =>
-            api.get("/api/github/repos", {
-              params: { installation_id: id },
-              withCredentials: true,
-            })
+            api
+              .get("/api/github/repos", {
+                params: { installation_id: id },
+                withCredentials: true,
+              })
+              .catch((err) => err)
           )
         );
         const combinedRepos: Repo[] = [];
         const repoIds = new Set<number>();
+        let removedInstallations: string[] = [];
+        let removedInstallationsError = false;
         for (const res of repoResponses) {
+          if (res instanceof Error || res?.isAxiosError) {
+            // Axios error
+            const errorData = res?.response?.data;
+            if (
+              errorData?.removedInstallationIds &&
+              Array.isArray(errorData.removedInstallationIds)
+            ) {
+              removedInstallations = [
+                ...removedInstallations,
+                ...errorData.removedInstallationIds,
+              ];
+              removedInstallationsError = true;
+            }
+            continue;
+          }
           const repos: Repo[] = res.data.repositories || [];
           for (const r of repos) {
             if (!repoIds.has(r.id)) {
@@ -92,6 +111,16 @@ const GithubRepos: React.FC = () => {
         }
         setAllRepos(combinedRepos);
         setPage(1);
+        if (removedInstallationsError) {
+          setError(
+            "Some GitHub installations were invalid and have been removed. Please reconnect GitHub if needed."
+          );
+          // Refresh installation IDs to update UI
+          const res = await api.get("/api/github/installation-id", {
+            withCredentials: true,
+          });
+          setInstallationIds(res.data.installation_ids || []);
+        }
       } catch (err: unknown) {
         let message = "Failed to fetch GitHub repositories.";
         if (axios.isAxiosError(err)) {
