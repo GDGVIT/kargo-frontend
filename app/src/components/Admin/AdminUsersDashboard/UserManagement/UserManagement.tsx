@@ -1,6 +1,5 @@
 import React from "react";
 import UserTable from "../UserTable/UserTable";
-import Card from "../../../ui/Card/Card";
 import type UserManagementProps from "../../../../types/User/UserManagementProps";
 
 const UserManagement: React.FC<UserManagementProps> = ({
@@ -17,21 +16,19 @@ const UserManagement: React.FC<UserManagementProps> = ({
   getRoleActions,
 }) => {
   return (
-    <Card>
-      <UserTable
-        users={users}
-        plans={plans}
-        planAssigning={planAssigning}
-        extraResourcesEdit={extraResourcesEdit}
-        extraResourcesSaving={extraResourcesSaving}
-        onPlanAssign={onPlanAssign}
-        onOpenExtraResourcesEdit={onOpenExtraResourcesEdit}
-        onExtraResourcesChange={onExtraResourcesChange}
-        onExtraResourcesSave={onExtraResourcesSave}
-        onExtraResourcesCancel={onExtraResourcesCancel}
-        getRoleActions={getRoleActions}
-      />
-    </Card>
+    <UserTable
+      users={users}
+      plans={plans}
+      planAssigning={planAssigning}
+      extraResourcesEdit={extraResourcesEdit}
+      extraResourcesSaving={extraResourcesSaving}
+      onPlanAssign={onPlanAssign}
+      onOpenExtraResourcesEdit={onOpenExtraResourcesEdit}
+      onExtraResourcesChange={onExtraResourcesChange}
+      onExtraResourcesSave={onExtraResourcesSave}
+      onExtraResourcesCancel={onExtraResourcesCancel}
+      getRoleActions={getRoleActions}
+    />
   );
 };
 

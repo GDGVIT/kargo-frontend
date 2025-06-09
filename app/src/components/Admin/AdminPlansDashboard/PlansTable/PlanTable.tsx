@@ -1,8 +1,9 @@
 import React from "react";
-import { Card } from "../../../ui/Card/Card";
+import Card from "../../../ui/Card/Card";
 import { AnimatedButton } from "../../../ui/AnimatedButton/AnimatedButton";
 import Loader from "../../../ui/Loader/Loader";
 import type PlanTableProps from "../../../../types/Plan/PlanTableProps";
+import { FaEdit, FaTrash, FaCheckCircle, FaRegCircle } from "react-icons/fa";
 
 const PlanTable: React.FC<PlanTableProps> = ({
   plans,
@@ -40,28 +41,71 @@ const PlanTable: React.FC<PlanTableProps> = ({
                   <td className="p-2 font-semibold">{plan.name}</td>
                   <td className="p-2">{plan.description}</td>
                   <td className="p-2">
-                    <pre className="whitespace-pre-wrap text-xs bg-zinc-900 p-2 rounded">
-                      {JSON.stringify(plan.resources, null, 2)}
-                    </pre>
+                    {plan.resources ? (
+                      <div className="text-xs p-2 rounded flex flex-col gap-1">
+                        <div>
+                          <span className="font-semibold">Requests:</span>
+                          <span className="ml-2">
+                            CPU: {plan.resources.requests?.cpu ?? "-"}m, Memory:{" "}
+                            {plan.resources.requests?.memory ?? "-"}Mi
+                          </span>
+                        </div>
+                        <div>
+                          <span className="font-semibold">Limits:</span>
+                          <span className="ml-2">
+                            CPU: {plan.resources.limits?.cpu ?? "-"}m, Memory:{" "}
+                            {plan.resources.limits?.memory ?? "-"}Mi
+                          </span>
+                        </div>
+                      </div>
+                    ) : (
+                      <span className="text-xs text-zinc-400">
+                        No resources
+                      </span>
+                    )}
                   </td>
-                  <td className="p-2 text-center">
-                    {plan.isDefault ? "✔️" : ""}
+                  <td className="p-2 text-center align-middle">
+                    <div className="flex items-center justify-center h-full min-h-[28px]">
+                      {plan.isDefault ? (
+                        <FaCheckCircle
+                          className="text-emerald-400 text-lg align-middle"
+                          title="Default plan"
+                        />
+                      ) : (
+                        <FaRegCircle
+                          className="text-zinc-500 text-lg align-middle"
+                          title="Not default"
+                        />
+                      )}
+                    </div>
                   </td>
-                  <td className="p-2 text-center">
-                    {plan.isActive !== false ? "✔️" : ""}
+                  <td className="p-2 text-center align-middle">
+                    <div className="flex items-center justify-center h-full min-h-[28px]">
+                      {plan.isActive !== false ? (
+                        <FaCheckCircle
+                          className="text-emerald-400 text-lg align-middle"
+                          title="Active"
+                        />
+                      ) : (
+                        <FaRegCircle
+                          className="text-zinc-500 text-lg align-middle"
+                          title="Inactive"
+                        />
+                      )}
+                    </div>
                   </td>
                   <td className="p-2 flex gap-2">
                     <AnimatedButton
                       className="!px-2 !py-1 !text-xs !rounded !bg-sky-600 hover:!bg-sky-700"
                       onClick={() => onEdit(plan)}
-                      icon={null}
+                      icon={<FaEdit className="text-white" />}
                     >
                       Edit
                     </AnimatedButton>
                     <AnimatedButton
                       className="!px-2 !py-1 !text-xs !rounded !bg-rose-600 hover:!bg-rose-700"
                       onClick={() => onDelete(plan._id)}
-                      icon={null}
+                      icon={<FaTrash className="text-white" />}
                     >
                       Delete
                     </AnimatedButton>

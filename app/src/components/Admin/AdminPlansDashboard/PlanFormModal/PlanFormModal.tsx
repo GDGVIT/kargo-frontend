@@ -104,6 +104,7 @@ const PlanFormModal: React.FC<PlanFormModalProps> = ({
         </div>
         {planFormError && <div className="text-red-500">{planFormError}</div>}
         <AnimatedButton
+          type="submit"
           className="w-full py-2 !rounded !bg-sky-600 hover:!bg-sky-700 font-semibold"
           icon={null}
         >

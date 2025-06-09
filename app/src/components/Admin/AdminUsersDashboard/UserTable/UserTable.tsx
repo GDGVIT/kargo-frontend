@@ -38,12 +38,11 @@ const UserTable: React.FC<UserTableProps> = ({
             <td className="p-2">
               {user.role || ""}
               <div className="mt-1 flex flex-wrap gap-1">
-                {/* Use AnimatedButton for all role actions */}
                 {getRoleActions(user) &&
                   React.Children.map(getRoleActions(user), (action, idx) => {
                     if (!action) return null;
                     if (!React.isValidElement(action)) return action;
-                    // If already an AnimatedButton, just render
+
                     const typeName =
                       typeof action.type === "function"
                         ? action.type.name
@@ -51,7 +50,7 @@ const UserTable: React.FC<UserTableProps> = ({
                     if (typeName === "AnimatedButton") {
                       return action;
                     }
-                    // Otherwise, wrap in AnimatedButton if it's a button
+
                     if (
                       typeof action.type === "string" &&
                       action.type === "button"

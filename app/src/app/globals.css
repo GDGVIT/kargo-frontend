@@ -230,6 +230,31 @@ th {
   font-weight: var(--font-weight-bold);
 }
 
+section {
+  width: 100%;
+  color: var(--foreground);
+  border-radius: var(--border-radius-medium);
+  box-shadow: var(--box-shadow-default);
+  margin: var(--margin-large) 0;
+  padding: var(--padding-large);
+  transition: box-shadow var(--transition-fast),
+    background var(--transition-fast);
+}
+
+section h1,
+section h2,
+section h3,
+section h4,
+section h5,
+section h6 {
+  margin-top: 0;
+  margin-bottom: var(--margin-medium);
+}
+
+section p {
+  margin-bottom: var(--margin-small);
+}
+
 ::-webkit-scrollbar {
   width: 16px;
   height: 16px;
