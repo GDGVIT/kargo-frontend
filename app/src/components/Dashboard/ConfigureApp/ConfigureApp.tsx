@@ -11,16 +11,16 @@ import EnvVarsSection from "./EnvVarsSection";
 import ResourcesSection from "./ResourcesSection";
 import PortsSection from "./PortsSection";
 import ActionButtons from "./ActionButtons";
-import ErrorMessage from "./ErrorMessage";
 import { useNotification } from "../../ui/Notification/Notification";
 import Modal from "../../ui/Modal/Modal";
 import { AnimatedButton } from "../../ui/AnimatedButton/AnimatedButton";
+import { FaDatabase, FaDocker, FaLeaf, FaNetworkWired } from "react-icons/fa";
+import Loader from "../../ui/Loader/Loader";
 
 export default function ConfigureApp({ appId }: { appId: string }) {
   const [form, setForm] = useState<Application | null>(null);
   const [envList, setEnvList] = useState<[string, string][]>([]);
   const [saving, setSaving] = useState(false);
-  const [error, setError] = useState("");
   const [resourceLimits, setResourceLimits] = useState<{
     allowed: {
       requests: { cpu: number; memory: number };
@@ -64,7 +64,6 @@ export default function ConfigureApp({ appId }: { appId: string }) {
       });
       setEnvList(app.env ? Object.entries(app.env) : []);
     } catch {
-      setError("Failed to load app");
       notify("Failed to load app", "error");
     }
   }
@@ -72,7 +71,6 @@ export default function ConfigureApp({ appId }: { appId: string }) {
   async function handleSaveAndDeploy(e: React.FormEvent) {
     e.preventDefault();
     setSaving(true);
-    setError("");
     try {
       if (!form) return;
       const envObj = envList.reduce(
@@ -112,7 +110,7 @@ export default function ConfigureApp({ appId }: { appId: string }) {
           newUsage.limits.cpu > resourceLimits.allowed.limits.cpu ||
           newUsage.limits.memory > resourceLimits.allowed.limits.memory
         ) {
-          setError("Resource allocation exceeds your allowed quota.");
+          notify("Resource allocation exceeds your allowed quota.", "error");
           setSaving(false);
           return;
         }
@@ -131,25 +129,20 @@ export default function ConfigureApp({ appId }: { appId: string }) {
       const error = err as unknown as {
         response?: { data?: { message?: string } };
       };
-      if (error?.response?.data?.message) setError(error.response.data.message);
-      else setError("Failed to save & deploy");
-      notify(
-        error?.response?.data?.message || "Failed to save & deploy",
-        "error"
-      );
+      if (error?.response?.data?.message)
+        notify(error.response.data.message, "error");
+      else notify("Failed to save & deploy", "error");
     }
     setSaving(false);
   }
 
   async function handleDelete() {
     setSaving(true);
-    setError("");
     try {
       await axios.delete(`/api/applications/${appId}/delete-all`);
       notify("Application and all resources deleted!", "success");
       router.push("/dashboard");
     } catch (err) {
-      setError("Failed to delete application");
       notify("Failed to delete application", "error");
       console.log(err);
     }
@@ -190,8 +183,13 @@ export default function ConfigureApp({ appId }: { appId: string }) {
     );
   }
 
-  if (!form)
+  if (!form && !saving)
     return <div className="text-center text-gray-400 ">App not found</div>;
+
+  if (saving || (!form && !saving)) {
+    return <Loader />;
+  }
+
   return (
     <div className="w-full p-8 rounded-2xl mt-10">
       <AnimatedButton
@@ -208,10 +206,26 @@ export default function ConfigureApp({ appId }: { appId: string }) {
       {/* Tabs Navigation */}
       <div className="flex gap-3 mb-8 border-b border-gray-800/70">
         {Object.entries({
-          Image: "Image",
-          Env: "Environment",
-          Resources: "Resources",
-          Ports: "Ports",
+          Image: (
+            <span className="flex items-center gap-2">
+              <FaDocker className="text-blue-300" /> Image
+            </span>
+          ),
+          Env: (
+            <span className="flex items-center gap-2">
+              <FaLeaf className="text-green-400" /> Environment
+            </span>
+          ),
+          Resources: (
+            <span className="flex items-center gap-2">
+              <FaDatabase className="text-blue-300" /> Resources
+            </span>
+          ),
+          Ports: (
+            <span className="flex items-center gap-2">
+              <FaNetworkWired className="text-yellow-300" /> Ports
+            </span>
+          ),
         }).map(([key, label]) => (
           <button
             key={key}
@@ -339,7 +353,6 @@ export default function ConfigureApp({ appId }: { appId: string }) {
             onSaveAndDeploy={handleSaveAndDeploy}
             onRequestDelete={() => setShowDeleteModal(true)}
           />
-          <ErrorMessage error={error} />
         </div>
         <Modal
           open={showDeleteModal}

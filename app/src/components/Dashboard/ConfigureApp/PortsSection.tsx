@@ -213,7 +213,7 @@ const PortsSection: React.FC<PortsSectionProps> = ({ ports, onChange }) => {
         icon={<FaPlus />}
         variant="primary"
       >
-        + Add Port
+        Add Port
       </AnimatedButton>
     </div>
   );

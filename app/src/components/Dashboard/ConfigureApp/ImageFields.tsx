@@ -11,9 +11,6 @@ const ImageFields: React.FC<ImageFieldsProps> = ({
   <div className="grid grid-cols-1 gap-4 mb-6">
     <h3 className="text-gray-400 mb-2">Image Configuration</h3>
     <div>
-      <label className="block text-sm font-medium text-gray-700 mb-1">
-        Image URL
-      </label>
       <Input
         required
         value={imageUrl}
@@ -23,9 +20,6 @@ const ImageFields: React.FC<ImageFieldsProps> = ({
       />
     </div>
     <div>
-      <label className="block text-sm font-medium text-gray-700 mb-1">
-        Image Tag
-      </label>
       <Input
         required
         value={imageTag}

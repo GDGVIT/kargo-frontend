@@ -1,5 +1,6 @@
 import React from "react";
 import { AnimatedButton } from "../../ui/AnimatedButton/AnimatedButton";
+import { FaSave, FaTrash, FaBook } from "react-icons/fa";
 
 import type ActionButtonsProps from "../../../types/Application/ActionButtonProps/ActionButtonProps";
 
@@ -14,7 +15,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
       disabled={saving}
       onClick={onSaveAndDeploy}
       className="!px-4 !py-2"
-      icon={null}
+      icon={<FaSave />}
       variant="primary"
     >
       {saving ? "Saving..." : "Save & Deploy"}
@@ -24,7 +25,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
       disabled={saving}
       onClick={onRequestDelete}
       className="!px-4 !py-2"
-      icon={null}
+      icon={<FaTrash />}
       variant="danger"
     >
       Delete Application
@@ -37,7 +38,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
           window.location.assign(window.location.pathname + "/logs");
         }
       }}
-      icon={null}
+      icon={<FaBook />}
       variant="secondary"
     >
       Logs
