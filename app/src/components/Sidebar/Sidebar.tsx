@@ -3,13 +3,16 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Branding from "./Branding/Branding";
-import { FiBarChart2, FiKey, FiShield } from "react-icons/fi";
+import { FiBarChart2, FiKey, FiShield, FiUser } from "react-icons/fi";
 import { FaDocker } from "react-icons/fa";
 import { useAuth } from "../Auth/AuthProvider/AuthProvider";
+import { usePathname } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function Sidebar() {
   const { user, loading } = useAuth();
   const [isAdmin, setIsAdmin] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     if (!user) {
@@ -26,6 +29,7 @@ export default function Sidebar() {
     ...(isAdmin
       ? [{ href: "/admin", label: "Admin", icon: <FiShield />, admin: true }]
       : []),
+    { href: "/profile", label: "Profile", icon: <FiUser /> },
   ];
 
   if (loading || !user) return null;
@@ -33,40 +37,85 @@ export default function Sidebar() {
   return (
     <>
       {/* DESKTOP SIDEBAR */}
-      <aside className="hidden md:flex fixed top-0 left-0 z-40 h-full w-52 bg-[#242837] border-r border-[#2C313F] shadow-sm flex-col px-4 py-6">
-        <Branding />
-        <nav className="mt-8 flex flex-col space-y-2">
-          {navItems.map(({ href, label, icon, admin }) => (
-            <Link
-              key={label}
-              href={href}
-              className={`flex items-center gap-3 px-3 py-2 text-sm rounded-md transition
-                ${
-                  admin
-                    ? "text-amber-400 hover:bg-amber-500/20 hover:text-white"
-                    : "text-[var(--foreground)] hover:bg-[var(--background)]/70 hover:text-[var(--text-link-hover-color)]"
-                }
-              `}
-            >
-              <span className="text-lg">{icon}</span>
-              <span>{label}</span>
-            </Link>
-          ))}
-        </nav>
-      </aside>
+      <AnimatePresence>
+        {user && (
+          <motion.aside
+            initial={{ x: -60, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            exit={{ x: -60, opacity: 0 }}
+            transition={{ type: "spring", stiffness: 200, damping: 25 }}
+            className="hidden md:flex fixed top-0 left-0 z-40 h-full w-52 bg-[#242837] border-r border-[#2C313F] shadow-sm flex-col px-4 py-6"
+          >
+            <Branding />
+            <nav className="mt-8 flex flex-col space-y-4">
+              {navItems.map(({ href, label, icon, admin }) => {
+                // Allow nested route highlighting
+                const isActive =
+                  href === "/" ? pathname === href : pathname.startsWith(href);
+                return (
+                  <Link
+                    key={label}
+                    href={href}
+                    className={`sidebar-link flex items-center gap-3 px-3 py-2 text-sm rounded-md transition
+                      ${
+                        isActive
+                          ? "bg-gray-700 text-white"
+                          : admin
+                          ? "text-amber-400 hover:bg-amber-500/20 hover:text-white"
+                          : "text-white"
+                      }
+                      hover:bg-gray-700 hover:text-white
+                    `}
+                    style={
+                      !isActive && !admin
+                        ? { opacity: 0.7 }
+                        : !isActive && admin
+                        ? { opacity: 0.7 }
+                        : undefined
+                    }
+                  >
+                    <span className="text-lg">{icon}</span>
+                    <span>{label}</span>
+                  </Link>
+                );
+              })}
+            </nav>
+          </motion.aside>
+        )}
+      </AnimatePresence>
 
       {/* MOBILE BOTTOM NAV */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#242837] border-t border-[#2C313F] flex justify-around items-center px-4 py-3">
-        {navItems.map(({ href, icon, label }) => (
-          <Link
-            key={label}
-            href={href}
-            className="text-zinc-300 hover:text-white text-2xl"
+      <AnimatePresence>
+        {user && (
+          <motion.div
+            initial={{ y: 30, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: 30, opacity: 0 }}
+            transition={{ type: "spring", stiffness: 200, damping: 25 }}
+            className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#242837] border-t border-[#2C313F] flex justify-around items-center px-4 py-3"
           >
-            {icon}
-          </Link>
-        ))}
-      </div>
+            {navItems.map(({ href, icon, label }) => {
+              // Allow nested route highlighting
+              const isActive =
+                href === "/" ? pathname === href : pathname.startsWith(href);
+              return (
+                <Link
+                  key={label}
+                  href={href}
+                  className={`sidebar-link text-2xl ${
+                    isActive
+                      ? "text-white bg-gray-700 rounded-md px-2 py-1"
+                      : "text-white"
+                  } hover:text-white hover:bg-gray-700 rounded-md px-2 py-1`}
+                  style={!isActive ? { opacity: 0.7 } : undefined}
+                >
+                  {icon}
+                </Link>
+              );
+            })}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }

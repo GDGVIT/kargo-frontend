@@ -161,6 +161,10 @@ a:hover {
   color: var(--text-link-hover-color);
 }
 
+.sidebar-link {
+  color: inherit !important;
+}
+
 ul,
 ol {
   margin: var(--margin-medium) 0 var(--margin-medium) var(--margin-large);
