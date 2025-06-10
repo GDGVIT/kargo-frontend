@@ -9,19 +9,24 @@ export interface TextareaProps
 
 const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
   ({ label, error, className = "", ...props }, ref) => (
-    <div className="mb-4 w-full">
+    <div className="mb-4 w-full max-w-[597px]">
       {label && (
         <label className="block mb-1 text-sm font-medium text-[var(--foreground)]">
           {label}
         </label>
       )}
-      <textarea
-        ref={ref}
-        className={`bg-[#293040] text-[var(--foreground)] w-full px-3 py-3 rounded border-2 border-[#7b8191] focus:border-[var(--theme-blue)] outline-none transition-colors duration-200 resize-none ${
+      <div
+        className={`flex flex-row items-start px-[2px] py-[10px] gap-[28px] w-[597px] bg-[#293040] border border-[#7B8191] rounded-[4px] box-border ${
           error ? "border-red-500" : ""
-        } ${className} !min-h-[40px]`}
-        {...props}
-      />
+        }`}
+      >
+        <textarea
+          ref={ref}
+          className={`flex-1 bg-transparent outline-none text-[#7B8191] placeholder-zinc-500 text-[16px] leading-[19px] font-normal font-inter px-0 py-0 border-none ring-0 focus:ring-0 focus:outline-none resize-none ${className}`}
+          style={{ border: "none", boxShadow: "none", minHeight: 40 }}
+          {...props}
+        />
+      </div>
       {error && <p className="text-red-500 text-xs mt-1">{error}</p>}
     </div>
   )

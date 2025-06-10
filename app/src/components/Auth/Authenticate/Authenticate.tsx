@@ -202,24 +202,26 @@ export default function Authenticate() {
                   exit={{ opacity: 0, x: -50 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <Input
-                    icon={<FaEnvelope />}
-                    placeholder="Email"
-                    type="email"
-                    autoComplete="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    disabled={loading}
-                  />
-                  <Input
-                    icon={<FaLock />}
-                    placeholder="Password"
-                    type="password"
-                    autoComplete="current-password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    disabled={loading}
-                  />
+                  <div className="flex flex-col gap-4">
+                    <Input
+                      icon={<FaEnvelope />}
+                      placeholder="Email"
+                      type="email"
+                      autoComplete="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      disabled={loading}
+                    />
+                    <Input
+                      icon={<FaLock />}
+                      placeholder="Password"
+                      type="password"
+                      autoComplete="current-password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      disabled={loading}
+                    />
+                  </div>
                 </motion.div>
               ) : (
                 <motion.div
@@ -229,34 +231,34 @@ export default function Authenticate() {
                   exit={{ opacity: 0, x: -50 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <Input
-                    icon={<FaUserCircle />}
-                    placeholder="Full Name"
-                    type="text"
-                    autoComplete="name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    disabled={loading}
-                  />
-                  <Input
-                    icon={<FaUser />}
-                    placeholder="Username"
-                    type="text"
-                    autoComplete="username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    disabled={loading}
-                  />
-                  <Input
-                    icon={<FaEnvelope />}
-                    placeholder="Email"
-                    type="email"
-                    autoComplete="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    disabled={loading}
-                  />
-                  <div className="relative w-full max-w-lg">
+                  <div className="flex flex-col gap-4">
+                    <Input
+                      icon={<FaUserCircle />}
+                      placeholder="Full Name"
+                      type="text"
+                      autoComplete="name"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      disabled={loading}
+                    />
+                    <Input
+                      icon={<FaUser />}
+                      placeholder="Username"
+                      type="text"
+                      autoComplete="username"
+                      value={username}
+                      onChange={(e) => setUsername(e.target.value)}
+                      disabled={loading}
+                    />
+                    <Input
+                      icon={<FaEnvelope />}
+                      placeholder="Email"
+                      type="email"
+                      autoComplete="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      disabled={loading}
+                    />
                     <Input
                       icon={<FaLock />}
                       placeholder="Password (min 6 characters)"
@@ -265,7 +267,6 @@ export default function Authenticate() {
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       disabled={loading}
-                      style={{ paddingRight: "2.5rem" }}
                     />
                   </div>
                 </motion.div>

@@ -143,8 +143,8 @@ const GithubRepos: React.FC = () => {
     setPage(1);
   };
 
-  const handleOwnerChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedOwner(e.target.value);
+  const handleOwnerChange = (value: string) => {
+    setSelectedOwner(value);
     setPage(1);
   };
 

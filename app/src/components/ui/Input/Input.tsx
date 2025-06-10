@@ -1,4 +1,5 @@
 import React, { InputHTMLAttributes, forwardRef } from "react";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
@@ -8,30 +9,52 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 }
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ label, error, className = "", icon, ...props }, ref) => (
-    <div className="mb-4 w-full">
-      {label && (
-        <label className="block mb-1 text-sm font-medium text-[var(--foreground)]">
-          {label}
-        </label>
-      )}
-      <div className={`flex items-center ${icon ? "px-4 py-2 max-w-lg" : ""}`}>
-        {icon && <span className="text-zinc-400 mr-4">{icon}</span>}
-        <input
-          ref={ref}
-          className={`bg-[#293040] text-[var(--foreground)] w-full px-3 py-3 rounded border-2 border-[#7b8191] focus:border-[var(--theme-blue)] outline-none transition-colors duration-200 ${
+  ({ label, error, className = "", icon, type = "text", ...props }, ref) => {
+    const [showPassword, setShowPassword] = React.useState(false);
+    const isPassword = type === "password";
+    return (
+      <div className="mb-4 w-full max-w-full">
+        {label && (
+          <label className="block mb-1 text-sm font-medium text-[var(--foreground)]">
+            {label}
+          </label>
+        )}
+        <div
+          className={`flex flex-row justify-between items-center px-[2px] py-[10px] w-full bg-[#293040] border border-[#7B8191] rounded-[4px] box-border ${
             error ? "border-red-500" : ""
-          } ${className} ${
-            icon
-              ? "bg-transparent outline-none text-white placeholder-zinc-500 text-lg"
-              : ""
-          } !mb-0 !min-h-[40px] !max-h-[40px] !resize-none`}
-          {...props}
-        />
+          }`}
+        >
+          {icon && (
+            <span className="text-zinc-400 mr-4 flex-none order-0 w-4 h-4 pl-2">
+              {icon}
+            </span>
+          )}
+          <input
+            ref={ref}
+            className={`flex-1 order-1 bg-transparent outline-none text-[#7B8191] placeholder-zinc-500 text-[16px] leading-[19px] font-normal font-inter px-0 py-0 border-none ring-0 focus:ring-0 focus:outline-none ${className} ${
+              isPassword ? "pr-10" : ""
+            }`}
+            style={{ border: "none", boxShadow: "none" }}
+            type={isPassword && showPassword ? "text" : type}
+            {...props}
+          />
+          {isPassword && (
+            <button
+              type="button"
+              aria-label={showPassword ? "Hide password" : "Show password"}
+              onClick={() => setShowPassword((v) => !v)}
+              className="ml-2 flex items-center justify-center text-zinc-400 focus:outline-none order-2 bg-transparent border-none p-0 cursor-pointer w-8 h-8"
+              tabIndex={0}
+              style={{ minWidth: 32 }}
+            >
+              {showPassword ? <FaEyeSlash size={18} /> : <FaEye size={18} />}
+            </button>
+          )}
+        </div>
+        {error && <p className="text-red-500 text-xs mt-1">{error}</p>}
       </div>
-      {error && <p className="text-red-500 text-xs mt-1">{error}</p>}
-    </div>
-  )
+    );
+  }
 );
 Input.displayName = "Input";
 

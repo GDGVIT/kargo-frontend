@@ -92,14 +92,14 @@ const UserTable: React.FC<UserTableProps> = ({
                     ? user.plan
                     : user.plan?._id || ""
                 }
-                onChange={(e) => onPlanAssign(user._id, e.target.value)}
-                // Allow self-assignment only if current user is superadmin
-                disabled={
+                onChange={(value) => onPlanAssign(user._id, value)}
+                aria-label="Select plan for user"
+                className={`min-w-[120px]${
                   planAssigning === user._id ||
                   (currentUserId === user._id && user.role !== "superadmin")
-                }
-                aria-label="Select plan for user"
-                className="min-w-[120px]"
+                    ? " pointer-events-none opacity-60"
+                    : ""
+                }`}
               />
             </td>
             <td className="p-2">

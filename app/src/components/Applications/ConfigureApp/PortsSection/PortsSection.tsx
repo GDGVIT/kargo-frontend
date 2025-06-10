@@ -130,10 +130,8 @@ const PortsSection: React.FC<PortsSectionProps> = ({ ports, onChange }) => {
                   Protocol:
                 </label>
                 <Select
-                  id={`protocol-${id}`}
                   value={protocol}
-                  onChange={(e) => updatePort(id, "protocol", e.target.value)}
-                  title="Select protocol type"
+                  onChange={(value) => updatePort(id, "protocol", value)}
                   label="Protocol"
                   options={[
                     { value: "TCP", label: "TCP" },

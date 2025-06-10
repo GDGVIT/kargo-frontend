@@ -39,15 +39,12 @@ export default function CredentialRegister({
         title="Credential Name"
       />
       <Select
-        required
-        id="cred-registryType"
         label="Registry"
-        title="Registry Type"
         value={form.registryType}
-        onChange={(e) =>
+        onChange={(value) =>
           setForm((f) => ({
             ...f,
-            registryType: e.target.value as RegistryType,
+            registryType: value as RegistryType,
           }))
         }
         options={[

@@ -70,6 +70,7 @@ body {
   color: var(--foreground);
   font-family: "Montserrat-Regular", sans-serif;
   scroll-behavior: smooth;
+  overflow-y: scroll;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -173,7 +174,7 @@ a:hover {
 
 ul,
 ol {
-  margin: var(--margin-medium) 0 var(--margin-medium) var(--margin-large);
+  margin: auto;
   padding: 0;
   color: var(--foreground);
 }
@@ -260,10 +261,9 @@ section p {
 }
 
 ::-webkit-scrollbar {
-  width: 16px;
-  height: 16px;
+  display: none;
 }
-
+/* 
 ::-webkit-scrollbar-track {
   background: var(--background);
   border-radius: var(--border-radius-medium);
@@ -287,4 +287,4 @@ section p {
 * {
   scrollbar-width: auto;
   scrollbar-color: #3c445a var(--background);
-}
+} */
