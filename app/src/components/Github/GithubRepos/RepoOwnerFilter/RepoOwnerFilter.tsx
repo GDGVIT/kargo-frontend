@@ -1,5 +1,5 @@
 import React from "react";
-import { motion } from "framer-motion";
+import Select from "../../../ui/Select/Select";
 import RepoOwnerFilterProps from "../../../../types/Repo/RepoOwnerFilterProps";
 
 const RepoOwnerFilter: React.FC<RepoOwnerFilterProps> = ({
@@ -14,22 +14,14 @@ const RepoOwnerFilter: React.FC<RepoOwnerFilterProps> = ({
     >
       Repository owner filter
     </label>
-    <motion.select
-      className="bg-neutral-800 text-white px-3 py-2 rounded border border-neutral-700 focus:outline-none focus:ring-2 focus:ring-sky-400 min-w-[140px] shadow-md"
+    <Select
       value={value}
       onChange={onChange}
+      options={owners.map((owner) => ({ value: owner, label: owner }))}
       id="repo-owner-filter"
       name="repo-owner-filter"
-      whileFocus={{ scale: 1.04, borderColor: "#38bdf8" }}
-      whileHover={{ scale: 1.03, borderColor: "#38bdf8" }}
-      transition={{ type: "spring", stiffness: 300 }}
-    >
-      {owners.map((owner) => (
-        <option key={owner} value={owner}>
-          {owner}
-        </option>
-      ))}
-    </motion.select>
+      className="bg-neutral-800 text-white px-3 py-2 rounded border border-neutral-700 focus:outline-none focus:ring-2 focus:ring-sky-400 min-w-[140px] shadow-md"
+    />
   </div>
 );
 

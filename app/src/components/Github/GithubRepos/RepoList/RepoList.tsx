@@ -8,7 +8,7 @@ const RepoList: React.FC<{
   renderActions?: (repo: Repo) => React.ReactNode;
 }> = ({ repos, renderActions }) => (
   <motion.ul
-    className="divide-y divide-neutral-800 bg-neutral-950 rounded-lg shadow-inner mb-6  overflow-auto"
+    className="divide-y divide-neutral-800 rounded-lg  mb-6  overflow-auto"
     style={{
       scrollbarWidth: "none",
       msOverflowStyle: "none",

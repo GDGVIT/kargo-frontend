@@ -6,6 +6,12 @@
 }
 
 @font-face {
+  font-family: "Inter";
+  src: url("../../public/fonts/Inter-VariableFont_opsz\,wght.ttf")
+    format("truetype");
+}
+
+@font-face {
   font-family: "AirbnbCereal_W_Bd";
   src: url("../../public/fonts/AirbnbCereal_W_Bd.otf") format("opentype");
 }

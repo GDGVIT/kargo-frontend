@@ -1,5 +1,4 @@
 import { motion } from "framer-motion";
-import { FaArrowRight } from "react-icons/fa";
 import React, { ReactNode, MouseEventHandler } from "react";
 
 interface AnimatedButtonProps {
@@ -16,7 +15,7 @@ interface AnimatedButtonProps {
 const AnimatedButton = ({
   children,
   onClick,
-  icon = <FaArrowRight />,
+  icon = "",
   className = "",
   disabled = false,
   title,
@@ -46,7 +45,7 @@ const AnimatedButton = ({
         disabled
           ? {}
           : {
-              scale: 1.05,
+              scale: 1.02, // reduced from 1.05
               boxShadow: "0 4px 16px rgba(47,162,160,0.15)",
               backgroundColor:
                 variant === "danger"
@@ -77,7 +76,7 @@ const AnimatedButton = ({
                   : "#258C8A",
             }
       }
-      transition={{ type: "spring", stiffness: 400, damping: 20 }}
+      transition={{ type: "spring", stiffness: 400, damping: 30 }} // increased damping
       className={`flex flex-row justify-center items-center gap-2 sm:gap-[10px] px-4 sm:px-[16px] py-2 sm:py-[10px] min-w-[120px] max-w-full h-[44px] rounded-[8px] font-inter font-medium text-[16px] leading-[19px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-2 ${
         disabled ? "opacity-60 cursor-not-allowed" : ""
       } ${variantClass} ${className}`}

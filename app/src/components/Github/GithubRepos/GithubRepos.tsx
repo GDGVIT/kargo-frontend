@@ -216,7 +216,6 @@ const GithubRepos: React.FC = () => {
 
   return (
     <>
-      {/* Docker Modal */}
       <DockerModal
         open={dockerModal.open}
         dockerfile={dockerModal.dockerfile}
@@ -228,7 +227,6 @@ const GithubRepos: React.FC = () => {
       {dockerizingRepoId && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60">
           <div className="bg-neutral-900 rounded-lg shadow-lg p-8 flex flex-col items-center">
-            <Loader />
             <p className="mt-4 text-sky-300">
               Generating Dockerfile and docker-compose.yml...
               <br />

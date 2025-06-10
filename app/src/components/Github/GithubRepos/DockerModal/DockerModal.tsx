@@ -3,6 +3,8 @@ import { FaTimes, FaCopy, FaDocker } from "react-icons/fa";
 import DockerModalProps from "../../../../types/DockerModalProps/DockerModalProps";
 import { DockerfileParser } from "dockerfile-ast";
 import yaml from "js-yaml";
+import Button from "../../../ui/AnimatedButton/AnimatedButton";
+import Card from "../../../ui/Card/Card";
 
 const DockerModal: React.FC<DockerModalProps> = ({
   open,
@@ -15,8 +17,6 @@ const DockerModal: React.FC<DockerModalProps> = ({
     dockerfile ? "dockerfile" : "dockerCompose"
   );
   const [copied, setCopied] = useState<string | null>(null);
-
-  if (!open) return null;
 
   const handleCopy = (text: string, type: string) => {
     navigator.clipboard.writeText(text);
@@ -107,12 +107,13 @@ const DockerModal: React.FC<DockerModalProps> = ({
       }
       return (
         <div className="relative">
-          <button
+          <Button
             className="absolute top-2 right-2 text-xs px-2 py-1 bg-blue-700 hover:bg-blue-800 text-white rounded flex items-center gap-1"
             onClick={() => handleCopy(formatContent(dockerfile), "dockerfile")}
+            variant="primary"
           >
             <FaCopy /> {copied === "dockerfile" ? "Copied!" : "Copy"}
-          </button>
+          </Button>
           <pre className="bg-neutral-800 p-4 text-sm overflow-x-auto text-blue-200 whitespace-pre-wrap border border-blue-700 shadow-inner mt-6">
             {formatContent(dockerfile)}
           </pre>
@@ -132,14 +133,15 @@ const DockerModal: React.FC<DockerModalProps> = ({
       }
       return (
         <div className="relative">
-          <button
+          <Button
             className="absolute top-2 right-2 text-xs px-2 py-1 bg-pink-700 hover:bg-pink-800 text-white rounded flex items-center gap-1"
             onClick={() =>
               handleCopy(formatDockerCompose(dockerCompose), "dockerCompose")
             }
+            variant="primary"
           >
             <FaCopy /> {copied === "dockerCompose" ? "Copied!" : "Copy"}
-          </button>
+          </Button>
           <pre className="bg-neutral-800 p-4 text-sm overflow-x-auto text-pink-200 whitespace-pre-wrap border border-pink-700 shadow-inner mt-6">
             {formatDockerCompose(dockerCompose)}
           </pre>
@@ -160,21 +162,24 @@ const DockerModal: React.FC<DockerModalProps> = ({
     );
   };
 
+  if (!open) return null;
+
   return (
     <div className="fixed inset-0 z-60 flex items-center justify-center bg-black bg-opacity-70">
-      <div className="bg-neutral-900 rounded-2xl shadow-2xl p-8 max-w-2xl w-full relative border-2 border-sky-700 animate-fadeIn">
-        <button
+      <Card className="bg-neutral-900 rounded-2xl shadow-2xl p-8 max-w-2xl w-full relative border-2 border-sky-700 animate-fadeIn">
+        <Button
           className="absolute top-4 right-4 text-zinc-400 hover:text-white text-2xl"
           onClick={onClose}
           aria-label="Close"
+          variant="secondary"
         >
           <FaTimes />
-        </button>
+        </Button>
         <h2 className="text-xl font-bold mb-6 text-sky-400 text-center">
           Dockerization for <span className="text-white">{repoName}</span>
         </h2>
         <div className="flex justify-center mb-4 gap-2">
-          <button
+          <Button
             className={`px-4 py-2 rounded-t-lg font-semibold transition-colors duration-200 border-b-2 focus:outline-none flex items-center gap-2 ${
               activeTab === "dockerfile"
                 ? "bg-blue-700 text-white border-blue-400"
@@ -182,6 +187,7 @@ const DockerModal: React.FC<DockerModalProps> = ({
             }`}
             onClick={() => setActiveTab("dockerfile")}
             disabled={!dockerfile}
+            variant={activeTab === "dockerfile" ? "primary" : "secondary"}
           >
             <FaDocker
               className={`text-lg ${
@@ -189,8 +195,8 @@ const DockerModal: React.FC<DockerModalProps> = ({
               }`}
             />{" "}
             Dockerfile
-          </button>
-          <button
+          </Button>
+          <Button
             className={`px-4 py-2 rounded-t-lg font-semibold transition-colors duration-200 border-b-2 focus:outline-none flex items-center gap-2 ${
               activeTab === "dockerCompose"
                 ? "bg-pink-700 text-white border-pink-400"
@@ -198,14 +204,15 @@ const DockerModal: React.FC<DockerModalProps> = ({
             }`}
             onClick={() => setActiveTab("dockerCompose")}
             disabled={!dockerCompose}
+            variant={activeTab === "dockerCompose" ? "primary" : "secondary"}
           >
             <FaDocker className="text-lg text-pink-200" /> docker-compose.yml
-          </button>
+          </Button>
         </div>
         <div className="max-h-[50vh] overflow-y-auto scrollbar-thin scrollbar-thumb-zinc-700 scrollbar-track-zinc-900 rounded-lg">
           {renderTabContent()}
         </div>
-      </div>
+      </Card>
     </div>
   );
 };
