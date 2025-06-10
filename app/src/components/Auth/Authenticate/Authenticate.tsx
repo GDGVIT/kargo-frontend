@@ -1,26 +1,14 @@
 "use client";
 
+import Branding from "./Branding/Branding";
+import AuthTabs from "./AuthTabs/AuthTabs";
+import AuthForm from "./AuthForm/AuthForm";
+import OAuthButtons from "./OAuthButtons/OAuthButtons";
 import { useState, useEffect } from "react";
 import { useAuth } from "../AuthProvider/AuthProvider";
-import { motion, AnimatePresence } from "framer-motion";
 import useNotification from "../../ui/Notification/Notification";
-import {
-  FaUser,
-  FaUserCircle,
-  FaLock,
-  FaEnvelope,
-  FaGithub,
-} from "react-icons/fa";
 import { baseURL } from "../../../utils/api";
 import { useRouter } from "next/navigation";
-import { FcGoogle } from "react-icons/fc";
-import Image from "next/image";
-import Input from "../../ui/Input/Input";
-
-const tabVariants = {
-  active: { borderBottomWidth: 3, borderColor: "#38bdf8" },
-  inactive: { borderBottomWidth: 0, borderColor: "transparent" },
-};
 
 export default function Authenticate() {
   const [isLogin, setIsLogin] = useState(true);
@@ -96,7 +84,9 @@ export default function Authenticate() {
         notify(
           response.message ||
             (isLogin
-              ? "Logged in successfully!"
+              ? `Logged in successfully! Welcome, ${
+                  user?.name || user?.email || ""
+                }!`
               : "Registered successfully. Please check your email to verify."),
           "success"
         );
@@ -136,154 +126,28 @@ export default function Authenticate() {
 
   return (
     <section className="flex items-center justify-center px-6 py-12">
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="w-full max-w-4xl bg-[var(--card-background)] rounded-3xl p-0 flex flex-col md:flex-row overflow-hidden"
-      >
+      <div className="w-full max-w-4xl bg-[var(--card-background)] rounded-3xl p-0 flex flex-col md:flex-row overflow-hidden">
         {/* Left Side: Branding/Illustration */}
-        <div className="hidden md:flex flex-col justify-center items-center bg-gradient-to-b from-sky-900 to-gray-900 w-1/2 p-10 text-white relative">
-          <div className="flex flex-col items-center gap-6">
-            <Image
-              src="/icons/icon-192x192.webp"
-              alt="Kargo Logo"
-              width={96}
-              height={96}
-              className="w-24 h-24 rounded-2xl shadow-lg"
-            />
-            <h2 className="text-3xl font-bold tracking-tight">
-              Welcome to Kargo
-            </h2>
-            <p className="text-lg text-sky-200 text-center max-w-xs">
-              Deploy, manage, and scale your applications with ease. Login or
-              create an account to get started!
-            </p>
-          </div>
-          <div className="absolute bottom-6 left-0 w-full text-center text-xs text-sky-300 opacity-60">
-            © {new Date().getFullYear()} Kargo
-          </div>
-        </div>
-
+        <Branding />
         {/* Right Side: Auth Form */}
         <div className="w-full md:w-1/2 p-6 md:p-10 flex flex-col justify-center">
           {/* Tabs */}
-          <div className="flex justify-center mb-8 gap-20 border-b border-neutral-700">
-            <motion.button
-              type="button"
-              onClick={() => setIsLogin(true)}
-              className="text-xl font-semibold text-slate-100 pb-3 px-6"
-              animate={isLogin ? "active" : "inactive"}
-              variants={tabVariants}
-              transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            >
-              Login
-            </motion.button>
-            <motion.button
-              type="button"
-              onClick={() => setIsLogin(false)}
-              className="text-xl font-semibold text-slate-100 pb-3 px-6"
-              animate={!isLogin ? "active" : "inactive"}
-              variants={tabVariants}
-              transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            >
-              Sign Up
-            </motion.button>
-          </div>
+          <AuthTabs isLogin={isLogin} setIsLogin={setIsLogin} />
 
           {/* Animated height wrapper for form content */}
-          <motion.div layout transition={{ duration: 0.4, type: "spring" }}>
-            <AnimatePresence mode="wait">
-              {isLogin ? (
-                <motion.div
-                  key="login"
-                  initial={{ opacity: 0, x: 50 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -50 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <div className="flex flex-col gap-4">
-                    <Input
-                      icon={<FaEnvelope />}
-                      placeholder="Email"
-                      type="email"
-                      autoComplete="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      disabled={loading}
-                    />
-                    <Input
-                      icon={<FaLock />}
-                      placeholder="Password"
-                      type="password"
-                      autoComplete="current-password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      disabled={loading}
-                    />
-                  </div>
-                </motion.div>
-              ) : (
-                <motion.div
-                  key="signup"
-                  initial={{ opacity: 0, x: 50 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -50 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <div className="flex flex-col gap-4">
-                    <Input
-                      icon={<FaUserCircle />}
-                      placeholder="Full Name"
-                      type="text"
-                      autoComplete="name"
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      disabled={loading}
-                    />
-                    <Input
-                      icon={<FaUser />}
-                      placeholder="Username"
-                      type="text"
-                      autoComplete="username"
-                      value={username}
-                      onChange={(e) => setUsername(e.target.value)}
-                      disabled={loading}
-                    />
-                    <Input
-                      icon={<FaEnvelope />}
-                      placeholder="Email"
-                      type="email"
-                      autoComplete="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      disabled={loading}
-                    />
-                    <Input
-                      icon={<FaLock />}
-                      placeholder="Password (min 6 characters)"
-                      type="password"
-                      autoComplete="new-password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      disabled={loading}
-                    />
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-
-            <div className="flex justify-center mt-6">
-              <button
-                onClick={handleSubmit}
-                disabled={loading}
-                className="py-2 rounded-xl bg-sky-600 hover:bg-sky-700 transition duration-300 disabled:opacity-50 text-lg font-semibold text-white shadow-lg w-48 block"
-                type="button"
-              >
-                {loading ? "Please wait..." : isLogin ? "Login" : "Sign Up"}
-              </button>
-            </div>
-          </motion.div>
+          <AuthForm
+            isLogin={isLogin}
+            email={email}
+            setEmail={setEmail}
+            password={password}
+            setPassword={setPassword}
+            name={name}
+            setName={setName}
+            username={username}
+            setUsername={setUsername}
+            loading={loading}
+            handleSubmit={handleSubmit}
+          />
 
           <div className="flex items-center justify-center my-6 gap-3">
             <div className="h-px flex-grow bg-neutral-700" />
@@ -292,35 +156,13 @@ export default function Authenticate() {
           </div>
 
           {/* OAuth Buttons - now compact, icon-only, in a row */}
-          <div className="flex flex-row items-center justify-center gap-4 max-w-lg mx-auto">
-            <button
-              onClick={googleLogin}
-              aria-label="Continue with Google"
-              disabled={oauthLoading}
-              className="flex items-center justify-center p-3 rounded-full text-gray text-lg"
-              type="button"
-            >
-              <FcGoogle className="w-6 h-6" />
-            </button>
-
-            <button
-              onClick={githubLogin}
-              aria-label="Continue with GitHub"
-              disabled={oauthLoading}
-              className="flex items-center justify-center p-3 rounded-full text-white text-lg"
-              type="button"
-            >
-              <FaGithub className="w-6 h-6" />
-            </button>
-          </div>
-
-          {user && (
-            <div className="text-center text-sm text-emerald-400 mt-8">
-              Welcome, {user.name || user.email}!
-            </div>
-          )}
+          <OAuthButtons
+            googleLogin={googleLogin}
+            githubLogin={githubLogin}
+            oauthLoading={oauthLoading}
+          />
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 }

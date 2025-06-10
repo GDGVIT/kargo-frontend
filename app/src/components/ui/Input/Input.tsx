@@ -43,7 +43,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
               type="button"
               aria-label={showPassword ? "Hide password" : "Show password"}
               onClick={() => setShowPassword((v) => !v)}
-              className="ml-2 flex items-center justify-center text-zinc-400 focus:outline-none order-2 bg-transparent border-none p-0 cursor-pointer w-8 h-8"
+              className="ml-2 pr-1 flex items-center justify-center text-zinc-400 focus:outline-none order-2 bg-transparent border-none p-0 cursor-pointer w-8"
               tabIndex={0}
               style={{ minWidth: 32 }}
             >
