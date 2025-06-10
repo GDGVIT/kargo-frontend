@@ -40,7 +40,7 @@ const Select: React.FC<SelectProps> = ({
         {({ open }) => (
           <div className="relative w-full">
             <Listbox.Button
-              className={`flex items-center justify-between px-3 py-2 w-full h-[41px] bg-[#293040] border ${
+              className={`flex items-center justify-between px-3 py-[10px] w-full bg-[#293040] border ${
                 error ? "border-red-500" : "border-[#7B8191]"
               } rounded-[4px] text-left text-[16px] font-inter focus:outline-none`}
             >
@@ -67,7 +67,7 @@ const Select: React.FC<SelectProps> = ({
                         key={opt.value}
                         value={opt.value}
                         className={({ active, selected }) =>
-                          `relative cursor-pointer select-none py-2 pl-4 pr-10 text-[16px] font-inter transition-colors ${
+                          `relative cursor-pointer select-none py-2 pl-3 pr-10 text-[16px] font-inter transition-colors ${
                             active
                               ? "bg-[#293040] text-white"
                               : selected

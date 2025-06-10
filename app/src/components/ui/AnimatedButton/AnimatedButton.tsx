@@ -25,24 +25,31 @@ const AnimatedButton = ({
   variant = "primary",
 }: AnimatedButtonProps) => {
   let variantClass = "";
+  let initialBgColor = "";
   switch (variant) {
     case "danger":
       variantClass = "bg-red-600 hover:bg-red-700 text-white";
+      initialBgColor = "#dc2626";
       break;
     case "secondary":
       variantClass = "bg-gray-700 hover:bg-gray-800 text-white";
+      initialBgColor = "#374151";
       break;
     case "success":
       variantClass = "bg-green-600 hover:bg-green-700 text-white";
+      initialBgColor = "#16a34a";
       break;
     case "warning":
       variantClass = "bg-yellow-500 hover:bg-yellow-600 text-black";
+      initialBgColor = "#eab308";
       break;
     default:
       variantClass = "bg-[#2FA2A0] hover:bg-[#27918F] text-white";
+      initialBgColor = "#2FA2A0";
   }
   return (
     <motion.button
+      style={{ backgroundColor: initialBgColor }}
       whileHover={
         disabled
           ? {}
