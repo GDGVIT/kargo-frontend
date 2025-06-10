@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import {
   FaSignOutAlt,
   FaEnvelope,
@@ -19,6 +19,7 @@ import AnimatedButton from "../ui/AnimatedButton/AnimatedButton";
 const Profile: React.FC = () => {
   const { user, loading, logout } = useAuth();
   const { notify } = useNotification();
+  const [imageError, setImageError] = useState(false);
 
   const handleLogout = async () => {
     try {
@@ -50,12 +51,13 @@ const Profile: React.FC = () => {
       <Card className="flex flex-col items-center md:items-start gap-4 w-full md:w-1/3 min-w-[220px] max-w-full md:max-w-xs p-6">
         <div className="relative">
           <div>
-            {user.profilePicture ? (
+            {user.profilePicture && !imageError ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img
                 src={user.profilePicture}
                 alt="Profile"
                 className="w-24 h-24 rounded-full"
+                onError={() => setImageError(true)}
               />
             ) : (
               <FaUserIcon className="w-24 h-24 text-zinc-300 bg-zinc-800 rounded-full p-4 border-4 border-sky-700/40 shadow transition-colors duration-300" />

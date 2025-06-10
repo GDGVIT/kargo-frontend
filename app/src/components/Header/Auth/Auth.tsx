@@ -8,6 +8,7 @@ import { motion, AnimatePresence } from "framer-motion";
 export default function Auth() {
   const { user, loading, logout } = useAuth();
   const [open, setOpen] = useState(false);
+  const [imageError, setImageError] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -33,12 +34,13 @@ export default function Auth() {
           className="flex items-center gap-2 cursor-pointer px-2 py-1 hover:bg-[#2e354b] transition"
           onClick={() => (window.location.href = "/profile")}
         >
-          {user.profilePicture && (
+          {user.profilePicture && !imageError && (
             // eslint-disable-next-line @next/next/no-img-element
             <img
               src={user.profilePicture}
               alt={user.name || user.username || "User"}
               className="w-8 h-8 rounded-full object-cover border border-gray-300"
+              onError={() => setImageError(true)}
             />
           )}
           <span className="text-sm font-medium block whitespace-nowrap">

@@ -1,7 +1,7 @@
 import React from "react";
-import Input from "../../ui/Input/Input";
+import Input from "../../../ui/Input/Input";
 
-import type ResourcesSectionProps from "../../../types/Application/Resources/ResourcesSectionProps/ResourcesSectionProps";
+import type ResourcesSectionProps from "../../../../types/Application/Resources/ResourcesSectionProps/ResourcesSectionProps";
 
 const sanitizeNumber = (val: string) => val.replace(/[^\d.]/g, "");
 
