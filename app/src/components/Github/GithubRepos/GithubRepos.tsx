@@ -14,6 +14,7 @@ import Select from "../../ui/Select/Select";
 import RepoList from "./RepoList/RepoList";
 import DockerModal from "./DockerModal/DockerModal";
 import Repo from "../../../types/Repo/Repo";
+import Card from "../../ui/Card/Card";
 
 const GithubRepos: React.FC = () => {
   const { notify } = useNotification();
@@ -83,6 +84,7 @@ const GithubRepos: React.FC = () => {
       } catch (err: unknown) {
         let message = "Failed to fetch GitHub repositories.";
         let removedInstallationsError = false;
+        let isFatal = false;
         if (axios.isAxiosError(err)) {
           message = err.response?.data?.error || message;
           if (
@@ -91,6 +93,14 @@ const GithubRepos: React.FC = () => {
           ) {
             removedInstallationsError = true;
           }
+          // If backend returns 500 or JWT error, treat as fatal
+          if (
+            err.response?.status === 500 ||
+            (typeof message === "string" &&
+              message.includes("secretOrPrivateKey must be an asymmetric key"))
+          ) {
+            isFatal = true;
+          }
         } else if (err instanceof Error) {
           message = err.message;
         }
@@ -98,11 +108,22 @@ const GithubRepos: React.FC = () => {
         setAllRepos([]);
         notify(message, "error");
         if (removedInstallationsError) {
-          // Refresh installation IDs to update UI
-          const res = await api.get("/api/github/installation-id", {
-            withCredentials: true,
-          });
-          setInstallationIds(res.data.installation_ids || []);
+          // Refresh installation IDs to update UI and prevent infinite retry
+          try {
+            const res = await api.get("/api/github/installation-id", {
+              withCredentials: true,
+            });
+            setInstallationIds(res.data.installation_ids || []);
+            notify(
+              "Some GitHub installations were invalid or expired and have been removed. Please reconnect GitHub if needed.",
+              "warning"
+            );
+          } catch {
+            setInstallationIds([]);
+          }
+        } else if (isFatal) {
+          // On fatal error, clear installation IDs to stop retrying
+          setInstallationIds([]);
         }
       } finally {
         setLoading(false);
@@ -190,10 +211,10 @@ const GithubRepos: React.FC = () => {
 
   if (error) {
     return (
-      <div className="max-w-xl mx-auto mt-12 p-8  text-center text-red-500">
+      <Card>
         <FaGithub className="mx-auto mb-2 text-3xl" />
         <div className="text-lg font-semibold mb-1">{error}</div>
-      </div>
+      </Card>
     );
   }
 
@@ -253,19 +274,17 @@ const GithubRepos: React.FC = () => {
           </h2>
         </motion.div>
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 space-y-4 sm:space-y-0">
-          {/* Replace RepoSearchInput with Input */}
           <Input
             value={searchTerm}
             onChange={handleSearchChange}
             placeholder="Search repositories..."
-            className="w-full sm:w-64 shadow-md"
+            icon={<FaGithub className="text-zinc-400" />}
           />
-          {/* Replace RepoOwnerFilter with Select */}
+
           <Select
             value={selectedOwner}
             onChange={handleOwnerChange}
             options={owners.map((owner) => ({ value: owner, label: owner }))}
-            className="min-w-[140px] shadow-md"
           />
         </div>
         <div className="text-xs text-orange-400 mb-4">

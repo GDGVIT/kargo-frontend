@@ -62,37 +62,16 @@ const GithubAuth: React.FC = () => {
 
         const savedInstallationIds: string[] = res.data.installation_ids || [];
 
-        const url = new URL(window.location.href);
-        const paramId = url.searchParams.get("installation_id");
-        const sessionId = sessionStorage.getItem("installation_ids");
-        let idsFromClient: string[] = [];
-
-        if (paramId) idsFromClient.push(paramId);
-        else if (sessionId) idsFromClient = JSON.parse(sessionId);
-
-        const allInstallationIds = Array.from(
-          new Set([...savedInstallationIds, ...idsFromClient])
-        );
-
-        const newIdsToSave = allInstallationIds.filter(
-          (id) => !savedInstallationIds.includes(id)
-        );
-
-        for (const id of newIdsToSave) {
-          await api.post(
-            "/api/github/installation-id",
-            { installation_id: id },
-            { withCredentials: true }
-          );
-        }
-
-        setInstallationIds(allInstallationIds);
+        // Always trust backend as source of truth
+        setInstallationIds(savedInstallationIds);
         sessionStorage.setItem(
           "installation_ids",
-          JSON.stringify(allInstallationIds)
+          JSON.stringify(savedInstallationIds)
         );
 
-        if (paramId) {
+        // Remove installation_id param from URL if present
+        const url = new URL(window.location.href);
+        if (url.searchParams.has("installation_id")) {
           url.searchParams.delete("installation_id");
           window.history.replaceState(null, "", url.toString());
         }
