@@ -17,7 +17,7 @@ const UserTable: React.FC<UserTableProps> = ({
   onExtraResourcesSave,
   onExtraResourcesCancel,
   getRoleActions,
-  currentUserId, // <-- add this prop
+  currentUserId,
 }) => (
   <Card>
     <table className="w-full border text-sm">

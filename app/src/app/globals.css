@@ -116,7 +116,6 @@ select {
   color: var(--foreground);
   width: 100%;
   padding: var(--padding-tiny) var(--padding-small);
-  border-radius: var(--border-radius-small);
   border: 2px solid #7b8191;
   ::placeholder {
     color: #a0aec0;

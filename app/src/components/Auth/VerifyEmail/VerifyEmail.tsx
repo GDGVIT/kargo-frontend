@@ -63,7 +63,6 @@ export default function VerifyEmailPage() {
 
   return (
     <div className="max-w-md mx-auto p-8 mt-16 text-center text-white">
-      <h1 className="text-2xl font-bold mb-4">Email Verification</h1>
       {status === "pending" && (
         <p className="text-zinc-300">Verifying your email...</p>
       )}

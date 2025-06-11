@@ -7,6 +7,7 @@ import type User from "../../../types/User/User";
 import UserManagement from "./UserManagement/UserManagement";
 import AnimatedButton from "../../ui/AnimatedButton/AnimatedButton";
 import useNotification from "../../ui/Notification/Notification";
+import Loader from "../../ui/Loader/Loader";
 
 export default function AdminUsersDashboard() {
   const [users, setUsers] = useState<User[]>([]);
@@ -196,10 +197,8 @@ export default function AdminUsersDashboard() {
 
   return (
     <div className="max-w-6xl mx-auto py-8">
-      <h1 className="text-2xl font-bold mb-6">Admin Panel</h1>
-      <h2 className="text-xl font-semibold mb-2">Users</h2>
       {loading ? (
-        <div>Loading users...</div>
+        <Loader />
       ) : error ? (
         <div className="text-red-500">{error}</div>
       ) : (
