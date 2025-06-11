@@ -1,6 +1,8 @@
 /// <reference lib="webworker" />
 
 const CACHE_NAME = "Kargo_v1";
+const DYNAMIC_CACHE_NAME = `Kargo_dynamic_v1`;
+const DYNAMIC_CACHE_LIMIT = 50;
 const CORE_ASSETS = [
   "/",
   "/offline",
@@ -35,21 +37,57 @@ const CORE_ASSETS = [
   "/favicon.ico",
 ];
 
+function isCoreAsset(request) {
+  const url = new URL(request.url);
+  return CORE_ASSETS.includes(url.pathname);
+}
+
+async function limitCacheSize(cacheName, maxItems) {
+  const cache = await caches.open(cacheName);
+  const keys = await cache.keys();
+  if (keys.length > maxItems) {
+    await cache.delete(keys[0]);
+    await limitCacheSize(cacheName, maxItems);
+  }
+}
+
 async function cacheCoreAssets() {
   const cache = await caches.open(CACHE_NAME);
   await cache.addAll(CORE_ASSETS);
 }
 
-async function dynamicCaching(request) {
+async function cacheFirst(request) {
   const cache = await caches.open(CACHE_NAME);
+  const cached = await cache.match(request);
+  if (cached) return cached;
   try {
     const response = await fetch(request);
-    await cache.put(request, response.clone());
+    if (response && response.status === 200) {
+      cache.put(request, response.clone());
+    }
     return response;
   } catch (error) {
-    console.warn("[SW] Fetch failed; serving from cache if possible:", error);
-    return (await cache.match(request)) || (await cache.match("/offline"));
+    console.warn("[SW] Cache-first fetch failed:", error);
+    return await cache.match("/offline");
   }
+}
+
+async function staleWhileRevalidate(request) {
+  const cache = await caches.open(DYNAMIC_CACHE_NAME);
+  const cached = await cache.match(request);
+  const fetchPromise = fetch(request)
+    .then(async (response) => {
+      if (response && response.status === 200) {
+        await cache.put(request, response.clone());
+        await limitCacheSize(DYNAMIC_CACHE_NAME, DYNAMIC_CACHE_LIMIT);
+      }
+      return response;
+    })
+    .catch((error) => {
+      console.warn("[SW] Network fetch failed:", error);
+      return null;
+    });
+  return cached || fetchPromise;
 }
 
 self.addEventListener("install", (event) => {
@@ -65,7 +103,7 @@ self.addEventListener("activate", (event) => {
       const cacheNames = await caches.keys();
       await Promise.all(
         cacheNames
-          .filter((name) => name !== CACHE_NAME)
+          .filter((name) => name !== CACHE_NAME && name !== DYNAMIC_CACHE_NAME)
           .map((name) => caches.delete(name))
       );
       self.clients.claim();
@@ -75,10 +113,37 @@ self.addEventListener("activate", (event) => {
 
 self.addEventListener("fetch", (event) => {
   const url = new URL(event.request.url);
-
-  if (event.request.method !== "GET") return;
-
+  if (event.request.method !== "GET") {
+    return;
+  }
   if (url.origin === self.location.origin) {
-    event.respondWith(dynamicCaching(event.request));
+    if (isCoreAsset(event.request)) {
+      event.respondWith(cacheFirst(event.request));
+    } else {
+      event.respondWith(
+        (async () => {
+          const cached = await caches
+            .open(DYNAMIC_CACHE_NAME)
+            .then((c) => c.match(event.request));
+          if (cached) {
+            event.waitUntil(staleWhileRevalidate(event.request));
+            return cached;
+          } else {
+            try {
+              const response = await fetch(event.request);
+              if (response && response.status === 200) {
+                const cache = await caches.open(DYNAMIC_CACHE_NAME);
+                await cache.put(event.request, response.clone());
+                await limitCacheSize(DYNAMIC_CACHE_NAME, DYNAMIC_CACHE_LIMIT);
+              }
+              return response;
+            } catch (error) {
+              console.warn("[SW] Dynamic fetch failed:", error);
+              return await caches.match("/offline");
+            }
+          }
+        })()
+      );
+    }
   }
 });
