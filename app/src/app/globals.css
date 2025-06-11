@@ -80,7 +80,7 @@ body {
 }
 
 main {
-  margin: auto 0;
+  margin: auto;
   padding: var(--padding-medium);
   display: flex;
   flex-direction: column;

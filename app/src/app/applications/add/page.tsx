@@ -1,9 +1,15 @@
 import AddAppForm from "../../../components/Applications/AddAppForm/AddAppForm";
+import PageHeading from "../../../components/ui/PageHeading/PageHeading";
+import { MdAdd } from "react-icons/md";
 
 export default function AddAppPage() {
   return (
     <main>
-      <h1 className="text-2xl font-bold mb-6 text-gray-100">Add Application</h1>
+      <PageHeading
+        title="Add Application"
+        subtitle="Fill in the details to add a new application."
+        icon={<MdAdd />}
+      />
       <AddAppForm />
     </main>
   );
