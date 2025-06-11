@@ -85,8 +85,8 @@ const AnimatedButton = ({
                   : "#258C8A",
             }
       }
-      transition={{ type: "spring", stiffness: 400, damping: 30 }} // increased damping
-      className={`flex flex-row justify-center items-center gap-2 sm:gap-[10px] px-4 sm:px-[16px] py-2 sm:py-[10px] min-w-[120px] max-w-full h-[44px] rounded-[8px] font-inter font-medium text-[16px] leading-[19px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-2 ${
+      transition={{ type: "spring", stiffness: 400, damping: 30 }}
+      className={`flex flex-row justify-center items-center gap-2 sm:gap-[10px] mx-2 my-3 px-4 sm:px-[16px] py-2 sm:py-[10px] min-w-[120px] max-w-full h-[44px] rounded-[8px] font-inter font-medium text-[16px] leading-[19px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-2 ${
         disabled ? "opacity-60 cursor-not-allowed" : ""
       } ${variantClass} ${className}`}
       onClick={disabled ? undefined : onClick}

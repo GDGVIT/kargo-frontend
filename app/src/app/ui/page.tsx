@@ -117,13 +117,42 @@ export default function UIPage() {
       <section style={{ marginTop: 40 }}>
         <h2>Card</h2>
         <div style={{ display: "flex", gap: 24, flexWrap: "wrap" }}>
-          <Card>
+          <Card elevation={1} aria-label="Simple card">
             <div>Simple Card Content</div>
           </Card>
-          <Card>
+          <Card hoverable elevation={2} aria-label="Hoverable card">
             <div>
-              <h4>Card with Heading</h4>
-              <p>This card contains a heading and a paragraph.</p>
+              <h4>Hoverable Card</h4>
+              <p>Hover over this card to see the effect.</p>
+            </div>
+          </Card>
+          <Card
+            onClick={() => notify("Card clicked!", "info")}
+            elevation={3}
+            aria-label="Clickable card"
+          >
+            <div>
+              <h4>Clickable Card</h4>
+              <p>Click this card to trigger a notification.</p>
+            </div>
+          </Card>
+          <Card
+            hoverable
+            onClick={() => notify("Hoverable & Clickable Card!", "success")}
+            elevation={4}
+            aria-label="Hoverable and clickable card"
+            animationDuration={1}
+            animationEasing={[0.4, 0, 0.2, 1]}
+          >
+            <div>
+              <h4>Hoverable & Clickable Card</h4>
+              <p>Hover and click to see both effects in action.</p>
+            </div>
+          </Card>
+          <Card disabled elevation={5} aria-label="Disabled card">
+            <div>
+              <h4>Disabled Card</h4>
+              <p>This card is disabled and not interactive.</p>
             </div>
           </Card>
           <Card>
@@ -149,21 +178,46 @@ export default function UIPage() {
             maxWidth: 400,
           }}
         >
-          <Input placeholder="No label" />
-          <Input label="With label" placeholder="With label" />
-          <Input label="With value" value="Value" readOnly />
-          <Input label="With icon" icon={<FaSave />} placeholder="With icon" />
+          <Input placeholder="No label" helperText="This is a basic input." />
+          <Input
+            label="With label"
+            placeholder="With label"
+            helperText="Labelled input."
+          />
+          <Input
+            label="With value"
+            value="Value"
+            readOnly
+            helperText="Read-only input."
+          />
+          <Input
+            label="With icon"
+            icon={<FaSave />}
+            placeholder="With icon"
+            helperText="Input with icon."
+          />
           <Input
             label="Error"
             error="This is an error"
             placeholder="Error state"
+            helperText="Helper text will not show if error is present."
           />
-          <Input label="Disabled" disabled placeholder="Disabled" />
-          <Input label="Password" type="password" placeholder="Password" />
+          <Input
+            label="Disabled"
+            disabled
+            placeholder="Disabled"
+            helperText="Disabled input."
+          />
+          <Input
+            label="Password"
+            type="password"
+            placeholder="Password"
+            helperText="Password input with toggle."
+          />
         </div>
       </section>
 
-      {/* ✅ Selects */}
+      {/* Selects */}
       <section style={{ marginTop: 40 }}>
         <h2>Select</h2>
         <div
@@ -178,18 +232,21 @@ export default function UIPage() {
             options={selectOptions}
             value={selectedOption1}
             onChange={setSelectedOption1}
+            helperText="Basic select."
           />
           <Select
             label="With label"
             options={selectOptions}
             value={selectedOption2}
             onChange={setSelectedOption2}
+            helperText="Labelled select."
           />
           <Select
             label="With value"
             options={selectOptions}
             value={selectedOption3}
             onChange={setSelectedOption3}
+            helperText="Select with default value."
           />
           <Select
             label="Error"
@@ -197,6 +254,15 @@ export default function UIPage() {
             options={selectOptions}
             value={selectedOption4}
             onChange={setSelectedOption4}
+            helperText="Helper text will not show if error is present."
+          />
+          <Select
+            label="Disabled"
+            options={selectOptions}
+            value={""}
+            onChange={() => {}}
+            disabled
+            helperText="Disabled select."
           />
         </div>
       </section>
@@ -212,15 +278,30 @@ export default function UIPage() {
             maxWidth: 400,
           }}
         >
-          <Textarea placeholder="No label" />
-          <Textarea label="With label" placeholder="With label" />
-          <Textarea label="With value" value="Value" readOnly />
+          <Textarea placeholder="No label" helperText="Basic textarea." />
+          <Textarea
+            label="With label"
+            placeholder="With label"
+            helperText="Labelled textarea."
+          />
+          <Textarea
+            label="With value"
+            value="Value"
+            readOnly
+            helperText="Read-only textarea."
+          />
           <Textarea
             label="Error"
             error="This is an error"
             placeholder="Error state"
+            helperText="Helper text will not show if error is present."
           />
-          <Textarea label="Disabled" disabled placeholder="Disabled" />
+          <Textarea
+            label="Disabled"
+            disabled
+            placeholder="Disabled"
+            helperText="Disabled textarea."
+          />
         </div>
       </section>
 

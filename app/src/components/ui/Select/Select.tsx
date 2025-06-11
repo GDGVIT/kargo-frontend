@@ -1,7 +1,12 @@
 "use client";
 
 import React from "react";
-import { Listbox } from "@headlessui/react";
+import {
+  Listbox,
+  ListboxButton,
+  ListboxOption,
+  ListboxOptions,
+} from "@headlessui/react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FiChevronDown, FiCheck } from "react-icons/fi";
 
@@ -18,6 +23,10 @@ export interface SelectProps {
   error?: string;
   placeholder?: string;
   className?: string;
+  helperText?: string;
+  disabled?: boolean;
+  animationDuration?: number;
+  animationEasing?: number[];
 }
 
 const Select: React.FC<SelectProps> = ({
@@ -28,21 +37,33 @@ const Select: React.FC<SelectProps> = ({
   error,
   placeholder = "Select an option",
   className = "",
+  helperText,
+  disabled = false,
+  animationDuration = 0.5,
+  animationEasing = [0.42, 0, 0.58, 1],
 }) => {
   return (
-    <div className={`mb-4 w-full max-w-[597px] ${className}`}>
+    <motion.div
+      initial={{ opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: animationDuration, ease: animationEasing }}
+      className={`mx-2 my-3 w-full max-w-full ${className}`}
+    >
       {label && (
         <label className="block mb-1 text-sm font-medium text-[var(--foreground)]">
           {label}
         </label>
       )}
-      <Listbox value={value} onChange={onChange}>
+      <Listbox value={value} onChange={onChange} disabled={disabled}>
         {({ open }) => (
           <div className="relative w-full">
-            <Listbox.Button
-              className={`flex items-center justify-between px-3 py-[10px] w-full bg-[#293040] border ${
+            <ListboxButton
+              className={`flex items-center justify-between px-3 py-0 h-[50px] w-full bg-[#293040] border ${
                 error ? "border-red-500" : "border-[#7B8191]"
-              } rounded-[4px] text-left text-[16px] font-inter focus:outline-none`}
+              } rounded-[4px] text-left text-[16px] font-inter focus:outline-none transition-all focus-visible:ring-2 focus-visible:ring-blue-400 ${
+                disabled ? "opacity-60 pointer-events-none grayscale" : ""
+              }`}
+              aria-label={label}
             >
               <span className={`${value ? "text-white" : "text-[#7B8191]"}`}>
                 {options.find((opt) => opt.value === value)?.label || (
@@ -50,10 +71,10 @@ const Select: React.FC<SelectProps> = ({
                 )}
               </span>
               <FiChevronDown className="w-4 h-4 text-white ml-2 pointer-events-none" />
-            </Listbox.Button>
+            </ListboxButton>
 
             <AnimatePresence>
-              {open && (
+              {open && !disabled && (
                 <motion.div
                   initial={{ opacity: 0, y: -4 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -61,9 +82,9 @@ const Select: React.FC<SelectProps> = ({
                   transition={{ duration: 0.15 }}
                   className="absolute z-50 mt-1 w-full overflow-visible"
                 >
-                  <Listbox.Options className="bg-[#23283A] border border-[#7B8191] rounded-[4px] shadow-lg max-h-60 overflow-auto focus:outline-none">
+                  <ListboxOptions className="bg-[#23283A] border border-[#7B8191] rounded-[4px] shadow-lg max-h-60 overflow-auto focus:outline-none">
                     {options.map((opt) => (
-                      <Listbox.Option
+                      <ListboxOption
                         key={opt.value}
                         value={opt.value}
                         className={({ active, selected }) =>
@@ -86,17 +107,20 @@ const Select: React.FC<SelectProps> = ({
                             )}
                           </>
                         )}
-                      </Listbox.Option>
+                      </ListboxOption>
                     ))}
-                  </Listbox.Options>
+                  </ListboxOptions>
                 </motion.div>
               )}
             </AnimatePresence>
           </div>
         )}
       </Listbox>
+      {helperText && !error && (
+        <p className="text-xs mt-1 text-zinc-400">{helperText}</p>
+      )}
       {error && <p className="text-red-500 text-xs mt-1">{error}</p>}
-    </div>
+    </motion.div>
   );
 };
 
