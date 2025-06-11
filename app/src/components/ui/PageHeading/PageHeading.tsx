@@ -24,7 +24,7 @@ const PageHeading: React.FC<PageHeadingProps> = ({
 
   return (
     <motion.div
-      className={`mt-4 sm:mt-4 flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-2 ${className}`}
+      className={`mt-4 sm:mt-16 flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-2 ${className}`}
       initial={{ opacity: 0, x: -50 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.5, ease: "easeOut" }}

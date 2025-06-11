@@ -1,6 +1,6 @@
 import ConfigureApp from "../../../components/Applications/ConfigureApp/ConfigureApp";
 import PageHeading from "../../../components/ui/PageHeading/PageHeading";
-import { MdSettings } from "react-icons/md";
+import { GrConfigure } from "react-icons/gr";
 
 export default async function ApplicationConfigPage({
   params,
@@ -14,7 +14,7 @@ export default async function ApplicationConfigPage({
       <PageHeading
         title="Application Configuration"
         subtitle="Configure your application configuration."
-        icon={<MdSettings />}
+        icon={<GrConfigure />}
       />
       <ConfigureApp appId={id} />
     </main>

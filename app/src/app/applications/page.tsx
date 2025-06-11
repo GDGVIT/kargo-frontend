@@ -1,6 +1,6 @@
 import Applications from "../../components/Applications/Applications";
 import PageHeading from "../../components/ui/PageHeading/PageHeading";
-import { MdApps } from "react-icons/md";
+import { GrCloudSoftware } from "react-icons/gr";
 
 export default function ApplicationPage() {
   return (
@@ -8,7 +8,7 @@ export default function ApplicationPage() {
       <PageHeading
         title="Applications"
         subtitle="Manage your applications and settings."
-        icon={<MdApps />}
+        icon={<GrCloudSoftware />}
       />
       <Applications />
     </main>

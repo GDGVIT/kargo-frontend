@@ -191,7 +191,7 @@ export default function ConfigureApp({ appId }: { appId: string }) {
   }
 
   return (
-    <div className="w-full p-8 rounded-2xl mt-10">
+    <div>
       <AnimatedButton
         type="button"
         onClick={() => router.push("/applications")}

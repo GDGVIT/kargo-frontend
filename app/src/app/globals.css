@@ -84,9 +84,10 @@ main {
   padding: var(--padding-medium);
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: baseline;
   align-items: stretch;
-  min-height: 100%;
+  min-height: calc(100vh - 64px);
+  width: -webkit-fill-available;
 }
 
 @media (max-width: 768px) {
@@ -241,8 +242,8 @@ section {
   width: 100%;
   color: var(--foreground);
   border-radius: var(--border-radius-medium);
-  margin: var(--margin-large) 0;
-  padding: var(--padding-large);
+  margin: var(--margin-medium) 0;
+  padding: var(--padding-small);
   transition: background var(--transition-fast);
   box-sizing: border-box;
 }

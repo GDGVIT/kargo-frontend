@@ -26,6 +26,7 @@ export default function LayoutWrapper({
       className={clsx("transition-all", {
         "m-0": !isMobile && user,
         "mx-[var(--screen-horizontal-margin)]": isMobile || !user,
+        "md:ml-52": !isMobile && user, // Add left margin for desktop when sidebar is visible
       })}
       style={{
         display: "flex",

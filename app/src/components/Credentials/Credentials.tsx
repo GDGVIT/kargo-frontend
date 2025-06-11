@@ -7,11 +7,7 @@ import type RegistryCredential from "../../types/Registry/RegistryCredential/Reg
 import CredentialRegister from "./CredentialRegister/CredentialRegister";
 import CredentialList from "./CredentialList/CredentialList";
 
-export default function Credentials({
-  onSelect,
-}: {
-  onSelect?: (cred: RegistryCredential) => void;
-}) {
+export default function Credentials() {
   const [credentials, setCredentials] = useState<RegistryCredential[]>([]);
   const [loading, setLoading] = useState(false);
   const { notify } = useNotification();
@@ -75,19 +71,15 @@ export default function Credentials({
   };
 
   return (
-    <div className="max-w-xl mx-auto p-6 mt-8">
-      <h2 className="text-xl font-bold mb-4 text-gray-100">
-        Registry Credentials
-      </h2>
+    <section>
       <CredentialRegister onAdd={handleAdd} loading={loading} />
       <CredentialList
         credentials={credentials}
         loading={loading}
         onDelete={handleDelete}
-        onSelect={onSelect}
         confirmDelete={confirmDelete}
         setConfirmDelete={setConfirmDelete}
       />
-    </div>
+    </section>
   );
 }

@@ -44,7 +44,7 @@ export default function Applications() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-6 mt-8 ">
+    <section>
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold text-gray-100">Your Applications</h1>
         <AnimatedButton
@@ -87,7 +87,7 @@ export default function Applications() {
           </AnimatedButton>
         </div>
       </Modal>
-      <div>
+      <div className="min-h-[250px]">
         {loading ? (
           <div className="text-center text-gray-400">Loading...</div>
         ) : apps.length === 0 ? (
@@ -96,7 +96,7 @@ export default function Applications() {
             your first app!
           </div>
         ) : (
-          <div className="grid gap-6 ">
+          <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             {apps.map(
               (
                 app: {
@@ -142,6 +142,6 @@ export default function Applications() {
           </div>
         )}
       </div>
-    </div>
+    </section>
   );
 }
