@@ -52,7 +52,7 @@ export default function UIPage() {
       {/* Buttons */}
       <section>
         <h2>Animated Button</h2>
-        <div style={{ display: "flex", flexWrap: "wrap", gap: 16 }}>
+        <div className="responsive-flex-row">
           <AnimatedButton
             variant="primary"
             onClick={() => notify("Primary button clicked", "info")}
@@ -116,7 +116,7 @@ export default function UIPage() {
       {/* Cards */}
       <section style={{ marginTop: 40 }}>
         <h2>Card</h2>
-        <div style={{ display: "flex", gap: 24, flexWrap: "wrap" }}>
+        <div className="responsive-flex-row">
           <Card elevation={1} aria-label="Simple card">
             <div>Simple Card Content</div>
           </Card>
@@ -156,7 +156,7 @@ export default function UIPage() {
             </div>
           </Card>
           <Card>
-            <div style={{ display: "flex", justifyContent: "center" }}>
+            <div className="responsive-flex-center">
               <ul style={{ textAlign: "center" }}>
                 <li>List item 1</li>
                 <li>List item 2</li>
@@ -308,7 +308,7 @@ export default function UIPage() {
       {/* Loader & Modal */}
       <section style={{ marginTop: 40 }}>
         <h2>Simulate Loader & Modal</h2>
-        <div style={{ display: "flex", gap: 16, marginBottom: 24 }}>
+        <div className="responsive-flex-row" style={{ marginBottom: 24 }}>
           <AnimatedButton
             variant="primary"
             onClick={async () => {

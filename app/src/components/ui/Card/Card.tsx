@@ -51,18 +51,18 @@ const Card = ({
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: animationDuration, ease: animationEasing }}
-      className={`mx-2 my-3 bg-[var(--card-background)] rounded-lg p-6 transition-all outline-none focus-visible:ring-2 focus-visible:ring-blue-400 ${
+      className={`mx-2 my-3 bg-[var(--card-background)] rounded-lg p-4 sm:p-6 transition-all outline-none focus-visible:ring-2 focus-visible:ring-blue-400 ${
         elevationMap[elevation] || "shadow-lg"
       } ${
         hoverable && !disabled ? "hover:shadow-2xl hover:-translate-y-1" : ""
       } ${onClick && !disabled ? "cursor-pointer active:scale-[0.98]" : ""} ${
         disabled ? "opacity-60 pointer-events-none grayscale" : ""
-      } ${className}`}
+      } ${className} w-full max-w-full sm:max-w-md`}
       onClick={disabled ? undefined : onClick}
       tabIndex={onClick && !disabled ? 0 : undefined}
       role={onClick && !disabled ? "button" : undefined}
       aria-label={ariaLabel}
-      style={{ outline: "none" }}
+      style={{ outline: "none", maxWidth: "-webkit-fill-available" }}
       onKeyDown={handleKeyDown}
     >
       {children}

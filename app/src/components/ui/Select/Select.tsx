@@ -48,6 +48,7 @@ const Select: React.FC<SelectProps> = ({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: animationDuration, ease: animationEasing }}
       className={`mx-2 my-3 w-full max-w-full ${className}`}
+      style={{ maxWidth: "-webkit-fill-available" }}
     >
       {label && (
         <label className="block mb-1 text-sm font-medium text-[var(--foreground)]">
@@ -56,14 +57,15 @@ const Select: React.FC<SelectProps> = ({
       )}
       <Listbox value={value} onChange={onChange} disabled={disabled}>
         {({ open }) => (
-          <div className="relative w-full">
+          <div className="relative w-full" style={{ maxWidth: "100vw" }}>
             <ListboxButton
-              className={`flex items-center justify-between px-3 py-0 h-[50px] w-full bg-[#293040] border ${
+              className={`flex items-center justify-between px-3 py-0 h-[44px] sm:h-[50px] w-full bg-[#293040] border ${
                 error ? "border-red-500" : "border-[#7B8191]"
-              } rounded-[4px] text-left text-[16px] font-inter focus:outline-none transition-all focus-visible:ring-2 focus-visible:ring-blue-400 ${
+              } rounded-[4px] text-left text-[15px] sm:text-[16px] font-inter focus:outline-none transition-all focus-visible:ring-2 focus-visible:ring-blue-400 ${
                 disabled ? "opacity-60 pointer-events-none grayscale" : ""
               }`}
               aria-label={label}
+              style={{ maxWidth: "-webkit-fill-available" }}
             >
               <span className={`${value ? "text-white" : "text-[#7B8191]"}`}>
                 {options.find((opt) => opt.value === value)?.label || (
@@ -81,14 +83,15 @@ const Select: React.FC<SelectProps> = ({
                   exit={{ opacity: 0, y: -4 }}
                   transition={{ duration: 0.15 }}
                   className="absolute z-50 mt-1 w-full overflow-visible"
+                  style={{ maxWidth: "100vw" }}
                 >
-                  <ListboxOptions className="bg-[#23283A] border border-[#7B8191] rounded-[4px] shadow-lg max-h-60 overflow-auto focus:outline-none">
+                  <ListboxOptions className="bg-[#23283A] border border-[#7B8191] rounded-[4px] shadow-lg max-h-60 overflow-auto focus:outline-none text-[15px] sm:text-[16px]">
                     {options.map((opt) => (
                       <ListboxOption
                         key={opt.value}
                         value={opt.value}
                         className={({ active, selected }) =>
-                          `relative cursor-pointer select-none py-2 pl-3 pr-10 text-[16px] font-inter transition-colors ${
+                          `relative cursor-pointer select-none py-2 pl-3 pr-10 text-[15px] sm:text-[16px] font-inter transition-colors ${
                             active
                               ? "bg-[#293040] text-white"
                               : selected

@@ -82,7 +82,7 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
     <NotificationContext.Provider value={{ notify }}>
       {children}
       <motion.div
-        className="fixed bottom-6 right-6 z-50 flex flex-col-reverse gap-4"
+        className="fixed bottom-2 right-2 sm:bottom-6 sm:right-6 z-50 flex flex-col-reverse gap-2 sm:gap-4 w-[95vw] max-w-[380px] sm:w-96"
         initial={false}
         animate="animate"
         exit="exit"
@@ -104,8 +104,7 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
                 delay: index * 0.08,
               }}
               className={clsx(
-                "relative flex items-center gap-3 px-4 py-1.5 rounded-xl border w-96 shadow-2xl backdrop-blur-lg min-h-0 h-auto",
-                "bg-[var(--card-background)] border border-opacity-40",
+                "relative flex items-center gap-2 sm:gap-3 px-2 sm:px-4 py-1.5 rounded-xl w-full shadow-2xl min-h-0 h-auto bg-[rgba(24,24,27,0.65)] backdrop-blur backdrop-saturate-150 border border-white/10",
                 {
                   "border-emerald-400/40": n.type === "success",
                   "border-rose-400/40": n.type === "error",
@@ -116,14 +115,14 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
               style={{ boxShadow: "var(--box-shadow-default)" }}
             >
               <div className="pt-0.5 flex-shrink-0">{iconMap[n.type]}</div>
-              <span className="flex-1 text-base font-semibold text-[var(--foreground)] drop-shadow-sm">
+              <span className="flex-1 text-sm sm:text-base font-semibold text-[var(--foreground)] drop-shadow-sm">
                 {n.message}
               </span>
               <button
                 onClick={() => removeNotification(n.id)}
                 title="Close notification"
                 aria-label="Close notification"
-                className="ml-2 rounded-full p-1 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[var(--text-link-color)] hover:bg-[var(--background)]/30 hover:scale-110"
+                className="ml-1 sm:ml-2 rounded-full p-1 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[var(--text-link-color)] hover:bg-[var(--background)]/30 hover:scale-110"
               >
                 <X className="w-5 h-5 text-zinc-400 hover:text-white transition-colors" />
               </button>

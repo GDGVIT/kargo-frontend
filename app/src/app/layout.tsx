@@ -7,6 +7,7 @@ import Footer from "../components/Footer/Footer";
 import Sidebar from "../components/Sidebar/Sidebar";
 import AcceptCookies from "../components/AcceptCookies/AcceptCookies";
 import LayoutWrapper from "../components/LayoutWrapper/LayoutWrapper";
+import ServiceWorkerRegister from "../components/ServiceWorkerRegister/ServiceWorkerRegister";
 
 export const metadata: Metadata = {
   title: "Kargo",
@@ -39,6 +40,7 @@ export default function RootLayout({
               <Header />
               {children}
               <Footer />
+              <ServiceWorkerRegister />
             </LayoutWrapper>
             <AcceptCookies />
           </AuthProvider>

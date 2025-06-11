@@ -35,7 +35,8 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: animationDuration, ease: animationEasing }}
-        className={`m-3 w-full max-w-full ${className}`}
+        className={`m-2 sm:m-3 w-full max-w-full ${className}`}
+        style={{ maxWidth: "-webkit-fill-available" }}
       >
         {label && (
           <label className="block mb-1 text-sm font-medium text-[var(--foreground)]">
@@ -43,23 +44,24 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           </label>
         )}
         <div
-          className={`flex flex-row justify-between items-center px-[2px] py-0 h-[50px] w-full bg-[#293040] border ${
+          className={`flex flex-row justify-between items-center px-[2px] py-0 h-[44px] sm:h-[50px] w-full bg-[#293040] border ${
             error ? "border-red-500" : "border-[#7B8191]"
           } rounded-[4px] box-border transition-all focus-within:ring-2 focus-within:ring-blue-400 ${
             disabled ? "opacity-60 pointer-events-none grayscale" : ""
           }`}
+          style={{ maxWidth: "-webkit-fill-available" }}
         >
           {icon && (
-            <span className="text-zinc-400 mr-4 flex-none order-0 w-4 h-4 pl-2">
+            <span className="text-zinc-400 mr-2 sm:mr-4 flex-none order-0 w-4 h-4 pl-2">
               {icon}
             </span>
           )}
           <input
             ref={ref}
-            className={`flex-1 order-1 bg-transparent outline-none text-[#7B8191] placeholder-zinc-500 text-[16px] leading-[19px] font-normal font-inter px-0 py-0 border-none ring-0 focus:ring-0 focus:outline-none ${
+            className={`flex-1 order-1 bg-transparent outline-none text-[#7B8191] placeholder-zinc-500 text-[15px] sm:text-[16px] leading-[19px] font-normal font-inter px-0 py-0 border-none ring-0 focus:ring-0 focus:outline-none ${
               isPassword ? "pr-10" : ""
             }`}
-            style={{ border: "none", boxShadow: "none" }}
+            style={{ border: "none", boxShadow: "none", minWidth: 0 }}
             type={isPassword && showPassword ? "text" : type}
             disabled={disabled}
             aria-label={label}
@@ -70,7 +72,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
               type="button"
               aria-label={showPassword ? "Hide password" : "Show password"}
               onClick={() => setShowPassword((v) => !v)}
-              className="ml-2 pr-1 flex items-center justify-center text-zinc-400 focus:outline-none order-2 bg-transparent border-none p-0 cursor-pointer w-8"
+              className="ml-1 sm:ml-2 pr-1 flex items-center justify-center text-zinc-400 focus:outline-none order-2 bg-transparent border-none p-0 cursor-pointer w-8"
               tabIndex={0}
               style={{ minWidth: 32 }}
               disabled={disabled}

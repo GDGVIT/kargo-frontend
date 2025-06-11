@@ -244,6 +244,7 @@ section {
   margin: var(--margin-large) 0;
   padding: var(--padding-large);
   transition: background var(--transition-fast);
+  box-sizing: border-box;
 }
 
 section h1,
@@ -258,6 +259,68 @@ section h6 {
 
 section p {
   margin-bottom: var(--margin-small);
+}
+
+section img,
+section table {
+  max-width: 100%;
+  height: auto;
+}
+
+.responsive-flex-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+@media (max-width: 768px) {
+  .responsive-flex-row {
+    flex-direction: column;
+    gap: 12px;
+  }
+}
+
+.responsive-flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .responsive-flex-center {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+@media (max-width: 1024px) {
+  section {
+    padding: var(--padding-medium);
+    margin: var(--margin-medium) 0;
+  }
+  section h1 {
+    font-size: 1.5rem;
+  }
+  section h2 {
+    font-size: 1.25rem;
+  }
+}
+
+@media (max-width: 600px) {
+  section {
+    padding: var(--padding-small);
+    margin: var(--margin-small) 0;
+    border-radius: var(--border-radius-small);
+  }
+  section h1 {
+    font-size: 1.2rem;
+  }
+  section h2 {
+    font-size: 1rem;
+  }
+  section h3 {
+    font-size: 0.95rem;
+  }
 }
 
 ::-webkit-scrollbar {

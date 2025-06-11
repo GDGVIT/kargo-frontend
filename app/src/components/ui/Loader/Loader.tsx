@@ -28,6 +28,14 @@ const StyledWrapper = styled.div`
   background: rgba(10, 20, 40, 0.85); // dark bluish overlay
   opacity: 0;
   animation: fadeIn 0.4s ease-in forwards;
+  padding: 0.5rem; // Responsive padding for small screens
+
+  @media (max-width: 640px) {
+    padding: 0.5rem;
+    .loop {
+      transform: scale(0.7) rotateX(-35deg) rotateY(-45deg) translateZ(1.5625em);
+    }
+  }
 
   @keyframes fadeIn {
     to {
