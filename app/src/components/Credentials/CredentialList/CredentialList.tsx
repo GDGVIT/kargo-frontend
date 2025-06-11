@@ -4,6 +4,7 @@ import AnimatedButton from "../../ui/AnimatedButton/AnimatedButton";
 import Modal from "../../ui/Modal/Modal";
 import type RegistryCredential from "../../../types/Registry/RegistryCredential/RegistryCredential";
 import { useState } from "react";
+import { FaTrash } from "react-icons/fa";
 
 export default function CredentialList({
   credentials,
@@ -28,24 +29,24 @@ export default function CredentialList({
       {credentials.length === 0 ? (
         <div className="text-gray-400">No credentials saved yet.</div>
       ) : (
-        <ul className="space-y-2">
+        <ul className="space-y-2 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
           {credentials.map((cred) => {
             let Icon = FaKey;
             if (cred.registryType === "dockerhub") Icon = FaDocker;
             else if (cred.registryType === "github") Icon = FaGithub;
             else if (cred.registryType === "gitlab") Icon = FaGitlab;
             return (
-              <li key={cred.name + cred.registryType}>
+              <li key={cred.name + cred.registryType} className="flex">
                 <Card
-                  className="flex items-center justify-between p-3 group cursor-pointer hover:ring-2 hover:ring-blue-400"
+                  className="flex flex-1 items-center justify-between p-3 group cursor-pointer hover:ring-2 hover:ring-blue-400 min-w-0"
                   onClick={() => setInfoModal(cred)}
                 >
-                  <div className="flex items-center gap-2">
-                    <Icon className="text-lg text-blue-400" />
-                    <span className="font-medium text-gray-100">
+                  <div className="flex flex-wrap items-center gap-2 min-w-0">
+                    <Icon className="text-lg text-blue-400 shrink-0" />
+                    <span className="font-medium text-gray-100 truncate max-w-[8rem] sm:max-w-[10rem] md:max-w-[12rem]">
                       {cred.name}
                     </span>
-                    <span className="ml-2 text-xs text-gray-400">
+                    <span className="ml-2 text-xs text-gray-400 truncate max-w-[6rem] sm:max-w-[8rem] md:max-w-[10rem]">
                       {cred.username}
                     </span>
                   </div>
@@ -56,11 +57,10 @@ export default function CredentialList({
                         e.stopPropagation();
                         setConfirmDelete(cred);
                       }}
-                      icon={null}
+                      icon={<FaTrash />}
+                      variant="danger"
                       type="button"
-                    >
-                      Delete
-                    </AnimatedButton>
+                    ></AnimatedButton>
                   </div>
                 </Card>
               </li>
@@ -124,7 +124,7 @@ export default function CredentialList({
             variant="danger"
             onClick={() => confirmDelete && onDelete(confirmDelete)}
             disabled={loading}
-            icon={null}
+            icon={<FaTrash />}
           >
             {loading ? "Deleting..." : "Delete"}
           </AnimatedButton>

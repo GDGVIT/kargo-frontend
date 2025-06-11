@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import React, { ReactNode, MouseEventHandler } from "react";
 
 interface AnimatedButtonProps {
-  children: ReactNode;
+  children?: React.ReactNode;
   onClick?: MouseEventHandler<HTMLButtonElement>;
   icon?: ReactNode;
   className?: string;
@@ -86,7 +86,11 @@ const AnimatedButton = ({
             }
       }
       transition={{ type: "spring", stiffness: 400, damping: 30 }}
-      className={`flex flex-row justify-center items-center gap-2 sm:gap-[10px] mx-2 my-3 px-3 sm:px-[16px] py-2 sm:py-[10px] min-w-[100px] sm:min-w-[120px] max-w-full h-[40px] sm:h-[44px] rounded-[8px] font-inter font-medium text-[15px] sm:text-[16px] leading-[19px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-2 ${
+      className={`flex flex-row justify-center items-center ${
+        children
+          ? "gap-2 sm:gap-[10px] px-4 sm:px-6"
+          : "aspect-square w-[44px] h-[44px] p-0 px-0" // square for icon-only, remove x padding
+      } mx-2 my-3 py-2 sm:py-2 max-w-full rounded-[8px] font-inter font-medium text-[15px] sm:text-[16px] leading-[19px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-2 ${
         disabled ? "opacity-60 cursor-not-allowed" : ""
       } ${variantClass} ${className}`}
       onClick={disabled ? undefined : onClick}
@@ -95,18 +99,30 @@ const AnimatedButton = ({
       title={title}
       type={type}
     >
-      <span
-        className="flex items-center justify-center min-w-[54px] h-[19px] truncate"
-        style={{ order: 0, flex: "none", flexGrow: 0 }}
-      >
-        {children}
-      </span>
-      <span
-        className="flex items-center"
-        style={{ order: 2, flex: "none", flexGrow: 0 }}
-      >
-        {icon}
-      </span>
+      {/* Only render the text span if children exist */}
+      {children && (
+        <span
+          className="flex items-center justify-center h-[19px] truncate text-center w-full"
+          style={{ order: icon ? 0 : 1, flex: icon ? "1 1 0%" : "1 1 0%" }}
+        >
+          {children}
+        </span>
+      )}
+      {/* Only render the icon span if icon exists */}
+      {icon && (
+        <span
+          className={`flex items-center justify-center h-6 w-6 text-center flex-shrink-0 ${
+            !children ? "w-full h-full" : ""
+          }`}
+          style={{
+            order: children ? 2 : 0,
+            flex: children ? "none" : "1 1 0%",
+            flexGrow: children ? 0 : 1,
+          }}
+        >
+          {icon}
+        </span>
+      )}
     </motion.button>
   );
 };

@@ -71,7 +71,7 @@ export default function Credentials() {
   };
 
   return (
-    <section>
+    <section className="w-full max-w-full sm:max-w-2xl md:max-w-3xl lg:max-w-4xl xl:max-w-5xl mx-auto px-2 sm:px-4 md:px-6">
       <CredentialRegister onAdd={handleAdd} loading={loading} />
       <CredentialList
         credentials={credentials}

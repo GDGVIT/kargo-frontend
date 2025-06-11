@@ -4,6 +4,7 @@ import type RegistryCredential from "../../../types/Registry/RegistryCredential/
 import Input from "../../ui/Input/Input";
 import Select from "../../ui/Select/Select";
 import AnimatedButton from "../../ui/AnimatedButton/AnimatedButton";
+import { RiAddLargeFill } from "react-icons/ri";
 
 export default function CredentialRegister({
   onAdd,
@@ -75,7 +76,11 @@ export default function CredentialRegister({
         placeholder="Personal access token"
       />
       <div className="md:col-span-2 flex justify-end">
-        <AnimatedButton type="submit" disabled={loading}>
+        <AnimatedButton
+          type="submit"
+          disabled={loading}
+          icon={<RiAddLargeFill />}
+        >
           {loading ? "Saving..." : "Add Credential"}
         </AnimatedButton>
       </div>

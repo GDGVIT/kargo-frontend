@@ -14,6 +14,7 @@ import Select from "../../ui/Select/Select";
 import RepoList from "./RepoList/RepoList";
 import DockerModal from "./DockerModal/DockerModal";
 import Repo from "../../../types/Repo/Repo";
+import { GiBrain } from "react-icons/gi";
 
 const GithubRepos: React.FC = () => {
   const { notify } = useNotification();
@@ -264,28 +265,33 @@ const GithubRepos: React.FC = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, type: "spring", bounce: 0.2 }}
       >
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 space-y-4 sm:space-y-0">
-          <Input
-            value={searchTerm}
-            onChange={handleSearchChange}
-            placeholder="Search repositories..."
-            icon={<FaGithub className="text-zinc-400" />}
-          />
-
-          <Select
-            value={selectedOwner}
-            onChange={handleOwnerChange}
-            options={owners.map((owner) => ({ value: owner, label: owner }))}
-          />
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-6 px-2 sm:px-0">
+          <div className="flex-1">
+            <Input
+              value={searchTerm}
+              onChange={handleSearchChange}
+              placeholder="Search repositories..."
+              icon={<FaGithub className="text-zinc-400" />}
+              className="w-full min-w-0"
+            />
+          </div>
+          <div className="flex-1 sm:max-w-xs">
+            <Select
+              value={selectedOwner}
+              onChange={handleOwnerChange}
+              options={owners.map((owner) => ({ value: owner, label: owner }))}
+              className="w-full min-w-0"
+            />
+          </div>
         </div>
 
-        <p className="text-xs text-orange-400 mb-4 px-6 text-center">
+        <p className="text-xs text-orange-400 mb-4 px-2 sm:px-6 text-center">
           If your repositories are not showing up but your account is connected,
           try uninstalling the GitHub app from your account first, then sign in
           again through the profile page.
         </p>
 
-        <section>
+        <section className="px-1 sm:px-0">
           <RepoList
             repos={paginatedRepos}
             renderActions={(repo: Repo) => (
@@ -293,7 +299,7 @@ const GithubRepos: React.FC = () => {
                 onClick={() => handleDockerize(repo)}
                 disabled={!!dockerizingRepoId}
                 variant="primary"
-                icon={null}
+                icon={<GiBrain />}
                 className="mt-2 px-3 py-1 text-xs"
               >
                 Dockerize
@@ -301,12 +307,14 @@ const GithubRepos: React.FC = () => {
             )}
           />
 
-          <RepoPagination
-            page={page}
-            totalPages={totalPages}
-            onPrev={handlePrevPage}
-            onNext={handleNextPage}
-          />
+          <div className="w-full flex justify-center">
+            <RepoPagination
+              page={page}
+              totalPages={totalPages}
+              onPrev={handlePrevPage}
+              onNext={handleNextPage}
+            />
+          </div>
         </section>
       </motion.div>
     </>

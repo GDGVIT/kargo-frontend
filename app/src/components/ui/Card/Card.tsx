@@ -57,7 +57,7 @@ const Card = ({
         hoverable && !disabled ? "hover:shadow-2xl hover:-translate-y-1" : ""
       } ${onClick && !disabled ? "cursor-pointer active:scale-[0.98]" : ""} ${
         disabled ? "opacity-60 pointer-events-none grayscale" : ""
-      } ${className} w-full max-w-full sm:max-w-md`}
+      } ${className} w-full max-w-full sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl 2xl:max-w-3xl`}
       onClick={disabled ? undefined : onClick}
       tabIndex={onClick && !disabled ? 0 : undefined}
       role={onClick && !disabled ? "button" : undefined}

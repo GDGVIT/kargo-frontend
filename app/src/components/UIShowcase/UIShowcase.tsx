@@ -11,6 +11,7 @@ import {
   FaTrash,
   FaCheck,
   FaExclamationTriangle,
+  FaCode,
 } from "react-icons/fa";
 import useNotification from "../ui/Notification/Notification";
 import Loader from "../ui/Loader/Loader";
@@ -51,6 +52,10 @@ export default function UIPage() {
       <section>
         <h2>Animated Button</h2>
         <div className="responsive-flex-row">
+          <AnimatedButton
+            onClick={() => notify("Primary button clicked", "info")}
+            icon={<FaCode />}
+          ></AnimatedButton>
           <AnimatedButton
             variant="primary"
             onClick={() => notify("Primary button clicked", "info")}

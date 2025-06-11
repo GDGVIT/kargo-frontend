@@ -125,7 +125,7 @@ export default function Applications() {
                     Click to configure →
                   </span>
                   <AnimatedButton
-                    className="absolute top-3 right-3 !bg-transparent !text-red-400 hover:!text-red-600 !px-2 !py-1 !h-auto !min-w-0"
+                    className="absolute top-3 right-3 !px-2 !py-1 !h-auto !min-w-0"
                     icon={<FaTrash />}
                     onClick={(e) => {
                       e.stopPropagation();
@@ -133,9 +133,7 @@ export default function Applications() {
                     }}
                     title="Delete app"
                     variant="danger"
-                  >
-                    <span className="sr-only">Delete app</span>
-                  </AnimatedButton>
+                  ></AnimatedButton>
                 </div>
               )
             )}
