@@ -1,4 +1,4 @@
-import { FaKey } from "react-icons/fa";
+import { MdOutlineVpnKey } from "react-icons/md";
 import Credentials from "../../components/Credentials/Credentials";
 import PageHeading from "../../components/ui/PageHeading/PageHeading";
 
@@ -8,7 +8,7 @@ export default function CredentialsPage() {
       <PageHeading
         title="Manage Your Credentials"
         subtitle="Add, edit, or remove your credentials."
-        icon={<FaKey />}
+        icon={<MdOutlineVpnKey />}
       />
       <Credentials />
     </main>
