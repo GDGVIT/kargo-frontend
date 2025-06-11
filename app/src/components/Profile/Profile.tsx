@@ -46,7 +46,7 @@ const Profile: React.FC = () => {
   }
 
   return (
-    <div className="w-full max-w-5xl mx-auto mt-8 sm:mt-12 px-2 sm:px-6 py-6 flex flex-col md:flex-row md:items-start md:gap-8 items-stretch gap-8">
+    <div className="px-2 sm:px-6 flex flex-col md:flex-row md:items-start md:gap-2 items-stretch gap-4">
       {/* Left: Avatar and Basic Info */}
       <Card className="flex flex-col items-center md:items-start gap-4 w-full md:w-1/3 min-w-[220px] max-w-full md:max-w-xs p-6">
         <div className="relative">
@@ -99,7 +99,7 @@ const Profile: React.FC = () => {
         </AnimatedButton>
       </Card>
       {/* Right: Details and Integrations */}
-      <div className="flex flex-col gap-4 w-full md:w-2/3 justify-start">
+      <div className="flex flex-col w-full md:w-2/3 justify-start">
         {/* Plan Section */}
         {user.plan && (
           <PlanDetails

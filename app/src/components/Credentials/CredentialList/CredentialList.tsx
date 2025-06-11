@@ -3,22 +3,24 @@ import { FaDocker, FaGithub, FaGitlab, FaKey } from "react-icons/fa";
 import AnimatedButton from "../../ui/AnimatedButton/AnimatedButton";
 import Modal from "../../ui/Modal/Modal";
 import type RegistryCredential from "../../../types/Registry/RegistryCredential/RegistryCredential";
+import { useState } from "react";
+import { FaTrash } from "react-icons/fa";
 
 export default function CredentialList({
   credentials,
   loading,
   onDelete,
-  onSelect,
   confirmDelete,
   setConfirmDelete,
 }: {
   credentials: RegistryCredential[];
   loading: boolean;
   onDelete: (cred: RegistryCredential) => void;
-  onSelect?: (cred: RegistryCredential) => void;
   confirmDelete: RegistryCredential | null;
   setConfirmDelete: (cred: RegistryCredential | null) => void;
 }) {
+  const [infoModal, setInfoModal] = useState<RegistryCredential | null>(null);
+
   return (
     <div>
       <h3 className="text-lg font-semibold text-gray-200 mb-2">
@@ -27,41 +29,38 @@ export default function CredentialList({
       {credentials.length === 0 ? (
         <div className="text-gray-400">No credentials saved yet.</div>
       ) : (
-        <ul className="space-y-2">
+        <ul className="space-y-2 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
           {credentials.map((cred) => {
             let Icon = FaKey;
             if (cred.registryType === "dockerhub") Icon = FaDocker;
             else if (cred.registryType === "github") Icon = FaGithub;
             else if (cred.registryType === "gitlab") Icon = FaGitlab;
             return (
-              <li key={cred.name + cred.registryType}>
-                <Card className="flex items-center justify-between p-3">
-                  <div className="flex items-center gap-2">
-                    <Icon className="text-lg text-blue-400" />
-                    <span className="font-medium text-gray-100">
+              <li key={cred.name + cred.registryType} className="flex">
+                <Card
+                  className="flex flex-1 items-center justify-between p-3 group cursor-pointer hover:ring-2 hover:ring-blue-400 min-w-0"
+                  onClick={() => setInfoModal(cred)}
+                >
+                  <div className="flex flex-wrap items-center gap-2 min-w-0">
+                    <Icon className="text-lg text-blue-400 shrink-0" />
+                    <span className="font-medium text-gray-100 truncate max-w-[8rem] sm:max-w-[10rem] md:max-w-[12rem]">
                       {cred.name}
                     </span>
-                    <span className="ml-2 text-xs text-gray-400">
+                    <span className="ml-2 text-xs text-gray-400 truncate max-w-[6rem] sm:max-w-[8rem] md:max-w-[10rem]">
                       {cred.username}
                     </span>
                   </div>
                   <div className="flex gap-2">
-                    {onSelect && (
-                      <AnimatedButton
-                        className="!px-2 !py-1 !rounded text-xs !bg-green-700 hover:!bg-green-800"
-                        onClick={() => onSelect(cred)}
-                        icon={null}
-                      >
-                        Select
-                      </AnimatedButton>
-                    )}
                     <AnimatedButton
-                      className="!px-2 !py-1 !rounded text-xs !bg-red-700 hover:!bg-red-800"
-                      onClick={() => setConfirmDelete(cred)}
-                      icon={null}
-                    >
-                      Delete
-                    </AnimatedButton>
+                      className="!px-2 !py-1 !rounded text-xs !bg-red-700 hover:!bg-red-800 z-10"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setConfirmDelete(cred);
+                      }}
+                      icon={<FaTrash />}
+                      variant="danger"
+                      type="button"
+                    ></AnimatedButton>
                   </div>
                 </Card>
               </li>
@@ -69,6 +68,34 @@ export default function CredentialList({
           })}
         </ul>
       )}
+      {/* Info Modal for viewing credential details */}
+      <Modal
+        open={!!infoModal}
+        onClose={() => setInfoModal(null)}
+        title="Credential Info"
+      >
+        {infoModal && (
+          <div className="space-y-2">
+            <div>
+              <span className="font-semibold">Name:</span> {infoModal.name}
+            </div>
+            <div>
+              <span className="font-semibold">Registry:</span>{" "}
+              {infoModal.registryType}
+            </div>
+            <div>
+              <span className="font-semibold">Username:</span>{" "}
+              {infoModal.username}
+            </div>
+            <div>
+              <span className="font-semibold">Token:</span>{" "}
+              <span className="font-mono bg-zinc-800 px-2 py-1 rounded text-xs">
+                {infoModal.token}
+              </span>
+            </div>
+          </div>
+        )}
+      </Modal>
       {/* Confirmation Modal for Delete */}
       <Modal
         open={!!confirmDelete}
@@ -97,7 +124,7 @@ export default function CredentialList({
             variant="danger"
             onClick={() => confirmDelete && onDelete(confirmDelete)}
             disabled={loading}
-            icon={null}
+            icon={<FaTrash />}
           >
             {loading ? "Deleting..." : "Delete"}
           </AnimatedButton>

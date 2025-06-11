@@ -31,7 +31,7 @@ export default function Auth() {
     return (
       <div className="relative" ref={dropdownRef} style={{ height: "100%" }}>
         <div
-          className="flex items-center gap-2 cursor-pointer px-2 hover:bg-[#2e354b] transition h-full"
+          className="flex items-center gap-2 cursor-pointer px-2 hover:bg-[#11131887] transition h-full"
           onClick={() => (window.location.href = "/profile")}
         >
           {user.profilePicture && !imageError && (

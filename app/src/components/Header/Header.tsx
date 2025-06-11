@@ -31,7 +31,10 @@ const Header: React.FC = () => {
         style={{ margin: 0 }}
       >
         <Link href="/">
-          <span className="text-[#9DA3B3] text-base font-normal select-none mr-1 pl-5 flex items-center h-full">
+          <span
+            className="text-[#9DA3B3] text-base font-normal select-none mr-1 pl-5 flex items-center h-full"
+            style={{ letterSpacing: "1px" }}
+          >
             Kargo
           </span>
         </Link>

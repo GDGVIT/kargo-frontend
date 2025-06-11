@@ -92,21 +92,18 @@ export default function Sidebar() {
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: 30, opacity: 0 }}
             transition={{ type: "spring", stiffness: 200, damping: 25 }}
-            className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#242837] border-t border-[#2C313F] flex justify-around items-center px-4 py-3"
+            className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#242837] border-t border-[#2C313F] flex h-14"
           >
             {navItems.map(({ href, icon, label }) => {
-              // Allow nested route highlighting
               const isActive =
                 href === "/" ? pathname === href : pathname.startsWith(href);
               return (
                 <Link
                   key={label}
                   href={href}
-                  className={`sidebar-link text-2xl ${
-                    isActive
-                      ? "text-white bg-gray-700 rounded-md px-2 py-1"
-                      : "text-white"
-                  } hover:text-white hover:bg-gray-700 rounded-md px-2 py-1`}
+                  className={`flex-1 flex items-center justify-center h-full text-2xl text-white ${
+                    isActive ? "bg-gray-700" : "hover:bg-gray-700"
+                  }`}
                   style={!isActive ? { opacity: 0.7 } : undefined}
                 >
                   {icon}

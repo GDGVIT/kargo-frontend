@@ -56,6 +56,21 @@ const GithubAuth: React.FC = () => {
   useEffect(() => {
     const fetchAndSyncInstallationIds = async () => {
       try {
+        const url = new URL(window.location.href);
+        const installationIdFromUrl = url.searchParams.get("installation_id");
+        if (installationIdFromUrl) {
+          try {
+            await api.post(
+              "/api/github/installation-id",
+              { installation_id: installationIdFromUrl },
+              { withCredentials: true }
+            );
+          } catch (err) {
+            console.error("Error saving GitHub installation ID:", err);
+            setError("Failed to save GitHub installation ID.");
+          }
+        }
+
         const res = await api.get("/api/github/installation-id", {
           withCredentials: true,
         });
@@ -70,8 +85,7 @@ const GithubAuth: React.FC = () => {
         );
 
         // Remove installation_id param from URL if present
-        const url = new URL(window.location.href);
-        if (url.searchParams.has("installation_id")) {
+        if (installationIdFromUrl) {
           url.searchParams.delete("installation_id");
           window.history.replaceState(null, "", url.toString());
         }

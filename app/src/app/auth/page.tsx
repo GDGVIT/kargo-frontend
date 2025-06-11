@@ -2,7 +2,7 @@ import Authenticate from "../../components/Auth/Authenticate/Authenticate";
 
 export default function AuthPage() {
   return (
-    <main>
+    <main style={{ justifyContent: "end" }}>
       <Authenticate />
     </main>
   );

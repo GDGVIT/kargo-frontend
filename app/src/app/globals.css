@@ -80,13 +80,15 @@ body {
 }
 
 main {
-  margin: auto 0;
+  margin: auto;
   padding: var(--padding-medium);
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: baseline;
   align-items: stretch;
-  min-height: 100%;
+  min-height: calc(100vh - 64px);
+  width: -webkit-fill-available;
+  max-width: 100vw;
 }
 
 @media (max-width: 768px) {
@@ -115,7 +117,6 @@ select {
   color: var(--foreground);
   width: 100%;
   padding: var(--padding-tiny) var(--padding-small);
-  border-radius: var(--border-radius-small);
   border: 2px solid #7b8191;
   ::placeholder {
     color: #a0aec0;
@@ -241,8 +242,8 @@ section {
   width: 100%;
   color: var(--foreground);
   border-radius: var(--border-radius-medium);
-  margin: var(--margin-large) 0;
-  padding: var(--padding-large);
+  margin: var(--margin-medium) 0;
+  padding: var(--padding-small);
   transition: background var(--transition-fast);
   box-sizing: border-box;
 }

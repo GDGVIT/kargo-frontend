@@ -142,10 +142,8 @@ export default function AdminPlansDashboard() {
 
   return (
     <div className="max-w-6xl mx-auto py-8">
-      <h1 className="text-2xl font-bold mb-6">Admin Panel</h1>
       <div className="mb-10">
         <div className="flex items-center justify-between mb-2">
-          <h2 className="text-xl font-semibold">Plans</h2>
           <AnimatedButton
             className="px-4 py-2 !rounded !bg-sky-600 hover:!bg-sky-700"
             onClick={() => openPlanForm()}

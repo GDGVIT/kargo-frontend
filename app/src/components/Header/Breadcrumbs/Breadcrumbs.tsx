@@ -19,7 +19,10 @@ const Breadcrumbs: React.FC = () => {
             <React.Fragment key={idx}>
               <MdArrowForwardIos className="text-xs mx-1" />
               <Link href={href}>
-                <span className="text-[#9DA3B3] text-base font-normal select-none mx-1 flex items-center h-full">
+                <span
+                  className="text-[#9DA3B3] text-base font-normal select-none mx-1 flex items-center h-full"
+                  style={{ letterSpacing: "1px" }}
+                >
                   {segment
                     .split("-")
                     .map((s: string) => s.charAt(0).toUpperCase() + s.slice(1))

@@ -14,7 +14,7 @@ import Select from "../../ui/Select/Select";
 import RepoList from "./RepoList/RepoList";
 import DockerModal from "./DockerModal/DockerModal";
 import Repo from "../../../types/Repo/Repo";
-import Card from "../../ui/Card/Card";
+import { GiBrain } from "react-icons/gi";
 
 const GithubRepos: React.FC = () => {
   const { notify } = useNotification();
@@ -211,16 +211,16 @@ const GithubRepos: React.FC = () => {
 
   if (error) {
     return (
-      <Card>
+      <section>
         <FaGithub className="mx-auto mb-2 text-3xl" />
         <div className="text-lg font-semibold mb-1">{error}</div>
-      </Card>
+      </section>
     );
   }
 
   if (installationIdsLoaded && installationIds.length === 0) {
     return (
-      <div className="max-w-xl mx-auto mt-12 p-8  text-center text-zinc-400">
+      <section>
         <FaGithub className="mx-auto mb-2 text-3xl text-zinc-500" />
         <div className="text-lg font-semibold mb-1">GitHub not connected</div>
         <div className="text-sm">
@@ -231,7 +231,7 @@ const GithubRepos: React.FC = () => {
           try uninstalling the GitHub app from your account first, then sign in
           again through the profile page.
         </div>
-      </div>
+      </section>
     );
   }
 
@@ -244,9 +244,12 @@ const GithubRepos: React.FC = () => {
         repoName={dockerModal.repoName}
         onClose={() => setDockerModal({ open: false })}
       />
-      {/* Loader while dockerizing */}
+
       {dockerizingRepoId && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60">
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center"
+          style={{ background: "rgba(0,0,0,0.7)" }}
+        >
           <div className="bg-neutral-900 rounded-lg shadow-lg p-8 flex flex-col items-center">
             <p className="mt-4 text-sky-300">
               Generating Dockerfile and docker-compose.yml...
@@ -256,62 +259,63 @@ const GithubRepos: React.FC = () => {
           </div>
         </div>
       )}
+
       <motion.div
-        className="mx-auto mt-12 p-8"
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, type: "spring", bounce: 0.2 }}
       >
-        <motion.div
-          className="flex items-center mb-6"
-          initial={{ opacity: 0, x: -30 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.2 }}
-        >
-          <FaGithub className="text-2xl text-sky-400 mr-3 animate-pulse" />
-          <h2 className="text-2xl font-bold tracking-tight bg-gradient-to-r from-sky-400 to-blue-600 bg-clip-text text-transparent">
-            GitHub Repositories
-          </h2>
-        </motion.div>
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 space-y-4 sm:space-y-0">
-          <Input
-            value={searchTerm}
-            onChange={handleSearchChange}
-            placeholder="Search repositories..."
-            icon={<FaGithub className="text-zinc-400" />}
-          />
-
-          <Select
-            value={selectedOwner}
-            onChange={handleOwnerChange}
-            options={owners.map((owner) => ({ value: owner, label: owner }))}
-          />
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-6 px-2 sm:px-0">
+          <div className="flex-1">
+            <Input
+              value={searchTerm}
+              onChange={handleSearchChange}
+              placeholder="Search repositories..."
+              icon={<FaGithub className="text-zinc-400" />}
+              className="w-full min-w-0"
+            />
+          </div>
+          <div className="flex-1 sm:max-w-xs">
+            <Select
+              value={selectedOwner}
+              onChange={handleOwnerChange}
+              options={owners.map((owner) => ({ value: owner, label: owner }))}
+              className="w-full min-w-0"
+            />
+          </div>
         </div>
-        <div className="text-xs text-orange-400 mb-4">
+
+        <p className="text-xs text-orange-400 mb-4 px-2 sm:px-6 text-center">
           If your repositories are not showing up but your account is connected,
           try uninstalling the GitHub app from your account first, then sign in
           again through the profile page.
-        </div>
-        <RepoList
-          repos={paginatedRepos}
-          renderActions={(repo: Repo) => (
-            <AnimatedButton
-              onClick={() => handleDockerize(repo)}
-              disabled={!!dockerizingRepoId}
-              variant="primary"
-              icon={null}
-              className="mt-2 px-3 py-1 text-xs"
-            >
-              Dockerize
-            </AnimatedButton>
-          )}
-        />
-        <RepoPagination
-          page={page}
-          totalPages={totalPages}
-          onPrev={handlePrevPage}
-          onNext={handleNextPage}
-        />
+        </p>
+
+        <section className="px-1 sm:px-0">
+          <RepoList
+            repos={paginatedRepos}
+            renderActions={(repo: Repo) => (
+              <AnimatedButton
+                onClick={() => handleDockerize(repo)}
+                disabled={!!dockerizingRepoId}
+                variant="primary"
+                icon={<GiBrain />}
+                className="mt-2 px-3 py-1 text-xs"
+              >
+                Dockerize
+              </AnimatedButton>
+            )}
+          />
+
+          <div className="w-full flex justify-center">
+            <RepoPagination
+              page={page}
+              totalPages={totalPages}
+              onPrev={handlePrevPage}
+              onNext={handleNextPage}
+            />
+          </div>
+        </section>
       </motion.div>
     </>
   );
