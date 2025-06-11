@@ -12,9 +12,11 @@ import {
   FaCheck,
   FaExclamationTriangle,
 } from "react-icons/fa";
+import { MdDesignServices } from "react-icons/md";
 import useNotification from "../../components/ui/Notification/Notification";
 import Loader from "../../components/ui/Loader/Loader";
 import Modal from "../../components/ui/Modal/Modal";
+import PageHeading from "../../components/ui/PageHeading/PageHeading";
 
 export default function UIPage() {
   const selectOptions = [
@@ -26,15 +28,21 @@ export default function UIPage() {
   const [loading, setLoading] = React.useState(false);
   const [modalOpen, setModalOpen] = React.useState(false);
 
-  // ✅ State for Selects
   const [selectedOption1, setSelectedOption1] = React.useState("");
   const [selectedOption2, setSelectedOption2] = React.useState("");
   const [selectedOption3, setSelectedOption3] = React.useState("one");
   const [selectedOption4, setSelectedOption4] = React.useState("");
 
   return (
-    <main style={{ padding: 32, maxWidth: 900, margin: "0 auto" }}>
+    <main
+      style={{ padding: 32, maxWidth: 900, margin: "0 auto", paddingTop: 64 }}
+    >
       {loading && <Loader />}
+      <PageHeading
+        title="UI Components Demo"
+        subtitle="Showcase of all reusable UI components."
+        icon={<MdDesignServices />}
+      />
 
       <Modal
         open={modalOpen}
@@ -49,7 +57,6 @@ export default function UIPage() {
         </div>
       </Modal>
 
-      {/* Buttons */}
       <section>
         <h2>Animated Button</h2>
         <div className="responsive-flex-row">
@@ -112,8 +119,6 @@ export default function UIPage() {
           </AnimatedButton>
         </div>
       </section>
-
-      {/* Cards */}
       <section style={{ marginTop: 40 }}>
         <h2>Card</h2>
         <div className="responsive-flex-row">
@@ -166,8 +171,6 @@ export default function UIPage() {
           </Card>
         </div>
       </section>
-
-      {/* Inputs */}
       <section style={{ marginTop: 40 }}>
         <h2>Input</h2>
         <div
@@ -216,8 +219,6 @@ export default function UIPage() {
           />
         </div>
       </section>
-
-      {/* Selects */}
       <section style={{ marginTop: 40 }}>
         <h2>Select</h2>
         <div
@@ -266,8 +267,6 @@ export default function UIPage() {
           />
         </div>
       </section>
-
-      {/* Textarea */}
       <section style={{ marginTop: 40 }}>
         <h2>Textarea</h2>
         <div
@@ -304,8 +303,6 @@ export default function UIPage() {
           />
         </div>
       </section>
-
-      {/* Loader & Modal */}
       <section style={{ marginTop: 40 }}>
         <h2>Simulate Loader & Modal</h2>
         <div className="responsive-flex-row" style={{ marginBottom: 24 }}>

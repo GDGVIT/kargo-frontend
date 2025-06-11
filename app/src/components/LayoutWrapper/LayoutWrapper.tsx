@@ -24,8 +24,8 @@ export default function LayoutWrapper({
   return (
     <div
       className={clsx("transition-all", {
-        "m-0 ml-52": !isMobile && user, // Sidebar width only if sidebar is visible
-        "m-0": isMobile || !user,
+        "m-0": !isMobile && user,
+        "mx-[var(--screen-horizontal-margin)]": isMobile || !user,
       })}
       style={{
         display: "flex",
