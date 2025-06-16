@@ -79,18 +79,13 @@ const EnvVarsSection: React.FC<EnvVarsSectionProps> = ({
         Environment Variables
       </h3>
       <div className="flex gap-2">
-        <AnimatedButton
-          type="button"
-          onClick={addEnvVar}
-          className="!px-2 !py-1 !text-xs"
-          icon={<FaPlus />}
-        >
+        <AnimatedButton type="button" onClick={addEnvVar} icon={<FaPlus />}>
           Add
         </AnimatedButton>
         <AnimatedButton
           type="button"
           onClick={() => setShowValues((v) => !v)}
-          className="!px-2 !py-1 !text-xs !bg-gray-200 !text-gray-700 hover:!bg-gray-300 border border-gray-300"
+          variant="secondary"
           icon={showValues ? <FaEyeSlash /> : <FaEye />}
         >
           {showValues ? "Hide Values" : "Show Values"}

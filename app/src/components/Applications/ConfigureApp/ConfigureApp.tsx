@@ -194,17 +194,12 @@ export default function ConfigureApp({ appId }: { appId: string }) {
 
   return (
     <div>
-      <h2
-        className="text-3xl font-extrabold mb-8 text-gray-100 tracking-tight"
-        style={{ marginTop: "0" }}
-      >
-        <span>
-          {user && user.username ? <span>{user.username} / </span> : null}
-          {form?.name}
-        </span>
+      <h2 className="text-gray-100" style={{ marginTop: "0" }}>
+        {user && user.username ? <span>{user.username} / </span> : null}
+        {form?.name}
       </h2>
       {/* Tabs Navigation */}
-      <div className="flex gap-3 mb-8 border-b border-gray-800/70">
+      <div className="flex gap-3">
         {Object.entries({
           Image: (
             <span className="flex items-center gap-2">
@@ -229,7 +224,7 @@ export default function ConfigureApp({ appId }: { appId: string }) {
         }).map(([key, label]) => (
           <button
             key={key}
-            className={`px-6 py-2 font-semibold rounded-t-lg transition-all duration-200 focus:outline-none text-base shadow-sm
+            className={`px-6 py-1 font-semibold rounded-t-lg transition-all duration-200 focus:outline-none text-base shadow-sm
               ${
                 activeTab === key
                   ? "bg-gradient-to-r from-blue-700 via-blue-500 to-blue-400 text-white border-b-2 border-blue-400 shadow-lg z-10"
@@ -241,13 +236,17 @@ export default function ConfigureApp({ appId }: { appId: string }) {
             style={{
               boxShadow:
                 activeTab === key ? "0 2px 16px 0 #2563eb55" : undefined,
+              marginBottom: 0,
             }}
           >
             {label}
           </button>
         ))}
       </div>
-      <form onSubmit={handleSaveAndDeploy} className="space-y-8">
+      <form
+        onSubmit={handleSaveAndDeploy}
+        className="space-y-8 px-4 py-3 bg-[var(--card-background)] rounded-tr-lg rounded-bl-lg rounded-br-lg"
+      >
         {/* Tab Content */}
         <div>
           {activeTab === "Image" && (

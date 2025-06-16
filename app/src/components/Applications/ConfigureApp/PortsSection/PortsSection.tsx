@@ -157,7 +157,6 @@ const PortsSection: React.FC<PortsSectionProps> = ({ ports, onChange }) => {
               <AnimatedButton
                 type="button"
                 onClick={() => removePort(id)}
-                className="!px-2 !py-1 !text-xs"
                 icon={<FaTrash />}
                 title="Remove port"
                 variant="danger"
@@ -173,7 +172,6 @@ const PortsSection: React.FC<PortsSectionProps> = ({ ports, onChange }) => {
         onClick={addPort}
         icon={<FaPlus />}
         variant="primary"
-        className="mt-2"
       >
         Add Port
       </AnimatedButton>

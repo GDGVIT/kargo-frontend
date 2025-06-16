@@ -23,7 +23,7 @@ export interface SelectProps {
   error?: string;
   placeholder?: string;
   className?: string;
-  helperText?: string;
+  helperText?: React.ReactNode;
   disabled?: boolean;
   animationDuration?: number;
   animationEasing?: number[];

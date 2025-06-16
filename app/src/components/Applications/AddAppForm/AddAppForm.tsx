@@ -7,30 +7,9 @@ import useNotification from "../../ui/Notification/Notification";
 import type RegistryCredential from "../../../types/Registry/RegistryCredential/RegistryCredential";
 import { useEffect } from "react";
 import AnimatedButton from "../../ui/AnimatedButton/AnimatedButton";
-
-function Input({
-  className = "",
-  ...props
-}: React.InputHTMLAttributes<HTMLInputElement>) {
-  return (
-    <input
-      {...props}
-      className={`w-full px-3 py-2 border border-gray-700 bg-gray-800 text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-500 ${className}`}
-    />
-  );
-}
-
-function Select({
-  className = "",
-  ...props
-}: React.SelectHTMLAttributes<HTMLSelectElement>) {
-  return (
-    <select
-      {...props}
-      className={`w-full px-3 py-2 border border-gray-700 bg-gray-800 text-gray-100 rounded-md ${className}`}
-    />
-  );
-}
+import { FaPlus } from "react-icons/fa";
+import Input from "../../ui/Input/Input";
+import Select from "../../ui/Select/Select";
 
 export default function AddAppForm() {
   const [form, setForm] = useState({
@@ -91,41 +70,37 @@ export default function AddAppForm() {
     <form onSubmit={handleAdd} className="mb-8 space-y-4 min-h-[470px]">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-gray-300 mb-1">
-            Name
-          </label>
           <Input
             required
+            label="Name"
             value={form.name}
             onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
             placeholder="My App"
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-300 mb-1">
-            Image URL
-          </label>
           <Input
             required
+            label="Image URL"
             value={form.imageUrl}
             onChange={(e) =>
               setForm((f) => ({ ...f, imageUrl: e.target.value }))
             }
             placeholder="registry.io/my-app"
+            helperText={
+              <a
+                href="/dockerize"
+                className="underline text-yellow-300 hover:text-yellow-200 ml-1 text-xs"
+              >
+                Dockerize your app
+              </a>
+            }
           />
-          <a
-            href="/dockerize"
-            className="underline text-yellow-300 hover:text-yellow-200 ml-1 text-xs"
-          >
-            Dockerize your app
-          </a>
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-300 mb-1">
-            Image Tag
-          </label>
           <Input
             required
+            label="Image Tag"
             value={form.imageTag}
             onChange={(e) =>
               setForm((f) => ({ ...f, imageTag: e.target.value }))
@@ -134,15 +109,8 @@ export default function AddAppForm() {
           />
         </div>
         <div>
-          <label
-            className="block text-sm font-medium text-gray-300 mb-1"
-            htmlFor="registry-credential"
-          >
-            Registry Credential
-          </label>
           <Select
-            id="registry-credential"
-            title="Registry Credential"
+            label="Registry Credential"
             value={
               selectedCredential
                 ? selectedCredential.name +
@@ -150,8 +118,8 @@ export default function AddAppForm() {
                   selectedCredential.registryType
                 : ""
             }
-            onChange={(e) => {
-              const [name, registryType] = e.target.value.split(":");
+            onChange={(val) => {
+              const [name, registryType] = val.split(":");
               const cred = credentials.find(
                 (c) => c.name === name && c.registryType === registryType
               );
@@ -161,30 +129,29 @@ export default function AddAppForm() {
                 credentials: cred ? [cred] : [],
               }));
             }}
-          >
-            <option value="">Select a credential</option>
-            {credentials.map((cred) => (
-              <option
-                key={cred.name + cred.registryType}
-                value={cred.name + ":" + cred.registryType}
+            options={[
+              { value: "", label: "Select a credential" },
+              ...credentials.map((cred) => ({
+                value: cred.name + ":" + cred.registryType,
+                label: `${cred.name} [${cred.registryType}] (${cred.username})`,
+              })),
+            ]}
+            helperText={
+              <a
+                href="/credentials"
+                className="text-xs text-blue-400 hover:underline mt-1 inline-block"
               >
-                {cred.name} [{cred.registryType}] ({cred.username})
-              </option>
-            ))}
-          </Select>
-          <a
-            href="/credentials"
-            className="text-xs text-blue-400 hover:underline mt-1 inline-block"
-          >
-            Manage credentials
-          </a>
+                Manage credentials
+              </a>
+            }
+          />
         </div>
       </div>
       <AnimatedButton
         type="submit"
         disabled={loading}
         className="mt-4 !px-6 !py-2"
-        icon={null}
+        icon={<FaPlus />}
       >
         {loading ? "Adding..." : "Add Application"}
       </AnimatedButton>

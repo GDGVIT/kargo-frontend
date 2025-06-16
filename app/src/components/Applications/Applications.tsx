@@ -6,7 +6,7 @@ import axios from "../../utils/api";
 import useNotification from "../ui/Notification/Notification";
 import Modal from "../ui/Modal/Modal";
 import AnimatedButton from "../ui/AnimatedButton/AnimatedButton";
-import { FaTrash } from "react-icons/fa";
+import { FaPlus, FaTrash } from "react-icons/fa";
 
 export default function Applications() {
   const [apps, setApps] = useState([]);
@@ -45,12 +45,10 @@ export default function Applications() {
 
   return (
     <section>
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-gray-100">Your Applications</h1>
+      <div className="flex items-center justify-end mb-6">
         <AnimatedButton
           onClick={() => router.push("/applications/add")}
-          className="!px-4 !py-2 !h-auto !min-w-0 !text-base"
-          icon={null}
+          icon={<FaPlus />}
           variant="primary"
         >
           Add Application

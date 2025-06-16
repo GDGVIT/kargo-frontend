@@ -7,7 +7,7 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   error?: string;
   className?: string;
   icon?: React.ReactNode;
-  helperText?: string;
+  helperText?: React.ReactNode;
   animationDuration?: number;
   animationEasing?: number[];
 }

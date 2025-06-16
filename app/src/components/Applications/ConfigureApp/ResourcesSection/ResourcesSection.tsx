@@ -1,5 +1,6 @@
 import React from "react";
 import Input from "../../../ui/Input/Input";
+import { formatCpu, formatMemory } from "../../../../utils/resources";
 
 import type ResourcesSectionProps from "../../../../types/Application/Resources/ResourcesSectionProps/ResourcesSectionProps";
 
@@ -11,7 +12,7 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
   handleResourceChange,
 }) => {
   const getNumeric = (val: string | undefined, suffix: string) => {
-    if (!val) return "";
+    if (!val || val === "") return "0";
     return val.endsWith(suffix) ? val.slice(0, -suffix.length) : val;
   };
 
@@ -82,8 +83,8 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
               pattern="[0-9]*"
               label="CPU Requests"
               className="!mb-0"
+              helperText={formatCpu(resources?.requests?.cpu)}
             />
-            <span className="text-gray-400">m</span>
           </div>
         </div>
         <div>
@@ -103,8 +104,8 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
               pattern="[0-9]*"
               label="Memory Requests"
               className="!mb-0"
+              helperText={formatMemory(resources?.requests?.memory)}
             />
-            <span className="text-gray-400">Mi</span>
           </div>
         </div>
         <div>
@@ -124,8 +125,8 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
               pattern="[0-9]*"
               label="CPU Limits"
               className="!mb-0"
+              helperText={formatCpu(resources?.limits?.cpu)}
             />
-            <span className="text-gray-400">m</span>
           </div>
         </div>
         <div>
@@ -145,8 +146,8 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
               pattern="[0-9]*"
               label="Memory Limits"
               className="!mb-0"
+              helperText={formatMemory(resources?.limits?.memory)}
             />
-            <span className="text-gray-400">Mi</span>
           </div>
         </div>
       </div>
