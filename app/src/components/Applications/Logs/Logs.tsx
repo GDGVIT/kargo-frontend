@@ -52,11 +52,8 @@ export default function Logs({ id }: LogsProps) {
   }
 
   return (
-    <div className="flex justify-center items-center min-h-screen">
-      <div className="mx-auto p-6 bg-gray-900 rounded-lg shadow-md mt-8 border border-gray-800 max-w-6xl w-full">
-        <h1 className="text-2xl font-bold mb-4 text-gray-100 text-center">
-          Application Logs
-        </h1>
+    <div className="flex justify-center items-center">
+      <div className="mx-auto p-6 bg-[var(--card-background)] rounded-lg shadow-md border border-gray-800 max-w-6xl w-full">
         <div className="mb-2 text-sm text-gray-400 text-center">
           {connected ? "Streaming logs..." : error || "Connecting..."}
         </div>

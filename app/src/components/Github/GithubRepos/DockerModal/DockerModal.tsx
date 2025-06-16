@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { FaTimes, FaCopy, FaDocker } from "react-icons/fa";
+import { FaCopy, FaDocker } from "react-icons/fa";
 import DockerModalProps from "../../../../types/DockerModalProps/DockerModalProps";
 import { DockerfileParser } from "dockerfile-ast";
 import yaml from "js-yaml";
 import Button from "../../../ui/AnimatedButton/AnimatedButton";
-import Card from "../../../ui/Card/Card";
+import Modal from "../../../ui/Modal/Modal";
 
 const DockerModal: React.FC<DockerModalProps> = ({
   open,
@@ -162,58 +162,46 @@ const DockerModal: React.FC<DockerModalProps> = ({
     );
   };
 
-  if (!open) return null;
-
   return (
-    <div className="fixed inset-0 z-60 flex items-center justify-center bg-black bg-opacity-70">
-      <Card className="bg-neutral-900 rounded-2xl shadow-2xl p-8 max-w-2xl w-full relative border-2 border-sky-700 animate-fadeIn">
+    <Modal
+      open={open}
+      onClose={onClose}
+      title={`Dockerization for ${repoName || ""}`}
+      className="max-w-2xl w-full"
+      showCloseButton
+    >
+      <div className="flex justify-center mb-4 gap-2">
         <Button
-          className="absolute top-4 right-4 text-zinc-400 hover:text-white text-2xl"
-          onClick={onClose}
-          aria-label="Close"
-          variant="secondary"
+          className={`px-4 py-2 rounded-t-lg font-semibold transition-colors duration-200 border-b-2 focus:outline-none flex items-center gap-2 ${
+            activeTab === "dockerfile"
+              ? "bg-blue-700 text-white border-blue-400"
+              : "bg-neutral-800 text-zinc-400 border-transparent hover:bg-neutral-700"
+          }`}
+          onClick={() => setActiveTab("dockerfile")}
+          disabled={!dockerfile}
+          variant={activeTab === "dockerfile" ? "primary" : "secondary"}
+          icon={<FaDocker />}
         >
-          <FaTimes />
+          Dockerfile
         </Button>
-        <h2 className="text-xl font-bold mb-6 text-sky-400 text-center">
-          Dockerization for <span className="text-white">{repoName}</span>
-        </h2>
-        <div className="flex justify-center mb-4 gap-2">
-          <Button
-            className={`px-4 py-2 rounded-t-lg font-semibold transition-colors duration-200 border-b-2 focus:outline-none flex items-center gap-2 ${
-              activeTab === "dockerfile"
-                ? "bg-blue-700 text-white border-blue-400"
-                : "bg-neutral-800 text-zinc-400 border-transparent hover:bg-neutral-700"
-            }`}
-            onClick={() => setActiveTab("dockerfile")}
-            disabled={!dockerfile}
-            variant={activeTab === "dockerfile" ? "primary" : "secondary"}
-          >
-            <FaDocker
-              className={`text-lg ${
-                activeTab === "dockerfile" ? "text-blue-200" : "text-zinc-400"
-              }`}
-            />{" "}
-            Dockerfile
-          </Button>
-          <Button
-            className={`px-4 py-2 rounded-t-lg font-semibold transition-colors duration-200 border-b-2 focus:outline-none flex items-center gap-2 ${
-              activeTab === "dockerCompose"
-                ? "bg-pink-700 text-white border-pink-400"
-                : "bg-neutral-800 text-zinc-400 border-transparent hover:bg-neutral-700"
-            }`}
-            onClick={() => setActiveTab("dockerCompose")}
-            disabled={!dockerCompose}
-            variant={activeTab === "dockerCompose" ? "primary" : "secondary"}
-          >
-            <FaDocker className="text-lg text-pink-200" /> docker-compose.yml
-          </Button>
-        </div>
-        <div className="max-h-[50vh] overflow-y-auto scrollbar-thin scrollbar-thumb-zinc-700 scrollbar-track-zinc-900 rounded-lg">
-          {renderTabContent()}
-        </div>
-      </Card>
-    </div>
+        <Button
+          className={`px-4 py-2 rounded-t-lg font-semibold transition-colors duration-200 border-b-2 focus:outline-none flex items-center gap-2 ${
+            activeTab === "dockerCompose"
+              ? "bg-pink-700 text-white border-pink-400"
+              : "bg-neutral-800 text-zinc-400 border-transparent hover:bg-neutral-700"
+          }`}
+          onClick={() => setActiveTab("dockerCompose")}
+          disabled={!dockerCompose}
+          variant={activeTab === "dockerCompose" ? "primary" : "secondary"}
+          icon={<FaDocker />}
+        >
+          docker-compose.yml
+        </Button>
+      </div>
+      <div className="max-h-[50vh] overflow-y-auto scrollbar-thin scrollbar-thumb-zinc-700 scrollbar-track-zinc-900 rounded-lg">
+        {renderTabContent()}
+      </div>
+    </Modal>
   );
 };
 

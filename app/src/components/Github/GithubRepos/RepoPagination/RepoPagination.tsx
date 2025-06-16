@@ -9,16 +9,14 @@ const RepoPagination: React.FC<RepoPaginationProps> = ({
   onPrev,
   onNext,
 }) => (
-  <div className="flex flex-col sm:flex-row justify-center items-center mt-4 gap-3 sm:gap-8 w-full">
+  <div className="flex flex-row justify-center items-center mt-4 gap-3 sm:gap-8 w-full">
     <Button
       onClick={onPrev}
       disabled={page === 1}
       aria-label="Previous page"
       icon={<FaArrowLeft />}
       variant="secondary"
-    >
-      Previous
-    </Button>
+    ></Button>
     <span aria-live="polite" aria-atomic="true">
       Page {page} of {totalPages}
     </span>
@@ -28,9 +26,7 @@ const RepoPagination: React.FC<RepoPaginationProps> = ({
       aria-label="Next page"
       icon={<FaArrowRight />}
       variant="secondary"
-    >
-      Next
-    </Button>
+    ></Button>
   </div>
 );
 

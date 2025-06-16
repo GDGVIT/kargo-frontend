@@ -90,7 +90,6 @@ const PortsSection: React.FC<PortsSectionProps> = ({ ports, onChange }) => {
                   required
                   title="Container port number (1-65535)"
                   label="Container Port"
-                  className="!mb-0"
                 />
               </div>
               <div className="flex flex-col">
@@ -107,7 +106,6 @@ const PortsSection: React.FC<PortsSectionProps> = ({ ports, onChange }) => {
                   required
                   title="Host port number (1-65535)"
                   label="Host Port"
-                  className="!mb-0"
                 />
               </div>
               <div className="flex flex-col">
@@ -119,7 +117,6 @@ const PortsSection: React.FC<PortsSectionProps> = ({ ports, onChange }) => {
                     { value: "TCP", label: "TCP" },
                     { value: "UDP", label: "UDP" },
                   ]}
-                  className="!mb-0"
                 />
               </div>
               <div className="flex flex-col">
@@ -130,7 +127,6 @@ const PortsSection: React.FC<PortsSectionProps> = ({ ports, onChange }) => {
                   }
                   placeholder="Description (optional)"
                   label="Description"
-                  className="!mb-0"
                 />
               </div>
               <div className="flex flex-col">
@@ -145,11 +141,17 @@ const PortsSection: React.FC<PortsSectionProps> = ({ ports, onChange }) => {
                     }}
                     placeholder="Subdomain (optional)"
                     label="Subdomain"
-                    className="!mb-0"
                     helperText={
-                      subdomainSegment
-                        ? `It will be accessible at https://${subdomainSegment}.${username}.${ingressBaseUrl}`
-                        : undefined
+                      subdomainSegment ? (
+                        <>
+                          Visit{" "}
+                          <a
+                            href={`https://${subdomainSegment}.${username}.${ingressBaseUrl}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >{`${subdomainSegment}.${username}.${ingressBaseUrl}`}</a>
+                        </>
+                      ) : undefined
                     }
                   />
                 </div>
