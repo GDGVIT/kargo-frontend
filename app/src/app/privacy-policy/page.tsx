@@ -1,4 +1,4 @@
-import PageHeading from "../../../components/ui/PageHeading/PageHeading";
+import PageHeading from "../../components/ui/PageHeading/PageHeading";
 
 export default function PrivacyPolicyPage() {
   return (
