@@ -5,9 +5,10 @@ import Link from "next/link";
 import Branding from "./Branding/Branding";
 import { FiBarChart2, FiKey, FiShield, FiUser } from "react-icons/fi";
 import { FaDocker } from "react-icons/fa";
-import { useAuth } from "../Auth/AuthProvider/AuthProvider";
+import { useAuth } from "../../Auth/AuthProvider/AuthProvider";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
+import React from "react";
 
 export default function Sidebar() {
   const { user, loading } = useAuth();
@@ -49,7 +50,6 @@ export default function Sidebar() {
             <Branding />
             <nav className="mt-8 flex flex-col space-y-4">
               {navItems.map(({ href, label, icon, admin }) => {
-                // Allow nested route highlighting
                 const isActive =
                   href === "/" ? pathname === href : pathname.startsWith(href);
                 return (
@@ -92,7 +92,7 @@ export default function Sidebar() {
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: 30, opacity: 0 }}
             transition={{ type: "spring", stiffness: 200, damping: 25 }}
-            className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#242837] border-t border-[#2C313F] flex h-14"
+            className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#242837] border-t border-[#2C313F] flex h-18"
           >
             {navItems.map(({ href, icon, label }) => {
               const isActive =
@@ -101,12 +101,12 @@ export default function Sidebar() {
                 <Link
                   key={label}
                   href={href}
-                  className={`flex-1 flex items-center justify-center h-full text-2xl text-white ${
+                  className={`flex-1 flex items-center justify-center h-full text-2xl ${
                     isActive ? "bg-gray-700" : "hover:bg-gray-700"
                   }`}
                   style={!isActive ? { opacity: 0.7 } : undefined}
                 >
-                  {icon}
+                  <span className="text-white mb-2">{icon}</span>
                 </Link>
               );
             })}

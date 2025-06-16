@@ -1,7 +1,7 @@
 "use client";
 
-import { useAuth } from "../../Auth/AuthProvider/AuthProvider";
-import Loader from "../../ui/Loader/Loader";
+import { useAuth } from "../../../Auth/AuthProvider/AuthProvider";
+import Loader from "../../Loader/Loader";
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 

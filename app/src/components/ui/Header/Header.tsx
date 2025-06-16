@@ -2,7 +2,7 @@
 
 import React from "react";
 import Auth from "./Auth/Auth";
-import { useAuth } from "../Auth/AuthProvider/AuthProvider";
+import { useAuth } from "../../Auth/AuthProvider/AuthProvider";
 import Link from "next/link";
 import Breadcrumbs from "./Breadcrumbs/Breadcrumbs";
 
