@@ -49,7 +49,9 @@ const PortsSection: React.FC<PortsSectionProps> = ({ ports, onChange }) => {
 
   return (
     <div className="mb-6">
-      <h3 className="text-gray-400 mb-2">Ports Configuration</h3>
+      <h3 className="text-gray-400 mb-2" style={{ margin: 0 }}>
+        Ports Configuration
+      </h3>
       {localPorts.map(
         ({ id, containerPort, hostPort, protocol, description, subdomain }) => {
           let subdomainSegment = "";
@@ -64,13 +66,11 @@ const PortsSection: React.FC<PortsSectionProps> = ({ ports, onChange }) => {
               subdomainSegment = subdomain;
             }
           }
-          const fullDomain = subdomainSegment
-            ? `${subdomainSegment}.${username}.${ingressBaseUrl}`
-            : "";
+
           return (
             <div
               key={id}
-              className="flex flex-wrap gap-2 items-end mb-3 border-b border-gray-100 pb-3"
+              className="flex flex-wrap gap-2 items-baseline mb-3 pb-3"
             >
               <div className="flex flex-col">
                 <Input
@@ -134,15 +134,6 @@ const PortsSection: React.FC<PortsSectionProps> = ({ ports, onChange }) => {
                 />
               </div>
               <div className="flex flex-col">
-                <span>
-                  <a
-                    href={`http://${fullDomain}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {fullDomain}
-                  </a>
-                </span>
                 <div className="flex items-center">
                   <Input
                     value={subdomainSegment}
@@ -155,10 +146,12 @@ const PortsSection: React.FC<PortsSectionProps> = ({ ports, onChange }) => {
                     placeholder="Subdomain (optional)"
                     label="Subdomain"
                     className="!mb-0"
+                    helperText={
+                      subdomainSegment
+                        ? `It will be accessible at https://${subdomainSegment}.${username}.${ingressBaseUrl}`
+                        : undefined
+                    }
                   />
-                  <span className="ml-1 text-gray-500 text-sm">
-                    .{username}.{ingressBaseUrl}
-                  </span>
                 </div>
               </div>
               <AnimatedButton
@@ -180,6 +173,7 @@ const PortsSection: React.FC<PortsSectionProps> = ({ ports, onChange }) => {
         onClick={addPort}
         icon={<FaPlus />}
         variant="primary"
+        className="mt-2"
       >
         Add Port
       </AnimatedButton>

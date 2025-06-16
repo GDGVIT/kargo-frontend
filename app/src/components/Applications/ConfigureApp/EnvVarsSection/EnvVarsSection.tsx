@@ -75,7 +75,9 @@ const EnvVarsSection: React.FC<EnvVarsSectionProps> = ({
 
   return (
     <div className="mb-6">
-      <h3 className="text-gray-400 mb-2">Environment Variables</h3>
+      <h3 className="text-gray-400 mb-2" style={{ margin: 0 }}>
+        Environment Variables
+      </h3>
       <div className="flex gap-2">
         <AnimatedButton
           type="button"

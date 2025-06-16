@@ -249,7 +249,7 @@ export default function ConfigureApp({ appId }: { appId: string }) {
       </div>
       <form onSubmit={handleSaveAndDeploy} className="space-y-8">
         {/* Tab Content */}
-        <div className="p-6 ">
+        <div>
           {activeTab === "Image" && (
             <ImageFields
               imageUrl={form?.imageUrl || ""}
@@ -346,7 +346,6 @@ export default function ConfigureApp({ appId }: { appId: string }) {
             />
           )}
         </div>
-        {/* Action Buttons and Error Message always visible */}
         <div className="flex flex-col gap-4 mt-8">
           <ActionButtons
             saving={saving}

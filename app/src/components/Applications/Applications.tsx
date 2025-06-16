@@ -124,16 +124,6 @@ export default function Applications() {
                   <span className="text-blue-400 text-sm font-medium">
                     Click to configure →
                   </span>
-                  <AnimatedButton
-                    className="absolute top-3 right-3 !px-2 !py-1 !h-auto !min-w-0"
-                    icon={<FaTrash />}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setConfirmDeleteId(app._id);
-                    }}
-                    title="Delete app"
-                    variant="danger"
-                  ></AnimatedButton>
                 </div>
               )
             )}
