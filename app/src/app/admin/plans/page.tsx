@@ -7,7 +7,7 @@ export default function AdminPlansPage() {
     <main>
       <PageHeading
         title="Admin Plans"
-        subtitle="Manage your application plans."
+        subtitle="Manage all subscription plans, view plan details, and control plan features. Use the actions below to create, edit, or delete plans. Changes are applied instantly."
         icon={<MdOutlinePayment />}
       />
       <AdminPlansDashboard />

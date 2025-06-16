@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import Modal from "../../../ui/Modal/Modal";
-import ExtraResourcesEditor from "../../AdminPlansDashboard/ExtraResourcesEditor/ExtraResourcesEditor";
+import ExtraResourcesEditor from "../ExtraResourcesEditor/ExtraResourcesEditor";
 import Card from "../../../ui/Card/Card";
 import Select from "../../../ui/Select/Select";
 import AnimatedButton from "../../../ui/AnimatedButton/AnimatedButton";
+import { HiPencil } from "react-icons/hi";
 import type UserTableProps from "../../../../types/User/UserTableProps";
 import type User from "../../../../types/User/User";
 import { formatCpu, formatMemory } from "../../../../utils/resources";
@@ -161,7 +162,7 @@ const UserTable: React.FC<UserTableProps> = ({
                     <AnimatedButton
                       className="!px-2 !py-1 !text-xs !rounded !bg-amber-500 hover:!bg-amber-600 mt-1"
                       onClick={() => handleOpenModal(user)}
-                      icon={null}
+                      icon={<HiPencil className="w-4 h-4" />}
                     >
                       Edit
                     </AnimatedButton>

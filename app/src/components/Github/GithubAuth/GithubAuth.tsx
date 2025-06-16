@@ -60,6 +60,7 @@ const GithubAuth: React.FC = () => {
         const installationIdFromUrl = url.searchParams.get("installation_id");
         if (installationIdFromUrl) {
           try {
+            // Save installation ID to backend
             await api.post(
               "/api/github/installation-id",
               { installation_id: installationIdFromUrl },
@@ -71,20 +72,17 @@ const GithubAuth: React.FC = () => {
           }
         }
 
+        // Always fetch the latest installation IDs from backend
         const res = await api.get("/api/github/installation-id", {
           withCredentials: true,
         });
-
         const savedInstallationIds: string[] = res.data.installation_ids || [];
 
-        // Always trust backend as source of truth
-        setInstallationIds(savedInstallationIds);
-        sessionStorage.setItem(
-          "installation_ids",
-          JSON.stringify(savedInstallationIds)
-        );
+        // Remove duplicates from installation IDs
+        const uniqueInstallationIds = Array.from(new Set(savedInstallationIds));
+        setInstallationIds(uniqueInstallationIds);
 
-        // Remove installation_id param from URL if present
+        // Clean up URL
         if (installationIdFromUrl) {
           url.searchParams.delete("installation_id");
           window.history.replaceState(null, "", url.toString());

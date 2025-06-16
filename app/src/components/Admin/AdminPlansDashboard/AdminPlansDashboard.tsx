@@ -141,7 +141,7 @@ export default function AdminPlansDashboard() {
   }
 
   return (
-    <div className="max-w-6xl mx-auto py-8">
+    <div className="max-w-6xl mx-auto ">
       <div className="mb-10">
         <div className="flex items-center justify-between mb-2">
           <AnimatedButton

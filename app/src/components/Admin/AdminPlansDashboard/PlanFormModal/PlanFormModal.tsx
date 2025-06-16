@@ -3,6 +3,8 @@ import Modal from "../../../ui/Modal/Modal";
 import Input from "../../../ui/Input/Input";
 import Textarea from "../../../ui/Textarea/Textarea";
 import AnimatedButton from "../../../ui/AnimatedButton/AnimatedButton";
+import { FaMicrochip, FaMemory } from "react-icons/fa6";
+import { formatCpu, formatMemory } from "../../../../utils/resources";
 import type PlanFormModalProps from "../../../../types/Plan/PlanFormModalProps";
 
 const PlanFormModal: React.FC<PlanFormModalProps> = ({
@@ -44,40 +46,56 @@ const PlanFormModal: React.FC<PlanFormModalProps> = ({
           <Input
             label="Requests CPU"
             value={planForm.requestsCpu}
-            onChange={(e) =>
-              setPlanForm((f) => ({ ...f, requestsCpu: e.target.value }))
-            }
+            onChange={(e) => {
+              const val = e.target.value.replace(/[^\d.]/g, "");
+              setPlanForm((f) => ({ ...f, requestsCpu: val }));
+            }}
             placeholder="CPU"
             title="Requests CPU"
+            type="number"
+            icon={<FaMicrochip />}
+            helperText={formatCpu(planForm.requestsCpu)}
           />
           <Input
             label="Requests Memory"
             value={planForm.requestsMemory}
-            onChange={(e) =>
-              setPlanForm((f) => ({ ...f, requestsMemory: e.target.value }))
-            }
+            onChange={(e) => {
+              const val = e.target.value.replace(/[^\d.]/g, "");
+              setPlanForm((f) => ({ ...f, requestsMemory: val }));
+            }}
             placeholder="Memory"
             title="Requests Memory"
+            type="number"
+            icon={<FaMemory />}
+            helperText={formatMemory(planForm.requestsMemory)}
           />
         </div>
         <div className="flex gap-4">
           <Input
             label="Limits CPU"
             value={planForm.limitsCpu}
-            onChange={(e) =>
-              setPlanForm((f) => ({ ...f, limitsCpu: e.target.value }))
-            }
+            onChange={(e) => {
+              const val = e.target.value.replace(/[^\d.]/g, "");
+              setPlanForm((f) => ({ ...f, limitsCpu: val }));
+            }}
             placeholder="CPU"
             title="Limits CPU"
+            type="number"
+            icon={<FaMicrochip />}
+            helperText={formatCpu(planForm.limitsCpu)}
           />
           <Input
             label="Limits Memory"
             value={planForm.limitsMemory}
-            onChange={(e) =>
-              setPlanForm((f) => ({ ...f, limitsMemory: e.target.value }))
-            }
+            onChange={(e) => {
+              const val = e.target.value.replace(/[^\d.]/g, "");
+              setPlanForm((f) => ({ ...f, limitsMemory: val }));
+            }}
             placeholder="Memory"
             title="Limits Memory"
+            type="number"
+            icon={<FaMemory />}
+            helperText={formatMemory(planForm.limitsMemory)}
           />
         </div>
         <div className="flex gap-4 items-center">

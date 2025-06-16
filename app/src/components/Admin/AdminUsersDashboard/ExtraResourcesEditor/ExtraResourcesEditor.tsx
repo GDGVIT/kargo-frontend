@@ -1,6 +1,9 @@
 import React from "react";
 import Input from "../../../ui/Input/Input";
+import { HiCheck, HiX } from "react-icons/hi";
+import AnimatedButton from "../../../ui/AnimatedButton/AnimatedButton";
 import type ExtraResourcesEditorProps from "../../../../types/ExtraResources/ExtraResourcesEditorProps";
+import { formatMemory, formatCpu } from "../../../../utils/resources";
 
 const ExtraResourcesEditor: React.FC<ExtraResourcesEditorProps> = ({
   data,
@@ -16,12 +19,16 @@ const ExtraResourcesEditor: React.FC<ExtraResourcesEditorProps> = ({
         placeholder="Req CPU"
         value={data.requestsCpu}
         onChange={(e) => onChange("requestsCpu", e.target.value)}
+        helperText={formatCpu(data.requestsCpu)}
+        type="number"
       />
       <Input
         className="w-24 text-xs"
         placeholder="Req Mem"
         value={data.requestsMemory}
         onChange={(e) => onChange("requestsMemory", e.target.value)}
+        helperText={formatMemory(data.requestsMemory)}
+        type="number"
       />
     </div>
     <div className="flex gap-2 mb-1">
@@ -30,28 +37,36 @@ const ExtraResourcesEditor: React.FC<ExtraResourcesEditorProps> = ({
         placeholder="Lim CPU"
         value={data.limitsCpu}
         onChange={(e) => onChange("limitsCpu", e.target.value)}
+        helperText={formatCpu(data.limitsCpu)}
+        type="number"
       />
       <Input
         className="w-24 text-xs"
         placeholder="Lim Mem"
         value={data.limitsMemory}
         onChange={(e) => onChange("limitsMemory", e.target.value)}
+        helperText={formatMemory(data.limitsMemory)}
+        type="number"
       />
     </div>
     <div className="flex gap-2">
-      <button
-        className="px-2 py-1 bg-sky-600 text-xs rounded hover:bg-sky-700"
+      <AnimatedButton
+        className="px-2 py-1 text-xs"
         disabled={saving}
         onClick={onSave}
+        variant="primary"
+        icon={<HiCheck className="w-4 h-4" />}
       >
         Save
-      </button>
-      <button
-        className="px-2 py-1 bg-zinc-700 text-xs rounded hover:bg-zinc-800"
+      </AnimatedButton>
+      <AnimatedButton
+        className="px-2 py-1 text-xs"
         onClick={onCancel}
+        variant="secondary"
+        icon={<HiX className="w-4 h-4" />}
       >
         Cancel
-      </button>
+      </AnimatedButton>
     </div>
   </div>
 );
