@@ -102,7 +102,7 @@ const EnvVarsSection: React.FC<EnvVarsSectionProps> = ({
         {envList.map(([key, value], idx) => (
           <div
             key={idx}
-            className="flex items-baseline gap-3 w-full min-h-8 py-1"
+            className="flex items-center gap-3 w-full min-h-8 py-1"
           >
             <Input
               placeholder="KEY"

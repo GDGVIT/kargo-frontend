@@ -37,43 +37,44 @@ const PageHeading: React.FC<PageHeadingProps> = ({
           alignItems: "flex-start",
         }}
       >
-        {icon && (
-          <motion.span
-            className="mr-2 flex-shrink-0"
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.4, ease: "easeOut", delay: 0.1 }}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              height: "2.25rem",
-              marginTop: 0,
-            }}
-          >
-            {React.isValidElement<{ style?: React.CSSProperties }>(icon)
-              ? React.cloneElement(icon, {
-                  style: {
-                    ...((icon.props?.style as React.CSSProperties) || {}),
-                    fontSize: "1.6rem",
-                    height: "1em",
-                    width: "1em",
-                    verticalAlign: "middle",
-                    marginTop: "0px",
-                  },
-                })
-              : icon}
-          </motion.span>
-        )}
         <div>
           <HeadingTag
-            className="text-2xl sm:text-3xl font-bold text-gray-100 tracking-tight mb-1"
+            className="text-2xl sm:text-3xl font-bold text-gray-100 tracking-tight mb-1 flex items-center"
             style={{ margin: 0 }}
           >
+            {" "}
+            {icon && (
+              <motion.span
+                className="mr-2 flex-shrink-0"
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.4, ease: "easeOut", delay: 0.1 }}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  height: "2.25rem",
+                  marginTop: 0,
+                }}
+              >
+                {React.isValidElement<{ style?: React.CSSProperties }>(icon)
+                  ? React.cloneElement(icon, {
+                      style: {
+                        ...((icon.props?.style as React.CSSProperties) || {}),
+                        fontSize: "1.6rem",
+                        height: "1em",
+                        width: "1em",
+                        verticalAlign: "middle",
+                        marginTop: "0px",
+                      },
+                    })
+                  : icon}
+              </motion.span>
+            )}
             {title}
           </HeadingTag>
           {subtitle && (
             <motion.div
-              className="text-base text-zinc-400 font-normal mt-1"
+              className="text-base text-zinc-400 font-normal mt-1 ml-1"
               initial={{ opacity: 0, x: -10 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.4, ease: "easeOut", delay: 0.2 }}

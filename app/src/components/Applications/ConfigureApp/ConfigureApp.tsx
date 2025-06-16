@@ -16,8 +16,10 @@ import Modal from "../../ui/Modal/Modal";
 import AnimatedButton from "../../ui/AnimatedButton/AnimatedButton";
 import { FaDatabase, FaDocker, FaLeaf, FaNetworkWired } from "react-icons/fa";
 import Loader from "../../ui/Loader/Loader";
+import { useAuth } from "../../Auth/AuthProvider/AuthProvider";
 
 export default function ConfigureApp({ appId }: { appId: string }) {
+  const { user } = useAuth();
   const [form, setForm] = useState<Application | null>(null);
   const [envList, setEnvList] = useState<[string, string][]>([]);
   const [saving, setSaving] = useState(false);
@@ -192,17 +194,15 @@ export default function ConfigureApp({ appId }: { appId: string }) {
 
   return (
     <div>
-      <AnimatedButton
-        type="button"
-        onClick={() => router.push("/applications")}
-        className="flex items-center gap-2 text-gray-400 hover:text-blue-400 font-medium mb-8 transition-colors !bg-transparent !shadow-none !px-0 !py-0"
-        icon={null}
+      <h2
+        className="text-3xl font-extrabold mb-8 text-gray-100 tracking-tight"
+        style={{ marginTop: "0" }}
       >
-        <span className="text-lg">←</span> Back to Application
-      </AnimatedButton>
-      <h1 className="text-3xl font-extrabold mb-8 text-gray-100 tracking-tight">
-        Configure <span className="text-blue-400">{form?.name}</span>
-      </h1>
+        <span>
+          {user && user.username ? <span>{user.username} / </span> : null}
+          {form?.name}
+        </span>
+      </h2>
       {/* Tabs Navigation */}
       <div className="flex gap-3 mb-8 border-b border-gray-800/70">
         {Object.entries({
