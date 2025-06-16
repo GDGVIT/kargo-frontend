@@ -18,9 +18,7 @@ RUN apt-get update && \
 FROM base AS deps
 WORKDIR /app
 
-# Copy only lock/package files to install dependencies
 COPY app/package.json app/package-lock.json* ./
-
 RUN npm ci
 
 ########################
@@ -37,21 +35,20 @@ RUN npm run build
 
 ########################
 # 🚀 Production image
+########################
 FROM node:20-slim AS runner
 WORKDIR /app
 
+ARG BUILD_TIMESTAMP
+LABEL org.opencontainers.image.created=$BUILD_TIMESTAMP
+
 ENV NODE_ENV=production
 ENV PORT=3000
-ENV PORT=3000
 
-# Copy dependencies and build output
 COPY --from=deps /app/node_modules ./node_modules
 COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/package.json ./package.json
 
-# Expose the port the app runs on
 EXPOSE 3000
-
-# Run the app
 CMD ["npx", "next", "start"]
