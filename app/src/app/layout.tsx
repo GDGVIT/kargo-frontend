@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+
 import { AuthProvider } from "../components/Auth/AuthProvider/AuthProvider";
 import { NotificationProvider } from "../components/ui/Notification/Notification";
 import Header from "../components/ui/Header/Header";
@@ -17,9 +18,9 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
       <head>
@@ -32,7 +33,7 @@ export default function RootLayout({
           href="/apple-touch-icon.webp"
         />
       </head>
-      <body className={`antialiased`}>
+      <body className="antialiased">
         <NotificationProvider>
           <AuthProvider>
             <Sidebar />

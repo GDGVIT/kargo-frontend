@@ -40,7 +40,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   useEffect(() => {
-    refreshUser();
+    if (typeof window !== "undefined") {
+      refreshUser();
+    }
   }, []);
 
   const login = async (email: string, password: string, username?: string) => {
@@ -89,7 +91,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       credentials: "include",
     });
     setUser(null);
-
     if (typeof window !== "undefined") {
       localStorage.clear();
       sessionStorage.clear();

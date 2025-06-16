@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
 import { useAuth } from "../../Auth/AuthProvider/AuthProvider";
+import { useIsClient } from "../../../utils/hooks/useIsClient";
 
 export default function LayoutWrapper({
   children,
@@ -13,20 +14,24 @@ export default function LayoutWrapper({
   const { user } = useAuth();
   const [isMobile, setIsMobile] = useState(false);
   const pathname = usePathname();
+  const isClient = useIsClient();
 
   useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, [pathname]);
+    if (!isClient) return;
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [pathname, isClient]);
+
+  if (!isClient) return null;
 
   return (
     <div
       className={clsx("transition-all", {
         "m-0": !isMobile && user,
         "mx-[var(--screen-horizontal-margin)]": isMobile || !user,
-        "md:ml-52": !isMobile && user, // Add left margin for desktop when sidebar is visible
+        "md:ml-52": !isMobile && user,
       })}
       style={{
         display: "flex",
