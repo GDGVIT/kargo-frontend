@@ -18,4 +18,11 @@ export default interface UserTableProps {
   onExtraResourcesCancel: (userId: string) => void;
   getRoleActions: (user: User) => React.ReactNode;
   currentUserId?: string | null;
+  allowedResources: Record<
+    string,
+    {
+      requests: { cpu: string; memory: string };
+      limits: { cpu: string; memory: string };
+    }
+  >;
 }

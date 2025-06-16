@@ -73,12 +73,6 @@ const PortsSection: React.FC<PortsSectionProps> = ({ ports, onChange }) => {
               className="flex flex-wrap gap-2 items-end mb-3 border-b border-gray-100 pb-3"
             >
               <div className="flex flex-col">
-                <label
-                  htmlFor={`containerPort-${id}`}
-                  className="text-xs text-gray-600 mb-1"
-                >
-                  Container Port:
-                </label>
                 <Input
                   id={`containerPort-${id}`}
                   type="number"
@@ -100,12 +94,6 @@ const PortsSection: React.FC<PortsSectionProps> = ({ ports, onChange }) => {
                 />
               </div>
               <div className="flex flex-col">
-                <label
-                  htmlFor={`hostPort-${id}`}
-                  className="text-xs text-gray-600 mb-1"
-                >
-                  Host Port:
-                </label>
                 <Input
                   id={`hostPort-${id}`}
                   type="number"
@@ -123,12 +111,6 @@ const PortsSection: React.FC<PortsSectionProps> = ({ ports, onChange }) => {
                 />
               </div>
               <div className="flex flex-col">
-                <label
-                  htmlFor={`protocol-${id}`}
-                  className="text-xs text-gray-600 mb-1"
-                >
-                  Protocol:
-                </label>
                 <Select
                   value={protocol}
                   onChange={(value) => updatePort(id, "protocol", value)}
@@ -141,12 +123,6 @@ const PortsSection: React.FC<PortsSectionProps> = ({ ports, onChange }) => {
                 />
               </div>
               <div className="flex flex-col">
-                <label
-                  htmlFor={`description-${id}`}
-                  className="text-xs text-gray-600 mb-1"
-                >
-                  Description:
-                </label>
                 <Input
                   value={description}
                   onChange={(e) =>
@@ -158,12 +134,6 @@ const PortsSection: React.FC<PortsSectionProps> = ({ ports, onChange }) => {
                 />
               </div>
               <div className="flex flex-col">
-                <label
-                  htmlFor={`subdomain-${id}`}
-                  className="text-xs text-gray-600 mb-1"
-                >
-                  Subdomain:
-                </label>
                 <span>
                   <a
                     href={`http://${fullDomain}`}

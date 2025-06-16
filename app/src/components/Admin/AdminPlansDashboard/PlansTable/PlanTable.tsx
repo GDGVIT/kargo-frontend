@@ -4,6 +4,7 @@ import AnimatedButton from "../../../ui/AnimatedButton/AnimatedButton";
 import Loader from "../../../ui/Loader/Loader";
 import type PlanTableProps from "../../../../types/Plan/PlanTableProps";
 import { FaEdit, FaTrash, FaCheckCircle, FaRegCircle } from "react-icons/fa";
+import { formatCpu, formatMemory } from "../../../../utils/resources";
 
 const PlanTable: React.FC<PlanTableProps> = ({
   plans,
@@ -46,15 +47,17 @@ const PlanTable: React.FC<PlanTableProps> = ({
                         <div>
                           <span className="font-semibold">Requests:</span>
                           <span className="ml-2">
-                            CPU: {plan.resources.requests?.cpu ?? "-"}m, Memory:{" "}
-                            {plan.resources.requests?.memory ?? "-"}Mi
+                            CPU: {formatCpu(plan.resources.requests?.cpu)},
+                            Memory:{" "}
+                            {formatMemory(plan.resources.requests?.memory)}
                           </span>
                         </div>
                         <div>
                           <span className="font-semibold">Limits:</span>
                           <span className="ml-2">
-                            CPU: {plan.resources.limits?.cpu ?? "-"}m, Memory:{" "}
-                            {plan.resources.limits?.memory ?? "-"}Mi
+                            CPU: {formatCpu(plan.resources.limits?.cpu)},
+                            Memory:{" "}
+                            {formatMemory(plan.resources.limits?.memory)}
                           </span>
                         </div>
                       </div>

@@ -14,6 +14,8 @@ const UserManagement: React.FC<UserManagementProps> = ({
   onExtraResourcesSave,
   onExtraResourcesCancel,
   getRoleActions,
+  currentUserId,
+  allowedResources,
 }) => {
   return (
     <UserTable
@@ -28,6 +30,8 @@ const UserManagement: React.FC<UserManagementProps> = ({
       onExtraResourcesSave={onExtraResourcesSave}
       onExtraResourcesCancel={onExtraResourcesCancel}
       getRoleActions={getRoleActions}
+      currentUserId={currentUserId}
+      allowedResources={allowedResources}
     />
   );
 };

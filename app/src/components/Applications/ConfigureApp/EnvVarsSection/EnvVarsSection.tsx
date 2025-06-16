@@ -107,6 +107,7 @@ const EnvVarsSection: React.FC<EnvVarsSectionProps> = ({
             <Input
               placeholder="KEY"
               value={key}
+              label="Name"
               onChange={(e) => handleKeyInput(idx, e.target.value, value)}
               onPaste={(e) =>
                 handlePaste(
@@ -123,6 +124,7 @@ const EnvVarsSection: React.FC<EnvVarsSectionProps> = ({
             <Input
               placeholder="VALUE"
               value={value}
+              label="Value"
               onChange={(e) => handleEnvChange(idx, key, e.target.value)}
               type={showValues ? "text" : "password"}
             />

@@ -195,6 +195,41 @@ export default function AdminUsersDashboard() {
     return null;
   }
 
+  // Helper to get only plan resources for a user
+  function getPlanResources(user: User, plans: Plan[]) {
+    let planObj = user.plan;
+    if (!planObj) {
+      return {
+        requests: { cpu: "-", memory: "-" },
+        limits: { cpu: "-", memory: "-" },
+      };
+    }
+    if (typeof planObj === "string") {
+      planObj = plans.find((p) => p._id === planObj);
+    }
+    if (!planObj || !planObj.resources) {
+      return {
+        requests: { cpu: "-", memory: "-" },
+        limits: { cpu: "-", memory: "-" },
+      };
+    }
+    const planResources = planObj.resources;
+    // Format as string for display (e.g., "500m", "1Gi")
+    function format(val?: string) {
+      return val || "-";
+    }
+    return {
+      requests: {
+        cpu: format(planResources.requests?.cpu),
+        memory: format(planResources.requests?.memory),
+      },
+      limits: {
+        cpu: format(planResources.limits?.cpu),
+        memory: format(planResources.limits?.memory),
+      },
+    };
+  }
+
   return (
     <div className="max-w-6xl mx-auto py-8">
       {loading ? (
@@ -228,6 +263,12 @@ export default function AdminUsersDashboard() {
             })
           }
           getRoleActions={getRoleActions}
+          // Pass allowedResources for each user
+          allowedResources={users.reduce((acc, user) => {
+            const planRes = getPlanResources(user, plans);
+            acc[user._id] = planRes;
+            return acc;
+          }, {} as Record<string, { requests: { cpu: string; memory: string }; limits: { cpu: string; memory: string } }>)}
         />
       )}
     </div>

@@ -64,7 +64,6 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
       )}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <div className="text-xs text-gray-400 mb-1">CPU Requests</div>
           <div className="flex items-center gap-1">
             <Input
               value={getNumeric(resources?.requests?.cpu, "m")}
@@ -86,7 +85,6 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
           </div>
         </div>
         <div>
-          <div className="text-xs text-gray-400 mb-1">Memory Requests</div>
           <div className="flex items-center gap-1">
             <Input
               value={getNumeric(resources?.requests?.memory, "Mi")}
@@ -108,7 +106,6 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
           </div>
         </div>
         <div>
-          <div className="text-xs text-gray-400 mb-1">CPU Limits</div>
           <div className="flex items-center gap-1">
             <Input
               value={getNumeric(resources?.limits?.cpu, "m")}
@@ -130,7 +127,6 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
           </div>
         </div>
         <div>
-          <div className="text-xs text-gray-400 mb-1">Memory Limits</div>
           <div className="flex items-center gap-1">
             <Input
               value={getNumeric(resources?.limits?.memory, "Mi")}

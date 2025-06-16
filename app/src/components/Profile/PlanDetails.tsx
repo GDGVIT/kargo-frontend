@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { FaCrown, FaMicrochip, FaMemory } from "react-icons/fa";
 import axios from "../../utils/api";
+import { formatCpu, formatMemory } from "../../utils/resources";
 import type Plan from "../../types/Plan/Plan";
 import type PlanDetailsProps from "../../types/Plan/PlanDetailsProps";
 import Card from "../ui/Card/Card";
@@ -72,14 +73,14 @@ const PlanDetails: React.FC<PlanDetailsProps> = ({ planId, planObj }) => {
                     <FaMicrochip className="w-4 h-4 text-sky-300" />
                     <span className="text-zinc-400">CPU:</span>
                     <span className="font-mono text-sky-200 ml-1">
-                      {plan.resources.requests.cpu || "-"}m
+                      {formatCpu(plan.resources.requests.cpu)}
                     </span>
                   </div>
                   <div className="flex items-center gap-1 min-w-[110px]">
                     <FaMemory className="w-4 h-4 text-emerald-300" />
                     <span className="text-zinc-400">Memory:</span>
                     <span className="font-mono text-emerald-200 ml-1">
-                      {plan.resources.requests.memory || "-"}Mi
+                      {formatMemory(plan.resources.requests.memory)}
                     </span>
                   </div>
                 </div>
@@ -95,14 +96,14 @@ const PlanDetails: React.FC<PlanDetailsProps> = ({ planId, planObj }) => {
                     <FaMicrochip className="w-4 h-4 text-sky-300" />
                     <span className="text-zinc-400">CPU:</span>
                     <span className="font-mono text-sky-200 ml-1">
-                      {plan.resources.limits.cpu || "-"}m
+                      {formatCpu(plan.resources.limits.cpu)}
                     </span>
                   </div>
                   <div className="flex items-center gap-1 min-w-[110px]">
                     <FaMemory className="w-4 h-4 text-emerald-300" />
                     <span className="text-zinc-400">Memory:</span>
                     <span className="font-mono text-emerald-200 ml-1">
-                      {plan.resources.limits.memory || "-"}Mi
+                      {formatMemory(plan.resources.limits.memory)}
                     </span>
                   </div>
                 </div>
