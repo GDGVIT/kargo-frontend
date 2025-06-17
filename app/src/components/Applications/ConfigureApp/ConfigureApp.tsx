@@ -16,9 +16,11 @@ import useNotification from "../../ui/Notification/Notification";
 import Modal from "../../ui/Modal/Modal";
 import AnimatedButton from "../../ui/AnimatedButton/AnimatedButton";
 import { FaDatabase, FaDocker, FaLeaf, FaNetworkWired } from "react-icons/fa";
+import { VscGraph } from "react-icons/vsc";
 import Loader from "../../ui/Loader/Loader";
 import { useAuth } from "../../Auth/AuthProvider/AuthProvider";
 import Tabs, { TabItem } from "../../ui/Tabs/Tabs";
+import MetricsSection from "./MetricsSection/MetricsSection";
 
 export default function ConfigureApp({ appId }: { appId: string }) {
   const { user } = useAuth();
@@ -354,6 +356,17 @@ export default function ConfigureApp({ appId }: { appId: string }) {
           }}
         />
       ),
+    },
+    {
+      key: "Metrics",
+      label: (
+        <span className="flex items-center gap-2">
+          <VscGraph className="text-blue-400" /> Metrics
+        </span>
+      ),
+      heading: "Application Metrics",
+      subheading: "View resource and network metrics for your application",
+      content: <MetricsSection appId={appId} />,
     },
   ];
 
