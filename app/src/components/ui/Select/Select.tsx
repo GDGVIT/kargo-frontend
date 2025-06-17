@@ -85,7 +85,13 @@ const Select: React.FC<SelectProps> = ({
                   className="absolute z-50 mt-1 w-full overflow-visible"
                   style={{ maxWidth: "100vw" }}
                 >
-                  <ListboxOptions className="bg-[#23283A] border border-[#7B8191] rounded-[4px] shadow-lg max-h-60 overflow-auto focus:outline-none text-[15px] sm:text-[16px]">
+                  <ListboxOptions
+                    className="bg-[#23283A] border border-[#7B8191] rounded-[4px] shadow-lg focus:outline-none text-[15px] sm:text-[16px]"
+                    style={{
+                      maxHeight: options.length > 2 ? 112 : undefined, // 2 * 44px (option height) + some padding
+                      overflowY: options.length > 2 ? "auto" : undefined,
+                    }}
+                  >
                     {options.map((opt) => (
                       <ListboxOption
                         key={opt.value}

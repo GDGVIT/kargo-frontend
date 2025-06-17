@@ -8,7 +8,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
   onSaveAndDeploy,
   onRequestDelete,
 }) => (
-  <div className="flex flex-wrap gap-3 mt-6">
+  <div className="flex flex-wrap gap-3">
     <AnimatedButton
       type="submit"
       disabled={saving}

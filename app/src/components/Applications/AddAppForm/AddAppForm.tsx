@@ -1,160 +1,130 @@
 "use client";
 
-import { useState } from "react";
-import axios from "../../../utils/api";
-import { useRouter } from "next/navigation";
-import useNotification from "../../ui/Notification/Notification";
-import type RegistryCredential from "../../../types/Registry/RegistryCredential/RegistryCredential";
-import { useEffect } from "react";
-import AnimatedButton from "../../ui/AnimatedButton/AnimatedButton";
-import { FaPlus } from "react-icons/fa";
-import Input from "../../ui/Input/Input";
-import Select from "../../ui/Select/Select";
+import { motion } from "framer-motion";
+import React, { ReactNode, MouseEventHandler } from "react";
 
-export default function AddAppForm() {
-  const [form, setForm] = useState({
-    name: "",
-    imageUrl: "",
-    imageTag: "",
-    credentials: [] as RegistryCredential[],
-  });
-  const [loading, setLoading] = useState(false);
-  const [credentials, setCredentials] = useState<RegistryCredential[]>([]);
-  const [selectedCredential, setSelectedCredential] =
-    useState<RegistryCredential | null>(null);
-  const router = useRouter();
-  const { notify } = useNotification();
+interface AnimatedButtonProps {
+  children?: React.ReactNode;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
+  icon?: ReactNode;
+  className?: string;
+  disabled?: boolean;
+  title?: string;
+  type?: "button" | "submit" | "reset";
+  variant?: "primary" | "danger" | "secondary" | "success" | "warning";
+}
 
-  useEffect(() => {
-    axios
-      .get("/api/users/me/credentials")
-      .then((res) => setCredentials(res.data.credentials));
-  }, []);
-
-  function isValidAppName(name: string) {
-    return /^[a-z0-9]([-a-z0-9]*[a-z0-9])?$/.test(name);
-  }
-
-  async function handleAdd(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    setLoading(true);
-    if (!isValidAppName(form.name)) {
-      notify(
-        "Application name must be lowercase, alphanumeric, and may contain hyphens. No underscores or uppercase letters allowed.",
-        "error"
-      );
-      setLoading(false);
-      return;
-    }
-    if (!form.imageUrl || form.imageUrl.trim() === "") {
-      notify("No image found. Please dockerize your app first.", "error");
-      router.push("/dockerize");
-      setLoading(false);
-      return;
-    }
-    try {
-      await axios.post("/api/applications", {
-        ...form,
-        credentials: selectedCredential ? [selectedCredential] : [],
-      });
-      setForm({ name: "", imageUrl: "", imageTag: "", credentials: [] });
-      notify("Application added successfully!", "success");
-      router.push("/applications");
-    } catch {
-      notify("Failed to add app", "error");
-    }
-    setLoading(false);
+const AnimatedButton = ({
+  children,
+  onClick,
+  icon = "",
+  className = "",
+  disabled = false,
+  title,
+  type = "button",
+  variant = "primary",
+}: AnimatedButtonProps) => {
+  let variantClass = "";
+  let initialBgColor = "";
+  switch (variant) {
+    case "danger":
+      variantClass = "bg-red-600 hover:bg-red-700 text-white";
+      initialBgColor = "#dc2626";
+      break;
+    case "secondary":
+      variantClass = "bg-gray-700 hover:bg-gray-800 text-white";
+      initialBgColor = "#374151";
+      break;
+    case "success":
+      variantClass = "bg-green-600 hover:bg-green-700 text-white";
+      initialBgColor = "#16a34a";
+      break;
+    case "warning":
+      variantClass = "bg-yellow-500 hover:bg-yellow-600 text-black";
+      initialBgColor = "#eab308";
+      break;
+    default:
+      variantClass = "bg-[#2FA2A0] hover:bg-[#27918F] text-white";
+      initialBgColor = "#2FA2A0";
   }
 
   return (
-    <form onSubmit={handleAdd} className="mb-8 space-y-4 min-h-[470px]">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <Input
-            required
-            label="Name"
-            value={form.name}
-            onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
-            placeholder="My App"
-          />
-        </div>
-        <div>
-          <Input
-            required
-            label="Image URL"
-            value={form.imageUrl}
-            onChange={(e) =>
-              setForm((f) => ({ ...f, imageUrl: e.target.value }))
+    <motion.button
+      style={{ backgroundColor: initialBgColor }}
+      whileHover={
+        disabled
+          ? {}
+          : {
+              scale: 1.02,
+              boxShadow: "0 4px 16px rgba(47,162,160,0.15)",
+              backgroundColor:
+                variant === "danger"
+                  ? "#dc2626"
+                  : variant === "success"
+                  ? "#16a34a"
+                  : variant === "warning"
+                  ? "#eab308"
+                  : variant === "secondary"
+                  ? "#374151"
+                  : "#27918F",
             }
-            placeholder="registry.io/my-app"
-            helperText={
-              <a
-                href="/dockerize"
-                className="underline text-yellow-300 hover:text-yellow-200 ml-1 text-xs"
-              >
-                Dockerize your app
-              </a>
+      }
+      whileTap={
+        disabled
+          ? {}
+          : {
+              scale: 0.97,
+              backgroundColor:
+                variant === "danger"
+                  ? "#b91c1c"
+                  : variant === "success"
+                  ? "#15803d"
+                  : variant === "warning"
+                  ? "#ca8a04"
+                  : variant === "secondary"
+                  ? "#1f2937"
+                  : "#258C8A",
             }
-          />
-        </div>
-        <div>
-          <Input
-            required
-            label="Image Tag"
-            value={form.imageTag}
-            onChange={(e) =>
-              setForm((f) => ({ ...f, imageTag: e.target.value }))
-            }
-            placeholder="latest"
-          />
-        </div>
-        <div>
-          <Select
-            label="Registry Credential"
-            value={
-              selectedCredential
-                ? selectedCredential.name +
-                  ":" +
-                  selectedCredential.registryType
-                : ""
-            }
-            onChange={(val) => {
-              const [name, registryType] = val.split(":");
-              const cred = credentials.find(
-                (c) => c.name === name && c.registryType === registryType
-              );
-              setSelectedCredential(cred || null);
-              setForm((f) => ({
-                ...f,
-                credentials: cred ? [cred] : [],
-              }));
-            }}
-            options={[
-              { value: "", label: "Select a credential" },
-              ...credentials.map((cred) => ({
-                value: cred.name + ":" + cred.registryType,
-                label: `${cred.name} [${cred.registryType}] (${cred.username})`,
-              })),
-            ]}
-            helperText={
-              <a
-                href="/credentials"
-                className="text-xs text-blue-400 hover:underline mt-1 inline-block"
-              >
-                Manage credentials
-              </a>
-            }
-          />
-        </div>
-      </div>
-      <AnimatedButton
-        type="submit"
-        disabled={loading}
-        className="mt-4 !px-6 !py-2"
-        icon={<FaPlus />}
-      >
-        {loading ? "Adding..." : "Add Application"}
-      </AnimatedButton>
-    </form>
+      }
+      transition={{ type: "spring", stiffness: 400, damping: 30 }}
+      className={`inline-flex items-center justify-center flex-nowrap whitespace-nowrap ${
+        children
+          ? "gap-2 sm:gap-[10px] px-4 sm:px-6"
+          : "p-0 px-0 w-[44px] h-[44px]"
+      } mx-2 my-3 py-2 sm:py-2 rounded-[8px] font-inter font-medium text-[15px] sm:text-[16px] leading-[19px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-2 transition-all duration-150 ${
+        disabled ? "opacity-60 cursor-not-allowed" : ""
+      } ${variantClass} ${className}`}
+      onClick={disabled ? undefined : onClick}
+      tabIndex={0}
+      disabled={disabled}
+      title={title}
+      type={type}
+    >
+      {icon && (
+        <span
+          className={`flex items-center justify-center ${
+            children ? "h-5 w-5" : "h-full w-full"
+          } text-center flex-shrink-0`}
+          style={{
+            order: children ? 0 : 1,
+          }}
+        >
+          {icon}
+        </span>
+      )}
+
+      {children && (
+        <span
+          className="flex-1 text-center truncate min-w-0"
+          style={{
+            order: icon ? 1 : 0,
+          }}
+        >
+          {children}
+        </span>
+      )}
+    </motion.button>
   );
-}
+};
+
+export default AnimatedButton;

@@ -6,6 +6,7 @@ import axios from "../../../utils/api";
 import type Application from "../../../types/Application/Application";
 import type Port from "../../../types/Application/Port/Port";
 import type AppPort from "../../../types/Application/AppPort/AppPort";
+import type RegistryCredential from "../../../types/Registry/RegistryCredential/RegistryCredential";
 import ImageFields from "./ImageFields/ImageFields";
 import EnvVarsSection from "./EnvVarsSection/EnvVarsSection";
 import ResourcesSection from "./ResourcesSection/ResourcesSection";
@@ -35,11 +36,15 @@ export default function ConfigureApp({ appId }: { appId: string }) {
   } | null>(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [activeTab, setActiveTab] = useState("Image");
+  const [credentials, setCredentials] = useState<RegistryCredential[]>([]);
+  const [selectedCredential, setSelectedCredential] =
+    useState<RegistryCredential | null>(null);
   const router = useRouter();
   const { notify } = useNotification();
 
   useEffect(() => {
     fetchApp();
+    fetchCredentials();
     // eslint-disable-next-line
   }, [appId]);
 
@@ -67,6 +72,15 @@ export default function ConfigureApp({ appId }: { appId: string }) {
       setEnvList(app.env ? Object.entries(app.env) : []);
     } catch {
       notify("Failed to load app", "error");
+    }
+  }
+
+  async function fetchCredentials() {
+    try {
+      const res = await axios.get("/api/users/me/credentials");
+      setCredentials(res.data.credentials || []);
+    } catch {
+      setCredentials([]);
     }
   }
 
@@ -122,6 +136,7 @@ export default function ConfigureApp({ appId }: { appId: string }) {
         ...form,
         env: envObj,
         ports: updatedPorts,
+        credentials: selectedCredential ? [selectedCredential] : [],
       });
       // Deploy
       await axios.post(`/api/applications/${appId}/apply`);
@@ -198,6 +213,13 @@ export default function ConfigureApp({ appId }: { appId: string }) {
         {user && user.username ? <span>{user.username} / </span> : null}
         {form?.name}
       </h2>
+      <div className="flex flex-col gap-4 mb-4 justify-end items-end">
+        <ActionButtons
+          saving={saving}
+          onSaveAndDeploy={handleSaveAndDeploy}
+          onRequestDelete={() => setShowDeleteModal(true)}
+        />
+      </div>
       {/* Tabs Navigation */}
       <div className="flex gap-3">
         {Object.entries({
@@ -259,6 +281,12 @@ export default function ConfigureApp({ appId }: { appId: string }) {
               setImageTag={(tag) =>
                 setForm((f) => (f ? { ...f, imageTag: tag } : f))
               }
+              credentials={credentials}
+              selectedCredential={selectedCredential?.name || ""}
+              setSelectedCredential={(name) => {
+                const cred = credentials.find((c) => c.name === name) || null;
+                setSelectedCredential(cred);
+              }}
             />
           )}
           {activeTab === "Env" && (
@@ -345,13 +373,7 @@ export default function ConfigureApp({ appId }: { appId: string }) {
             />
           )}
         </div>
-        <div className="flex flex-col gap-4 mt-8">
-          <ActionButtons
-            saving={saving}
-            onSaveAndDeploy={handleSaveAndDeploy}
-            onRequestDelete={() => setShowDeleteModal(true)}
-          />
-        </div>
+
         <Modal
           open={showDeleteModal}
           onClose={() => setShowDeleteModal(false)}
