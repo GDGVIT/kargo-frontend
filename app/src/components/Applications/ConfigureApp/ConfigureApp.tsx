@@ -25,6 +25,7 @@ export default function ConfigureApp({ appId }: { appId: string }) {
   const [form, setForm] = useState<Application | null>(null);
   const [envList, setEnvList] = useState<[string, string][]>([]);
   const [saving, setSaving] = useState(false);
+  const [loading, setLoading] = useState(true); // <-- add loading state
   const [resourceLimits, setResourceLimits] = useState<{
     allowed: {
       requests: { cpu: number; memory: number };
@@ -44,6 +45,7 @@ export default function ConfigureApp({ appId }: { appId: string }) {
   const { notify } = useNotification();
 
   useEffect(() => {
+    setLoading(true); // set loading true before fetch
     fetchApp();
     fetchCredentials();
     // eslint-disable-next-line
@@ -72,7 +74,10 @@ export default function ConfigureApp({ appId }: { appId: string }) {
       });
       setEnvList(app.env ? Object.entries(app.env) : []);
     } catch {
+      setForm(null); // explicit
       notify("Failed to load app", "error");
+    } finally {
+      setLoading(false); // set loading false after fetch
     }
   }
 
@@ -201,11 +206,12 @@ export default function ConfigureApp({ appId }: { appId: string }) {
     );
   }
 
-  if (!form && !saving)
-    return <div className="text-center text-gray-400 ">App not found</div>;
-
-  if (saving || (!form && !saving)) {
+  if (loading || saving) {
     return <Loader />;
+  }
+
+  if (!form && !loading) {
+    return <div className="text-center text-gray-400 ">App not found</div>;
   }
 
   // Tab definitions for reuse
