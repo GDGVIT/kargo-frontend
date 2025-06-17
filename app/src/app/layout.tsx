@@ -14,6 +14,7 @@ export const metadata: Metadata = {
   title: "Kargo",
   description:
     "Kargo lets you deploy containerized applications with full flexibility — AI-powered setup, secure infrastructure, and Kubernetes-native scaling, all from a powerful web interface.",
+  metadataBase: new URL("https://kargo.upayan.dev/"),
   openGraph: {
     title: "Kargo",
     description:

@@ -8,11 +8,6 @@ import { MdSettings } from "react-icons/md";
 const title = "Application Logs";
 const description = "View the logs for your application.";
 
-export const metadata = {
-  title,
-  description,
-};
-
 export default function LogsPage() {
   const { id } = useParams() as { id: string };
   return (
