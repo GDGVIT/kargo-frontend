@@ -2,12 +2,20 @@ import { GiCheckMark } from "react-icons/gi";
 import VerifyEmail from "../../../components/Auth/VerifyEmail/VerifyEmail";
 import PageHeading from "../../../components/ui/PageHeading/PageHeading";
 
+const title = "Verify Your Email";
+const description = "Please verify your email address to continue.";
+
+export const metadata = {
+  title,
+  description,
+};
+
 export default function VerifyEmailPage() {
   return (
     <main>
       <PageHeading
-        title="Verify Your Email"
-        subtitle="Please verify your email address to continue."
+        title={title}
+        subtitle={description}
         icon={<GiCheckMark />}
       />
       <VerifyEmail />

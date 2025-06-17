@@ -2,6 +2,14 @@ import ConfigureApp from "../../../components/Applications/ConfigureApp/Configur
 import PageHeading from "../../../components/ui/PageHeading/PageHeading";
 import { GrConfigure } from "react-icons/gr";
 
+const title = "Application Configuration";
+const description = "Configure your application configuration.";
+
+export const metadata = {
+  title,
+  description,
+};
+
 export default async function ApplicationConfigPage({
   params,
 }: {
@@ -12,8 +20,8 @@ export default async function ApplicationConfigPage({
   return (
     <main>
       <PageHeading
-        title="Application Configuration"
-        subtitle="Configure your application configuration."
+        title={title}
+        subtitle={description}
         icon={<GrConfigure />}
       />
       <ConfigureApp appId={id} />

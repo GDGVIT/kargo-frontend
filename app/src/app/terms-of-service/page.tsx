@@ -1,9 +1,16 @@
+const title = "Terms of Service";
+
+export const metadata = {
+  title,
+  description: title,
+};
+
 import PageHeading from "../../components/ui/PageHeading/PageHeading";
 
 export default function TermsOfServicePage() {
   return (
     <main>
-      <PageHeading title="Terms of Service" />
+      <PageHeading title={title} />
       <section>
         <h2>1. Acceptance of Terms</h2>
         <p>

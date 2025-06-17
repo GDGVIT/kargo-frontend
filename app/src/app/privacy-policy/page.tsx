@@ -1,9 +1,16 @@
+const title = "Privacy Policy";
+
+export const metadata = {
+  title,
+  description: title,
+};
+
 import PageHeading from "../../components/ui/PageHeading/PageHeading";
 
 export default function PrivacyPolicyPage() {
   return (
     <main>
-      <PageHeading title="Privacy Policy" />
+      <PageHeading title={title} />
       <section>
         <h2>1. Introduction</h2>
         <p>

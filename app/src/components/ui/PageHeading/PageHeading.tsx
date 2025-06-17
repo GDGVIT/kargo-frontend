@@ -1,6 +1,6 @@
 "use client";
 
-import React, { ElementType } from "react";
+import React, { ElementType, useEffect } from "react";
 import { motion } from "framer-motion";
 
 interface PageHeadingProps {
@@ -10,6 +10,7 @@ interface PageHeadingProps {
   as?: ElementType;
   children?: React.ReactNode;
   icon?: React.ReactElement<{ style?: React.CSSProperties }> | React.ReactNode;
+  metaDescription?: string; // New prop for meta description
 }
 
 const PageHeading: React.FC<PageHeadingProps> = ({
@@ -19,8 +20,25 @@ const PageHeading: React.FC<PageHeadingProps> = ({
   as: Heading = "h1",
   children,
   icon,
+  metaDescription,
 }) => {
   const HeadingTag = Heading as ElementType;
+
+  // Dynamically update document title and meta description
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      document.title = title;
+      if (metaDescription) {
+        let meta = document.querySelector('meta[name="description"]');
+        if (!meta) {
+          meta = document.createElement("meta");
+          meta.setAttribute("name", "description");
+          document.head.appendChild(meta);
+        }
+        meta.setAttribute("content", metaDescription);
+      }
+    }
+  }, [title, metaDescription]);
 
   return (
     <motion.div
