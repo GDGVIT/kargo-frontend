@@ -18,9 +18,6 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
 
   return (
     <div className="mb-6">
-      <h3 className="text-gray-400 mb-2" style={{ margin: 0 }}>
-        Resources
-      </h3>
       {resourceLimits && (
         <div className="text-xs text-gray-400 mb-3 space-y-1">
           <div>

@@ -1,5 +1,4 @@
 import React from "react";
-import { FiTrash2 } from "react-icons/fi";
 import { FaPlus, FaEye, FaEyeSlash } from "react-icons/fa";
 import type EnvVarsSectionProps from "../../../../types/Application/EnvVarsSectionProps/EnvVarsSectionProps";
 import AnimatedButton from "../../../ui/AnimatedButton/AnimatedButton";
@@ -75,9 +74,6 @@ const EnvVarsSection: React.FC<EnvVarsSectionProps> = ({
 
   return (
     <div className="mb-6">
-      <h3 className="text-gray-400 mb-2" style={{ margin: 0 }}>
-        Environment Variables
-      </h3>
       <div className="flex gap-2">
         <AnimatedButton type="button" onClick={addEnvVar} icon={<FaPlus />}>
           Add
@@ -97,10 +93,7 @@ const EnvVarsSection: React.FC<EnvVarsSectionProps> = ({
           <div className="text-gray-400">No environment variables</div>
         )}
         {envList.map(([key, value], idx) => (
-          <div
-            key={idx}
-            className="flex items-center gap-3 w-full min-h-8 py-1"
-          >
+          <div key={idx} className="flex items-baseline gap-3 w-full">
             <Input
               placeholder="KEY"
               value={key}
@@ -124,17 +117,20 @@ const EnvVarsSection: React.FC<EnvVarsSectionProps> = ({
               label="Value"
               onChange={(e) => handleEnvChange(idx, key, e.target.value)}
               type={showValues ? "text" : "password"}
+              helperText={
+                <span
+                  style={{
+                    color: "#dc2626",
+                    cursor: "pointer",
+                    fontWeight: 500,
+                  }}
+                  onClick={() => removeEnvVar(idx)}
+                  title="Remove"
+                >
+                  Remove
+                </span>
+              }
             />
-
-            <AnimatedButton
-              type="button"
-              onClick={() => removeEnvVar(idx)}
-              icon={<FiTrash2 />}
-              title="Remove"
-              variant="danger"
-            >
-              Remove
-            </AnimatedButton>
           </div>
         ))}
       </div>

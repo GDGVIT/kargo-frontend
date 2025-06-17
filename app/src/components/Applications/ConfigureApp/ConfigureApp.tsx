@@ -18,6 +18,7 @@ import AnimatedButton from "../../ui/AnimatedButton/AnimatedButton";
 import { FaDatabase, FaDocker, FaLeaf, FaNetworkWired } from "react-icons/fa";
 import Loader from "../../ui/Loader/Loader";
 import { useAuth } from "../../Auth/AuthProvider/AuthProvider";
+import Tabs, { TabItem } from "../../ui/Tabs/Tabs";
 
 export default function ConfigureApp({ appId }: { appId: string }) {
   const { user } = useAuth();
@@ -207,6 +208,149 @@ export default function ConfigureApp({ appId }: { appId: string }) {
     return <Loader />;
   }
 
+  // Tab definitions for reuse
+  const tabItems: TabItem[] = [
+    {
+      key: "Image",
+      label: (
+        <span className="flex items-center gap-2">
+          <FaDocker className="text-blue-300" /> Image
+        </span>
+      ),
+      heading: "Image Configuration",
+      subheading: "Configure the Docker image for your application",
+      content: (
+        <ImageFields
+          imageUrl={form?.imageUrl || ""}
+          imageTag={form?.imageTag || ""}
+          setImageUrl={(url) =>
+            setForm((f) => (f ? { ...f, imageUrl: url } : f))
+          }
+          setImageTag={(tag) =>
+            setForm((f) => (f ? { ...f, imageTag: tag } : f))
+          }
+          credentials={credentials}
+          selectedCredential={selectedCredential?.name || ""}
+          setSelectedCredential={(name) => {
+            const cred = credentials.find((c) => c.name === name) || null;
+            setSelectedCredential(cred);
+          }}
+        />
+      ),
+    },
+    {
+      key: "Env",
+      label: (
+        <span className="flex items-center gap-2">
+          <FaLeaf className="text-green-400" /> Environment
+        </span>
+      ),
+      heading: "Environment Variables",
+      subheading: "Set environment variables for your application",
+      content: (
+        <EnvVarsSection
+          envList={envList}
+          handleEnvChange={handleEnvChange}
+          addEnvVar={addEnvVar}
+          removeEnvVar={removeEnvVar}
+        />
+      ),
+    },
+    {
+      key: "Resources",
+      label: (
+        <span className="flex items-center gap-2">
+          <FaDatabase className="text-blue-300" /> Resources
+        </span>
+      ),
+      heading: "Resources",
+      subheading: "Configure resource limits for your application",
+      content: (
+        <ResourcesSection
+          resourceLimits={
+            resourceLimits
+              ? {
+                  allowed: {
+                    requests: {
+                      cpu: String(resourceLimits.allowed.requests.cpu),
+                      memory: String(resourceLimits.allowed.requests.memory),
+                    },
+                    limits: {
+                      cpu: String(resourceLimits.allowed.limits.cpu),
+                      memory: String(resourceLimits.allowed.limits.memory),
+                    },
+                  },
+                  usage: {
+                    requests: {
+                      cpu: String(resourceLimits.usage.requests.cpu),
+                      memory: String(resourceLimits.usage.requests.memory),
+                    },
+                    limits: {
+                      cpu: String(resourceLimits.usage.limits.cpu),
+                      memory: String(resourceLimits.usage.limits.memory),
+                    },
+                  },
+                }
+              : {
+                  allowed: {
+                    requests: { cpu: "0", memory: "0" },
+                    limits: { cpu: "0", memory: "0" },
+                  },
+                  usage: {
+                    requests: { cpu: "0", memory: "0" },
+                    limits: { cpu: "0", memory: "0" },
+                  },
+                }
+          }
+          resources={form?.resources || { requests: {}, limits: {} }}
+          handleResourceChange={handleResourceChange}
+        />
+      ),
+    },
+    {
+      key: "Ports",
+      label: (
+        <span className="flex items-center gap-2">
+          <FaNetworkWired className="text-yellow-300" /> Ports
+        </span>
+      ),
+      heading: "Ports Configuration",
+      subheading: "Configure ports for your application",
+      content: (
+        <PortsSection
+          ports={(form?.ports ?? []).map((port, idx) => {
+            const p = port as AppPort;
+            return {
+              id: `${idx}-${p.containerPort}`,
+              containerPort: p.containerPort,
+              hostPort:
+                typeof p.hostPort === "number"
+                  ? p.hostPort
+                  : p.containerPort ?? 80,
+              protocol: p.protocol === "UDP" ? "UDP" : "TCP",
+              description:
+                typeof p.description === "string" ? p.description : "",
+              subdomain: p.subdomain || "",
+            } as Port;
+          })}
+          onChange={(updatedPorts) => {
+            setForm((f) =>
+              f
+                ? {
+                    ...f,
+                    ports: updatedPorts.map((port) => {
+                      const { ...rest } = port;
+                      return { ...rest };
+                    }),
+                  }
+                : f
+            );
+          }}
+        />
+      ),
+    },
+  ];
+
   return (
     <div>
       <h2 className="text-gray-100" style={{ marginTop: "0" }}>
@@ -220,192 +364,39 @@ export default function ConfigureApp({ appId }: { appId: string }) {
           onRequestDelete={() => setShowDeleteModal(true)}
         />
       </div>
-      {/* Tabs Navigation */}
-      <div className="flex gap-3">
-        {Object.entries({
-          Image: (
-            <span className="flex items-center gap-2">
-              <FaDocker className="text-blue-300" /> Image
-            </span>
-          ),
-          Env: (
-            <span className="flex items-center gap-2">
-              <FaLeaf className="text-green-400" /> Environment
-            </span>
-          ),
-          Resources: (
-            <span className="flex items-center gap-2">
-              <FaDatabase className="text-blue-300" /> Resources
-            </span>
-          ),
-          Ports: (
-            <span className="flex items-center gap-2">
-              <FaNetworkWired className="text-yellow-300" /> Ports
-            </span>
-          ),
-        }).map(([key, label]) => (
-          <button
-            key={key}
-            className={`px-6 py-1 font-semibold rounded-t-lg transition-all duration-200 focus:outline-none text-base shadow-sm
-              ${
-                activeTab === key
-                  ? "bg-gradient-to-r from-blue-700 via-blue-500 to-blue-400 text-white border-b-2 border-blue-400 shadow-lg z-10"
-                  : "bg-gray-900 text-gray-400 hover:text-blue-300 hover:bg-gray-800 border-b-2 border-transparent"
-              }
-            `}
-            onClick={() => setActiveTab(key)}
-            type="button"
-            style={{
-              boxShadow:
-                activeTab === key ? "0 2px 16px 0 #2563eb55" : undefined,
-              marginBottom: 0,
-            }}
-          >
-            {label}
-          </button>
-        ))}
-      </div>
-      <form
-        onSubmit={handleSaveAndDeploy}
-        className="space-y-8 px-4 py-3 bg-[var(--card-background)] rounded-tr-lg rounded-bl-lg rounded-br-lg"
+      <Tabs tabs={tabItems} activeTab={activeTab} setActiveTab={setActiveTab} />
+      <form onSubmit={handleSaveAndDeploy} className="hidden" />
+      <Modal
+        open={showDeleteModal}
+        onClose={() => setShowDeleteModal(false)}
+        title="Delete Application"
       >
-        {/* Tab Content */}
-        <div>
-          {activeTab === "Image" && (
-            <ImageFields
-              imageUrl={form?.imageUrl || ""}
-              imageTag={form?.imageTag || ""}
-              setImageUrl={(url) =>
-                setForm((f) => (f ? { ...f, imageUrl: url } : f))
-              }
-              setImageTag={(tag) =>
-                setForm((f) => (f ? { ...f, imageTag: tag } : f))
-              }
-              credentials={credentials}
-              selectedCredential={selectedCredential?.name || ""}
-              setSelectedCredential={(name) => {
-                const cred = credentials.find((c) => c.name === name) || null;
-                setSelectedCredential(cred);
-              }}
-            />
-          )}
-          {activeTab === "Env" && (
-            <EnvVarsSection
-              envList={envList}
-              handleEnvChange={handleEnvChange}
-              addEnvVar={addEnvVar}
-              removeEnvVar={removeEnvVar}
-            />
-          )}
-          {activeTab === "Resources" && (
-            <ResourcesSection
-              resourceLimits={
-                resourceLimits
-                  ? {
-                      allowed: {
-                        requests: {
-                          cpu: String(resourceLimits.allowed.requests.cpu),
-                          memory: String(
-                            resourceLimits.allowed.requests.memory
-                          ),
-                        },
-                        limits: {
-                          cpu: String(resourceLimits.allowed.limits.cpu),
-                          memory: String(resourceLimits.allowed.limits.memory),
-                        },
-                      },
-                      usage: {
-                        requests: {
-                          cpu: String(resourceLimits.usage.requests.cpu),
-                          memory: String(resourceLimits.usage.requests.memory),
-                        },
-                        limits: {
-                          cpu: String(resourceLimits.usage.limits.cpu),
-                          memory: String(resourceLimits.usage.limits.memory),
-                        },
-                      },
-                    }
-                  : {
-                      allowed: {
-                        requests: { cpu: "0", memory: "0" },
-                        limits: { cpu: "0", memory: "0" },
-                      },
-                      usage: {
-                        requests: { cpu: "0", memory: "0" },
-                        limits: { cpu: "0", memory: "0" },
-                      },
-                    }
-              }
-              resources={form?.resources || { requests: {}, limits: {} }}
-              handleResourceChange={handleResourceChange}
-            />
-          )}
-          {activeTab === "Ports" && (
-            <PortsSection
-              ports={(form?.ports ?? []).map((port, idx) => {
-                const p = port as AppPort;
-                return {
-                  id: `${idx}-${p.containerPort}`,
-                  containerPort: p.containerPort,
-                  hostPort:
-                    typeof p.hostPort === "number"
-                      ? p.hostPort
-                      : p.containerPort ?? 80,
-                  protocol: p.protocol === "UDP" ? "UDP" : "TCP",
-                  description:
-                    typeof p.description === "string" ? p.description : "",
-                  subdomain: p.subdomain || "",
-                } as Port;
-              })}
-              onChange={(updatedPorts) => {
-                setForm((f) =>
-                  f
-                    ? {
-                        ...f,
-                        ports: updatedPorts.map((port) => {
-                          const { ...rest } = port;
-                          return { ...rest };
-                        }),
-                      }
-                    : f
-                );
-              }}
-            />
-          )}
+        <div className="text-red-200 mb-4 text-base font-medium">
+          Are you sure you want to delete this application and all its
+          resources? This cannot be undone.
         </div>
-
-        <Modal
-          open={showDeleteModal}
-          onClose={() => setShowDeleteModal(false)}
-          title="Delete Application"
-        >
-          <div className="text-red-200 mb-4 text-base font-medium">
-            Are you sure you want to delete this application and all its
-            resources? This cannot be undone.
-          </div>
-          <div className="flex gap-3 justify-end">
-            <AnimatedButton
-              onClick={() => setShowDeleteModal(false)}
-              className="!bg-gray-800 hover:!bg-gray-700 !text-gray-200 !border !border-gray-700"
-              icon={null}
-              title="Cancel"
-              variant="secondary"
-            >
-              Cancel
-            </AnimatedButton>
-            <AnimatedButton
-              onClick={handleDelete}
-              className="font-semibold !border !border-red-700 !shadow-md"
-              disabled={saving}
-              icon={null}
-              title="Delete"
-              variant="danger"
-            >
-              {saving ? "Deleting..." : "Delete"}
-            </AnimatedButton>
-          </div>
-        </Modal>
-      </form>
+        <div className="flex gap-3 justify-end">
+          <AnimatedButton
+            onClick={() => setShowDeleteModal(false)}
+            className="!bg-gray-800 hover:!bg-gray-700 !text-gray-200 !border !border-gray-700"
+            icon={null}
+            title="Cancel"
+            variant="secondary"
+          >
+            Cancel
+          </AnimatedButton>
+          <AnimatedButton
+            onClick={handleDelete}
+            className="font-semibold !border !border-red-700 !shadow-md"
+            disabled={saving}
+            icon={null}
+            title="Delete"
+            variant="danger"
+          >
+            {saving ? "Deleting..." : "Delete"}
+          </AnimatedButton>
+        </div>
+      </Modal>
     </div>
   );
 }

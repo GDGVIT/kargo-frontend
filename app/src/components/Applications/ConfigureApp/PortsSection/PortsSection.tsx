@@ -49,9 +49,6 @@ const PortsSection: React.FC<PortsSectionProps> = ({ ports, onChange }) => {
 
   return (
     <div className="mb-6">
-      <h3 className="text-gray-400 mb-2" style={{ margin: 0 }}>
-        Ports Configuration
-      </h3>
       {localPorts.map(
         ({ id, containerPort, hostPort, protocol, description, subdomain }) => {
           let subdomainSegment = "";
@@ -139,7 +136,8 @@ const PortsSection: React.FC<PortsSectionProps> = ({ ports, onChange }) => {
                         : "";
                       updatePort(id, "subdomain", newSub);
                     }}
-                    placeholder="Subdomain (optional)"
+                    required
+                    placeholder="Subdomain "
                     label="Subdomain"
                     helperText={
                       subdomainSegment ? (

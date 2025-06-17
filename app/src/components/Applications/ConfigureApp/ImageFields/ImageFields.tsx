@@ -13,9 +13,6 @@ const ImageFields: React.FC<ImageFieldsProps> = ({
   setSelectedCredential,
 }) => (
   <div className="grid grid-cols-1 gap-4 mb-6">
-    <h3 className="text-gray-400 mb-2" style={{ margin: 0 }}>
-      Image Configuration
-    </h3>
     <div>
       <Input
         required
