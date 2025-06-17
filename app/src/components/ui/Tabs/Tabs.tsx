@@ -1,4 +1,7 @@
+"use client";
+
 import React from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 export interface TabItem {
   key: string;
@@ -19,44 +22,56 @@ const Tabs: React.FC<TabsProps> = ({
   tabs,
   activeTab,
   setActiveTab,
-  className,
+  className = "",
 }) => {
   const active = tabs.find((tab) => tab.key === activeTab);
+
   return (
-    <div className={className}>
-      <div className="flex gap-3">
-        {tabs.map((tab) => (
-          <button
-            key={tab.key}
-            className={`px-6 py-1 font-semibold rounded-t-lg transition-all duration-200 focus:outline-none text-base shadow-sm
-              ${
-                activeTab === tab.key
-                  ? "bg-[var(--card-background)] text-white shadow-lg z-10"
-                  : "bg-gray-900 text-gray-400 hover:text-blue-300 hover:bg-gray-800 border-b-2 border-transparent"
-              }
-            `}
-            onClick={() => setActiveTab(tab.key)}
-            type="button"
-            style={{
-              boxShadow:
-                activeTab === tab.key ? "0 2px 16px 0 #2563eb55" : undefined,
-              marginBottom: 0,
-            }}
-          >
-            {tab.label}
-          </button>
-        ))}
+    <div
+      className={`flex flex-col md:flex-row w-full h-full rounded-xl overflow-hidden bg-gray-900 text-white min-h-[50vh] ${className}`}
+    >
+      <div className="flex md:flex-col bg-gray-800 md:min-w-[200px] w-full md:w-auto">
+        {tabs.map((tab) => {
+          const isActive = tab.key === activeTab;
+          return (
+            <button
+              key={tab.key}
+              onClick={() => setActiveTab(tab.key)}
+              className={`w-full px-4 py-3 text-left text-sm font-medium border-l-4 md:border-l-0 md:border-l-transparent transition-all
+                ${
+                  isActive
+                    ? "bg-gray-700 text-blue-400 md:border-l-4 md:border-blue-500"
+                    : "hover:bg-gray-700 text-gray-300"
+                }`}
+            >
+              {tab.label}
+            </button>
+          );
+        })}
       </div>
-      <div className="space-y-2 px-4 py-3 bg-[var(--card-background)] rounded-tr-lg rounded-bl-lg rounded-br-lg">
-        {active?.heading && (
-          <h3 className="text-gray-400 mb-2" style={{ margin: 0 }}>
-            {active.heading}
-          </h3>
-        )}
-        {active?.subheading && (
-          <div className="text-sm text-gray-400 mb-3">{active.subheading}</div>
-        )}
-        {active?.content}
+
+      {/* Content Area */}
+      <div className="flex-1 p-6 overflow-y-auto bg-[var(--card-background)] min-h-[300px]">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeTab}
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ duration: 0.3 }}
+            className="space-y-3"
+          >
+            {active?.heading && (
+              <h3 className="text-xl font-semibold" style={{ margin: 0 }}>
+                {active.heading}
+              </h3>
+            )}
+            {active?.subheading && (
+              <p className="text-sm text-gray-400">{active.subheading}</p>
+            )}
+            <div>{active?.content}</div>
+          </motion.div>
+        </AnimatePresence>
       </div>
     </div>
   );
