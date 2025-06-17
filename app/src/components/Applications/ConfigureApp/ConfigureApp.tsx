@@ -15,8 +15,13 @@ import ActionButtons from "./ActionButtons/ActionButtons";
 import useNotification from "../../ui/Notification/Notification";
 import Modal from "../../ui/Modal/Modal";
 import AnimatedButton from "../../ui/AnimatedButton/AnimatedButton";
-import { FaDatabase, FaDocker, FaLeaf, FaNetworkWired } from "react-icons/fa";
-import { PiChartBarDuotone } from "react-icons/pi";
+import {
+  FaDatabase,
+  FaDocker,
+  FaLeaf,
+  FaNetworkWired,
+  FaChartArea,
+} from "react-icons/fa";
 import Loader from "../../ui/Loader/Loader";
 import { useAuth } from "../../Auth/AuthProvider/AuthProvider";
 import Tabs, { TabItem } from "../../ui/Tabs/Tabs";
@@ -361,7 +366,7 @@ export default function ConfigureApp({ appId }: { appId: string }) {
       key: "Metrics",
       label: (
         <span className="flex items-center gap-2">
-          <PiChartBarDuotone className="text-blue-400" /> Metrics
+          <FaChartArea className="text-blue-400" /> Metrics
         </span>
       ),
       heading: "Application Metrics",

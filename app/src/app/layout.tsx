@@ -58,7 +58,7 @@ export default function RootLayout({
           href="/apple-touch-icon.webp"
         />
       </head>
-      <body className="antialiased">
+      <body>
         <NotificationProvider>
           <AuthProvider>
             <Sidebar />
