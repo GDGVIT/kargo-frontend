@@ -98,6 +98,18 @@ const PlanFormModal: React.FC<PlanFormModalProps> = ({
             helperText={formatMemory(planForm.limitsMemory)}
           />
         </div>
+        <Input
+          label="Price (in paise)"
+          value={planForm.price}
+          onChange={(e) => {
+            const val = e.target.value.replace(/[^\d]/g, "");
+            setPlanForm((f) => ({ ...f, price: val }));
+          }}
+          placeholder="e.g. 49900 for ₹499.00"
+          title="Price in paise"
+          type="number"
+          required
+        />
         <div className="flex gap-4 items-center">
           <label className="flex items-center gap-2">
             <input

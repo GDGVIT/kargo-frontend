@@ -27,6 +27,7 @@ export default function Sidebar() {
     { href: "/applications", label: "Applications", icon: <FiBarChart2 /> },
     { href: "/dockerize", label: "Dockerize", icon: <FaDocker /> },
     { href: "/credentials", label: "Credentials", icon: <FiKey /> },
+    { href: "/plans", label: "Plans", icon: <FiBarChart2 /> },
     ...(isAdmin
       ? [{ href: "/admin", label: "Admin", icon: <FiShield />, admin: true }]
       : []),

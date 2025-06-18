@@ -7,6 +7,7 @@ export default interface Plan {
     limits?: { cpu?: string; memory?: string };
   };
   isDefault?: boolean;
+  /** Price in paise (integer) */
   price?: number;
   isActive?: boolean;
 }

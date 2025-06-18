@@ -50,7 +50,7 @@ const PlanDetails: React.FC<PlanDetailsProps> = ({ planId, planObj }) => {
         </span>
         {plan.price !== undefined && (
           <span className="ml-3 text-base font-semibold text-sky-200 bg-sky-900 px-3 py-1 rounded-xl border border-sky-700">
-            ${plan.price}/mo
+            ₹{(plan.price / 100).toLocaleString("en-IN")}/mo
           </span>
         )}
       </div>

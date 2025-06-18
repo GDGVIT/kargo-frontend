@@ -7,4 +7,6 @@ export default interface PlanForm {
   limitsMemory: string;
   isDefault: boolean;
   isActive: boolean;
+  /** Price in paise (integer) */
+  price: string;
 }

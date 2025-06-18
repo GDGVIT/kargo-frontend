@@ -23,6 +23,7 @@ export default function AdminPlansDashboard() {
     limitsMemory: "",
     isDefault: false,
     isActive: true,
+    price: "",
   });
   const [planFormLoading, setPlanFormLoading] = useState(false);
   const [planFormError, setPlanFormError] = useState("");
@@ -55,6 +56,7 @@ export default function AdminPlansDashboard() {
         limitsMemory: plan.resources?.limits?.memory || "",
         isDefault: !!plan.isDefault,
         isActive: plan.isActive !== false,
+        price: plan.price ? String(plan.price) : "",
       });
     } else {
       setEditingPlan(null);
@@ -67,6 +69,7 @@ export default function AdminPlansDashboard() {
         limitsMemory: "",
         isDefault: false,
         isActive: true,
+        price: "",
       });
     }
     setShowPlanForm(true);
@@ -91,6 +94,7 @@ export default function AdminPlansDashboard() {
       },
       isDefault: planForm.isDefault,
       isActive: planForm.isActive,
+      price: planForm.price ? parseInt(planForm.price, 10) : undefined,
     };
     try {
       if (editingPlan) {
