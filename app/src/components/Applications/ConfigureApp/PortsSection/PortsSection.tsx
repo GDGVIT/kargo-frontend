@@ -5,14 +5,12 @@ import type PortsSectionProps from "../../../../types/Application/Port/PortSecti
 import Input from "../../../ui/Input/Input";
 import Select from "../../../ui/Select/Select";
 import AnimatedButton from "../../../ui/AnimatedButton/AnimatedButton";
-import { FaTrash, FaPlus } from "react-icons/fa";
+import { FaPlus } from "react-icons/fa";
 
 const defaultPort: Port = {
   id: "",
   containerPort: 80,
-  hostPort: 80,
   protocol: "TCP",
-  description: "",
   subdomain: "",
 };
 
@@ -49,124 +47,95 @@ const PortsSection: React.FC<PortsSectionProps> = ({ ports, onChange }) => {
 
   return (
     <div className="mb-6">
-      {localPorts.map(
-        ({ id, containerPort, hostPort, protocol, description, subdomain }) => {
-          let subdomainSegment = "";
-          if (subdomain) {
-            const regex = new RegExp(
-              `^([^.]+)\\.${username}\\.${ingressBaseUrl.replace(".", "\\.")}$`
-            );
-            const match = subdomain.match(regex);
-            if (match) {
-              subdomainSegment = match[1];
-            } else if (!subdomain.includes(`.${username}.${ingressBaseUrl}`)) {
-              subdomainSegment = subdomain;
-            }
-          }
-
-          return (
-            <div
-              key={id}
-              className="flex flex-wrap gap-2 items-baseline mb-3 pb-3"
-            >
-              <div className="flex flex-col">
-                <Input
-                  id={`containerPort-${id}`}
-                  type="number"
-                  min={1}
-                  max={65535}
-                  value={containerPort}
-                  placeholder="Container Port"
-                  onChange={(e) =>
-                    updatePort(
-                      id,
-                      "containerPort",
-                      parseInt(e.target.value, 10)
-                    )
-                  }
-                  required
-                  title="Container port number (1-65535)"
-                  label="Container Port"
-                />
-              </div>
-              <div className="flex flex-col">
-                <Input
-                  id={`hostPort-${id}`}
-                  type="number"
-                  min={1}
-                  max={65535}
-                  value={hostPort}
-                  placeholder="Host Port"
-                  onChange={(e) =>
-                    updatePort(id, "hostPort", parseInt(e.target.value, 10))
-                  }
-                  required
-                  title="Host port number (1-65535)"
-                  label="Host Port"
-                />
-              </div>
-              <div className="flex flex-col">
-                <Select
-                  value={protocol}
-                  onChange={(value) => updatePort(id, "protocol", value)}
-                  label="Protocol"
-                  options={[
-                    { value: "TCP", label: "TCP" },
-                    { value: "UDP", label: "UDP" },
-                  ]}
-                />
-              </div>
-              <div className="flex flex-col">
-                <Input
-                  value={description}
-                  onChange={(e) =>
-                    updatePort(id, "description", e.target.value)
-                  }
-                  placeholder="Description (optional)"
-                  label="Description"
-                />
-              </div>
-              <div className="flex flex-col">
-                <div className="flex items-center">
-                  <Input
-                    value={subdomainSegment}
-                    onChange={(e) => {
-                      const newSub = e.target.value
-                        ? `${e.target.value}.${username}.${ingressBaseUrl}`
-                        : "";
-                      updatePort(id, "subdomain", newSub);
-                    }}
-                    required
-                    placeholder="Subdomain "
-                    label="Subdomain"
-                    helperText={
-                      subdomainSegment ? (
-                        <>
-                          Visit{" "}
-                          <a
-                            href={`https://${subdomainSegment}.${username}.${ingressBaseUrl}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >{`${subdomainSegment}.${username}.${ingressBaseUrl}`}</a>
-                        </>
-                      ) : undefined
-                    }
-                  />
-                </div>
-              </div>
-              <AnimatedButton
-                type="button"
-                onClick={() => removePort(id)}
-                icon={<FaTrash />}
-                title="Remove port"
-                variant="danger"
-              >
-                Remove
-              </AnimatedButton>
-            </div>
+      {localPorts.map(({ id, containerPort, protocol, subdomain }) => {
+        let subdomainSegment = "";
+        if (subdomain) {
+          const regex = new RegExp(
+            `^([^.]+)\\.${username}\\.${ingressBaseUrl.replace(".", "\\.")}$`
           );
+          const match = subdomain.match(regex);
+          if (match) {
+            subdomainSegment = match[1];
+          } else if (!subdomain.includes(`.${username}.${ingressBaseUrl}`)) {
+            subdomainSegment = subdomain;
+          }
         }
-      )}
+
+        return (
+          <div key={id} className="flex flex-wrap gap-2 items-baseline">
+            <div className="flex flex-col">
+              <Input
+                id={`containerPort-${id}`}
+                type="number"
+                min={1}
+                max={65535}
+                value={containerPort}
+                placeholder="Container Port"
+                onChange={(e) =>
+                  updatePort(id, "containerPort", parseInt(e.target.value, 10))
+                }
+                required
+                title="Container port number (1-65535)"
+                label="Container Port"
+                helperText={
+                  <button
+                    type="button"
+                    onClick={() => removePort(id)}
+                    className="text-xs text-red-500 hover:underline focus:outline-none bg-transparent border-none p-0 m-0 cursor-pointer"
+                    style={{
+                      fontSize: "0.75rem",
+                      background: "none",
+                      border: "none",
+                    }}
+                  >
+                    Remove
+                  </button>
+                }
+              />
+            </div>
+
+            <div className="flex flex-col">
+              <Select
+                value={protocol}
+                onChange={(value) => updatePort(id, "protocol", value)}
+                label="Protocol"
+                options={[
+                  { value: "TCP", label: "TCP" },
+                  { value: "UDP", label: "UDP" },
+                ]}
+              />
+            </div>
+            <div className="flex flex-col">
+              <div className="flex items-center">
+                <Input
+                  value={subdomainSegment}
+                  onChange={(e) => {
+                    const newSub = e.target.value
+                      ? `${e.target.value}.${username}.${ingressBaseUrl}`
+                      : "";
+                    updatePort(id, "subdomain", newSub);
+                  }}
+                  required
+                  placeholder="Subdomain "
+                  label="Subdomain"
+                  helperText={
+                    subdomainSegment ? (
+                      <>
+                        Visit{" "}
+                        <a
+                          href={`https://${subdomainSegment}.${username}.${ingressBaseUrl}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >{`${subdomainSegment}.${username}.${ingressBaseUrl}`}</a>
+                      </>
+                    ) : undefined
+                  }
+                />
+              </div>
+            </div>
+          </div>
+        );
+      })}
       <AnimatedButton
         type="button"
         onClick={addPort}

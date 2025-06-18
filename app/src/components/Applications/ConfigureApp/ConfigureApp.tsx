@@ -58,6 +58,20 @@ export default function ConfigureApp({ appId }: { appId: string }) {
     // eslint-disable-next-line
   }, [appId]);
 
+  // Sync selectedCredential with loaded app
+  useEffect(() => {
+    const credName =
+      Array.isArray(form?.credentials) && form.credentials.length > 0
+        ? form.credentials[0].name
+        : null;
+    if (credName) {
+      const cred = credentials.find((c) => c.name === credName);
+      setSelectedCredential(cred || null);
+    } else {
+      setSelectedCredential(null);
+    }
+  }, [form, credentials]);
+
   useEffect(() => {
     async function fetchLimits() {
       try {
@@ -336,13 +350,7 @@ export default function ConfigureApp({ appId }: { appId: string }) {
             return {
               id: `${idx}-${p.containerPort}`,
               containerPort: p.containerPort,
-              hostPort:
-                typeof p.hostPort === "number"
-                  ? p.hostPort
-                  : p.containerPort ?? 80,
               protocol: p.protocol === "UDP" ? "UDP" : "TCP",
-              description:
-                typeof p.description === "string" ? p.description : "",
               subdomain: p.subdomain || "",
             } as Port;
           })}

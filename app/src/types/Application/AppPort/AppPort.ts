@@ -5,6 +5,5 @@ export default interface AppPort {
   ingressEnabled?: boolean;
   subdomain?: string;
   ingressHost?: string;
-  hostPort?: number;
   description?: string;
 }
