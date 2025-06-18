@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import Script from "next/script";
 
 import { AuthProvider } from "../components/Auth/AuthProvider/AuthProvider";
 import { NotificationProvider } from "../components/ui/Notification/Notification";
@@ -59,6 +60,7 @@ export default function RootLayout({
         />
       </head>
       <body>
+        <Script src="/env.js" strategy="beforeInteractive" />
         <NotificationProvider>
           <AuthProvider>
             <Sidebar />
