@@ -26,6 +26,7 @@ import Loader from "../../ui/Loader/Loader";
 import { useAuth } from "../../Auth/AuthProvider/AuthProvider";
 import Tabs, { TabItem } from "../../ui/Tabs/Tabs";
 import MetricsSection from "./MetricsSection/MetricsSection";
+import { GrCloudSoftware } from "react-icons/gr";
 
 export default function ConfigureApp({ appId }: { appId: string }) {
   const { user } = useAuth();
@@ -235,7 +236,42 @@ export default function ConfigureApp({ appId }: { appId: string }) {
     return <div className="text-center text-gray-400 ">App not found</div>;
   }
 
-  // Tab definitions for reuse
+  const metricTabs: TabItem[] = [
+    {
+      key: "CPUMetrics",
+      label: (
+        <span className="flex items-center gap-2">
+          <FaChartArea className="text-blue-400" /> CPU
+        </span>
+      ),
+      heading: "CPU Metrics",
+      subheading: "View CPU usage metrics for your application",
+      content: <MetricsSection appId={appId} metricType="cpu" />,
+    },
+    {
+      key: "MemoryMetrics",
+      label: (
+        <span className="flex items-center gap-2">
+          <FaChartArea className="text-green-400" /> Memory
+        </span>
+      ),
+      heading: "Memory Metrics",
+      subheading: "View memory usage metrics for your application",
+      content: <MetricsSection appId={appId} metricType="memory" />,
+    },
+    {
+      key: "StorageMetrics",
+      label: (
+        <span className="flex items-center gap-2">
+          <FaChartArea className="text-orange-400" /> Storage
+        </span>
+      ),
+      heading: "Storage Metrics",
+      subheading: "View storage usage metrics for your application",
+      content: <MetricsSection appId={appId} metricType="storage" />,
+    },
+  ];
+
   const tabItems: TabItem[] = [
     {
       key: "Image",
@@ -370,22 +406,13 @@ export default function ConfigureApp({ appId }: { appId: string }) {
         />
       ),
     },
-    {
-      key: "Metrics",
-      label: (
-        <span className="flex items-center gap-2">
-          <FaChartArea className="text-blue-400" /> Metrics
-        </span>
-      ),
-      heading: "Application Metrics",
-      subheading: "View resource and network metrics for your application",
-      content: <MetricsSection appId={appId} />,
-    },
+    ...metricTabs,
   ];
 
   return (
     <div>
       <h2 className="text-gray-100" style={{ marginTop: "0" }}>
+        <GrCloudSoftware className="inline-block mr-2 text-2xl" />
         {user && user.username ? <span>{user.username} / </span> : null}
         {form?.name}
       </h2>

@@ -1,11 +1,24 @@
-"use client";
-
+import PageHeading from "../../components/ui/PageHeading/PageHeading";
 import Card from "../../components/ui/Card/Card";
-import AnimatedButton from "../../components/ui/AnimatedButton/AnimatedButton";
+import { RiWifiOffLine } from "react-icons/ri";
+
+const title = "Offline Mode";
+const description =
+  "You are currently offline. Please check your network connection.";
+
+export const metadata = {
+  title,
+  description,
+};
 
 export default function OfflinePage() {
   return (
-    <main className="flex flex-col items-center justify-center min-h-screen text-center p-4">
+    <main>
+      <PageHeading
+        title={title}
+        subtitle={description}
+        icon={<RiWifiOffLine />}
+      />
       <section>
         <Card className=" p-8 rounded shadow-md">
           <h1 className="text-3xl font-bold mb-4 text-gray-100">
@@ -13,18 +26,7 @@ export default function OfflinePage() {
           </h1>
           <p className="text-gray-300 mb-6">
             It looks like you have lost your internet connection.
-            <br />
-            Please check your network and try again.
           </p>
-          <div className="flex justify-center">
-            <AnimatedButton
-              onClick={() => window.location.reload()}
-              variant="primary"
-              className="mt-2"
-            >
-              Retry
-            </AnimatedButton>
-          </div>
         </Card>
       </section>
     </main>

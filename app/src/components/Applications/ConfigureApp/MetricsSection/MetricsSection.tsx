@@ -30,7 +30,15 @@ const WINDOW_OPTIONS = [
   { label: "All", value: "-1" },
 ];
 
-const MetricsSection: React.FC<{ appId: string }> = ({ appId }) => {
+interface MetricsSectionProps {
+  appId: string;
+  metricType?: "cpu" | "memory" | "storage";
+}
+
+const MetricsSection: React.FC<MetricsSectionProps> = ({
+  appId,
+  metricType = "cpu",
+}) => {
   const [metrics, setMetrics] = useState<PodMetric[]>([]);
   const [loading, setLoading] = useState(true);
   const [windowSize, setWindowSize] = useState<string>("15");
@@ -86,6 +94,12 @@ const MetricsSection: React.FC<{ appId: string }> = ({ appId }) => {
   const latestMetrics = metrics.length > 0 ? metrics.slice(-pods.length) : [];
   const runningPodsCount = new Set(latestMetrics.map((m) => m.pod)).size;
 
+  const metricConfig = {
+    cpu: { label: "CPU Usage (mCPU)", key: "cpu", color: "#4f8cff" },
+    memory: { label: "Memory Usage (MiB)", key: "memory", color: "#82e299" },
+    storage: { label: "Storage Usage (MiB)", key: "storage", color: "#ff7f50" },
+  }[metricType];
+
   return (
     <div className="mb-8 px-6 md:px-12 py-10 rounded-2xl w-full min-h-[80vh] flex flex-col items-center animate-fade-in">
       <div className="flex flex-col md:flex-row items-center justify-between mb-8 w-full max-w-7xl">
@@ -135,67 +149,57 @@ const MetricsSection: React.FC<{ appId: string }> = ({ appId }) => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
           >
-            {[
-              { label: "CPU Usage (mCPU)", key: "cpu", color: "#4f8cff" },
-              { label: "Memory Usage (MiB)", key: "memory", color: "#82e299" },
-              {
-                label: "Storage Usage (MiB)",
-                key: "storage",
-                color: "#ff7f50",
-              },
-            ].map(({ label, key, color }) => (
-              <div key={key} className="h-[400px] w-full">
-                <h3 className="font-semibold mb-4 text-2xl text-gray-900 dark:text-gray-200">
-                  {label}
-                </h3>
-                <ResponsiveContainer width="100%" height="90%">
-                  <LineChart
-                    data={metrics}
-                    margin={{ top: 20, right: 40, left: 0, bottom: 0 }}
-                  >
-                    <CartesianGrid
-                      strokeDasharray="3 3"
-                      stroke={chartTheme.grid.stroke}
+            <div className="h-[400px] w-full">
+              <h3 className="font-semibold mb-4 text-2xl text-gray-900 dark:text-gray-200">
+                {metricConfig.label}
+              </h3>
+              <ResponsiveContainer width="100%" height="90%">
+                <LineChart
+                  data={metrics}
+                  margin={{ top: 20, right: 40, left: 0, bottom: 0 }}
+                >
+                  <CartesianGrid
+                    strokeDasharray="3 3"
+                    stroke={chartTheme.grid.stroke}
+                  />
+                  <XAxis
+                    dataKey="time"
+                    stroke={chartTheme.axis.stroke}
+                    tick={{ fill: chartTheme.axis.tick.fill, fontSize: 14 }}
+                  />
+                  <YAxis
+                    stroke={chartTheme.axis.stroke}
+                    tick={{ fill: chartTheme.axis.tick.fill, fontSize: 14 }}
+                  />
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: chartTheme.tooltip.backgroundColor,
+                      color: chartTheme.tooltip.color,
+                      border: chartTheme.tooltip.border,
+                      fontSize: 14,
+                    }}
+                  />
+                  <Legend
+                    wrapperStyle={{
+                      color: chartTheme.legend.color,
+                      fontSize: 16,
+                    }}
+                  />
+                  {pods.map((pod) => (
+                    <Line
+                      key={pod}
+                      type="monotone"
+                      dataKey={metricConfig.key}
+                      data={metrics.filter((m) => m.pod === pod)}
+                      name={pod}
+                      stroke={metricConfig.color}
+                      strokeWidth={3}
+                      dot={false}
                     />
-                    <XAxis
-                      dataKey="time"
-                      stroke={chartTheme.axis.stroke}
-                      tick={{ fill: chartTheme.axis.tick.fill, fontSize: 14 }}
-                    />
-                    <YAxis
-                      stroke={chartTheme.axis.stroke}
-                      tick={{ fill: chartTheme.axis.tick.fill, fontSize: 14 }}
-                    />
-                    <Tooltip
-                      contentStyle={{
-                        backgroundColor: chartTheme.tooltip.backgroundColor,
-                        color: chartTheme.tooltip.color,
-                        border: chartTheme.tooltip.border,
-                        fontSize: 14,
-                      }}
-                    />
-                    <Legend
-                      wrapperStyle={{
-                        color: chartTheme.legend.color,
-                        fontSize: 16,
-                      }}
-                    />
-                    {pods.map((pod) => (
-                      <Line
-                        key={pod}
-                        type="monotone"
-                        dataKey={key}
-                        data={metrics.filter((m) => m.pod === pod)}
-                        name={pod}
-                        stroke={color}
-                        strokeWidth={3}
-                        dot={false}
-                      />
-                    ))}
-                  </LineChart>
-                </ResponsiveContainer>
-              </div>
-            ))}
+                  ))}
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

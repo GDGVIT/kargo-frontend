@@ -1,6 +1,6 @@
 import Profile from "../../components/Profile/Profile";
 import PageHeading from "../../components/ui/PageHeading/PageHeading";
-import { PersonStanding } from "lucide-react";
+import { FiUser } from "react-icons/fi";
 
 const title = "Profile";
 const description = "Manage your profile settings and preferences.";
@@ -13,11 +13,7 @@ export const metadata = {
 export default function ProfilePage() {
   return (
     <main>
-      <PageHeading
-        title={title}
-        subtitle={description}
-        icon={<PersonStanding />}
-      />
+      <PageHeading title={title} subtitle={description} icon={<FiUser />} />
       <Profile />
     </main>
   );

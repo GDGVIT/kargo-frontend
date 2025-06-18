@@ -3,8 +3,10 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Branding from "./Branding/Branding";
-import { FiBarChart2, FiKey, FiShield, FiUser } from "react-icons/fi";
+import { FiBarChart2, FiShield, FiUser } from "react-icons/fi";
+import { GrCatalog } from "react-icons/gr";
 import { FaDocker } from "react-icons/fa";
+import { MdOutlineVpnKey } from "react-icons/md";
 import { useAuth } from "../../Auth/AuthProvider/AuthProvider";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
@@ -26,8 +28,8 @@ export default function Sidebar() {
   const navItems = [
     { href: "/applications", label: "Applications", icon: <FiBarChart2 /> },
     { href: "/dockerize", label: "Dockerize", icon: <FaDocker /> },
-    { href: "/credentials", label: "Credentials", icon: <FiKey /> },
-    { href: "/plans", label: "Plans", icon: <FiBarChart2 /> },
+    { href: "/credentials", label: "Credentials", icon: <MdOutlineVpnKey /> },
+    { href: "/plans", label: "Plans", icon: <GrCatalog /> },
     ...(isAdmin
       ? [{ href: "/admin", label: "Admin", icon: <FiShield />, admin: true }]
       : []),
