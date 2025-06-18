@@ -50,5 +50,9 @@ COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/package.json ./package.json
 
+# Generate runtime env file at container start
+COPY app/scripts/generate-runtime-env.js ./scripts/generate-runtime-env.js
+
 EXPOSE 3000
-CMD ["npx", "next", "start"]
+
+ENTRYPOINT ["sh", "-c", "node ./scripts/generate-runtime-env.js && npx next start"]

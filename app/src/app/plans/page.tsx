@@ -9,6 +9,7 @@ import Loader from "../../components/ui/Loader/Loader";
 import { formatCpu, formatMemory } from "../../utils/resources";
 import loadRazorpayScript from "../../utils/loadRazorpayScript";
 import useNotification from "../../components/ui/Notification/Notification";
+import { getRuntimeEnv } from "@/utils/getRuntimeEnv";
 
 const PlansPage = () => {
   const [plans, setPlans] = useState<Plan[]>([]);
@@ -43,7 +44,7 @@ const PlansPage = () => {
       const order = data.order;
       // 2. Open Razorpay Checkout
       const options = {
-        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID, // Expose this in your frontend env
+        key: getRuntimeEnv("NEXT_PUBLIC_RAZORPAY_KEY_ID"), // Use runtime env for Razorpay key
         amount: order.amount,
         currency: order.currency,
         name: plan.name,
