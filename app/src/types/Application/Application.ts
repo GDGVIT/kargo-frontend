@@ -1,6 +1,7 @@
 import Probe from "./Probe/Probe";
 import Toleration from "./Toleration/Toleration";
 import Affinity from "./Affinity/Affinity";
+import Resource from "./Resource/Resource";
 
 export default interface Application {
   _id: string;
@@ -13,8 +14,8 @@ export default interface Application {
   env?: Record<string, string>;
   owner?: string;
   resources?: {
-    requests?: { cpu?: string; memory?: string };
-    limits?: { cpu?: string; memory?: string };
+    requests?: Resource;
+    limits?: Resource;
   };
   ports?: Array<{
     name?: string;

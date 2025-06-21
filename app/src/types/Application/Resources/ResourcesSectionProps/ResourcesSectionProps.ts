@@ -6,7 +6,7 @@ export default interface ResourcesSectionProps {
   resources: Resources;
   handleResourceChange: (
     section: "requests" | "limits",
-    field: "cpu" | "memory",
+    field: "cpu" | "memory" | "storage",
     value: string
   ) => void;
 }

@@ -1,5 +1,6 @@
 import User from "./User";
 import ExtraResourcesEditState from "../ExtraResources/ExtraResourcesEditState";
+import Resource from "../Application/Resource/Resource";
 
 export default interface UserManagementProps {
   users: User[];
@@ -21,8 +22,8 @@ export default interface UserManagementProps {
   allowedResources: Record<
     string,
     {
-      requests: { cpu: string; memory: string };
-      limits: { cpu: string; memory: string };
+      requests: Resource;
+      limits: Resource;
     }
   >;
 }

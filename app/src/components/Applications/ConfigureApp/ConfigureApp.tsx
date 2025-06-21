@@ -209,7 +209,7 @@ export default function ConfigureApp({ appId }: { appId: string }) {
 
   function handleResourceChange(
     section: "requests" | "limits",
-    field: "cpu" | "memory",
+    field: "cpu" | "memory" | "storage",
     value: string
   ) {
     setForm((f) =>

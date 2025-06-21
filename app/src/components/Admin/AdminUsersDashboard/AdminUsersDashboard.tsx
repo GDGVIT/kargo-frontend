@@ -21,8 +21,10 @@ export default function AdminUsersDashboard() {
     [userId: string]: {
       requestsCpu: string;
       requestsMemory: string;
+      requestsStorage: string;
       limitsCpu: string;
       limitsMemory: string;
+      limitsStorage: string;
     };
   }>({});
   const [extraResourcesSaving, setExtraResourcesSaving] = useState<
@@ -100,8 +102,10 @@ export default function AdminUsersDashboard() {
       [user._id]: {
         requestsCpu: user.extraResources?.requests?.cpu || "",
         requestsMemory: user.extraResources?.requests?.memory || "",
+        requestsStorage: user.extraResources?.requests?.storage || "",
         limitsCpu: user.extraResources?.limits?.cpu || "",
         limitsMemory: user.extraResources?.limits?.memory || "",
+        limitsStorage: user.extraResources?.limits?.storage || "",
       },
     }));
   }
@@ -112,8 +116,16 @@ export default function AdminUsersDashboard() {
     try {
       await axios.put(`/api/users/${userId}/extra-resources`, {
         extraResources: {
-          requests: { cpu: data.requestsCpu, memory: data.requestsMemory },
-          limits: { cpu: data.limitsCpu, memory: data.limitsMemory },
+          requests: {
+            cpu: data.requestsCpu,
+            memory: data.requestsMemory,
+            storage: data.requestsStorage,
+          },
+          limits: {
+            cpu: data.limitsCpu,
+            memory: data.limitsMemory,
+            storage: data.limitsStorage,
+          },
         },
       });
       setUsers((prev) =>
@@ -125,8 +137,13 @@ export default function AdminUsersDashboard() {
                   requests: {
                     cpu: data.requestsCpu,
                     memory: data.requestsMemory,
+                    storage: data.requestsStorage,
                   },
-                  limits: { cpu: data.limitsCpu, memory: data.limitsMemory },
+                  limits: {
+                    cpu: data.limitsCpu,
+                    memory: data.limitsMemory,
+                    storage: data.limitsStorage,
+                  },
                 },
               }
             : u

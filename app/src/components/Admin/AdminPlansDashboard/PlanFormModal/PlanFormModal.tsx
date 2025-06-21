@@ -4,7 +4,11 @@ import Input from "../../../ui/Input/Input";
 import Textarea from "../../../ui/Textarea/Textarea";
 import AnimatedButton from "../../../ui/AnimatedButton/AnimatedButton";
 import { FaMicrochip, FaMemory } from "react-icons/fa6";
-import { formatCpu, formatMemory } from "../../../../utils/resources";
+import {
+  formatCpu,
+  formatMemory,
+  formatStorage,
+} from "../../../../utils/resources";
 import type PlanFormModalProps from "../../../../types/Plan/PlanFormModalProps";
 
 const PlanFormModal: React.FC<PlanFormModalProps> = ({
@@ -69,6 +73,18 @@ const PlanFormModal: React.FC<PlanFormModalProps> = ({
             icon={<FaMemory />}
             helperText={formatMemory(planForm.requestsMemory)}
           />
+          <Input
+            label="Requests Storage"
+            value={planForm.requestsStorage}
+            onChange={(e) => {
+              const val = e.target.value.replace(/[^\d.]/g, "");
+              setPlanForm((f) => ({ ...f, requestsStorage: val }));
+            }}
+            placeholder="Storage"
+            title="Requests Storage"
+            type="number"
+            helperText={formatStorage(planForm.requestsStorage)}
+          />
         </div>
         <div className="flex gap-4">
           <Input
@@ -96,6 +112,18 @@ const PlanFormModal: React.FC<PlanFormModalProps> = ({
             type="number"
             icon={<FaMemory />}
             helperText={formatMemory(planForm.limitsMemory)}
+          />
+          <Input
+            label="Limits Storage"
+            value={planForm.limitsStorage}
+            onChange={(e) => {
+              const val = e.target.value.replace(/[^\d.]/g, "");
+              setPlanForm((f) => ({ ...f, limitsStorage: val }));
+            }}
+            placeholder="Storage"
+            title="Limits Storage"
+            type="number"
+            helperText={formatStorage(planForm.limitsStorage)}
           />
         </div>
         <Input

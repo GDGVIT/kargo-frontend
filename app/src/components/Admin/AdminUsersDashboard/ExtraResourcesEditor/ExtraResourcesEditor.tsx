@@ -3,7 +3,11 @@ import Input from "../../../ui/Input/Input";
 import { HiCheck, HiX } from "react-icons/hi";
 import AnimatedButton from "../../../ui/AnimatedButton/AnimatedButton";
 import type ExtraResourcesEditorProps from "../../../../types/ExtraResources/ExtraResourcesEditorProps";
-import { formatMemory, formatCpu } from "../../../../utils/resources";
+import {
+  formatMemory,
+  formatCpu,
+  formatStorage,
+} from "../../../../utils/resources";
 
 const ExtraResourcesEditor: React.FC<ExtraResourcesEditorProps> = ({
   data,
@@ -30,6 +34,14 @@ const ExtraResourcesEditor: React.FC<ExtraResourcesEditorProps> = ({
         helperText={formatMemory(data.requestsMemory)}
         type="number"
       />
+      <Input
+        className="w-24 text-xs"
+        placeholder="Req Storage"
+        value={data.requestsStorage}
+        onChange={(e) => onChange("requestsStorage", e.target.value)}
+        helperText={formatStorage(data.requestsStorage)}
+        type="number"
+      />
     </div>
     <div className="flex gap-2 mb-1">
       <Input
@@ -46,6 +58,14 @@ const ExtraResourcesEditor: React.FC<ExtraResourcesEditorProps> = ({
         value={data.limitsMemory}
         onChange={(e) => onChange("limitsMemory", e.target.value)}
         helperText={formatMemory(data.limitsMemory)}
+        type="number"
+      />
+      <Input
+        className="w-24 text-xs"
+        placeholder="Lim Storage"
+        value={data.limitsStorage}
+        onChange={(e) => onChange("limitsStorage", e.target.value)}
+        helperText={formatStorage(data.limitsStorage)}
         type="number"
       />
     </div>
