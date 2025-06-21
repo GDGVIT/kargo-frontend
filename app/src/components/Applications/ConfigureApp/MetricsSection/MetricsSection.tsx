@@ -2,18 +2,20 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import {
-  LineChart,
-  Line,
+  AreaChart,
+  Area,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
   Legend,
   ResponsiveContainer,
+  ReferenceLine,
 } from "recharts";
 import { motion, AnimatePresence } from "framer-motion";
 import axios from "../../../../utils/api";
 import Select from "../../../ui/Select/Select";
+import Resources from "../../../../types/Application/Resources/Resources";
 
 interface PodMetric {
   pod: string;
@@ -33,11 +35,13 @@ const WINDOW_OPTIONS = [
 interface MetricsSectionProps {
   appId: string;
   metricType?: "cpu" | "memory" | "storage";
+  resources?: Resources; // <-- add resources prop
 }
 
 const MetricsSection: React.FC<MetricsSectionProps> = ({
   appId,
   metricType = "cpu",
+  resources,
 }) => {
   const [metrics, setMetrics] = useState<PodMetric[]>([]);
   const [loading, setLoading] = useState(true);
@@ -52,7 +56,13 @@ const MetricsSection: React.FC<MetricsSectionProps> = ({
       try {
         const { data } = await axios.get(`/api/applications/${appId}/metrics`);
         const now = Date.now();
-        const timeStr = new Date(now).toLocaleTimeString();
+        // Format time in 12-hour format with AM/PM based on user locale
+        const timeStr = new Date(now).toLocaleTimeString(undefined, {
+          hour: "numeric",
+          minute: "2-digit",
+          second: "2-digit",
+          hour12: true,
+        });
         const newMetrics: PodMetric[] = (data.metrics || []).map(
           (m: PodMetric) => ({
             ...m,
@@ -99,6 +109,34 @@ const MetricsSection: React.FC<MetricsSectionProps> = ({
     memory: { label: "Memory Usage (MiB)", key: "memory", color: "#82e299" },
     storage: { label: "Storage Usage (MiB)", key: "storage", color: "#ff7f50" },
   }[metricType];
+
+  // Extract requests and limits for the selected metric
+  let requestValue: number | undefined = undefined;
+  let limitValue: number | undefined = undefined;
+  let requestLabel = "";
+  let limitLabel = "";
+  if (resources) {
+    if (metricType === "cpu") {
+      if (resources.requests?.cpu) {
+        requestValue = Number(resources.requests.cpu);
+        requestLabel = `CPU Request (${resources.requests.cpu})`;
+      }
+      if (resources.limits?.cpu) {
+        limitValue = Number(resources.limits.cpu);
+        limitLabel = `CPU Limit (${resources.limits.cpu})`;
+      }
+    } else if (metricType === "memory") {
+      if (resources.requests?.memory) {
+        requestValue = Number(resources.requests.memory);
+        requestLabel = `Memory Request (${resources.requests.memory}Mi)`;
+      }
+      if (resources.limits?.memory) {
+        limitValue = Number(resources.limits.memory);
+        limitLabel = `Memory Limit (${resources.limits.memory}Mi)`;
+      }
+    }
+    // storage can be added similarly if present
+  }
 
   return (
     <div className="mb-8 px-6 md:px-12 py-10 rounded-2xl w-full min-h-[80vh] flex flex-col items-center animate-fade-in">
@@ -154,7 +192,7 @@ const MetricsSection: React.FC<MetricsSectionProps> = ({
                 {metricConfig.label}
               </h3>
               <ResponsiveContainer width="100%" height="90%">
-                <LineChart
+                <AreaChart
                   data={metrics}
                   margin={{ top: 20, right: 40, left: 0, bottom: 0 }}
                 >
@@ -185,19 +223,50 @@ const MetricsSection: React.FC<MetricsSectionProps> = ({
                       fontSize: 16,
                     }}
                   />
+                  {/* Reference lines for requests and limits */}
+                  {typeof requestValue === "number" && (
+                    <ReferenceLine
+                      y={requestValue}
+                      stroke="#fbbf24"
+                      strokeDasharray="3 3"
+                      label={{
+                        value: requestLabel,
+                        position: "right",
+                        fill: "#fbbf24",
+                        fontSize: 12,
+                        fontWeight: "bold",
+                      }}
+                    />
+                  )}
+                  {typeof limitValue === "number" && (
+                    <ReferenceLine
+                      y={limitValue}
+                      stroke="#ef4444"
+                      strokeDasharray="3 3"
+                      label={{
+                        value: limitLabel,
+                        position: "right",
+                        fill: "#ef4444",
+                        fontSize: 12,
+                        fontWeight: "bold",
+                      }}
+                    />
+                  )}
                   {pods.map((pod) => (
-                    <Line
+                    <Area
                       key={pod}
                       type="monotone"
                       dataKey={metricConfig.key}
                       data={metrics.filter((m) => m.pod === pod)}
                       name={pod}
                       stroke={metricConfig.color}
+                      fill={metricConfig.color}
+                      fillOpacity={0.25}
                       strokeWidth={3}
                       dot={false}
                     />
                   ))}
-                </LineChart>
+                </AreaChart>
               </ResponsiveContainer>
             </div>
           </motion.div>
