@@ -1,6 +1,10 @@
 import React from "react";
 import Input from "../../../ui/Input/Input";
-import { formatCpu, formatMemory } from "../../../../utils/resources";
+import {
+  formatCpu,
+  formatMemory,
+  formatStorage,
+} from "../../../../utils/resources";
 
 import type ResourcesSectionProps from "../../../../types/Application/Resources/ResourcesSectionProps/ResourcesSectionProps";
 
@@ -20,44 +24,76 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
     <div className="mb-6">
       {resourceLimits && (
         <div className="text-xs text-gray-400 mb-3 space-y-1">
+          {/* Allowed Requests */}
           <div>
-            Allowed Requests:{" "}
+            Allowed Requests:
             <span className="font-semibold">
-              CPU {resourceLimits.allowed.requests.cpu}
+              {" "}
+              CPU {resourceLimits.allowed.requests.cpu}{" "}
             </span>
-            ,{" "}
+            ,
             <span className="font-semibold">
-              Memory {resourceLimits.allowed.requests.memory}Mi
+              {" "}
+              Memory {resourceLimits.allowed.requests.memory}Mi{" "}
+            </span>
+            ,
+            <span className="font-semibold">
+              {" "}
+              Storage {resourceLimits.allowed.requests.storage}Gi{" "}
             </span>
           </div>
+          {/* Used Requests */}
           <div>
-            Used:{" "}
+            Used:
             <span className="font-semibold">
-              CPU {resourceLimits.usage.requests.cpu}
+              {" "}
+              CPU {resourceLimits.usage.requests.cpu}{" "}
             </span>
-            ,{" "}
+            ,
             <span className="font-semibold">
-              Memory {resourceLimits.usage.requests.memory}Mi
+              {" "}
+              Memory {resourceLimits.usage.requests.memory}Mi{" "}
+            </span>
+            ,
+            <span className="font-semibold">
+              {" "}
+              Storage {resourceLimits.usage.requests.storage}Gi{" "}
             </span>
           </div>
+          {/* Allowed Limits */}
           <div>
-            Allowed Limits:{" "}
+            Allowed Limits:
             <span className="font-semibold">
-              CPU {resourceLimits.allowed.limits.cpu}
+              {" "}
+              CPU {resourceLimits.allowed.limits.cpu}{" "}
             </span>
-            ,{" "}
+            ,
             <span className="font-semibold">
-              Memory {resourceLimits.allowed.limits.memory}Mi
+              {" "}
+              Memory {resourceLimits.allowed.limits.memory}Mi{" "}
+            </span>
+            ,
+            <span className="font-semibold">
+              {" "}
+              Storage {resourceLimits.allowed.limits.storage}Gi{" "}
             </span>
           </div>
+          {/* Used Limits */}
           <div>
-            Used:{" "}
+            Used:
             <span className="font-semibold">
-              CPU {resourceLimits.usage.limits.cpu}
+              {" "}
+              CPU {resourceLimits.usage.limits.cpu}{" "}
             </span>
-            ,{" "}
+            ,
             <span className="font-semibold">
-              Memory {resourceLimits.usage.limits.memory}Mi
+              {" "}
+              Memory {resourceLimits.usage.limits.memory}Mi{" "}
+            </span>
+            ,
+            <span className="font-semibold">
+              {" "}
+              Storage {resourceLimits.usage.limits.storage}Gi{" "}
             </span>
           </div>
         </div>
@@ -96,15 +132,37 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
                   sanitized ? sanitized + "Mi" : ""
                 );
               }}
-              placeholder="128"
+              placeholder="256"
               inputMode="numeric"
               pattern="[0-9]*"
-              label="Memory Requests"
+              label="Memory Requests (Mi)"
               className="!mb-0"
               helperText={formatMemory(resources?.requests?.memory)}
             />
           </div>
         </div>
+        <div>
+          <div className="flex items-center gap-1">
+            <Input
+              value={getNumeric(resources?.requests?.storage, "Gi")}
+              onChange={(e) => {
+                const sanitized = sanitizeNumber(e.target.value);
+                handleResourceChange(
+                  "requests",
+                  "storage",
+                  sanitized ? sanitized + "Gi" : ""
+                );
+              }}
+              placeholder="10"
+              inputMode="numeric"
+              pattern="[0-9]*"
+              label="Storage Requests (Gi)"
+              className="!mb-0"
+              helperText={formatStorage(resources?.requests?.storage)}
+            />
+          </div>
+        </div>
+        {/* Limits Section */}
         <div>
           <div className="flex items-center gap-1">
             <Input
@@ -117,7 +175,7 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
                   sanitized ? sanitized + "m" : ""
                 );
               }}
-              placeholder="500"
+              placeholder="200"
               inputMode="numeric"
               pattern="[0-9]*"
               label="CPU Limits"
@@ -141,9 +199,30 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
               placeholder="512"
               inputMode="numeric"
               pattern="[0-9]*"
-              label="Memory Limits"
+              label="Memory Limits (Mi)"
               className="!mb-0"
               helperText={formatMemory(resources?.limits?.memory)}
+            />
+          </div>
+        </div>
+        <div>
+          <div className="flex items-center gap-1">
+            <Input
+              value={getNumeric(resources?.limits?.storage, "Gi")}
+              onChange={(e) => {
+                const sanitized = sanitizeNumber(e.target.value);
+                handleResourceChange(
+                  "limits",
+                  "storage",
+                  sanitized ? sanitized + "Gi" : ""
+                );
+              }}
+              placeholder="20"
+              inputMode="numeric"
+              pattern="[0-9]*"
+              label="Storage Limits (Gi)"
+              className="!mb-0"
+              helperText={formatStorage(resources?.limits?.storage)}
             />
           </div>
         </div>
