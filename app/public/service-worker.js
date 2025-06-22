@@ -8,7 +8,6 @@ const CORE_ASSETS = [
   "/fonts/AirbnbCereal_W_Bd.otf",
   "/fonts/Inter-VariableFont_opsz,wght.ttf",
   "/fonts/Montserrat-Regular.ttf",
-  "/fonts/Montserrat-Regular.ttf",
   "/icons/icon-16x16.webp",
   "/icons/icon-32x32.webp",
   "/icons/icon-48x48.webp",
