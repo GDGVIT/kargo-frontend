@@ -1,7 +1,6 @@
 import Applications from "../../components/Applications/Applications";
 import PageHeading from "../../components/ui/PageHeading/PageHeading";
-import { GrCloudSoftware } from "react-icons/gr";
-
+import { FiBarChart2 } from "react-icons/fi";
 const title = "Applications";
 const description = "Manage your applications and settings.";
 
@@ -16,7 +15,7 @@ export default function ApplicationPage() {
       <PageHeading
         title={title}
         subtitle={description}
-        icon={<GrCloudSoftware />}
+        icon={<FiBarChart2 />}
       />
       <Applications />
     </main>

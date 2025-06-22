@@ -1,4 +1,4 @@
-import { GrDocumentText } from "react-icons/gr";
+import { FiFileText } from "react-icons/fi";
 
 const title = "Terms of Service";
 
@@ -15,7 +15,7 @@ export default function TermsOfServicePage() {
       <PageHeading
         title={title}
         subtitle="Last updated: June 18, 2025"
-        icon={<GrDocumentText />}
+        icon={<FiFileText />}
       />
       <section>
         <h2>1. Acceptance of Terms</h2>

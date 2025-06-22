@@ -12,11 +12,11 @@ import { useAuth } from "../Auth/AuthProvider/AuthProvider";
 import Loader from "../ui/Loader/Loader";
 import useNotification from "../ui/Notification/Notification";
 import GithubAuth from "../Github/GithubAuth/GithubAuth";
-import PlanDetails from "./PlanDetails";
+import PlanDetails from "../PlanDetails/PlanDetails";
 import Card from "../ui/Card/Card";
 import AnimatedButton from "../ui/AnimatedButton/AnimatedButton";
 
-const Profile: React.FC = () => {
+const Settings: React.FC = () => {
   const { user, loading, logout } = useAuth();
   const { notify } = useNotification();
   const [imageError, setImageError] = useState(false);
@@ -115,4 +115,4 @@ const Profile: React.FC = () => {
   );
 };
 
-export default Profile;
+export default Settings;

@@ -224,12 +224,12 @@ const GithubRepos: React.FC = () => {
         <FaGithub className="mx-auto mb-2 text-3xl text-zinc-500" />
         <div className="text-lg font-semibold mb-1">GitHub not connected</div>
         <div className="text-sm">
-          Please connect your GitHub on your profile page first.
+          Please connect your GitHub on your settings page first.
         </div>
         <div className="text-xs text-orange-400 mt-4">
           If your repositories are not showing up but your account is connected,
           try uninstalling the GitHub app from your account first, then sign in
-          again through the profile page.
+          again through the settings page.
         </div>
       </section>
     );
@@ -288,7 +288,7 @@ const GithubRepos: React.FC = () => {
         <p className="text-xs text-orange-400 mb-4 px-2 sm:px-6 text-center">
           If your repositories are not showing up but your account is connected,
           try uninstalling the GitHub app from your account first, then sign in
-          again through the profile page.
+          again through the settings page.
         </p>
 
         <section className="px-1 sm:px-0">
