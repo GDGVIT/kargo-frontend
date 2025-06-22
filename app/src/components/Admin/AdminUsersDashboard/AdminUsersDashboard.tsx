@@ -9,11 +9,7 @@ import UserManagement from "./UserManagement/UserManagement";
 import AnimatedButton from "../../ui/AnimatedButton/AnimatedButton";
 import useNotification from "../../ui/Notification/Notification";
 import Loader from "../../ui/Loader/Loader";
-import {
-  formatCpu,
-  formatMemory,
-  formatStorage,
-} from "../../../utils/resources";
+import { formatMemory, formatStorage } from "../../../utils/resources";
 
 export default function AdminUsersDashboard() {
   const [users, setUsers] = useState<User[]>([]);
@@ -60,11 +56,11 @@ export default function AdminUsersDashboard() {
         const res = await axios.get("/api/plans");
         setPlans(res.data.plans || []);
       } catch {
-        // ignore
+        notify("Failed to load plans", "error");
       }
     }
     fetchPlans();
-  }, []);
+  }, [notify]);
 
   async function handleRoleChange(
     userId: string,
@@ -218,7 +214,6 @@ export default function AdminUsersDashboard() {
     return null;
   }
 
-  // Helper to get only plan resources for a user
   function getPlanResources(user: User, plans: Plan[]) {
     let planObj = user.plan;
     if (!planObj)
@@ -237,14 +232,14 @@ export default function AdminUsersDashboard() {
     const planResources = planObj.resources;
     return {
       requests: {
-        cpu: formatCpu(planResources.requests?.cpu),
-        memory: formatMemory(planResources.requests?.memory),
-        storage: formatStorage(planResources.requests?.storage),
+        cpu: planResources.requests?.cpu,
+        memory: planResources.requests?.memory,
+        storage: planResources.requests?.storage,
       },
       limits: {
-        cpu: formatCpu(planResources.limits?.cpu),
-        memory: formatMemory(planResources.limits?.memory),
-        storage: formatStorage(planResources.limits?.storage),
+        cpu: planResources.limits?.cpu,
+        memory: planResources.limits?.memory,
+        storage: planResources.limits?.storage,
       },
     } as { requests: Resource; limits: Resource };
   }
@@ -287,25 +282,41 @@ export default function AdminUsersDashboard() {
             (acc, user) => {
               const planRes = getPlanResources(user, plans);
               const extra = user.extraResources || { requests: {}, limits: {} };
-              function sum(a?: string, b?: string) {
-                if (!a && !b) return "-";
-                const av = parseFloat(a || "0");
-                const bv = parseFloat(b || "0");
-                return (av + bv).toString();
+              function sumCpu(a?: string | number, b?: string | number) {
+                // Just add the two values and display as string
+                const av = typeof a === "number" ? a : Number(a) || 0;
+                const bv = typeof b === "number" ? b : Number(b) || 0;
+                return String(av + bv);
+              }
+              function sumMem(a?: string | number, b?: string | number) {
+                const av = typeof a === "number" ? a : parseFloat(a || "0");
+                const bv = typeof b === "number" ? b : parseFloat(b || "0");
+                return formatMemory(av + bv);
+              }
+              function sumStorage(a?: string | number, b?: string | number) {
+                const av = typeof a === "number" ? a : parseFloat(a || "0");
+                const bv = typeof b === "number" ? b : parseFloat(b || "0");
+                return formatStorage(av + bv);
               }
               acc[user._id] = {
                 requests: {
-                  cpu: sum(planRes.requests.cpu, extra.requests?.cpu),
-                  memory: sum(planRes.requests.memory, extra.requests?.memory),
-                  storage: sum(
+                  cpu: sumCpu(planRes.requests.cpu, extra.requests?.cpu),
+                  memory: sumMem(
+                    planRes.requests.memory,
+                    extra.requests?.memory
+                  ),
+                  storage: sumStorage(
                     planRes.requests.storage,
                     extra.requests?.storage
                   ),
                 },
                 limits: {
-                  cpu: sum(planRes.limits.cpu, extra.limits?.cpu),
-                  memory: sum(planRes.limits.memory, extra.limits?.memory),
-                  storage: sum(planRes.limits.storage, extra.limits?.storage),
+                  cpu: sumCpu(planRes.limits.cpu, extra.limits?.cpu),
+                  memory: sumMem(planRes.limits.memory, extra.limits?.memory),
+                  storage: sumStorage(
+                    planRes.limits.storage,
+                    extra.limits?.storage
+                  ),
                 },
               };
               return acc;
