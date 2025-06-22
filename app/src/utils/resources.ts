@@ -138,3 +138,22 @@ export function parseStorage(storage?: string | number): number {
   }
   return 0;
 }
+
+// Utility to format money (e.g., 100 -> 1.00, 12345 -> 123.45)
+export function formatMoney(paise?: string | number): string {
+  if (paise === undefined || paise === null || paise === "") return "₹0.00";
+  let value: number | null = null;
+  if (typeof paise === "number") {
+    value = paise / 100;
+  } else if (typeof paise === "string") {
+    const val = parseFloat(paise);
+    if (!isNaN(val)) value = val / 100;
+  }
+  if (value !== null) {
+    return `₹${value.toLocaleString("en-IN", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    })}`;
+  }
+  return String(paise);
+}

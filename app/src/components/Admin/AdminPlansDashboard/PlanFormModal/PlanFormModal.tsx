@@ -8,6 +8,7 @@ import {
   formatCpu,
   formatMemory,
   formatStorage,
+  formatMoney,
 } from "../../../../utils/resources";
 import type PlanFormModalProps from "../../../../types/Plan/PlanFormModalProps";
 
@@ -137,6 +138,7 @@ const PlanFormModal: React.FC<PlanFormModalProps> = ({
           title="Price in paise"
           type="number"
           required
+          helperText={formatMoney(planForm.price)}
         />
         <div className="flex gap-4 items-center">
           <label className="flex items-center gap-2">
