@@ -15,9 +15,10 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
   resources,
   handleResourceChange,
 }) => {
-  const getNumeric = (val: string | undefined, suffix: string) => {
-    if (!val || val === "") return "0";
-    return val.endsWith(suffix) ? val.slice(0, -suffix.length) : val;
+  const getNumeric = (val: string | number | undefined, suffix: string) => {
+    if (val === undefined || val === null || val === "") return "0";
+    const strVal = String(val);
+    return strVal.endsWith(suffix) ? strVal.slice(0, -suffix.length) : strVal;
   };
 
   return (
@@ -29,17 +30,19 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
             Allowed Requests:
             <span className="font-semibold">
               {" "}
-              CPU {resourceLimits.allowed.requests.cpu}{" "}
+              CPU {formatCpu(resourceLimits.allowed.requests.cpu)}{" "}
             </span>
             ,
             <span className="font-semibold">
               {" "}
-              Memory {resourceLimits.allowed.requests.memory}Mi{" "}
+              Memory {formatMemory(resourceLimits.allowed.requests.memory)}{" "}
             </span>
             ,
             <span className="font-semibold">
               {" "}
-              Storage {resourceLimits.allowed.requests.storage}Gi{" "}
+              Storage {formatStorage(
+                resourceLimits.allowed.requests.storage
+              )}{" "}
             </span>
           </div>
           {/* Used Requests */}
@@ -47,17 +50,19 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
             Used:
             <span className="font-semibold">
               {" "}
-              CPU {resourceLimits.usage.requests.cpu}{" "}
+              CPU {formatCpu(resourceLimits.usage.requests.cpu)}{" "}
             </span>
             ,
             <span className="font-semibold">
               {" "}
-              Memory {resourceLimits.usage.requests.memory}Mi{" "}
+              Memory {formatMemory(resourceLimits.usage.requests.memory)}{" "}
             </span>
             ,
             <span className="font-semibold">
               {" "}
-              Storage {resourceLimits.usage.requests.storage}Gi{" "}
+              Storage {formatStorage(
+                resourceLimits.usage.requests.storage
+              )}{" "}
             </span>
           </div>
           {/* Allowed Limits */}
@@ -65,17 +70,19 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
             Allowed Limits:
             <span className="font-semibold">
               {" "}
-              CPU {resourceLimits.allowed.limits.cpu}{" "}
+              CPU {formatCpu(resourceLimits.allowed.limits.cpu)}{" "}
             </span>
             ,
             <span className="font-semibold">
               {" "}
-              Memory {resourceLimits.allowed.limits.memory}Mi{" "}
+              Memory {formatMemory(resourceLimits.allowed.limits.memory)}{" "}
             </span>
             ,
             <span className="font-semibold">
               {" "}
-              Storage {resourceLimits.allowed.limits.storage}Gi{" "}
+              Storage {formatStorage(
+                resourceLimits.allowed.limits.storage
+              )}{" "}
             </span>
           </div>
           {/* Used Limits */}
@@ -83,17 +90,17 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
             Used:
             <span className="font-semibold">
               {" "}
-              CPU {resourceLimits.usage.limits.cpu}{" "}
+              CPU {formatCpu(resourceLimits.usage.limits.cpu)}{" "}
             </span>
             ,
             <span className="font-semibold">
               {" "}
-              Memory {resourceLimits.usage.limits.memory}Mi{" "}
+              Memory {formatMemory(resourceLimits.usage.limits.memory)}{" "}
             </span>
             ,
             <span className="font-semibold">
               {" "}
-              Storage {resourceLimits.usage.limits.storage}Gi{" "}
+              Storage {formatStorage(resourceLimits.usage.limits.storage)}{" "}
             </span>
           </div>
         </div>

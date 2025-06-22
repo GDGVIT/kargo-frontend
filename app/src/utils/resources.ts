@@ -6,6 +6,7 @@ export function formatCpu(cpu?: string | number): string {
   if (typeof cpu === "number") {
     value = cpu / 100; // 100 = 1 vCPU
   } else if (typeof cpu === "string") {
+    // Defensive: only parse if string is a number
     const val = parseFloat(cpu);
     if (!isNaN(val)) value = val / 100;
   }
@@ -24,16 +25,16 @@ export function formatMemory(memory?: string | number): string {
   if (typeof memory === "number") {
     value = memory;
   } else if (typeof memory === "string") {
-    if (memory.endsWith("Mi")) {
+    if (memory.endsWith && memory.endsWith("Mi")) {
       value = parseFloat(memory.replace("Mi", ""));
       unit = "MiB";
-    } else if (memory.endsWith("Gi")) {
+    } else if (memory.endsWith && memory.endsWith("Gi")) {
       value = parseFloat(memory.replace("Gi", "")) * 1024;
       unit = "GiB";
-    } else if (memory.endsWith("M")) {
+    } else if (memory.endsWith && memory.endsWith("M")) {
       value = parseFloat(memory.replace("M", ""));
       unit = "MiB";
-    } else if (memory.endsWith("G")) {
+    } else if (memory.endsWith && memory.endsWith("G")) {
       value = parseFloat(memory.replace("G", "")) * 1024;
       unit = "GiB";
     } else {
@@ -59,13 +60,13 @@ export function formatStorage(storage?: string | number): string {
   if (typeof storage === "number") {
     value = storage; // treat as GiB
   } else if (typeof storage === "string") {
-    if (storage.endsWith("Gi")) {
+    if (storage.endsWith && storage.endsWith("Gi")) {
       value = parseFloat(storage.replace("Gi", ""));
-    } else if (storage.endsWith("G")) {
+    } else if (storage.endsWith && storage.endsWith("G")) {
       value = parseFloat(storage.replace("G", ""));
-    } else if (storage.endsWith("Mi")) {
+    } else if (storage.endsWith && storage.endsWith("Mi")) {
       value = parseFloat(storage.replace("Mi", "")) / 1024;
-    } else if (storage.endsWith("M")) {
+    } else if (storage.endsWith && storage.endsWith("M")) {
       value = parseFloat(storage.replace("M", "")) / 1024;
     } else {
       const val = parseFloat(storage);
@@ -150,10 +151,7 @@ export function formatMoney(paise?: string | number): string {
     if (!isNaN(val)) value = val / 100;
   }
   if (value !== null) {
-    return `₹${value.toLocaleString("en-IN", {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    })}`;
+    return `₹${value.toFixed(2)}`;
   }
   return String(paise);
 }
