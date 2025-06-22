@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import axios from "../../../utils/api";
 import useNotification from "../../ui/Notification/Notification";
 import type Plan from "../../../types/Plan/Plan";
+import type Resource from "../../../types/Application/Resource/Resource";
 import AnimatedButton from "../../ui/AnimatedButton/AnimatedButton";
 import PlanTable from "./PlansTable/PlanTable";
 import PlanFormModal from "./PlanFormModal/PlanFormModal";
@@ -14,7 +15,19 @@ export default function AdminPlansDashboard() {
   const [planError, setPlanError] = useState("");
   const [showPlanForm, setShowPlanForm] = useState(false);
   const [editingPlan, setEditingPlan] = useState<Plan | null>(null);
-  const [planForm, setPlanForm] = useState({
+  const [planForm, setPlanForm] = useState<{
+    name: string;
+    description: string;
+    requestsCpu: string;
+    requestsMemory: string;
+    requestsStorage: string;
+    limitsCpu: string;
+    limitsMemory: string;
+    limitsStorage: string;
+    isDefault: boolean;
+    isActive: boolean;
+    price: string;
+  }>({
     name: "",
     description: "",
     requestsCpu: "",
@@ -52,12 +65,12 @@ export default function AdminPlansDashboard() {
       setPlanForm({
         name: plan.name,
         description: plan.description || "",
-        requestsCpu: plan.resources?.requests?.cpu || "",
-        requestsMemory: plan.resources?.requests?.memory || "",
-        requestsStorage: plan.resources?.requests?.storage || "",
-        limitsCpu: plan.resources?.limits?.cpu || "",
-        limitsMemory: plan.resources?.limits?.memory || "",
-        limitsStorage: plan.resources?.limits?.storage || "",
+        requestsCpu: (plan.resources?.requests as Resource)?.cpu || "",
+        requestsMemory: (plan.resources?.requests as Resource)?.memory || "",
+        requestsStorage: (plan.resources?.requests as Resource)?.storage || "",
+        limitsCpu: (plan.resources?.limits as Resource)?.cpu || "",
+        limitsMemory: (plan.resources?.limits as Resource)?.memory || "",
+        limitsStorage: (plan.resources?.limits as Resource)?.storage || "",
         isDefault: !!plan.isDefault,
         isActive: plan.isActive !== false,
         price: plan.price ? String(plan.price) : "",
@@ -93,12 +106,12 @@ export default function AdminPlansDashboard() {
           cpu: planForm.requestsCpu,
           memory: planForm.requestsMemory,
           storage: planForm.requestsStorage,
-        },
+        } as Resource,
         limits: {
           cpu: planForm.limitsCpu,
           memory: planForm.limitsMemory,
           storage: planForm.limitsStorage,
-        },
+        } as Resource,
       },
       isDefault: planForm.isDefault,
       isActive: planForm.isActive,

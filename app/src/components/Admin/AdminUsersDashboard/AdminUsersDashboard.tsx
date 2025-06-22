@@ -4,10 +4,16 @@ import { useEffect, useState } from "react";
 import axios from "../../../utils/api";
 import type Plan from "../../../types/Plan/Plan";
 import type User from "../../../types/User/User";
+import type Resource from "../../../types/Application/Resource/Resource";
 import UserManagement from "./UserManagement/UserManagement";
 import AnimatedButton from "../../ui/AnimatedButton/AnimatedButton";
 import useNotification from "../../ui/Notification/Notification";
 import Loader from "../../ui/Loader/Loader";
+import {
+  formatCpu,
+  formatMemory,
+  formatStorage,
+} from "../../../utils/resources";
 
 export default function AdminUsersDashboard() {
   const [users, setUsers] = useState<User[]>([]);
@@ -215,36 +221,32 @@ export default function AdminUsersDashboard() {
   // Helper to get only plan resources for a user
   function getPlanResources(user: User, plans: Plan[]) {
     let planObj = user.plan;
-    if (!planObj) {
+    if (!planObj)
       return {
-        requests: { cpu: "-", memory: "-" },
-        limits: { cpu: "-", memory: "-" },
+        requests: {} as Resource,
+        limits: {} as Resource,
       };
-    }
     if (typeof planObj === "string") {
       planObj = plans.find((p) => p._id === planObj);
     }
-    if (!planObj || !planObj.resources) {
+    if (!planObj || !planObj.resources)
       return {
-        requests: { cpu: "-", memory: "-" },
-        limits: { cpu: "-", memory: "-" },
+        requests: {} as Resource,
+        limits: {} as Resource,
       };
-    }
     const planResources = planObj.resources;
-    // Format as string for display (e.g., "500m", "1Gi")
-    function format(val?: string) {
-      return val || "-";
-    }
     return {
       requests: {
-        cpu: format(planResources.requests?.cpu),
-        memory: format(planResources.requests?.memory),
+        cpu: formatCpu(planResources.requests?.cpu),
+        memory: formatMemory(planResources.requests?.memory),
+        storage: formatStorage(planResources.requests?.storage),
       },
       limits: {
-        cpu: format(planResources.limits?.cpu),
-        memory: format(planResources.limits?.memory),
+        cpu: formatCpu(planResources.limits?.cpu),
+        memory: formatMemory(planResources.limits?.memory),
+        storage: formatStorage(planResources.limits?.storage),
       },
-    };
+    } as { requests: Resource; limits: Resource };
   }
 
   return (
@@ -281,11 +283,41 @@ export default function AdminUsersDashboard() {
           }
           getRoleActions={getRoleActions}
           // Pass allowedResources for each user
-          allowedResources={users.reduce((acc, user) => {
-            const planRes = getPlanResources(user, plans);
-            acc[user._id] = planRes;
-            return acc;
-          }, {} as Record<string, { requests: { cpu: string; memory: string }; limits: { cpu: string; memory: string } }>)}
+          allowedResources={users.reduce(
+            (acc, user) => {
+              const planRes = getPlanResources(user, plans);
+              const extra = user.extraResources || { requests: {}, limits: {} };
+              function sum(a?: string, b?: string) {
+                if (!a && !b) return "-";
+                const av = parseFloat(a || "0");
+                const bv = parseFloat(b || "0");
+                return (av + bv).toString();
+              }
+              acc[user._id] = {
+                requests: {
+                  cpu: sum(planRes.requests.cpu, extra.requests?.cpu),
+                  memory: sum(planRes.requests.memory, extra.requests?.memory),
+                  storage: sum(
+                    planRes.requests.storage,
+                    extra.requests?.storage
+                  ),
+                },
+                limits: {
+                  cpu: sum(planRes.limits.cpu, extra.limits?.cpu),
+                  memory: sum(planRes.limits.memory, extra.limits?.memory),
+                  storage: sum(planRes.limits.storage, extra.limits?.storage),
+                },
+              };
+              return acc;
+            },
+            {} as Record<
+              string,
+              {
+                requests: { cpu: string; memory: string; storage: string };
+                limits: { cpu: string; memory: string; storage: string };
+              }
+            >
+          )}
         />
       )}
     </div>
