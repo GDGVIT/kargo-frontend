@@ -124,8 +124,10 @@ export default function ConfigureApp({ appId }: { appId: string }) {
       const updatedPorts = form.ports || [];
 
       if (resourceLimits) {
-        function parse(val: string | undefined) {
-          if (!val) return 0;
+        function parse(val: string | number | undefined) {
+          if (val === undefined || val === null || val === "") return 0;
+          if (typeof val === "number") return val;
+          if (typeof val !== "string") return 0;
           if (val.endsWith("m")) return parseInt(val) / 1000;
           if (val.endsWith("Mi")) return parseInt(val);
           if (val.endsWith("Gi")) return parseInt(val) * 1024;
@@ -174,6 +176,7 @@ export default function ConfigureApp({ appId }: { appId: string }) {
       const error = err as unknown as {
         response?: { data?: { message?: string } };
       };
+      console.error(err); // Log the error for debugging
       if (error?.response?.data?.message)
         notify(error.response.data.message, "error");
       else notify("Failed to save & deploy", "error");
