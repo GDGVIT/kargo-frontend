@@ -4,6 +4,8 @@ import {
   formatCpu,
   formatMemory,
   formatStorage,
+  parseMemory,
+  parseStorage,
 } from "../../../../utils/resources";
 
 import type ResourcesSectionProps from "../../../../types/Application/Resources/ResourcesSectionProps/ResourcesSectionProps";
@@ -24,7 +26,7 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
     val: string | number | undefined,
     defaultUnit: string
   ) => {
-    if (typeof val === "string") {
+    if (typeof val === "string" && val.trim() !== "") {
       const match = val.match(/[a-zA-Z]+$/);
       return match ? match[0] : defaultUnit;
     }
@@ -40,24 +42,65 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
       : strVal.replace(/[a-zA-Z]+$/, "");
   };
 
-  const [cpuRequestsUnit, setCpuRequestsUnit] = React.useState(
-    extractUnit(resources?.requests?.cpu, "m")
-  );
-  const [cpuLimitsUnit, setCpuLimitsUnit] = React.useState(
-    extractUnit(resources?.limits?.cpu, "m")
-  );
-  const [memoryRequestsUnit, setMemoryRequestsUnit] = React.useState(
-    extractUnit(resources?.requests?.memory, "Mi")
-  );
-  const [memoryLimitsUnit, setMemoryLimitsUnit] = React.useState(
-    extractUnit(resources?.limits?.memory, "Mi")
-  );
-  const [storageRequestsUnit, setStorageRequestsUnit] = React.useState(
-    extractUnit(resources?.requests?.storage, "Gi")
-  );
-  const [storageLimitsUnit, setStorageLimitsUnit] = React.useState(
-    extractUnit(resources?.limits?.storage, "Gi")
-  );
+  function useResourceInput(
+    resourceValue: string | number | undefined,
+    defaultUnit: string
+  ) {
+    // Detect unit from value, fallback to default
+    const detectedUnit = extractUnit(resourceValue, defaultUnit);
+    const [unit, setUnit] = React.useState(detectedUnit);
+    const [value, setValue] = React.useState(
+      stripUnit(resourceValue, detectedUnit)
+    );
+
+    // Sync with external changes
+    React.useEffect(() => {
+      const newUnit = extractUnit(resourceValue, defaultUnit);
+      setUnit(newUnit);
+      setValue(stripUnit(resourceValue, newUnit));
+    }, [resourceValue, defaultUnit]);
+
+    return [value, setValue, unit, setUnit] as const;
+  }
+
+  // CPU Requests
+  const [
+    cpuRequestsValue,
+    setCpuRequestsValue,
+    cpuRequestsUnit,
+    setCpuRequestsUnit,
+  ] = useResourceInput(resources?.requests?.cpu, "m");
+  // CPU Limits
+  const [cpuLimitsValue, setCpuLimitsValue, cpuLimitsUnit, setCpuLimitsUnit] =
+    useResourceInput(resources?.limits?.cpu, "m");
+  // Memory Requests
+  const [
+    memoryRequestsValue,
+    setMemoryRequestsValue,
+    memoryRequestsUnit,
+    setMemoryRequestsUnit,
+  ] = useResourceInput(resources?.requests?.memory, "MB");
+  // Memory Limits
+  const [
+    memoryLimitsValue,
+    setMemoryLimitsValue,
+    memoryLimitsUnit,
+    setMemoryLimitsUnit,
+  ] = useResourceInput(resources?.limits?.memory, "MB");
+  // Storage Requests
+  const [
+    storageRequestsValue,
+    setStorageRequestsValue,
+    storageRequestsUnit,
+    setStorageRequestsUnit,
+  ] = useResourceInput(resources?.requests?.storage, "GB");
+  // Storage Limits
+  const [
+    storageLimitsValue,
+    setStorageLimitsValue,
+    storageLimitsUnit,
+    setStorageLimitsUnit,
+  ] = useResourceInput(resources?.limits?.storage, "GB");
 
   return (
     <div className="mb-6">
@@ -68,18 +111,22 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
             Allowed Requests:
             <span className="font-semibold">
               {" "}
-              CPU {formatCpu(resourceLimits.allowed.requests.cpu)}{" "}
+              CPU {formatCpu(Number(resourceLimits.allowed.requests.cpu))}{" "}
             </span>
             ,
             <span className="font-semibold">
               {" "}
-              Memory {formatMemory(resourceLimits.allowed.requests.memory)}{" "}
+              Memory{" "}
+              {formatMemory(
+                Number(resourceLimits.allowed.requests.memory)
+              )}{" "}
             </span>
             ,
             <span className="font-semibold">
               {" "}
-              Storage {formatStorage(
-                resourceLimits.allowed.requests.storage
+              Storage{" "}
+              {formatStorage(
+                Number(resourceLimits.allowed.requests.storage)
               )}{" "}
             </span>
           </div>
@@ -88,18 +135,20 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
             Used:
             <span className="font-semibold">
               {" "}
-              CPU {formatCpu(resourceLimits.usage.requests.cpu)}{" "}
+              CPU {formatCpu(Number(resourceLimits.usage.requests.cpu))}{" "}
             </span>
             ,
             <span className="font-semibold">
               {" "}
-              Memory {formatMemory(resourceLimits.usage.requests.memory)}{" "}
+              Memory{" "}
+              {formatMemory(Number(resourceLimits.usage.requests.memory))}{" "}
             </span>
             ,
             <span className="font-semibold">
               {" "}
-              Storage {formatStorage(
-                resourceLimits.usage.requests.storage
+              Storage{" "}
+              {formatStorage(
+                Number(resourceLimits.usage.requests.storage)
               )}{" "}
             </span>
           </div>
@@ -108,18 +157,20 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
             Allowed Limits:
             <span className="font-semibold">
               {" "}
-              CPU {formatCpu(resourceLimits.allowed.limits.cpu)}{" "}
+              CPU {formatCpu(Number(resourceLimits.allowed.limits.cpu))}{" "}
             </span>
             ,
             <span className="font-semibold">
               {" "}
-              Memory {formatMemory(resourceLimits.allowed.limits.memory)}{" "}
+              Memory{" "}
+              {formatMemory(Number(resourceLimits.allowed.limits.memory))}{" "}
             </span>
             ,
             <span className="font-semibold">
               {" "}
-              Storage {formatStorage(
-                resourceLimits.allowed.limits.storage
+              Storage{" "}
+              {formatStorage(
+                Number(resourceLimits.allowed.limits.storage)
               )}{" "}
             </span>
           </div>
@@ -128,17 +179,20 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
             Used:
             <span className="font-semibold">
               {" "}
-              CPU {formatCpu(resourceLimits.usage.limits.cpu)}{" "}
+              CPU {formatCpu(Number(resourceLimits.usage.limits.cpu))}{" "}
             </span>
             ,
             <span className="font-semibold">
               {" "}
-              Memory {formatMemory(resourceLimits.usage.limits.memory)}{" "}
+              Memory {formatMemory(
+                Number(resourceLimits.usage.limits.memory)
+              )}{" "}
             </span>
             ,
             <span className="font-semibold">
               {" "}
-              Storage {formatStorage(resourceLimits.usage.limits.storage)}{" "}
+              Storage{" "}
+              {formatStorage(Number(resourceLimits.usage.limits.storage))}{" "}
             </span>
           </div>
         </div>
@@ -147,9 +201,10 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
         <div>
           <div className="flex items-center gap-1">
             <Input
-              value={stripUnit(resources?.requests?.cpu, cpuRequestsUnit)}
+              value={cpuRequestsValue}
               onChange={(e) => {
                 const sanitized = sanitizeNumber(e.target.value);
+                setCpuRequestsValue(sanitized);
                 handleResourceChange(
                   "requests",
                   "cpu",
@@ -161,20 +216,20 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
               pattern="[0-9]*"
               label="CPU Requests"
               className="!mb-0"
-              helperText={formatCpu(resources?.requests?.cpu)}
+              helperText={formatCpu(
+                parseInt(
+                  cpuRequestsValue ? cpuRequestsValue + cpuRequestsUnit : "0"
+                )
+              )}
               unitSelect={{
                 value: cpuRequestsUnit,
                 options: cpuUnitOptions,
                 onChange: (unit) => {
                   setCpuRequestsUnit(unit);
-                  const sanitized = stripUnit(
-                    resources?.requests?.cpu,
-                    cpuRequestsUnit
-                  );
                   handleResourceChange(
                     "requests",
                     "cpu",
-                    sanitized ? sanitized + unit : ""
+                    cpuRequestsValue ? cpuRequestsValue + unit : ""
                   );
                 },
                 disabled: false,
@@ -185,9 +240,10 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
         <div>
           <div className="flex items-center gap-1">
             <Input
-              value={stripUnit(resources?.requests?.memory, memoryRequestsUnit)}
+              value={memoryRequestsValue}
               onChange={(e) => {
                 const sanitized = sanitizeNumber(e.target.value);
+                setMemoryRequestsValue(sanitized);
                 handleResourceChange(
                   "requests",
                   "memory",
@@ -199,20 +255,22 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
               pattern="[0-9]*"
               label="Memory Requests"
               className="!mb-0"
-              helperText={formatMemory(resources?.requests?.memory)}
+              helperText={formatMemory(
+                parseMemory(
+                  memoryRequestsValue
+                    ? memoryRequestsValue + memoryRequestsUnit
+                    : "0"
+                )
+              )}
               unitSelect={{
                 value: memoryRequestsUnit,
                 options: memoryUnitOptions,
                 onChange: (unit) => {
                   setMemoryRequestsUnit(unit);
-                  const sanitized = stripUnit(
-                    resources?.requests?.memory,
-                    memoryRequestsUnit
-                  );
                   handleResourceChange(
                     "requests",
                     "memory",
-                    sanitized ? sanitized + unit : ""
+                    memoryRequestsValue ? memoryRequestsValue + unit : ""
                   );
                 },
                 disabled: false,
@@ -223,12 +281,10 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
         <div>
           <div className="flex items-center gap-1">
             <Input
-              value={stripUnit(
-                resources?.requests?.storage,
-                storageRequestsUnit
-              )}
+              value={storageRequestsValue}
               onChange={(e) => {
                 const sanitized = sanitizeNumber(e.target.value);
+                setStorageRequestsValue(sanitized);
                 handleResourceChange(
                   "requests",
                   "storage",
@@ -240,20 +296,22 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
               pattern="[0-9]*"
               label="Storage Requests"
               className="!mb-0"
-              helperText={formatStorage(resources?.requests?.storage)}
+              helperText={formatStorage(
+                parseStorage(
+                  storageRequestsValue
+                    ? storageRequestsValue + storageRequestsUnit
+                    : "0"
+                )
+              )}
               unitSelect={{
                 value: storageRequestsUnit,
                 options: storageUnitOptions,
                 onChange: (unit) => {
                   setStorageRequestsUnit(unit);
-                  const sanitized = stripUnit(
-                    resources?.requests?.storage,
-                    storageRequestsUnit
-                  );
                   handleResourceChange(
                     "requests",
                     "storage",
-                    sanitized ? sanitized + unit : ""
+                    storageRequestsValue ? storageRequestsValue + unit : ""
                   );
                 },
                 disabled: false,
@@ -265,9 +323,10 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
         <div>
           <div className="flex items-center gap-1">
             <Input
-              value={stripUnit(resources?.limits?.cpu, cpuLimitsUnit)}
+              value={cpuLimitsValue}
               onChange={(e) => {
                 const sanitized = sanitizeNumber(e.target.value);
+                setCpuLimitsValue(sanitized);
                 handleResourceChange(
                   "limits",
                   "cpu",
@@ -279,20 +338,18 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
               pattern="[0-9]*"
               label="CPU Limits"
               className="!mb-0"
-              helperText={formatCpu(resources?.limits?.cpu)}
+              helperText={formatCpu(
+                parseInt(cpuLimitsValue ? cpuLimitsValue + cpuLimitsUnit : "0")
+              )}
               unitSelect={{
                 value: cpuLimitsUnit,
                 options: cpuUnitOptions,
                 onChange: (unit) => {
                   setCpuLimitsUnit(unit);
-                  const sanitized = stripUnit(
-                    resources?.limits?.cpu,
-                    cpuLimitsUnit
-                  );
                   handleResourceChange(
                     "limits",
                     "cpu",
-                    sanitized ? sanitized + unit : ""
+                    cpuLimitsValue ? cpuLimitsValue + unit : ""
                   );
                 },
                 disabled: false,
@@ -303,9 +360,10 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
         <div>
           <div className="flex items-center gap-1">
             <Input
-              value={stripUnit(resources?.limits?.memory, memoryLimitsUnit)}
+              value={memoryLimitsValue}
               onChange={(e) => {
                 const sanitized = sanitizeNumber(e.target.value);
+                setMemoryLimitsValue(sanitized);
                 handleResourceChange(
                   "limits",
                   "memory",
@@ -317,20 +375,20 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
               pattern="[0-9]*"
               label="Memory Limits"
               className="!mb-0"
-              helperText={formatMemory(resources?.limits?.memory)}
+              helperText={formatMemory(
+                parseMemory(
+                  memoryLimitsValue ? memoryLimitsValue + memoryLimitsUnit : "0"
+                )
+              )}
               unitSelect={{
                 value: memoryLimitsUnit,
                 options: memoryUnitOptions,
                 onChange: (unit) => {
                   setMemoryLimitsUnit(unit);
-                  const sanitized = stripUnit(
-                    resources?.limits?.memory,
-                    memoryLimitsUnit
-                  );
                   handleResourceChange(
                     "limits",
                     "memory",
-                    sanitized ? sanitized + unit : ""
+                    memoryLimitsValue ? memoryLimitsValue + unit : ""
                   );
                 },
                 disabled: false,
@@ -341,9 +399,10 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
         <div>
           <div className="flex items-center gap-1">
             <Input
-              value={stripUnit(resources?.limits?.storage, storageLimitsUnit)}
+              value={storageLimitsValue}
               onChange={(e) => {
                 const sanitized = sanitizeNumber(e.target.value);
+                setStorageLimitsValue(sanitized);
                 handleResourceChange(
                   "limits",
                   "storage",
@@ -355,20 +414,22 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
               pattern="[0-9]*"
               label="Storage Limits"
               className="!mb-0"
-              helperText={formatStorage(resources?.limits?.storage)}
+              helperText={formatStorage(
+                parseStorage(
+                  storageLimitsValue
+                    ? storageLimitsValue + storageLimitsUnit
+                    : "0"
+                )
+              )}
               unitSelect={{
                 value: storageLimitsUnit,
                 options: storageUnitOptions,
                 onChange: (unit) => {
                   setStorageLimitsUnit(unit);
-                  const sanitized = stripUnit(
-                    resources?.limits?.storage,
-                    storageLimitsUnit
-                  );
                   handleResourceChange(
                     "limits",
                     "storage",
-                    sanitized ? sanitized + unit : ""
+                    storageLimitsValue ? storageLimitsValue + unit : ""
                   );
                 },
                 disabled: false,
