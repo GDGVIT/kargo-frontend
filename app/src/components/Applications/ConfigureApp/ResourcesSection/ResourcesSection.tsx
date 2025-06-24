@@ -15,11 +15,49 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
   resources,
   handleResourceChange,
 }) => {
-  const getNumeric = (val: string | number | undefined, suffix: string) => {
-    if (val === undefined || val === null || val === "") return "0";
-    const strVal = String(val);
-    return strVal.endsWith(suffix) ? strVal.slice(0, -suffix.length) : strVal;
+  const cpuUnitOptions = ["m", "vCPU"];
+  const memoryUnitOptions = ["MB", "GB"];
+  const storageUnitOptions = ["MB", "GB", "TB"];
+
+  // Helper to extract unit from value
+  const extractUnit = (
+    val: string | number | undefined,
+    defaultUnit: string
+  ) => {
+    if (typeof val === "string") {
+      const match = val.match(/[a-zA-Z]+$/);
+      return match ? match[0] : defaultUnit;
+    }
+    return defaultUnit;
   };
+
+  // Helper to strip unit from value
+  const stripUnit = (val: string | number | undefined, unit: string) => {
+    if (val === undefined || val === null || val === "") return "";
+    const strVal = String(val);
+    return strVal.endsWith(unit)
+      ? strVal.slice(0, -unit.length)
+      : strVal.replace(/[a-zA-Z]+$/, "");
+  };
+
+  const [cpuRequestsUnit, setCpuRequestsUnit] = React.useState(
+    extractUnit(resources?.requests?.cpu, "m")
+  );
+  const [cpuLimitsUnit, setCpuLimitsUnit] = React.useState(
+    extractUnit(resources?.limits?.cpu, "m")
+  );
+  const [memoryRequestsUnit, setMemoryRequestsUnit] = React.useState(
+    extractUnit(resources?.requests?.memory, "Mi")
+  );
+  const [memoryLimitsUnit, setMemoryLimitsUnit] = React.useState(
+    extractUnit(resources?.limits?.memory, "Mi")
+  );
+  const [storageRequestsUnit, setStorageRequestsUnit] = React.useState(
+    extractUnit(resources?.requests?.storage, "Gi")
+  );
+  const [storageLimitsUnit, setStorageLimitsUnit] = React.useState(
+    extractUnit(resources?.limits?.storage, "Gi")
+  );
 
   return (
     <div className="mb-6">
@@ -109,13 +147,13 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
         <div>
           <div className="flex items-center gap-1">
             <Input
-              value={getNumeric(resources?.requests?.cpu, "m")}
+              value={stripUnit(resources?.requests?.cpu, cpuRequestsUnit)}
               onChange={(e) => {
                 const sanitized = sanitizeNumber(e.target.value);
                 handleResourceChange(
                   "requests",
                   "cpu",
-                  sanitized ? sanitized + "m" : ""
+                  sanitized ? sanitized + cpuRequestsUnit : ""
                 );
               }}
               placeholder="100"
@@ -124,48 +162,102 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
               label="CPU Requests"
               className="!mb-0"
               helperText={formatCpu(resources?.requests?.cpu)}
+              unitSelect={{
+                value: cpuRequestsUnit,
+                options: cpuUnitOptions,
+                onChange: (unit) => {
+                  setCpuRequestsUnit(unit);
+                  const sanitized = stripUnit(
+                    resources?.requests?.cpu,
+                    cpuRequestsUnit
+                  );
+                  handleResourceChange(
+                    "requests",
+                    "cpu",
+                    sanitized ? sanitized + unit : ""
+                  );
+                },
+                disabled: false,
+              }}
             />
           </div>
         </div>
         <div>
           <div className="flex items-center gap-1">
             <Input
-              value={getNumeric(resources?.requests?.memory, "Mi")}
+              value={stripUnit(resources?.requests?.memory, memoryRequestsUnit)}
               onChange={(e) => {
                 const sanitized = sanitizeNumber(e.target.value);
                 handleResourceChange(
                   "requests",
                   "memory",
-                  sanitized ? sanitized + "Mi" : ""
+                  sanitized ? sanitized + memoryRequestsUnit : ""
                 );
               }}
               placeholder="256"
               inputMode="numeric"
               pattern="[0-9]*"
-              label="Memory Requests (Mi)"
+              label="Memory Requests"
               className="!mb-0"
               helperText={formatMemory(resources?.requests?.memory)}
+              unitSelect={{
+                value: memoryRequestsUnit,
+                options: memoryUnitOptions,
+                onChange: (unit) => {
+                  setMemoryRequestsUnit(unit);
+                  const sanitized = stripUnit(
+                    resources?.requests?.memory,
+                    memoryRequestsUnit
+                  );
+                  handleResourceChange(
+                    "requests",
+                    "memory",
+                    sanitized ? sanitized + unit : ""
+                  );
+                },
+                disabled: false,
+              }}
             />
           </div>
         </div>
         <div>
           <div className="flex items-center gap-1">
             <Input
-              value={getNumeric(resources?.requests?.storage, "Gi")}
+              value={stripUnit(
+                resources?.requests?.storage,
+                storageRequestsUnit
+              )}
               onChange={(e) => {
                 const sanitized = sanitizeNumber(e.target.value);
                 handleResourceChange(
                   "requests",
                   "storage",
-                  sanitized ? sanitized + "Gi" : ""
+                  sanitized ? sanitized + storageRequestsUnit : ""
                 );
               }}
               placeholder="10"
               inputMode="numeric"
               pattern="[0-9]*"
-              label="Storage Requests (Gi)"
+              label="Storage Requests"
               className="!mb-0"
               helperText={formatStorage(resources?.requests?.storage)}
+              unitSelect={{
+                value: storageRequestsUnit,
+                options: storageUnitOptions,
+                onChange: (unit) => {
+                  setStorageRequestsUnit(unit);
+                  const sanitized = stripUnit(
+                    resources?.requests?.storage,
+                    storageRequestsUnit
+                  );
+                  handleResourceChange(
+                    "requests",
+                    "storage",
+                    sanitized ? sanitized + unit : ""
+                  );
+                },
+                disabled: false,
+              }}
             />
           </div>
         </div>
@@ -173,13 +265,13 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
         <div>
           <div className="flex items-center gap-1">
             <Input
-              value={getNumeric(resources?.limits?.cpu, "m")}
+              value={stripUnit(resources?.limits?.cpu, cpuLimitsUnit)}
               onChange={(e) => {
                 const sanitized = sanitizeNumber(e.target.value);
                 handleResourceChange(
                   "limits",
                   "cpu",
-                  sanitized ? sanitized + "m" : ""
+                  sanitized ? sanitized + cpuLimitsUnit : ""
                 );
               }}
               placeholder="200"
@@ -188,48 +280,99 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
               label="CPU Limits"
               className="!mb-0"
               helperText={formatCpu(resources?.limits?.cpu)}
+              unitSelect={{
+                value: cpuLimitsUnit,
+                options: cpuUnitOptions,
+                onChange: (unit) => {
+                  setCpuLimitsUnit(unit);
+                  const sanitized = stripUnit(
+                    resources?.limits?.cpu,
+                    cpuLimitsUnit
+                  );
+                  handleResourceChange(
+                    "limits",
+                    "cpu",
+                    sanitized ? sanitized + unit : ""
+                  );
+                },
+                disabled: false,
+              }}
             />
           </div>
         </div>
         <div>
           <div className="flex items-center gap-1">
             <Input
-              value={getNumeric(resources?.limits?.memory, "Mi")}
+              value={stripUnit(resources?.limits?.memory, memoryLimitsUnit)}
               onChange={(e) => {
                 const sanitized = sanitizeNumber(e.target.value);
                 handleResourceChange(
                   "limits",
                   "memory",
-                  sanitized ? sanitized + "Mi" : ""
+                  sanitized ? sanitized + memoryLimitsUnit : ""
                 );
               }}
               placeholder="512"
               inputMode="numeric"
               pattern="[0-9]*"
-              label="Memory Limits (Mi)"
+              label="Memory Limits"
               className="!mb-0"
               helperText={formatMemory(resources?.limits?.memory)}
+              unitSelect={{
+                value: memoryLimitsUnit,
+                options: memoryUnitOptions,
+                onChange: (unit) => {
+                  setMemoryLimitsUnit(unit);
+                  const sanitized = stripUnit(
+                    resources?.limits?.memory,
+                    memoryLimitsUnit
+                  );
+                  handleResourceChange(
+                    "limits",
+                    "memory",
+                    sanitized ? sanitized + unit : ""
+                  );
+                },
+                disabled: false,
+              }}
             />
           </div>
         </div>
         <div>
           <div className="flex items-center gap-1">
             <Input
-              value={getNumeric(resources?.limits?.storage, "Gi")}
+              value={stripUnit(resources?.limits?.storage, storageLimitsUnit)}
               onChange={(e) => {
                 const sanitized = sanitizeNumber(e.target.value);
                 handleResourceChange(
                   "limits",
                   "storage",
-                  sanitized ? sanitized + "Gi" : ""
+                  sanitized ? sanitized + storageLimitsUnit : ""
                 );
               }}
               placeholder="20"
               inputMode="numeric"
               pattern="[0-9]*"
-              label="Storage Limits (Gi)"
+              label="Storage Limits"
               className="!mb-0"
               helperText={formatStorage(resources?.limits?.storage)}
+              unitSelect={{
+                value: storageLimitsUnit,
+                options: storageUnitOptions,
+                onChange: (unit) => {
+                  setStorageLimitsUnit(unit);
+                  const sanitized = stripUnit(
+                    resources?.limits?.storage,
+                    storageLimitsUnit
+                  );
+                  handleResourceChange(
+                    "limits",
+                    "storage",
+                    sanitized ? sanitized + unit : ""
+                  );
+                },
+                disabled: false,
+              }}
             />
           </div>
         </div>
