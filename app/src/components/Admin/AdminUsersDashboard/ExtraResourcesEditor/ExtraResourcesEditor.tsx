@@ -23,7 +23,9 @@ const ExtraResourcesEditor: React.FC<ExtraResourcesEditorProps> = ({
         placeholder="Req CPU"
         value={data.requestsCpu}
         onChange={(e) => onChange("requestsCpu", e.target.value)}
-        helperText={formatCpu(data.requestsCpu)}
+        helperText={formatCpu(
+          data.requestsCpu === "" ? undefined : Number(data.requestsCpu)
+        )}
         type="number"
       />
       <Input
@@ -31,7 +33,9 @@ const ExtraResourcesEditor: React.FC<ExtraResourcesEditorProps> = ({
         placeholder="Req Mem"
         value={data.requestsMemory}
         onChange={(e) => onChange("requestsMemory", e.target.value)}
-        helperText={formatMemory(data.requestsMemory)}
+        helperText={formatMemory(
+          data.requestsMemory === "" ? undefined : Number(data.requestsMemory)
+        )}
         type="number"
       />
       <Input
@@ -39,7 +43,9 @@ const ExtraResourcesEditor: React.FC<ExtraResourcesEditorProps> = ({
         placeholder="Req Storage"
         value={data.requestsStorage}
         onChange={(e) => onChange("requestsStorage", e.target.value)}
-        helperText={formatStorage(data.requestsStorage)}
+        helperText={formatStorage(
+          data.requestsStorage === "" ? undefined : Number(data.requestsStorage)
+        )}
         type="number"
       />
     </div>
@@ -49,7 +55,9 @@ const ExtraResourcesEditor: React.FC<ExtraResourcesEditorProps> = ({
         placeholder="Lim CPU"
         value={data.limitsCpu}
         onChange={(e) => onChange("limitsCpu", e.target.value)}
-        helperText={formatCpu(data.limitsCpu)}
+        helperText={formatCpu(
+          data.limitsCpu === "" ? undefined : Number(data.limitsCpu)
+        )}
         type="number"
       />
       <Input
@@ -57,7 +65,9 @@ const ExtraResourcesEditor: React.FC<ExtraResourcesEditorProps> = ({
         placeholder="Lim Mem"
         value={data.limitsMemory}
         onChange={(e) => onChange("limitsMemory", e.target.value)}
-        helperText={formatMemory(data.limitsMemory)}
+        helperText={formatMemory(
+          data.limitsMemory === "" ? undefined : Number(data.limitsMemory)
+        )}
         type="number"
       />
       <Input
@@ -65,7 +75,9 @@ const ExtraResourcesEditor: React.FC<ExtraResourcesEditorProps> = ({
         placeholder="Lim Storage"
         value={data.limitsStorage}
         onChange={(e) => onChange("limitsStorage", e.target.value)}
-        helperText={formatStorage(data.limitsStorage)}
+        helperText={formatStorage(
+          data.limitsStorage === "" ? undefined : Number(data.limitsStorage)
+        )}
         type="number"
       />
     </div>

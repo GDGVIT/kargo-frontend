@@ -137,16 +137,16 @@ export default function ConfigureApp({ appId }: { appId: string }) {
         const newUsage = { ...resourceLimits.usage };
 
         if (form.resources) {
-          newUsage.requests.cpu -= parse(form.resources.requests?.cpu);
-          newUsage.requests.memory -= parse(form.resources.requests?.memory);
-          newUsage.limits.cpu -= parse(form.resources.limits?.cpu);
-          newUsage.limits.memory -= parse(form.resources.limits?.memory);
+          newUsage.requests.cpu -= parse(form.resources.requests?.cpuMilli);
+          newUsage.requests.memory -= parse(form.resources.requests?.memoryMB);
+          newUsage.limits.cpu -= parse(form.resources.limits?.cpuMilli);
+          newUsage.limits.memory -= parse(form.resources.limits?.memoryMB);
         }
 
-        const reqCpu = parse(form.resources?.requests?.cpu);
-        const reqMem = parse(form.resources?.requests?.memory);
-        const limCpu = parse(form.resources?.limits?.cpu);
-        const limMem = parse(form.resources?.limits?.memory);
+        const reqCpu = parse(form.resources?.requests?.cpuMilli);
+        const reqMem = parse(form.resources?.requests?.memoryMB);
+        const limCpu = parse(form.resources?.limits?.cpuMilli);
+        const limMem = parse(form.resources?.limits?.memoryMB);
         newUsage.requests.cpu += reqCpu;
         newUsage.requests.memory += reqMem;
         newUsage.limits.cpu += limCpu;
@@ -165,14 +165,14 @@ export default function ConfigureApp({ appId }: { appId: string }) {
       // Sanitize resources before sending
       const sanitizedResources = {
         requests: {
-          cpu: parseCpu(form.resources?.requests?.cpu),
-          memory: parseMemory(form.resources?.requests?.memory),
-          storage: parseStorage(form.resources?.requests?.storage),
+          cpu: parseCpu(form.resources?.requests?.cpuMilli),
+          memory: parseMemory(form.resources?.requests?.memoryMB),
+          storage: parseStorage(form.resources?.requests?.storageGB),
         },
         limits: {
-          cpu: parseCpu(form.resources?.limits?.cpu),
-          memory: parseMemory(form.resources?.limits?.memory),
-          storage: parseStorage(form.resources?.limits?.storage),
+          cpu: parseCpu(form.resources?.limits?.cpuMilli),
+          memory: parseMemory(form.resources?.limits?.memoryMB),
+          storage: parseStorage(form.resources?.limits?.storageGB),
         },
       };
       // Save
@@ -227,7 +227,7 @@ export default function ConfigureApp({ appId }: { appId: string }) {
 
   function handleResourceChange(
     section: "requests" | "limits",
-    field: "cpu" | "memory" | "storage",
+    field: "cpuMilli" | "memoryMB" | "storageGB",
     value: string
   ) {
     setForm((f) =>
@@ -353,33 +353,41 @@ export default function ConfigureApp({ appId }: { appId: string }) {
               ? {
                   allowed: {
                     requests: {
-                      cpu: String(resourceLimits.allowed.requests.cpu),
-                      memory: String(resourceLimits.allowed.requests.memory),
+                      cpuMilli:
+                        Number(resourceLimits.allowed.requests.cpu) || 0,
+                      memoryMB:
+                        Number(resourceLimits.allowed.requests.memory) || 0,
+                      storageGB: 0,
                     },
                     limits: {
-                      cpu: String(resourceLimits.allowed.limits.cpu),
-                      memory: String(resourceLimits.allowed.limits.memory),
+                      cpuMilli: Number(resourceLimits.allowed.limits.cpu) || 0,
+                      memoryMB:
+                        Number(resourceLimits.allowed.limits.memory) || 0,
+                      storageGB: 0,
                     },
                   },
                   usage: {
                     requests: {
-                      cpu: String(resourceLimits.usage.requests.cpu),
-                      memory: String(resourceLimits.usage.requests.memory),
+                      cpuMilli: Number(resourceLimits.usage.requests.cpu) || 0,
+                      memoryMB:
+                        Number(resourceLimits.usage.requests.memory) || 0,
+                      storageGB: 0,
                     },
                     limits: {
-                      cpu: String(resourceLimits.usage.limits.cpu),
-                      memory: String(resourceLimits.usage.limits.memory),
+                      cpuMilli: Number(resourceLimits.usage.limits.cpu) || 0,
+                      memoryMB: Number(resourceLimits.usage.limits.memory) || 0,
+                      storageGB: 0,
                     },
                   },
                 }
               : {
                   allowed: {
-                    requests: { cpu: "0", memory: "0" },
-                    limits: { cpu: "0", memory: "0" },
+                    requests: { cpuMilli: 0, memoryMB: 0, storageGB: 0 },
+                    limits: { cpuMilli: 0, memoryMB: 0, storageGB: 0 },
                   },
                   usage: {
-                    requests: { cpu: "0", memory: "0" },
-                    limits: { cpu: "0", memory: "0" },
+                    requests: { cpuMilli: 0, memoryMB: 0, storageGB: 0 },
+                    limits: { cpuMilli: 0, memoryMB: 0, storageGB: 0 },
                   },
                 }
           }

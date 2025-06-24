@@ -104,21 +104,21 @@ const PlanTable: React.FC<PlanTableProps> = ({
                         <div>
                           <span className="font-semibold">Requests:</span>
                           <span className="ml-2">
-                            CPU: {formatCpu(plan.resources.requests?.cpu)},
+                            CPU: {formatCpu(plan.resources.requests?.cpuMilli)},
                             Memory:{" "}
-                            {formatMemory(plan.resources.requests?.memory)},
+                            {formatMemory(plan.resources.requests?.memoryMB)},
                             Storage:{" "}
-                            {formatStorage(plan.resources.requests?.storage)}
+                            {formatStorage(plan.resources.requests?.storageGB)}
                           </span>
                         </div>
                         <div>
                           <span className="font-semibold">Limits:</span>
                           <span className="ml-2">
-                            CPU: {formatCpu(plan.resources.limits?.cpu)},
+                            CPU: {formatCpu(plan.resources.limits?.cpuMilli)},
                             Memory:{" "}
-                            {formatMemory(plan.resources.limits?.memory)},
+                            {formatMemory(plan.resources.limits?.memoryMB)},
                             Storage:{" "}
-                            {formatStorage(plan.resources.limits?.storage)}
+                            {formatStorage(plan.resources.limits?.storageGB)}
                           </span>
                         </div>
                       </div>

@@ -69,38 +69,38 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
     setCpuRequestsValue,
     cpuRequestsUnit,
     setCpuRequestsUnit,
-  ] = useResourceInput(resources?.requests?.cpu, "m");
+  ] = useResourceInput(resources?.requests?.cpuMilli, "m");
   // CPU Limits
   const [cpuLimitsValue, setCpuLimitsValue, cpuLimitsUnit, setCpuLimitsUnit] =
-    useResourceInput(resources?.limits?.cpu, "m");
+    useResourceInput(resources?.limits?.cpuMilli, "m");
   // Memory Requests
   const [
     memoryRequestsValue,
     setMemoryRequestsValue,
     memoryRequestsUnit,
     setMemoryRequestsUnit,
-  ] = useResourceInput(resources?.requests?.memory, "MB");
+  ] = useResourceInput(resources?.requests?.memoryMB, "MB");
   // Memory Limits
   const [
     memoryLimitsValue,
     setMemoryLimitsValue,
     memoryLimitsUnit,
     setMemoryLimitsUnit,
-  ] = useResourceInput(resources?.limits?.memory, "MB");
+  ] = useResourceInput(resources?.limits?.memoryMB, "MB");
   // Storage Requests
   const [
     storageRequestsValue,
     setStorageRequestsValue,
     storageRequestsUnit,
     setStorageRequestsUnit,
-  ] = useResourceInput(resources?.requests?.storage, "GB");
+  ] = useResourceInput(resources?.requests?.storageGB, "GB");
   // Storage Limits
   const [
     storageLimitsValue,
     setStorageLimitsValue,
     storageLimitsUnit,
     setStorageLimitsUnit,
-  ] = useResourceInput(resources?.limits?.storage, "GB");
+  ] = useResourceInput(resources?.limits?.storageGB, "GB");
 
   return (
     <div className="mb-6">
@@ -111,14 +111,16 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
             Allowed Requests:
             <span className="font-semibold">
               {" "}
-              CPU {formatCpu(Number(resourceLimits.allowed.requests.cpu))}{" "}
+              CPU {formatCpu(
+                Number(resourceLimits.allowed.requests.cpuMilli)
+              )}{" "}
             </span>
             ,
             <span className="font-semibold">
               {" "}
               Memory{" "}
               {formatMemory(
-                Number(resourceLimits.allowed.requests.memory)
+                Number(resourceLimits.allowed.requests.memoryMB)
               )}{" "}
             </span>
             ,
@@ -126,7 +128,7 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
               {" "}
               Storage{" "}
               {formatStorage(
-                Number(resourceLimits.allowed.requests.storage)
+                Number(resourceLimits.allowed.requests.storageGB)
               )}{" "}
             </span>
           </div>
@@ -135,20 +137,24 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
             Used:
             <span className="font-semibold">
               {" "}
-              CPU {formatCpu(Number(resourceLimits.usage.requests.cpu))}{" "}
+              CPU {formatCpu(
+                Number(resourceLimits.usage.requests.cpuMilli)
+              )}{" "}
             </span>
             ,
             <span className="font-semibold">
               {" "}
               Memory{" "}
-              {formatMemory(Number(resourceLimits.usage.requests.memory))}{" "}
+              {formatMemory(
+                Number(resourceLimits.usage.requests.memoryMB)
+              )}{" "}
             </span>
             ,
             <span className="font-semibold">
               {" "}
               Storage{" "}
               {formatStorage(
-                Number(resourceLimits.usage.requests.storage)
+                Number(resourceLimits.usage.requests.storageGB)
               )}{" "}
             </span>
           </div>
@@ -157,20 +163,24 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
             Allowed Limits:
             <span className="font-semibold">
               {" "}
-              CPU {formatCpu(Number(resourceLimits.allowed.limits.cpu))}{" "}
+              CPU {formatCpu(
+                Number(resourceLimits.allowed.limits.cpuMilli)
+              )}{" "}
             </span>
             ,
             <span className="font-semibold">
               {" "}
               Memory{" "}
-              {formatMemory(Number(resourceLimits.allowed.limits.memory))}{" "}
+              {formatMemory(
+                Number(resourceLimits.allowed.limits.memoryMB)
+              )}{" "}
             </span>
             ,
             <span className="font-semibold">
               {" "}
               Storage{" "}
               {formatStorage(
-                Number(resourceLimits.allowed.limits.storage)
+                Number(resourceLimits.allowed.limits.storageGB)
               )}{" "}
             </span>
           </div>
@@ -179,20 +189,21 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
             Used:
             <span className="font-semibold">
               {" "}
-              CPU {formatCpu(Number(resourceLimits.usage.limits.cpu))}{" "}
+              CPU {formatCpu(Number(resourceLimits.usage.limits.cpuMilli))}{" "}
             </span>
             ,
             <span className="font-semibold">
               {" "}
-              Memory {formatMemory(
-                Number(resourceLimits.usage.limits.memory)
-              )}{" "}
+              Memory{" "}
+              {formatMemory(Number(resourceLimits.usage.limits.memoryMB))}{" "}
             </span>
             ,
             <span className="font-semibold">
               {" "}
               Storage{" "}
-              {formatStorage(Number(resourceLimits.usage.limits.storage))}{" "}
+              {formatStorage(
+                Number(resourceLimits.usage.limits.storageGB)
+              )}{" "}
             </span>
           </div>
         </div>
@@ -207,7 +218,7 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
                 setCpuRequestsValue(sanitized);
                 handleResourceChange(
                   "requests",
-                  "cpu",
+                  "cpuMilli",
                   sanitized ? sanitized + cpuRequestsUnit : ""
                 );
               }}
@@ -228,7 +239,7 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
                   setCpuRequestsUnit(unit);
                   handleResourceChange(
                     "requests",
-                    "cpu",
+                    "cpuMilli",
                     cpuRequestsValue ? cpuRequestsValue + unit : ""
                   );
                 },
@@ -246,7 +257,7 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
                 setMemoryRequestsValue(sanitized);
                 handleResourceChange(
                   "requests",
-                  "memory",
+                  "memoryMB",
                   sanitized ? sanitized + memoryRequestsUnit : ""
                 );
               }}
@@ -269,7 +280,7 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
                   setMemoryRequestsUnit(unit);
                   handleResourceChange(
                     "requests",
-                    "memory",
+                    "memoryMB",
                     memoryRequestsValue ? memoryRequestsValue + unit : ""
                   );
                 },
@@ -287,7 +298,7 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
                 setStorageRequestsValue(sanitized);
                 handleResourceChange(
                   "requests",
-                  "storage",
+                  "storageGB",
                   sanitized ? sanitized + storageRequestsUnit : ""
                 );
               }}
@@ -310,7 +321,7 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
                   setStorageRequestsUnit(unit);
                   handleResourceChange(
                     "requests",
-                    "storage",
+                    "storageGB",
                     storageRequestsValue ? storageRequestsValue + unit : ""
                   );
                 },
@@ -329,7 +340,7 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
                 setCpuLimitsValue(sanitized);
                 handleResourceChange(
                   "limits",
-                  "cpu",
+                  "cpuMilli",
                   sanitized ? sanitized + cpuLimitsUnit : ""
                 );
               }}
@@ -348,7 +359,7 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
                   setCpuLimitsUnit(unit);
                   handleResourceChange(
                     "limits",
-                    "cpu",
+                    "cpuMilli",
                     cpuLimitsValue ? cpuLimitsValue + unit : ""
                   );
                 },
@@ -366,7 +377,7 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
                 setMemoryLimitsValue(sanitized);
                 handleResourceChange(
                   "limits",
-                  "memory",
+                  "memoryMB",
                   sanitized ? sanitized + memoryLimitsUnit : ""
                 );
               }}
@@ -387,7 +398,7 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
                   setMemoryLimitsUnit(unit);
                   handleResourceChange(
                     "limits",
-                    "memory",
+                    "memoryMB",
                     memoryLimitsValue ? memoryLimitsValue + unit : ""
                   );
                 },
@@ -405,7 +416,7 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
                 setStorageLimitsValue(sanitized);
                 handleResourceChange(
                   "limits",
-                  "storage",
+                  "storageGB",
                   sanitized ? sanitized + storageLimitsUnit : ""
                 );
               }}
@@ -428,7 +439,7 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
                   setStorageLimitsUnit(unit);
                   handleResourceChange(
                     "limits",
-                    "storage",
+                    "storageGB",
                     storageLimitsValue ? storageLimitsValue + unit : ""
                   );
                 },

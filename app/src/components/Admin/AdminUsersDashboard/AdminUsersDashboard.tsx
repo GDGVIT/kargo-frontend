@@ -9,7 +9,6 @@ import UserManagement from "./UserManagement/UserManagement";
 import AnimatedButton from "../../ui/AnimatedButton/AnimatedButton";
 import useNotification from "../../ui/Notification/Notification";
 import Loader from "../../ui/Loader/Loader";
-import { formatMemory, formatStorage } from "../../../utils/resources";
 
 export default function AdminUsersDashboard() {
   const [users, setUsers] = useState<User[]>([]);
@@ -102,12 +101,14 @@ export default function AdminUsersDashboard() {
     setExtraResourcesEdit((prev) => ({
       ...prev,
       [user._id]: {
-        requestsCpu: user.extraResources?.requests?.cpu || "",
-        requestsMemory: user.extraResources?.requests?.memory || "",
-        requestsStorage: user.extraResources?.requests?.storage || "",
-        limitsCpu: user.extraResources?.limits?.cpu || "",
-        limitsMemory: user.extraResources?.limits?.memory || "",
-        limitsStorage: user.extraResources?.limits?.storage || "",
+        requestsCpu: user.extraResources?.requests?.cpuMilli?.toString() || "",
+        requestsMemory:
+          user.extraResources?.requests?.memoryMB?.toString() || "",
+        requestsStorage:
+          user.extraResources?.requests?.storageGB?.toString() || "",
+        limitsCpu: user.extraResources?.limits?.cpuMilli?.toString() || "",
+        limitsMemory: user.extraResources?.limits?.memoryMB?.toString() || "",
+        limitsStorage: user.extraResources?.limits?.storageGB?.toString() || "",
       },
     }));
   }
@@ -119,37 +120,68 @@ export default function AdminUsersDashboard() {
       await axios.put(`/api/users/${userId}/extra-resources`, {
         extraResources: {
           requests: {
-            cpu: data.requestsCpu,
-            memory: data.requestsMemory,
-            storage: data.requestsStorage,
+            cpuMilli:
+              data.requestsCpu === "" ? undefined : Number(data.requestsCpu),
+            memoryMB:
+              data.requestsMemory === ""
+                ? undefined
+                : Number(data.requestsMemory),
+            storageGB:
+              data.requestsStorage === ""
+                ? undefined
+                : Number(data.requestsStorage),
           },
           limits: {
-            cpu: data.limitsCpu,
-            memory: data.limitsMemory,
-            storage: data.limitsStorage,
+            cpuMilli:
+              data.limitsCpu === "" ? undefined : Number(data.limitsCpu),
+            memoryMB:
+              data.limitsMemory === "" ? undefined : Number(data.limitsMemory),
+            storageGB:
+              data.limitsStorage === ""
+                ? undefined
+                : Number(data.limitsStorage),
           },
         },
       });
-      setUsers((prev) =>
-        prev.map((u) =>
-          u._id === userId
-            ? {
-                ...u,
-                extraResources: {
-                  requests: {
-                    cpu: data.requestsCpu,
-                    memory: data.requestsMemory,
-                    storage: data.requestsStorage,
+      setUsers(
+        (prev) =>
+          prev.map((u) =>
+            u._id === userId
+              ? {
+                  ...u,
+                  extraResources: {
+                    requests: {
+                      cpuMilli:
+                        data.requestsCpu === ""
+                          ? undefined
+                          : Number(data.requestsCpu),
+                      memoryMB:
+                        data.requestsMemory === ""
+                          ? undefined
+                          : Number(data.requestsMemory),
+                      storageGB:
+                        data.requestsStorage === ""
+                          ? undefined
+                          : Number(data.requestsStorage),
+                    },
+                    limits: {
+                      cpuMilli:
+                        data.limitsCpu === ""
+                          ? undefined
+                          : Number(data.limitsCpu),
+                      memoryMB:
+                        data.limitsMemory === ""
+                          ? undefined
+                          : Number(data.limitsMemory),
+                      storageGB:
+                        data.limitsStorage === ""
+                          ? undefined
+                          : Number(data.limitsStorage),
+                    },
                   },
-                  limits: {
-                    cpu: data.limitsCpu,
-                    memory: data.limitsMemory,
-                    storage: data.limitsStorage,
-                  },
-                },
-              }
-            : u
-        )
+                }
+              : u
+          ) as User[]
       );
       setExtraResourcesEdit((prev) => {
         const copy = { ...prev };
@@ -232,14 +264,14 @@ export default function AdminUsersDashboard() {
     const planResources = planObj.resources;
     return {
       requests: {
-        cpu: planResources.requests?.cpu,
-        memory: planResources.requests?.memory,
-        storage: planResources.requests?.storage,
+        cpuMilli: planResources.requests?.cpuMilli,
+        memoryMB: planResources.requests?.memoryMB,
+        storageGB: planResources.requests?.storageGB,
       },
       limits: {
-        cpu: planResources.limits?.cpu,
-        memory: planResources.limits?.memory,
-        storage: planResources.limits?.storage,
+        cpuMilli: planResources.limits?.cpuMilli,
+        memoryMB: planResources.limits?.memoryMB,
+        storageGB: planResources.limits?.storageGB,
       },
     } as { requests: Resource; limits: Resource };
   }
@@ -277,58 +309,46 @@ export default function AdminUsersDashboard() {
             })
           }
           getRoleActions={getRoleActions}
-          // Pass allowedResources for each user
-          allowedResources={users.reduce(
-            (acc, user) => {
-              const planRes = getPlanResources(user, plans);
-              const extra = user.extraResources || { requests: {}, limits: {} };
-              function sumCpu(a?: string | number, b?: string | number) {
-                // Just add the two values and display as string
-                const av = typeof a === "number" ? a : Number(a) || 0;
-                const bv = typeof b === "number" ? b : Number(b) || 0;
-                return String(av + bv);
-              }
-              function sumMem(a?: string | number, b?: string | number) {
-                const av = typeof a === "number" ? a : parseFloat(a || "0");
-                const bv = typeof b === "number" ? b : parseFloat(b || "0");
-                return formatMemory(av + bv);
-              }
-              function sumStorage(a?: string | number, b?: string | number) {
-                const av = typeof a === "number" ? a : parseFloat(a || "0");
-                const bv = typeof b === "number" ? b : parseFloat(b || "0");
-                return formatStorage(av + bv);
-              }
-              acc[user._id] = {
-                requests: {
-                  cpu: sumCpu(planRes.requests.cpu, extra.requests?.cpu),
-                  memory: sumMem(
-                    planRes.requests.memory,
-                    extra.requests?.memory
-                  ),
-                  storage: sumStorage(
-                    planRes.requests.storage,
-                    extra.requests?.storage
-                  ),
-                },
-                limits: {
-                  cpu: sumCpu(planRes.limits.cpu, extra.limits?.cpu),
-                  memory: sumMem(planRes.limits.memory, extra.limits?.memory),
-                  storage: sumStorage(
-                    planRes.limits.storage,
-                    extra.limits?.storage
-                  ),
-                },
-              };
-              return acc;
-            },
-            {} as Record<
-              string,
-              {
-                requests: { cpu: string; memory: string; storage: string };
-                limits: { cpu: string; memory: string; storage: string };
-              }
-            >
-          )}
+          allowedResources={users.reduce((acc, user) => {
+            const planRes = getPlanResources(user, plans);
+            const extra = user.extraResources || { requests: {}, limits: {} };
+            function sumNum(a?: string | number, b?: string | number) {
+              const av = typeof a === "number" ? a : Number(a) || 0;
+              const bv = typeof b === "number" ? b : Number(b) || 0;
+              return av + bv;
+            }
+            acc[user._id] = {
+              requests: {
+                cpuMilli: sumNum(
+                  planRes.requests.cpuMilli,
+                  extra.requests?.cpuMilli
+                ),
+                memoryMB: sumNum(
+                  planRes.requests.memoryMB,
+                  extra.requests?.memoryMB
+                ),
+                storageGB: sumNum(
+                  planRes.requests.storageGB,
+                  extra.requests?.storageGB
+                ),
+              },
+              limits: {
+                cpuMilli: sumNum(
+                  planRes.limits.cpuMilli,
+                  extra.limits?.cpuMilli
+                ),
+                memoryMB: sumNum(
+                  planRes.limits.memoryMB,
+                  extra.limits?.memoryMB
+                ),
+                storageGB: sumNum(
+                  planRes.limits.storageGB,
+                  extra.limits?.storageGB
+                ),
+              },
+            };
+            return acc;
+          }, {} as Record<string, { requests: Resource; limits: Resource }>)}
         />
       )}
     </div>

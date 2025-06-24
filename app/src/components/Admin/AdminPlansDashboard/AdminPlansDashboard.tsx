@@ -65,12 +65,18 @@ export default function AdminPlansDashboard() {
       setPlanForm({
         name: plan.name,
         description: plan.description || "",
-        requestsCpu: (plan.resources?.requests as Resource)?.cpu || "",
-        requestsMemory: (plan.resources?.requests as Resource)?.memory || "",
-        requestsStorage: (plan.resources?.requests as Resource)?.storage || "",
-        limitsCpu: (plan.resources?.limits as Resource)?.cpu || "",
-        limitsMemory: (plan.resources?.limits as Resource)?.memory || "",
-        limitsStorage: (plan.resources?.limits as Resource)?.storage || "",
+        requestsCpu:
+          (plan.resources?.requests as Resource)?.cpuMilli?.toString() || "",
+        requestsMemory:
+          (plan.resources?.requests as Resource)?.memoryMB?.toString() || "",
+        requestsStorage:
+          (plan.resources?.requests as Resource)?.storageGB?.toString() || "",
+        limitsCpu:
+          (plan.resources?.limits as Resource)?.cpuMilli?.toString() || "",
+        limitsMemory:
+          (plan.resources?.limits as Resource)?.memoryMB?.toString() || "",
+        limitsStorage:
+          (plan.resources?.limits as Resource)?.storageGB?.toString() || "",
         isDefault: !!plan.isDefault,
         isActive: plan.isActive !== false,
         price: plan.price ? String(plan.price) : "",
@@ -103,14 +109,30 @@ export default function AdminPlansDashboard() {
       description: planForm.description,
       resources: {
         requests: {
-          cpu: planForm.requestsCpu,
-          memory: planForm.requestsMemory,
-          storage: planForm.requestsStorage,
+          cpuMilli:
+            planForm.requestsCpu === ""
+              ? undefined
+              : Number(planForm.requestsCpu),
+          memoryMB:
+            planForm.requestsMemory === ""
+              ? undefined
+              : Number(planForm.requestsMemory),
+          storageGB:
+            planForm.requestsStorage === ""
+              ? undefined
+              : Number(planForm.requestsStorage),
         } as Resource,
         limits: {
-          cpu: planForm.limitsCpu,
-          memory: planForm.limitsMemory,
-          storage: planForm.limitsStorage,
+          cpuMilli:
+            planForm.limitsCpu === "" ? undefined : Number(planForm.limitsCpu),
+          memoryMB:
+            planForm.limitsMemory === ""
+              ? undefined
+              : Number(planForm.limitsMemory),
+          storageGB:
+            planForm.limitsStorage === ""
+              ? undefined
+              : Number(planForm.limitsStorage),
         } as Resource,
       },
       isDefault: planForm.isDefault,
