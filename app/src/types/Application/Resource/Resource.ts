@@ -1,5 +1,5 @@
 export default interface Resource {
-  cpu?: string;
-  memory?: string;
-  storage?: string;
+  cpuMilli?: number;
+  memoryMB?: number;
+  storageGB?: number;
 }
