@@ -1,18 +1,17 @@
 import React, { useState } from "react";
-import Modal from "../../../ui/Modal/Modal";
-import ExtraResourcesEditor from "../ExtraResourcesEditor/ExtraResourcesEditor";
 import Card from "../../../ui/Card/Card";
+import Modal from "../../../ui/Modal/Modal";
 import Select from "../../../ui/Select/Select";
 import AnimatedButton from "../../../ui/AnimatedButton/AnimatedButton";
 import { HiPencil } from "react-icons/hi";
-import type UserTableProps from "../../../../types/User/UserTableProps";
-import type User from "../../../../types/User/User";
-import type Resource from "../../../../types/Application/Resource/Resource";
+import ExtraResourcesEditor from "../ExtraResourcesEditor/ExtraResourcesEditor";
 import {
   formatCpu,
   formatMemory,
   formatStorage,
 } from "../../../../utils/resources";
+import type UserTableProps from "../../../../types/User/UserTableProps";
+import type User from "../../../../types/User/User";
 
 const UserTable: React.FC<UserTableProps> = ({
   users,
@@ -133,23 +132,28 @@ const UserTable: React.FC<UserTableProps> = ({
                     <div className="text-xs">
                       <div>
                         <b>Requests:</b> CPU:{" "}
-                        {formatCpu(allowedResources[user._id].requests.cpu)},
-                        Mem:{" "}
+                        {formatCpu(
+                          allowedResources[user._id].requests.cpuMilli
+                        )}
+                        , Mem:{" "}
                         {formatMemory(
-                          allowedResources[user._id].requests.memory
+                          allowedResources[user._id].requests.memoryMB
                         )}
                         , Storage:{" "}
                         {formatStorage(
-                          allowedResources[user._id].requests.storage
+                          allowedResources[user._id].requests.storageGB
                         )}
                       </div>
                       <div>
                         <b>Limits:</b> CPU:{" "}
-                        {formatCpu(allowedResources[user._id].limits.cpu)}, Mem:{" "}
-                        {formatMemory(allowedResources[user._id].limits.memory)}
+                        {formatCpu(allowedResources[user._id].limits.cpuMilli)},
+                        Mem:{" "}
+                        {formatMemory(
+                          allowedResources[user._id].limits.memoryMB
+                        )}
                         , Storage:{" "}
                         {formatStorage(
-                          allowedResources[user._id].limits.storage
+                          allowedResources[user._id].limits.storageGB
                         )}
                       </div>
                     </div>
@@ -163,31 +167,20 @@ const UserTable: React.FC<UserTableProps> = ({
                     <div className="text-xs mb-1">
                       <div>
                         <b>Requests:</b> CPU:{" "}
-                        {formatCpu(
-                          (user.extraResources?.requests as Resource)?.cpu
-                        )}
-                        , Mem:{" "}
-                        {formatMemory(
-                          (user.extraResources?.requests as Resource)?.memory
-                        )}
-                        , Storage:{" "}
+                        {formatCpu(user.extraResources?.requests?.cpuMilli)},
+                        Mem:{" "}
+                        {formatMemory(user.extraResources?.requests?.memoryMB)},
+                        Storage:{" "}
                         {formatStorage(
-                          (user.extraResources?.requests as Resource)?.storage
+                          user.extraResources?.requests?.storageGB
                         )}
                       </div>
                       <div>
                         <b>Limits:</b> CPU:{" "}
-                        {formatCpu(
-                          (user.extraResources?.limits as Resource)?.cpu
-                        )}
-                        , Mem:{" "}
-                        {formatMemory(
-                          (user.extraResources?.limits as Resource)?.memory
-                        )}
-                        , Storage:{" "}
-                        {formatStorage(
-                          (user.extraResources?.limits as Resource)?.storage
-                        )}
+                        {formatCpu(user.extraResources?.limits?.cpuMilli)}, Mem:{" "}
+                        {formatMemory(user.extraResources?.limits?.memoryMB)},
+                        Storage:{" "}
+                        {formatStorage(user.extraResources?.limits?.storageGB)}
                       </div>
                     </div>
                     <AnimatedButton

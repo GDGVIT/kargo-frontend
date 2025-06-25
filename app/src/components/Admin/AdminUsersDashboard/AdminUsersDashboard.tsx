@@ -2,13 +2,13 @@
 
 import { useEffect, useState } from "react";
 import axios from "../../../utils/api";
+import UserManagement from "./UserManagement/UserManagement";
+import Loader from "../../ui/Loader/Loader";
+import { parseCpu, parseMemory, parseStorage } from "../../../utils/resources";
 import type Plan from "../../../types/Plan/Plan";
 import type User from "../../../types/User/User";
 import type Resource from "../../../types/Application/Resource/Resource";
-import UserManagement from "./UserManagement/UserManagement";
-import AnimatedButton from "../../ui/AnimatedButton/AnimatedButton";
 import useNotification from "../../ui/Notification/Notification";
-import Loader from "../../ui/Loader/Loader";
 
 export default function AdminUsersDashboard() {
   const [users, setUsers] = useState<User[]>([]);
@@ -36,6 +36,7 @@ export default function AdminUsersDashboard() {
   useEffect(() => {
     async function fetchUsers() {
       try {
+        setLoading(true);
         const res = await axios.get("/api/users");
         setUsers(res.data.users || []);
         const me = await axios.get("/api/auth/me");
@@ -121,25 +122,27 @@ export default function AdminUsersDashboard() {
         extraResources: {
           requests: {
             cpuMilli:
-              data.requestsCpu === "" ? undefined : Number(data.requestsCpu),
+              data.requestsCpu === "" ? undefined : parseCpu(data.requestsCpu),
             memoryMB:
               data.requestsMemory === ""
                 ? undefined
-                : Number(data.requestsMemory),
+                : parseMemory(data.requestsMemory),
             storageGB:
               data.requestsStorage === ""
                 ? undefined
-                : Number(data.requestsStorage),
+                : parseStorage(data.requestsStorage),
           },
           limits: {
             cpuMilli:
-              data.limitsCpu === "" ? undefined : Number(data.limitsCpu),
+              data.limitsCpu === "" ? undefined : parseCpu(data.limitsCpu),
             memoryMB:
-              data.limitsMemory === "" ? undefined : Number(data.limitsMemory),
+              data.limitsMemory === ""
+                ? undefined
+                : parseMemory(data.limitsMemory),
             storageGB:
               data.limitsStorage === ""
                 ? undefined
-                : Number(data.limitsStorage),
+                : parseStorage(data.limitsStorage),
           },
         },
       });
@@ -154,29 +157,29 @@ export default function AdminUsersDashboard() {
                       cpuMilli:
                         data.requestsCpu === ""
                           ? undefined
-                          : Number(data.requestsCpu),
+                          : parseCpu(data.requestsCpu),
                       memoryMB:
                         data.requestsMemory === ""
                           ? undefined
-                          : Number(data.requestsMemory),
+                          : parseMemory(data.requestsMemory),
                       storageGB:
                         data.requestsStorage === ""
                           ? undefined
-                          : Number(data.requestsStorage),
+                          : parseStorage(data.requestsStorage),
                     },
                     limits: {
                       cpuMilli:
                         data.limitsCpu === ""
                           ? undefined
-                          : Number(data.limitsCpu),
+                          : parseCpu(data.limitsCpu),
                       memoryMB:
                         data.limitsMemory === ""
                           ? undefined
-                          : Number(data.limitsMemory),
+                          : parseMemory(data.limitsMemory),
                       storageGB:
                         data.limitsStorage === ""
                           ? undefined
-                          : Number(data.limitsStorage),
+                          : parseStorage(data.limitsStorage),
                     },
                   },
                 }
@@ -188,8 +191,9 @@ export default function AdminUsersDashboard() {
         delete copy[userId];
         return copy;
       });
+      notify("Extra resources updated", "success");
     } catch {
-      alert("Failed to update extra resources");
+      notify("Failed to update extra resources", "error");
     } finally {
       setExtraResourcesSaving(null);
     }
@@ -203,44 +207,44 @@ export default function AdminUsersDashboard() {
       : "";
     if (user.role === "user") {
       return (
-        <AnimatedButton
+        <button
           className={`!px-2 !py-1 !text-xs !rounded !bg-amber-500 hover:!bg-amber-600 mr-2 ${disabledClass}`}
           onClick={() => handleRoleChange(user._id, "admin")}
-          icon={null}
+          disabled={isDisabled}
         >
           Promote to Admin
-        </AnimatedButton>
+        </button>
       );
     }
     if (user.role === "admin") {
       return (
         <>
-          <AnimatedButton
+          <button
             className={`!px-2 !py-1 !text-xs !rounded !bg-zinc-700 hover:!bg-zinc-800 mr-2 ${disabledClass}`}
             onClick={() => handleRoleChange(user._id, "user")}
-            icon={null}
+            disabled={isDisabled}
           >
             Demote to User
-          </AnimatedButton>
-          <AnimatedButton
+          </button>
+          <button
             className={`!px-2 !py-1 !text-xs !rounded !bg-amber-500 hover:!bg-amber-600 ${disabledClass}`}
             onClick={() => handleRoleChange(user._id, "superadmin")}
-            icon={null}
+            disabled={isDisabled}
           >
             Promote to Superadmin
-          </AnimatedButton>
+          </button>
         </>
       );
     }
     if (user.role === "superadmin") {
       return (
-        <AnimatedButton
+        <button
           className={`!px-2 !py-1 !text-xs !rounded !bg-zinc-700 hover:!bg-zinc-800 ${disabledClass}`}
           onClick={() => handleRoleChange(user._id, "admin")}
-          icon={null}
+          disabled={isDisabled}
         >
           Demote to Admin
-        </AnimatedButton>
+        </button>
       );
     }
     return null;
@@ -312,9 +316,9 @@ export default function AdminUsersDashboard() {
           allowedResources={users.reduce((acc, user) => {
             const planRes = getPlanResources(user, plans);
             const extra = user.extraResources || { requests: {}, limits: {} };
-            function sumNum(a?: string | number, b?: string | number) {
-              const av = typeof a === "number" ? a : Number(a) || 0;
-              const bv = typeof b === "number" ? b : Number(b) || 0;
+            function sumNum(a?: number, b?: number) {
+              const av = typeof a === "number" ? a : 0;
+              const bv = typeof b === "number" ? b : 0;
               return av + bv;
             }
             acc[user._id] = {

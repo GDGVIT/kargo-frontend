@@ -52,39 +52,50 @@ const PlanFormModal: React.FC<PlanFormModalProps> = ({
             label="Requests CPU"
             value={planForm.requestsCpu}
             onChange={(e) => {
-              const val = e.target.value.replace(/[^\d.]/g, "");
-              setPlanForm((f) => ({ ...f, requestsCpu: val }));
+              setPlanForm((f) => ({ ...f, requestsCpu: e.target.value }));
             }}
-            placeholder="CPU"
+            placeholder="CPU (e.g. 0.5, 500m)"
             title="Requests CPU"
-            type="number"
+            type="text"
             icon={<FaMicrochip />}
-            helperText={formatCpu(planForm.requestsCpu)}
+            helperText={formatCpu(
+              planForm.requestsCpu === "" || isNaN(Number(planForm.requestsCpu))
+                ? undefined
+                : Number(planForm.requestsCpu)
+            )}
           />
           <Input
             label="Requests Memory"
             value={planForm.requestsMemory}
             onChange={(e) => {
-              const val = e.target.value.replace(/[^\d.]/g, "");
-              setPlanForm((f) => ({ ...f, requestsMemory: val }));
+              setPlanForm((f) => ({ ...f, requestsMemory: e.target.value }));
             }}
-            placeholder="Memory"
+            placeholder="Memory (e.g. 512Mi, 2Gi)"
             title="Requests Memory"
-            type="number"
+            type="text"
             icon={<FaMemory />}
-            helperText={formatMemory(planForm.requestsMemory)}
+            helperText={formatMemory(
+              planForm.requestsMemory === "" ||
+                isNaN(Number(planForm.requestsMemory))
+                ? undefined
+                : Number(planForm.requestsMemory)
+            )}
           />
           <Input
             label="Requests Storage"
             value={planForm.requestsStorage}
             onChange={(e) => {
-              const val = e.target.value.replace(/[^\d.]/g, "");
-              setPlanForm((f) => ({ ...f, requestsStorage: val }));
+              setPlanForm((f) => ({ ...f, requestsStorage: e.target.value }));
             }}
-            placeholder="Storage"
+            placeholder="Storage (e.g. 10Gi, 10000Mi)"
             title="Requests Storage"
-            type="number"
-            helperText={formatStorage(planForm.requestsStorage)}
+            type="text"
+            helperText={formatStorage(
+              planForm.requestsStorage === "" ||
+                isNaN(Number(planForm.requestsStorage))
+                ? undefined
+                : Number(planForm.requestsStorage)
+            )}
           />
         </div>
         <div className="flex gap-4">
@@ -92,39 +103,50 @@ const PlanFormModal: React.FC<PlanFormModalProps> = ({
             label="Limits CPU"
             value={planForm.limitsCpu}
             onChange={(e) => {
-              const val = e.target.value.replace(/[^\d.]/g, "");
-              setPlanForm((f) => ({ ...f, limitsCpu: val }));
+              setPlanForm((f) => ({ ...f, limitsCpu: e.target.value }));
             }}
-            placeholder="CPU"
+            placeholder="CPU (e.g. 1, 1000m)"
             title="Limits CPU"
-            type="number"
+            type="text"
             icon={<FaMicrochip />}
-            helperText={formatCpu(planForm.limitsCpu)}
+            helperText={formatCpu(
+              planForm.limitsCpu === "" || isNaN(Number(planForm.limitsCpu))
+                ? undefined
+                : Number(planForm.limitsCpu)
+            )}
           />
           <Input
             label="Limits Memory"
             value={planForm.limitsMemory}
             onChange={(e) => {
-              const val = e.target.value.replace(/[^\d.]/g, "");
-              setPlanForm((f) => ({ ...f, limitsMemory: val }));
+              setPlanForm((f) => ({ ...f, limitsMemory: e.target.value }));
             }}
-            placeholder="Memory"
+            placeholder="Memory (e.g. 1024Mi, 4Gi)"
             title="Limits Memory"
-            type="number"
+            type="text"
             icon={<FaMemory />}
-            helperText={formatMemory(planForm.limitsMemory)}
+            helperText={formatMemory(
+              planForm.limitsMemory === "" ||
+                isNaN(Number(planForm.limitsMemory))
+                ? undefined
+                : Number(planForm.limitsMemory)
+            )}
           />
           <Input
             label="Limits Storage"
             value={planForm.limitsStorage}
             onChange={(e) => {
-              const val = e.target.value.replace(/[^\d.]/g, "");
-              setPlanForm((f) => ({ ...f, limitsStorage: val }));
+              setPlanForm((f) => ({ ...f, limitsStorage: e.target.value }));
             }}
-            placeholder="Storage"
+            placeholder="Storage (e.g. 20Gi, 20000Mi)"
             title="Limits Storage"
-            type="number"
-            helperText={formatStorage(planForm.limitsStorage)}
+            type="text"
+            helperText={formatStorage(
+              planForm.limitsStorage === "" ||
+                isNaN(Number(planForm.limitsStorage))
+                ? undefined
+                : Number(planForm.limitsStorage)
+            )}
           />
         </div>
         <Input

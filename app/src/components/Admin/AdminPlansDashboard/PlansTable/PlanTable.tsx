@@ -11,6 +11,9 @@ import {
   formatMemory,
   formatStorage,
   formatMoney,
+  parseCpu,
+  parseMemory,
+  parseStorage,
 } from "../../../../utils/resources";
 
 const PlanTable: React.FC<PlanTableProps> = ({
@@ -104,21 +107,35 @@ const PlanTable: React.FC<PlanTableProps> = ({
                         <div>
                           <span className="font-semibold">Requests:</span>
                           <span className="ml-2">
-                            CPU: {formatCpu(plan.resources.requests?.cpuMilli)},
-                            Memory:{" "}
-                            {formatMemory(plan.resources.requests?.memoryMB)},
-                            Storage:{" "}
-                            {formatStorage(plan.resources.requests?.storageGB)}
+                            CPU:{" "}
+                            {formatCpu(
+                              parseCpu(plan.resources.requests?.cpuMilli)
+                            )}
+                            , Memory:{" "}
+                            {formatMemory(
+                              parseMemory(plan.resources.requests?.memoryMB)
+                            )}
+                            , Storage:{" "}
+                            {formatStorage(
+                              parseStorage(plan.resources.requests?.storageGB)
+                            )}
                           </span>
                         </div>
                         <div>
                           <span className="font-semibold">Limits:</span>
                           <span className="ml-2">
-                            CPU: {formatCpu(plan.resources.limits?.cpuMilli)},
-                            Memory:{" "}
-                            {formatMemory(plan.resources.limits?.memoryMB)},
-                            Storage:{" "}
-                            {formatStorage(plan.resources.limits?.storageGB)}
+                            CPU:{" "}
+                            {formatCpu(
+                              parseCpu(plan.resources.limits?.cpuMilli)
+                            )}
+                            , Memory:{" "}
+                            {formatMemory(
+                              parseMemory(plan.resources.limits?.memoryMB)
+                            )}
+                            , Storage:{" "}
+                            {formatStorage(
+                              parseStorage(plan.resources.limits?.storageGB)
+                            )}
                           </span>
                         </div>
                       </div>
