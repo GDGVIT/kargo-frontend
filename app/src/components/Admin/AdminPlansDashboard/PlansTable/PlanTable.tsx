@@ -10,6 +10,7 @@ import {
   formatCpu,
   formatMemory,
   formatStorage,
+  formatPrice,
 } from "../../../../utils/resources";
 
 const PlanTable: React.FC<PlanTableProps> = ({
@@ -119,7 +120,9 @@ const PlanTable: React.FC<PlanTableProps> = ({
                       "-"
                     )}
                   </td>
-                  <td className="p-2 font-mono text-green-400">{plan.price}</td>
+                  <td className="p-2 font-mono text-green-400">
+                    {formatPrice(plan.price)}
+                  </td>
                   <td className="p-2 text-center align-middle">
                     <div className="flex items-center justify-center h-full min-h-[28px]">
                       {plan.isDefault ? (

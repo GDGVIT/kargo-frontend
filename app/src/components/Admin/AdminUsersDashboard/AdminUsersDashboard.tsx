@@ -8,6 +8,7 @@ import type Plan from "../../../types/Plan/Plan";
 import type User from "../../../types/User/User";
 import type Resource from "../../../types/Application/Resource/Resource";
 import useNotification from "../../ui/Notification/Notification";
+import { formatPrice } from "../../../utils/resources";
 
 export default function AdminUsersDashboard() {
   const [users, setUsers] = useState<User[]>([]);
@@ -219,19 +220,11 @@ export default function AdminUsersDashboard() {
 
   function getPlanResources(user: User, plans: Plan[]) {
     let planObj = user.plan;
-    if (!planObj)
-      return {
-        requests: {} as Resource,
-        limits: {} as Resource,
-      };
+    if (!planObj) return null;
     if (typeof planObj === "string") {
       planObj = plans.find((p) => p._id === planObj);
     }
-    if (!planObj || !planObj.resources)
-      return {
-        requests: {} as Resource,
-        limits: {} as Resource,
-      };
+    if (!planObj || !planObj.resources) return null;
     const planResources = planObj.resources;
     return {
       requests: {
@@ -244,7 +237,14 @@ export default function AdminUsersDashboard() {
         memoryMB: planResources.limits?.memoryMB,
         storageGB: planResources.limits?.storageGB,
       },
-    } as { requests: Resource; limits: Resource };
+      price: planObj.price,
+      formattedPrice: formatPrice(planObj.price),
+    } as {
+      requests: Resource;
+      limits: Resource;
+      price?: number;
+      formattedPrice?: string;
+    };
   }
 
   return (
@@ -288,36 +288,38 @@ export default function AdminUsersDashboard() {
               const bv = typeof b === "number" ? b : 0;
               return av + bv;
             }
-            acc[user._id] = {
-              requests: {
-                cpuMilli: sumNum(
-                  planRes.requests.cpuMilli,
-                  extra.requests?.cpuMilli
-                ),
-                memoryMB: sumNum(
-                  planRes.requests.memoryMB,
-                  extra.requests?.memoryMB
-                ),
-                storageGB: sumNum(
-                  planRes.requests.storageGB,
-                  extra.requests?.storageGB
-                ),
-              },
-              limits: {
-                cpuMilli: sumNum(
-                  planRes.limits.cpuMilli,
-                  extra.limits?.cpuMilli
-                ),
-                memoryMB: sumNum(
-                  planRes.limits.memoryMB,
-                  extra.limits?.memoryMB
-                ),
-                storageGB: sumNum(
-                  planRes.limits.storageGB,
-                  extra.limits?.storageGB
-                ),
-              },
-            };
+            if (planRes) {
+              acc[user._id] = {
+                requests: {
+                  cpuMilli: sumNum(
+                    planRes.requests.cpuMilli,
+                    extra.requests?.cpuMilli
+                  ),
+                  memoryMB: sumNum(
+                    planRes.requests.memoryMB,
+                    extra.requests?.memoryMB
+                  ),
+                  storageGB: sumNum(
+                    planRes.requests.storageGB,
+                    extra.requests?.storageGB
+                  ),
+                },
+                limits: {
+                  cpuMilli: sumNum(
+                    planRes.limits.cpuMilli,
+                    extra.limits?.cpuMilli
+                  ),
+                  memoryMB: sumNum(
+                    planRes.limits.memoryMB,
+                    extra.limits?.memoryMB
+                  ),
+                  storageGB: sumNum(
+                    planRes.limits.storageGB,
+                    extra.limits?.storageGB
+                  ),
+                },
+              };
+            }
             return acc;
           }, {} as Record<string, { requests: Resource; limits: Resource }>)}
         />
