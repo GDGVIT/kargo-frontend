@@ -1,56 +1,51 @@
-// Utility to format CPU (e.g., 500m -> 0.5 vCPU, 50 -> 0.05 vCPU, 2 -> 2 vCPU)
-export function formatCpu(cpu?: string | number): string {
-  if (cpu === undefined || cpu === null || cpu === "") return "0 vCPU";
+// utils/resources.ts
+// Utility functions to format resource values for display
 
-  const toVcpu = (val: number): string => `${(val / 1000).toFixed(2)} vCPU`;
-
-  if (typeof cpu === "number") {
-    return toVcpu(cpu);
+/**
+ * Format CPU value in milli (e.g., 1000 = 1 vCPU, 20 = 20m)
+ */
+export function formatCpu(cpuMilli?: number | null): string {
+  if (cpuMilli == null || isNaN(cpuMilli)) return "0 m";
+  if (cpuMilli >= 1000) {
+    // Show in vCPU
+    return `${(cpuMilli / 1000).toFixed(cpuMilli % 1000 === 0 ? 0 : 2)} vCPU`;
   }
-
-  if (typeof cpu === "string") {
-    if (cpu.endsWith("m")) {
-      const val = parseFloat(cpu.replace("m", ""));
-      if (!isNaN(val)) return toVcpu(val);
-      return cpu;
-    }
-
-    const val = parseFloat(cpu);
-    if (!isNaN(val)) return toVcpu(val);
-    return cpu;
-  }
-
-  return String(cpu);
+  return `${cpuMilli}m`;
 }
 
-// Utility to format memory (e.g., 1024Mi -> 1 GiB, 512Mi -> 0.5 GiB, 2Gi -> 2 GiB, 256 -> 256 MiB)
-export function formatMemory(memory?: string | number): string {
-  if (memory === undefined || memory === null || memory === "") return "0 MiB";
-
-  const toGiB = (val: number): string => `${(val / 1024).toFixed(2)} GiB`;
-
-  if (typeof memory === "number") {
-    return memory >= 1024 ? toGiB(memory) : `${memory} MiB`;
+/**
+ * Format memory value in MB (e.g., 1024 = 1 GB, 512 = 512 MB)
+ */
+export function formatMemory(memoryMB?: number | null): string {
+  if (memoryMB == null || isNaN(memoryMB)) return "0 MB";
+  if (memoryMB >= 1024) {
+    return `${(memoryMB / 1024).toFixed(memoryMB % 1024 === 0 ? 0 : 2)} GB`;
   }
+  return `${memoryMB} MB`;
+}
 
-  if (typeof memory === "string") {
-    if (memory.endsWith("Mi")) {
-      const val = parseFloat(memory.replace("Mi", ""));
-      return isNaN(val) ? memory : toGiB(val);
-    }
-
-    if (memory.endsWith("Gi")) {
-      const val = parseFloat(memory.replace("Gi", ""));
-      return isNaN(val) ? memory : `${val} GiB`;
-    }
-
-    const val = parseFloat(memory);
-    if (!isNaN(val)) {
-      return val >= 1024 ? toGiB(val) : `${val} MiB`;
-    }
-
-    return memory;
+/**
+ * Format storage value in GB (e.g., 10 = 10 GB, 0.5 = 512 MB)
+ */
+export function formatStorage(storageGB?: number | null): string {
+  if (storageGB == null || isNaN(storageGB)) return "0 GB";
+  if (storageGB >= 1) {
+    return `${storageGB % 1 === 0 ? storageGB : storageGB.toFixed(2)} GB`;
   }
+  // Show in MB if less than 1 GB
+  return `${Math.round(storageGB * 1024)} MB`;
+}
 
-  return String(memory);
+/**
+ * Format price in paise to INR string (e.g., 49900 = ₹499.00)
+ */
+export function formatPrice(pricePaise?: number | string | null): string {
+  if (pricePaise == null || pricePaise === "" || isNaN(Number(pricePaise)))
+    return "₹0.00";
+  const price =
+    typeof pricePaise === "string" ? parseInt(pricePaise, 10) : pricePaise;
+  return `₹${(price / 100).toLocaleString("en-IN", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  })}`;
 }

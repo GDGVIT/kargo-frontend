@@ -1,6 +1,6 @@
 import PageHeading from "../../components/ui/PageHeading/PageHeading";
 import Card from "../../components/ui/Card/Card";
-import { RiWifiOffLine } from "react-icons/ri";
+import { FiWifiOff } from "react-icons/fi";
 
 const title = "Offline Mode";
 const description =
@@ -14,11 +14,7 @@ export const metadata = {
 export default function OfflinePage() {
   return (
     <main>
-      <PageHeading
-        title={title}
-        subtitle={description}
-        icon={<RiWifiOffLine />}
-      />
+      <PageHeading title={title} subtitle={description} icon={<FiWifiOff />} />
       <section>
         <Card className=" p-8 rounded shadow-md">
           <h1 className="text-3xl font-bold mb-4 text-gray-100">

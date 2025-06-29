@@ -25,7 +25,7 @@ export default function Authenticate() {
 
   useEffect(() => {
     if (user) {
-      router.replace("/profile");
+      router.replace("/settings");
     }
   }, [user, router]);
 

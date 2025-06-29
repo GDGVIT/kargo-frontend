@@ -44,8 +44,11 @@ export default function Applications() {
   }
 
   return (
-    <section>
-      <div className="flex items-center justify-end mb-6">
+    <section className="px-2 sm:px-4 md:px-8 lg:px-16 py-2">
+      <div className="flex flex-col sm:flex-row items-center justify-between mb-6 gap-3">
+        <h1 className="text-xl font-bold text-white mb-2 sm:mb-0">
+          Applications
+        </h1>
         <AnimatedButton
           onClick={() => router.push("/applications/add")}
           icon={<FaPlus />}
@@ -63,10 +66,10 @@ export default function Applications() {
           Are you sure you want to delete this application? This action cannot
           be undone.
         </div>
-        <div className="flex gap-3 justify-end">
+        <div className="flex flex-col sm:flex-row gap-3 justify-end">
           <AnimatedButton
             onClick={() => setConfirmDeleteId(null)}
-            className=""
+            className="w-full sm:w-auto"
             icon={null}
             title="Cancel"
             variant="secondary"
@@ -75,7 +78,7 @@ export default function Applications() {
           </AnimatedButton>
           <AnimatedButton
             onClick={() => handleDeleteApp(confirmDeleteId!)}
-            className="font-semibold"
+            className="font-semibold w-full sm:w-auto"
             icon={<FaTrash />}
             disabled={loading}
             title="Delete"
@@ -94,7 +97,7 @@ export default function Applications() {
             your first app!
           </div>
         ) : (
-          <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          <div className="grid gap-6 sm:gap-8 grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             {apps.map(
               (
                 app: {
@@ -107,19 +110,19 @@ export default function Applications() {
               ) => (
                 <div
                   key={app._id}
-                  className="bg-[var(--card-background)] rounded-xl shadow-xl p-6 cursor-pointer hover:scale-[1.03] hover:shadow-2xl transition-transform border border-gray-700 group relative overflow-hidden animate-pop"
+                  className="bg-[var(--card-background)] rounded-xl shadow-xl p-4 sm:p-6 cursor-pointer hover:scale-[1.03] hover:shadow-2xl transition-transform border border-gray-700 group relative overflow-hidden animate-pop min-h-[120px] flex flex-col justify-between"
                   onClick={() => router.push(`/applications/${app._id}`)}
                   data-animate-delay={idx * 60}
                 >
+                  {/* Status indicator placeholder */}
                   <div title="Active" />
-                  <h2 className="text-lg font-semibold text-white mb-1">
+                  <h2 className="text-base sm:text-lg font-semibold text-white mb-1 truncate">
                     {app.name}
                   </h2>
-                  <div className="text-gray-300 text-sm mb-1">
+                  <div className="text-gray-300 text-xs sm:text-sm mb-1 truncate">
                     {app.imageUrl}:{app.imageTag}
                   </div>
-
-                  <span className="text-blue-400 text-sm font-medium">
+                  <span className="text-blue-400 text-xs sm:text-sm font-medium">
                     Click to configure →
                   </span>
                 </div>

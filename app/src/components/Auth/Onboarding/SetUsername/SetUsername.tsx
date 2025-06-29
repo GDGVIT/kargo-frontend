@@ -53,7 +53,7 @@ const SetUsername: React.FC = () => {
       } else {
         notify("Username set successfully!", "success");
         await refreshUser();
-        router.replace("/profile");
+        router.replace("/settings");
       }
     } catch {
       setError("Something went wrong. Please try again.");

@@ -1,4 +1,4 @@
-import { GrDocumentText } from "react-icons/gr";
+import { FiLock } from "react-icons/fi";
 
 const title = "Privacy Policy";
 
@@ -15,7 +15,7 @@ export default function PrivacyPolicyPage() {
       <PageHeading
         title={title}
         subtitle="Last updated: June 18, 2025"
-        icon={<GrDocumentText />}
+        icon={<FiLock />}
       />
       <section>
         <h2>1. Introduction</h2>

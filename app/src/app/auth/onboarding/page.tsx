@@ -1,6 +1,6 @@
-import { BsDoorOpen } from "react-icons/bs";
 import SetUsername from "../../../components/Auth/Onboarding/SetUsername/SetUsername";
 import PageHeading from "@/components/ui/PageHeading/PageHeading";
+import { FiUserPlus } from "react-icons/fi";
 
 export default function OnboardingPage() {
   return (
@@ -8,7 +8,7 @@ export default function OnboardingPage() {
       <PageHeading
         title="Onboarding"
         subtitle="Set up your account and preferences."
-        icon={<BsDoorOpen />}
+        icon={<FiUserPlus />}
       />
       <SetUsername />
     </main>

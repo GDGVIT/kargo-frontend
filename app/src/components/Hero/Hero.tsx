@@ -49,7 +49,7 @@ export default function Hero() {
           transition={{ delay: 0.4, duration: 0.7 }}
         >
           <Link
-            href="/profile"
+            href="/settings"
             className="inline-block px-6 py-3 rounded-xl bg-white text-neutral-950 font-medium hover:bg-neutral-200 transition duration-300"
           >
             Get Started

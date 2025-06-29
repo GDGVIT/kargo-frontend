@@ -23,7 +23,7 @@ const Modal: React.FC<ModalProps> = ({
     <AnimatePresence>
       {open && (
         <motion.div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-[var(--background)]/70 backdrop-blur-[3px] px-2 sm:px-0"
+          className="fixed inset-0 z-100 flex items-center justify-center bg-[var(--background)]/70 backdrop-blur-[3px] px-2 sm:px-0"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}

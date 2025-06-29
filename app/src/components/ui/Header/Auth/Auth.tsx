@@ -32,7 +32,7 @@ export default function Auth() {
       <div className="relative" ref={dropdownRef} style={{ height: "100%" }}>
         <div
           className="flex items-center gap-2 cursor-pointer px-2 hover:bg-[#11131887] transition h-full"
-          onClick={() => (window.location.href = "/profile")}
+          onClick={() => (window.location.href = "/settings")}
         >
           {user.profilePicture && !imageError && (
             // eslint-disable-next-line @next/next/no-img-element

@@ -1,6 +1,6 @@
 import PageHeading from "../../components/ui/PageHeading/PageHeading";
 import Plans from "../../components/Plans/Plans";
-import { GrCatalog } from "react-icons/gr";
+import { FiGrid } from "react-icons/fi";
 
 const title = "Plans";
 const description =
@@ -14,7 +14,7 @@ export const metadata = {
 export default function PlansPage() {
   return (
     <main>
-      <PageHeading title={title} subtitle={description} icon={<GrCatalog />} />
+      <PageHeading title={title} subtitle={description} icon={<FiGrid />} />
       <Plans />
     </main>
   );

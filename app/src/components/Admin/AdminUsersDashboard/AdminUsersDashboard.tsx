@@ -2,12 +2,13 @@
 
 import { useEffect, useState } from "react";
 import axios from "../../../utils/api";
+import UserManagement from "./UserManagement/UserManagement";
+import Loader from "../../ui/Loader/Loader";
 import type Plan from "../../../types/Plan/Plan";
 import type User from "../../../types/User/User";
-import UserManagement from "./UserManagement/UserManagement";
-import AnimatedButton from "../../ui/AnimatedButton/AnimatedButton";
+import type Resource from "../../../types/Application/Resource/Resource";
 import useNotification from "../../ui/Notification/Notification";
-import Loader from "../../ui/Loader/Loader";
+import { formatPrice } from "../../../utils/resources";
 
 export default function AdminUsersDashboard() {
   const [users, setUsers] = useState<User[]>([]);
@@ -21,8 +22,10 @@ export default function AdminUsersDashboard() {
     [userId: string]: {
       requestsCpu: string;
       requestsMemory: string;
+      requestsStorage: string;
       limitsCpu: string;
       limitsMemory: string;
+      limitsStorage: string;
     };
   }>({});
   const [extraResourcesSaving, setExtraResourcesSaving] = useState<
@@ -33,6 +36,7 @@ export default function AdminUsersDashboard() {
   useEffect(() => {
     async function fetchUsers() {
       try {
+        setLoading(true);
         const res = await axios.get("/api/users");
         setUsers(res.data.users || []);
         const me = await axios.get("/api/auth/me");
@@ -52,11 +56,11 @@ export default function AdminUsersDashboard() {
         const res = await axios.get("/api/plans");
         setPlans(res.data.plans || []);
       } catch {
-        // ignore
+        notify("Failed to load plans", "error");
       }
     }
     fetchPlans();
-  }, []);
+  }, [notify]);
 
   async function handleRoleChange(
     userId: string,
@@ -98,10 +102,14 @@ export default function AdminUsersDashboard() {
     setExtraResourcesEdit((prev) => ({
       ...prev,
       [user._id]: {
-        requestsCpu: user.extraResources?.requests?.cpu || "",
-        requestsMemory: user.extraResources?.requests?.memory || "",
-        limitsCpu: user.extraResources?.limits?.cpu || "",
-        limitsMemory: user.extraResources?.limits?.memory || "",
+        requestsCpu: user.extraResources?.requests?.cpuMilli?.toString() || "",
+        requestsMemory:
+          user.extraResources?.requests?.memoryMB?.toString() || "",
+        requestsStorage:
+          user.extraResources?.requests?.storageGB?.toString() || "",
+        limitsCpu: user.extraResources?.limits?.cpuMilli?.toString() || "",
+        limitsMemory: user.extraResources?.limits?.memoryMB?.toString() || "",
+        limitsStorage: user.extraResources?.limits?.storageGB?.toString() || "",
       },
     }));
   }
@@ -112,33 +120,48 @@ export default function AdminUsersDashboard() {
     try {
       await axios.put(`/api/users/${userId}/extra-resources`, {
         extraResources: {
-          requests: { cpu: data.requestsCpu, memory: data.requestsMemory },
-          limits: { cpu: data.limitsCpu, memory: data.limitsMemory },
+          requests: {
+            cpuMilli: data.requestsCpu,
+            memoryMB: data.requestsMemory,
+            storageGB: data.requestsStorage,
+          },
+          limits: {
+            cpuMilli: data.limitsCpu,
+            memoryMB: data.limitsMemory,
+            storageGB: data.limitsStorage,
+          },
         },
       });
-      setUsers((prev) =>
-        prev.map((u) =>
-          u._id === userId
-            ? {
-                ...u,
-                extraResources: {
-                  requests: {
-                    cpu: data.requestsCpu,
-                    memory: data.requestsMemory,
+      setUsers(
+        (prev) =>
+          prev.map((u) =>
+            u._id === userId
+              ? {
+                  ...u,
+                  extraResources: {
+                    requests: {
+                      cpuMilli: data.requestsCpu,
+                      memoryMB: data.requestsMemory,
+                      storageGB: data.requestsStorage,
+                    },
+                    limits: {
+                      cpuMilli: data.limitsCpu,
+                      memoryMB: data.limitsMemory,
+                      storageGB: data.limitsStorage,
+                    },
                   },
-                  limits: { cpu: data.limitsCpu, memory: data.limitsMemory },
-                },
-              }
-            : u
-        )
+                }
+              : u
+          ) as User[]
       );
       setExtraResourcesEdit((prev) => {
         const copy = { ...prev };
         delete copy[userId];
         return copy;
       });
+      notify("Extra resources updated", "success");
     } catch {
-      alert("Failed to update extra resources");
+      notify("Failed to update extra resources", "error");
     } finally {
       setExtraResourcesSaving(null);
     }
@@ -152,81 +175,75 @@ export default function AdminUsersDashboard() {
       : "";
     if (user.role === "user") {
       return (
-        <AnimatedButton
+        <button
           className={`!px-2 !py-1 !text-xs !rounded !bg-amber-500 hover:!bg-amber-600 mr-2 ${disabledClass}`}
           onClick={() => handleRoleChange(user._id, "admin")}
-          icon={null}
+          disabled={isDisabled}
         >
           Promote to Admin
-        </AnimatedButton>
+        </button>
       );
     }
     if (user.role === "admin") {
       return (
         <>
-          <AnimatedButton
+          <button
             className={`!px-2 !py-1 !text-xs !rounded !bg-zinc-700 hover:!bg-zinc-800 mr-2 ${disabledClass}`}
             onClick={() => handleRoleChange(user._id, "user")}
-            icon={null}
+            disabled={isDisabled}
           >
             Demote to User
-          </AnimatedButton>
-          <AnimatedButton
+          </button>
+          <button
             className={`!px-2 !py-1 !text-xs !rounded !bg-amber-500 hover:!bg-amber-600 ${disabledClass}`}
             onClick={() => handleRoleChange(user._id, "superadmin")}
-            icon={null}
+            disabled={isDisabled}
           >
             Promote to Superadmin
-          </AnimatedButton>
+          </button>
         </>
       );
     }
     if (user.role === "superadmin") {
       return (
-        <AnimatedButton
+        <button
           className={`!px-2 !py-1 !text-xs !rounded !bg-zinc-700 hover:!bg-zinc-800 ${disabledClass}`}
           onClick={() => handleRoleChange(user._id, "admin")}
-          icon={null}
+          disabled={isDisabled}
         >
           Demote to Admin
-        </AnimatedButton>
+        </button>
       );
     }
     return null;
   }
 
-  // Helper to get only plan resources for a user
   function getPlanResources(user: User, plans: Plan[]) {
     let planObj = user.plan;
-    if (!planObj) {
-      return {
-        requests: { cpu: "-", memory: "-" },
-        limits: { cpu: "-", memory: "-" },
-      };
-    }
+    if (!planObj) return null;
     if (typeof planObj === "string") {
       planObj = plans.find((p) => p._id === planObj);
     }
-    if (!planObj || !planObj.resources) {
-      return {
-        requests: { cpu: "-", memory: "-" },
-        limits: { cpu: "-", memory: "-" },
-      };
-    }
+    if (!planObj || !planObj.resources) return null;
     const planResources = planObj.resources;
-    // Format as string for display (e.g., "500m", "1Gi")
-    function format(val?: string) {
-      return val || "-";
-    }
     return {
       requests: {
-        cpu: format(planResources.requests?.cpu),
-        memory: format(planResources.requests?.memory),
+        cpuMilli: planResources.requests?.cpuMilli,
+        memoryMB: planResources.requests?.memoryMB,
+        storageGB: planResources.requests?.storageGB,
       },
       limits: {
-        cpu: format(planResources.limits?.cpu),
-        memory: format(planResources.limits?.memory),
+        cpuMilli: planResources.limits?.cpuMilli,
+        memoryMB: planResources.limits?.memoryMB,
+        storageGB: planResources.limits?.storageGB,
       },
+      price: planObj.price,
+      formattedPrice: formatPrice(planObj.price),
+    } as {
+      requests: Resource;
+      limits: Resource;
+      price?: number;
+      formattedPrice?: string;
     };
   }
 
@@ -263,12 +280,48 @@ export default function AdminUsersDashboard() {
             })
           }
           getRoleActions={getRoleActions}
-          // Pass allowedResources for each user
           allowedResources={users.reduce((acc, user) => {
             const planRes = getPlanResources(user, plans);
-            acc[user._id] = planRes;
+            const extra = user.extraResources || { requests: {}, limits: {} };
+            function sumNum(a?: number, b?: number) {
+              const av = typeof a === "number" ? a : 0;
+              const bv = typeof b === "number" ? b : 0;
+              return av + bv;
+            }
+            if (planRes) {
+              acc[user._id] = {
+                requests: {
+                  cpuMilli: sumNum(
+                    planRes.requests.cpuMilli,
+                    extra.requests?.cpuMilli
+                  ),
+                  memoryMB: sumNum(
+                    planRes.requests.memoryMB,
+                    extra.requests?.memoryMB
+                  ),
+                  storageGB: sumNum(
+                    planRes.requests.storageGB,
+                    extra.requests?.storageGB
+                  ),
+                },
+                limits: {
+                  cpuMilli: sumNum(
+                    planRes.limits.cpuMilli,
+                    extra.limits?.cpuMilli
+                  ),
+                  memoryMB: sumNum(
+                    planRes.limits.memoryMB,
+                    extra.limits?.memoryMB
+                  ),
+                  storageGB: sumNum(
+                    planRes.limits.storageGB,
+                    extra.limits?.storageGB
+                  ),
+                },
+              };
+            }
             return acc;
-          }, {} as Record<string, { requests: { cpu: string; memory: string }; limits: { cpu: string; memory: string } }>)}
+          }, {} as Record<string, { requests: Resource; limits: Resource }>)}
         />
       )}
     </div>

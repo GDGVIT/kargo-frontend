@@ -1,6 +1,7 @@
 import React, { InputHTMLAttributes, forwardRef } from "react";
 import { motion } from "framer-motion";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import Select from "../Select/Select";
 
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
@@ -10,6 +11,12 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   helperText?: React.ReactNode;
   animationDuration?: number;
   animationEasing?: number[];
+  unitSelect?: {
+    value: string;
+    options: string[];
+    onChange: (unit: string) => void;
+    disabled?: boolean;
+  };
 }
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
@@ -24,6 +31,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       disabled = false,
       animationDuration = 0.5,
       animationEasing = [0.42, 0, 0.58, 1],
+      unitSelect,
       ...props
     },
     ref
@@ -67,6 +75,25 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             aria-label={label}
             {...props}
           />
+          {unitSelect && (
+            <div className="flex items-center ml-2 order-2">
+              <Select
+                value={unitSelect.value}
+                onChange={unitSelect.onChange}
+                options={unitSelect.options.map((opt) => ({
+                  value: opt,
+                  label: opt,
+                }))}
+                disabled={unitSelect.disabled || disabled}
+                className="!my-0 !mx-0 min-w-[60px] w-auto"
+                placeholder="Unit"
+                animationDuration={0.2}
+                animationEasing={[0.42, 0, 0.58, 1]}
+                helperText={undefined}
+                label={undefined}
+              />
+            </div>
+          )}
           {isPassword && (
             <button
               type="button"

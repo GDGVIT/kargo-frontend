@@ -1,13 +1,18 @@
 import React, { useState } from "react";
-import Modal from "../../../ui/Modal/Modal";
-import ExtraResourcesEditor from "../ExtraResourcesEditor/ExtraResourcesEditor";
 import Card from "../../../ui/Card/Card";
+import Modal from "../../../ui/Modal/Modal";
 import Select from "../../../ui/Select/Select";
 import AnimatedButton from "../../../ui/AnimatedButton/AnimatedButton";
 import { HiPencil } from "react-icons/hi";
+import ExtraResourcesEditor from "../ExtraResourcesEditor/ExtraResourcesEditor";
 import type UserTableProps from "../../../../types/User/UserTableProps";
 import type User from "../../../../types/User/User";
-import { formatCpu, formatMemory } from "../../../../utils/resources";
+
+import {
+  formatCpu,
+  formatMemory,
+  formatStorage,
+} from "../../../../utils/resources";
 
 const UserTable: React.FC<UserTableProps> = ({
   users,
@@ -127,17 +132,30 @@ const UserTable: React.FC<UserTableProps> = ({
                   {allowedResources[user._id] ? (
                     <div className="text-xs">
                       <div>
-                        <b>Requests:</b> CPU:{" "}
-                        {formatCpu(allowedResources[user._id].requests.cpu)},
-                        Mem:{" "}
+                        <span className="font-semibold">Req:</span> CPU:{" "}
+                        {formatCpu(
+                          allowedResources[user._id].requests?.cpuMilli
+                        )}
+                        , Mem:{" "}
                         {formatMemory(
-                          allowedResources[user._id].requests.memory
+                          allowedResources[user._id].requests?.memoryMB
+                        )}
+                        , Storage:{" "}
+                        {formatStorage(
+                          allowedResources[user._id].requests?.storageGB
                         )}
                       </div>
                       <div>
-                        <b>Limits:</b> CPU:{" "}
-                        {formatCpu(allowedResources[user._id].limits.cpu)}, Mem:{" "}
-                        {formatMemory(allowedResources[user._id].limits.memory)}
+                        <span className="font-semibold">Lim:</span> CPU:{" "}
+                        {formatCpu(allowedResources[user._id].limits?.cpuMilli)}
+                        , Mem:{" "}
+                        {formatMemory(
+                          allowedResources[user._id].limits?.memoryMB
+                        )}
+                        , Storage:{" "}
+                        {formatStorage(
+                          allowedResources[user._id].limits?.storageGB
+                        )}
                       </div>
                     </div>
                   ) : (
@@ -150,13 +168,20 @@ const UserTable: React.FC<UserTableProps> = ({
                     <div className="text-xs mb-1">
                       <div>
                         <b>Requests:</b> CPU:{" "}
-                        {formatCpu(user.extraResources?.requests?.cpu)}, Mem:{" "}
-                        {formatMemory(user.extraResources?.requests?.memory)}
+                        {formatCpu(user.extraResources?.requests?.cpuMilli)},
+                        Mem:{" "}
+                        {formatMemory(user.extraResources?.requests?.memoryMB)},
+                        Storage:{" "}
+                        {formatStorage(
+                          user.extraResources?.requests?.storageGB
+                        )}
                       </div>
                       <div>
                         <b>Limits:</b> CPU:{" "}
-                        {formatCpu(user.extraResources?.limits?.cpu)}, Mem:{" "}
-                        {formatMemory(user.extraResources?.limits?.memory)}
+                        {formatCpu(user.extraResources?.limits?.cpuMilli)}, Mem:{" "}
+                        {formatMemory(user.extraResources?.limits?.memoryMB)},
+                        Storage:{" "}
+                        {formatStorage(user.extraResources?.limits?.storageGB)}
                       </div>
                     </div>
                     <AnimatedButton

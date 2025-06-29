@@ -3,8 +3,10 @@ export default interface ExtraResourcesEditorProps {
   data: {
     requestsCpu: string;
     requestsMemory: string;
+    requestsStorage: string;
     limitsCpu: string;
     limitsMemory: string;
+    limitsStorage: string;
   };
   onChange: (field: string, value: string) => void;
   onSave: () => void;

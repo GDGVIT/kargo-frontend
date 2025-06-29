@@ -36,12 +36,12 @@ export default function ConfigureApp({ appId }: { appId: string }) {
   const [loading, setLoading] = useState(true); // <-- add loading state
   const [resourceLimits, setResourceLimits] = useState<{
     allowed: {
-      requests: { cpu: number; memory: number };
-      limits: { cpu: number; memory: number };
+      requests: { cpuMilli: number; memoryMB: number; storageGB: number };
+      limits: { cpuMilli: number; memoryMB: number; storageGB: number };
     };
     usage: {
-      requests: { cpu: number; memory: number };
-      limits: { cpu: number; memory: number };
+      requests: { cpuMilli: number; memoryMB: number; storageGB: number };
+      limits: { cpuMilli: number; memoryMB: number; storageGB: number };
     };
   } | null>(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -77,6 +77,7 @@ export default function ConfigureApp({ appId }: { appId: string }) {
     async function fetchLimits() {
       try {
         const res = await axios.get("/api/users/me/resource-usage");
+        // Use backend field names directly
         setResourceLimits(res.data);
       } catch {
         setResourceLimits(null);
@@ -124,47 +125,73 @@ export default function ConfigureApp({ appId }: { appId: string }) {
       const updatedPorts = form.ports || [];
 
       if (resourceLimits) {
-        function parse(val: string | undefined) {
-          if (!val) return 0;
+        function parse(val: string | number | undefined) {
+          if (val === undefined || val === null || val === "") return 0;
+          if (typeof val === "number") return val;
+          if (typeof val !== "string") return 0;
           if (val.endsWith("m")) return parseInt(val) / 1000;
           if (val.endsWith("Mi")) return parseInt(val);
           if (val.endsWith("Gi")) return parseInt(val) * 1024;
           return parseFloat(val);
         }
-        const newUsage = { ...resourceLimits.usage };
+        // Clone the usage object
+        const newUsage = {
+          requests: { ...resourceLimits.usage.requests },
+          limits: { ...resourceLimits.usage.limits },
+        };
 
         if (form.resources) {
-          newUsage.requests.cpu -= parse(form.resources.requests?.cpu);
-          newUsage.requests.memory -= parse(form.resources.requests?.memory);
-          newUsage.limits.cpu -= parse(form.resources.limits?.cpu);
-          newUsage.limits.memory -= parse(form.resources.limits?.memory);
+          newUsage.requests.cpuMilli -= parse(
+            form.resources.requests?.cpuMilli
+          );
+          newUsage.requests.memoryMB -= parse(
+            form.resources.requests?.memoryMB
+          );
+          newUsage.limits.cpuMilli -= parse(form.resources.limits?.cpuMilli);
+          newUsage.limits.memoryMB -= parse(form.resources.limits?.memoryMB);
         }
 
-        const reqCpu = parse(form.resources?.requests?.cpu);
-        const reqMem = parse(form.resources?.requests?.memory);
-        const limCpu = parse(form.resources?.limits?.cpu);
-        const limMem = parse(form.resources?.limits?.memory);
-        newUsage.requests.cpu += reqCpu;
-        newUsage.requests.memory += reqMem;
-        newUsage.limits.cpu += limCpu;
-        newUsage.limits.memory += limMem;
+        const reqCpu = parse(form.resources?.requests?.cpuMilli);
+        const reqMem = parse(form.resources?.requests?.memoryMB);
+        const limCpu = parse(form.resources?.limits?.cpuMilli);
+        const limMem = parse(form.resources?.limits?.memoryMB);
+        newUsage.requests.cpuMilli += reqCpu;
+        newUsage.requests.memoryMB += reqMem;
+        newUsage.limits.cpuMilli += limCpu;
+        newUsage.limits.memoryMB += limMem;
         if (
-          newUsage.requests.cpu > resourceLimits.allowed.requests.cpu ||
-          newUsage.requests.memory > resourceLimits.allowed.requests.memory ||
-          newUsage.limits.cpu > resourceLimits.allowed.limits.cpu ||
-          newUsage.limits.memory > resourceLimits.allowed.limits.memory
+          newUsage.requests.cpuMilli >
+            resourceLimits.allowed.requests.cpuMilli ||
+          newUsage.requests.memoryMB >
+            resourceLimits.allowed.requests.memoryMB ||
+          newUsage.limits.cpuMilli > resourceLimits.allowed.limits.cpuMilli ||
+          newUsage.limits.memoryMB > resourceLimits.allowed.limits.memoryMB
         ) {
           notify("Resource allocation exceeds your allowed quota.", "error");
           setSaving(false);
           return;
         }
       }
+      // Directly use the values from form.resources with correct keys for backend
+      const directResources = {
+        requests: {
+          cpuMilli: form.resources?.requests?.cpuMilli,
+          memoryMB: form.resources?.requests?.memoryMB,
+          storageGB: form.resources?.requests?.storageGB,
+        },
+        limits: {
+          cpuMilli: form.resources?.limits?.cpuMilli,
+          memoryMB: form.resources?.limits?.memoryMB,
+          storageGB: form.resources?.limits?.storageGB,
+        },
+      };
       // Save
       await axios.put(`/api/applications/${appId}`, {
         ...form,
         env: envObj,
         ports: updatedPorts,
         credentials: selectedCredential ? [selectedCredential] : [],
+        resources: directResources,
       });
       // Deploy
       await axios.post(`/api/applications/${appId}/apply`);
@@ -174,6 +201,7 @@ export default function ConfigureApp({ appId }: { appId: string }) {
       const error = err as unknown as {
         response?: { data?: { message?: string } };
       };
+      console.error(err); // Log the error for debugging
       if (error?.response?.data?.message)
         notify(error.response.data.message, "error");
       else notify("Failed to save & deploy", "error");
@@ -184,7 +212,7 @@ export default function ConfigureApp({ appId }: { appId: string }) {
   async function handleDelete() {
     setSaving(true);
     try {
-      await axios.delete(`/api/applications/${appId}/delete-all`);
+      await axios.delete(`/api/applications/${appId}`);
       notify("Application and all resources deleted!", "success");
       router.push("/applications");
     } catch (err) {
@@ -209,7 +237,7 @@ export default function ConfigureApp({ appId }: { appId: string }) {
 
   function handleResourceChange(
     section: "requests" | "limits",
-    field: "cpu" | "memory",
+    field: "cpuMilli" | "memoryMB" | "storageGB",
     value: string
   ) {
     setForm((f) =>
@@ -331,39 +359,16 @@ export default function ConfigureApp({ appId }: { appId: string }) {
       content: (
         <ResourcesSection
           resourceLimits={
-            resourceLimits
-              ? {
-                  allowed: {
-                    requests: {
-                      cpu: String(resourceLimits.allowed.requests.cpu),
-                      memory: String(resourceLimits.allowed.requests.memory),
-                    },
-                    limits: {
-                      cpu: String(resourceLimits.allowed.limits.cpu),
-                      memory: String(resourceLimits.allowed.limits.memory),
-                    },
-                  },
-                  usage: {
-                    requests: {
-                      cpu: String(resourceLimits.usage.requests.cpu),
-                      memory: String(resourceLimits.usage.requests.memory),
-                    },
-                    limits: {
-                      cpu: String(resourceLimits.usage.limits.cpu),
-                      memory: String(resourceLimits.usage.limits.memory),
-                    },
-                  },
-                }
-              : {
-                  allowed: {
-                    requests: { cpu: "0", memory: "0" },
-                    limits: { cpu: "0", memory: "0" },
-                  },
-                  usage: {
-                    requests: { cpu: "0", memory: "0" },
-                    limits: { cpu: "0", memory: "0" },
-                  },
-                }
+            resourceLimits || {
+              allowed: {
+                requests: { cpuMilli: 0, memoryMB: 0, storageGB: 0 },
+                limits: { cpuMilli: 0, memoryMB: 0, storageGB: 0 },
+              },
+              usage: {
+                requests: { cpuMilli: 0, memoryMB: 0, storageGB: 0 },
+                limits: { cpuMilli: 0, memoryMB: 0, storageGB: 0 },
+              },
+            }
           }
           resources={form?.resources || { requests: {}, limits: {} }}
           handleResourceChange={handleResourceChange}

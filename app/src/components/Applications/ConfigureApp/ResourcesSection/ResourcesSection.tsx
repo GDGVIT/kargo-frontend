@@ -1,63 +1,91 @@
 import React from "react";
 import Input from "../../../ui/Input/Input";
-import { formatCpu, formatMemory } from "../../../../utils/resources";
-
+import {
+  formatCpu,
+  formatMemory,
+  formatStorage,
+} from "../../../../utils/resources";
 import type ResourcesSectionProps from "../../../../types/Application/Resources/ResourcesSectionProps/ResourcesSectionProps";
-
-const sanitizeNumber = (val: string) => val.replace(/[^\d.]/g, "");
 
 const ResourcesSection: React.FC<ResourcesSectionProps> = ({
   resourceLimits,
   resources,
   handleResourceChange,
 }) => {
-  const getNumeric = (val: string | undefined, suffix: string) => {
-    if (!val || val === "") return "0";
-    return val.endsWith(suffix) ? val.slice(0, -suffix.length) : val;
-  };
+  // Log allowed resources to the console when resourceLimits is present
+  React.useEffect(() => {
+    if (resourceLimits && resourceLimits.allowed) {
+      // Only log once per change
+      console.log("Allowed resources:", resourceLimits.allowed);
+    }
+  }, [resourceLimits]);
 
   return (
     <div className="mb-6">
       {resourceLimits && (
         <div className="text-xs text-gray-400 mb-3 space-y-1">
           <div>
-            Allowed Requests:{" "}
+            Allowed Requests:
             <span className="font-semibold">
-              CPU {resourceLimits.allowed.requests.cpu}
+              {" "}
+              {formatCpu(resourceLimits.allowed.requests.cpuMilli)}{" "}
             </span>
-            ,{" "}
+            ,
             <span className="font-semibold">
-              Memory {resourceLimits.allowed.requests.memory}Mi
+              {" "}
+              {formatMemory(resourceLimits.allowed.requests.memoryMB)}{" "}
             </span>
-          </div>
-          <div>
-            Used:{" "}
+            ,
             <span className="font-semibold">
-              CPU {resourceLimits.usage.requests.cpu}
-            </span>
-            ,{" "}
-            <span className="font-semibold">
-              Memory {resourceLimits.usage.requests.memory}Mi
+              {formatStorage(resourceLimits.allowed.requests.storageGB)}
             </span>
           </div>
           <div>
-            Allowed Limits:{" "}
+            Used:
             <span className="font-semibold">
-              CPU {resourceLimits.allowed.limits.cpu}
+              {" "}
+              {formatCpu(resourceLimits.usage.requests.cpuMilli)}{" "}
             </span>
-            ,{" "}
+            ,
             <span className="font-semibold">
-              Memory {resourceLimits.allowed.limits.memory}Mi
+              {" "}
+              {formatMemory(resourceLimits.usage.requests.memoryMB)}{" "}
+            </span>
+            ,
+            <span className="font-semibold">
+              {formatStorage(resourceLimits.usage.requests.storageGB)}
             </span>
           </div>
           <div>
-            Used:{" "}
+            Allowed Limits:
             <span className="font-semibold">
-              CPU {resourceLimits.usage.limits.cpu}
+              {" "}
+              {formatCpu(resourceLimits.allowed.limits.cpuMilli)}{" "}
             </span>
-            ,{" "}
+            ,
             <span className="font-semibold">
-              Memory {resourceLimits.usage.limits.memory}Mi
+              {" "}
+              {formatMemory(resourceLimits.allowed.limits.memoryMB)}{" "}
+            </span>
+            ,
+            <span className="font-semibold">
+              {formatStorage(resourceLimits.allowed.limits.storageGB)}
+            </span>
+          </div>
+          <div>
+            Used:
+            <span className="font-semibold">
+              {" "}
+              {formatCpu(resourceLimits.usage.limits.cpuMilli)}{" "}
+            </span>
+            ,
+            <span className="font-semibold">
+              {" "}
+              {formatMemory(resourceLimits.usage.limits.memoryMB)}{" "}
+            </span>
+            ,
+            <span className="font-semibold">
+              {formatStorage(resourceLimits.usage.limits.storageGB)}
             </span>
           </div>
         </div>
@@ -66,84 +94,91 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
         <div>
           <div className="flex items-center gap-1">
             <Input
-              value={getNumeric(resources?.requests?.cpu, "m")}
+              value={resources?.requests?.cpuMilli || ""}
               onChange={(e) => {
-                const sanitized = sanitizeNumber(e.target.value);
-                handleResourceChange(
-                  "requests",
-                  "cpu",
-                  sanitized ? sanitized + "m" : ""
-                );
+                handleResourceChange("requests", "cpuMilli", e.target.value);
               }}
               placeholder="100"
               inputMode="numeric"
               pattern="[0-9]*"
               label="CPU Requests"
               className="!mb-0"
-              helperText={formatCpu(resources?.requests?.cpu)}
             />
           </div>
         </div>
         <div>
           <div className="flex items-center gap-1">
             <Input
-              value={getNumeric(resources?.requests?.memory, "Mi")}
+              value={resources?.requests?.memoryMB || ""}
               onChange={(e) => {
-                const sanitized = sanitizeNumber(e.target.value);
-                handleResourceChange(
-                  "requests",
-                  "memory",
-                  sanitized ? sanitized + "Mi" : ""
-                );
+                handleResourceChange("requests", "memoryMB", e.target.value);
               }}
-              placeholder="128"
+              placeholder="256"
               inputMode="numeric"
               pattern="[0-9]*"
               label="Memory Requests"
               className="!mb-0"
-              helperText={formatMemory(resources?.requests?.memory)}
             />
           </div>
         </div>
         <div>
           <div className="flex items-center gap-1">
             <Input
-              value={getNumeric(resources?.limits?.cpu, "m")}
+              value={resources?.requests?.storageGB || ""}
               onChange={(e) => {
-                const sanitized = sanitizeNumber(e.target.value);
-                handleResourceChange(
-                  "limits",
-                  "cpu",
-                  sanitized ? sanitized + "m" : ""
-                );
+                handleResourceChange("requests", "storageGB", e.target.value);
               }}
-              placeholder="500"
+              placeholder="10"
+              inputMode="numeric"
+              pattern="[0-9]*"
+              label="Storage Requests"
+              className="!mb-0"
+            />
+          </div>
+        </div>
+        {/* Limits Section */}
+        <div>
+          <div className="flex items-center gap-1">
+            <Input
+              value={resources?.limits?.cpuMilli || ""}
+              onChange={(e) => {
+                handleResourceChange("limits", "cpuMilli", e.target.value);
+              }}
+              placeholder="200"
               inputMode="numeric"
               pattern="[0-9]*"
               label="CPU Limits"
               className="!mb-0"
-              helperText={formatCpu(resources?.limits?.cpu)}
             />
           </div>
         </div>
         <div>
           <div className="flex items-center gap-1">
             <Input
-              value={getNumeric(resources?.limits?.memory, "Mi")}
+              value={resources?.limits?.memoryMB || ""}
               onChange={(e) => {
-                const sanitized = sanitizeNumber(e.target.value);
-                handleResourceChange(
-                  "limits",
-                  "memory",
-                  sanitized ? sanitized + "Mi" : ""
-                );
+                handleResourceChange("limits", "memoryMB", e.target.value);
               }}
               placeholder="512"
               inputMode="numeric"
               pattern="[0-9]*"
               label="Memory Limits"
               className="!mb-0"
-              helperText={formatMemory(resources?.limits?.memory)}
+            />
+          </div>
+        </div>
+        <div>
+          <div className="flex items-center gap-1">
+            <Input
+              value={resources?.limits?.storageGB || ""}
+              onChange={(e) => {
+                handleResourceChange("limits", "storageGB", e.target.value);
+              }}
+              placeholder="20"
+              inputMode="numeric"
+              pattern="[0-9]*"
+              label="Storage Limits"
+              className="!mb-0"
             />
           </div>
         </div>

@@ -14,13 +14,27 @@ export default function AdminPlansDashboard() {
   const [planError, setPlanError] = useState("");
   const [showPlanForm, setShowPlanForm] = useState(false);
   const [editingPlan, setEditingPlan] = useState<Plan | null>(null);
-  const [planForm, setPlanForm] = useState({
+  const [planForm, setPlanForm] = useState<{
+    name: string;
+    description: string;
+    requestsCpu: string;
+    requestsMemory: string;
+    requestsStorage: string;
+    limitsCpu: string;
+    limitsMemory: string;
+    limitsStorage: string;
+    isDefault: boolean;
+    isActive: boolean;
+    price: string;
+  }>({
     name: "",
     description: "",
     requestsCpu: "",
     requestsMemory: "",
+    requestsStorage: "",
     limitsCpu: "",
     limitsMemory: "",
+    limitsStorage: "",
     isDefault: false,
     isActive: true,
     price: "",
@@ -50,10 +64,12 @@ export default function AdminPlansDashboard() {
       setPlanForm({
         name: plan.name,
         description: plan.description || "",
-        requestsCpu: plan.resources?.requests?.cpu || "",
-        requestsMemory: plan.resources?.requests?.memory || "",
-        limitsCpu: plan.resources?.limits?.cpu || "",
-        limitsMemory: plan.resources?.limits?.memory || "",
+        requestsCpu: plan.resources?.requests?.cpuMilli?.toString() || "",
+        requestsMemory: plan.resources?.requests?.memoryMB?.toString() || "",
+        requestsStorage: plan.resources?.requests?.storageGB?.toString() || "",
+        limitsCpu: plan.resources?.limits?.cpuMilli?.toString() || "",
+        limitsMemory: plan.resources?.limits?.memoryMB?.toString() || "",
+        limitsStorage: plan.resources?.limits?.storageGB?.toString() || "",
         isDefault: !!plan.isDefault,
         isActive: plan.isActive !== false,
         price: plan.price ? String(plan.price) : "",
@@ -65,8 +81,10 @@ export default function AdminPlansDashboard() {
         description: "",
         requestsCpu: "",
         requestsMemory: "",
+        requestsStorage: "",
         limitsCpu: "",
         limitsMemory: "",
+        limitsStorage: "",
         isDefault: false,
         isActive: true,
         price: "",
@@ -84,17 +102,19 @@ export default function AdminPlansDashboard() {
       description: planForm.description,
       resources: {
         requests: {
-          cpu: planForm.requestsCpu,
-          memory: planForm.requestsMemory,
+          cpuMilli: planForm.requestsCpu,
+          memoryMB: planForm.requestsMemory,
+          storageGB: planForm.requestsStorage,
         },
         limits: {
-          cpu: planForm.limitsCpu,
-          memory: planForm.limitsMemory,
+          cpuMilli: planForm.limitsCpu,
+          memoryMB: planForm.limitsMemory,
+          storageGB: planForm.limitsStorage,
         },
       },
       isDefault: planForm.isDefault,
       isActive: planForm.isActive,
-      price: planForm.price ? parseInt(planForm.price, 10) : undefined,
+      price: planForm.price ? planForm.price : undefined,
     };
     try {
       if (editingPlan) {

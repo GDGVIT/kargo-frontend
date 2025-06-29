@@ -1,12 +1,12 @@
-import type ResourceLimitDetails from "../ResourceLimitDetails/ResourceLimitDetails";
+import type Resource from "../Resource";
 
 export default interface ResourceLimits {
   allowed: {
-    requests: ResourceLimitDetails;
-    limits: ResourceLimitDetails;
+    requests: Resource;
+    limits: Resource;
   };
   usage: {
-    requests: ResourceLimitDetails;
-    limits: ResourceLimitDetails;
+    requests: Resource;
+    limits: Resource;
   };
 }

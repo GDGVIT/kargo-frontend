@@ -10,6 +10,8 @@ import AnimatedButton from "../../ui/AnimatedButton/AnimatedButton";
 import { FaPlus } from "react-icons/fa";
 import Input from "../../ui/Input/Input";
 import Select from "../../ui/Select/Select";
+import Modal from "../../ui/Modal/Modal";
+import GithubRepos from "../../Github/GithubRepos/GithubRepos";
 
 export default function AddAppForm() {
   const [form, setForm] = useState({
@@ -22,6 +24,7 @@ export default function AddAppForm() {
   const [credentials, setCredentials] = useState<RegistryCredential[]>([]);
   const [selectedCredential, setSelectedCredential] =
     useState<RegistryCredential | null>(null);
+  const [dockerModalOpen, setDockerModalOpen] = useState(false);
   const router = useRouter();
   const { notify } = useNotification();
 
@@ -67,94 +70,115 @@ export default function AddAppForm() {
   }
 
   return (
-    <form onSubmit={handleAdd} className="mb-8 space-y-4 min-h-[470px]">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <Input
-            required
-            label="Name"
-            value={form.name}
-            onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
-            placeholder="My App"
-          />
-        </div>
-        <div>
-          <Input
-            required
-            label="Image URL"
-            value={form.imageUrl}
-            onChange={(e) =>
-              setForm((f) => ({ ...f, imageUrl: e.target.value }))
-            }
-            placeholder="registry.io/my-app"
-            helperText={
-              <a
-                href="/dockerize"
-                className="underline text-yellow-300 hover:text-yellow-200 ml-1 text-xs"
-              >
-                Dockerize your app
-              </a>
-            }
-          />
-        </div>
-        <div>
-          <Input
-            required
-            label="Image Tag"
-            value={form.imageTag}
-            onChange={(e) =>
-              setForm((f) => ({ ...f, imageTag: e.target.value }))
-            }
-            placeholder="latest"
-          />
-        </div>
-        <div>
-          <Select
-            label="Registry Credential"
-            value={
-              selectedCredential
-                ? selectedCredential.name +
-                  ":" +
-                  selectedCredential.registryType
-                : ""
-            }
-            onChange={(val) => {
-              const [name, registryType] = val.split(":");
-              const cred = credentials.find(
-                (c) => c.name === name && c.registryType === registryType
-              );
-              setSelectedCredential(cred || null);
-              setForm((f) => ({
-                ...f,
-                credentials: cred ? [cred] : [],
-              }));
-            }}
-            options={[
-              { value: "", label: "Select a credential" },
-              ...credentials.map((cred) => ({
-                value: cred.name + ":" + cred.registryType,
-                label: `${cred.name} [${cred.registryType}] (${cred.username})`,
-              })),
-            ]}
-            helperText={
-              <a
-                href="/credentials"
-                className="text-xs text-blue-400 hover:underline mt-1 inline-block"
-              >
-                Manage credentials
-              </a>
-            }
-          />
-        </div>
-      </div>
-      <AnimatedButton
-        type="submit"
-        disabled={loading}
-        className="mt-4 !px-6 !py-2"
-        icon={<FaPlus />}
+    <>
+      <Modal
+        open={dockerModalOpen}
+        onClose={() => setDockerModalOpen(false)}
+        title="Dockerize from GitHub"
       >
-        {loading ? "Adding..." : "Add Application"}
-      </AnimatedButton>
-    </form>
+        <GithubRepos />
+      </Modal>
+      <form onSubmit={handleAdd} className="mb-8 space-y-4 min-h-[470px]">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <Input
+              required
+              label="Name"
+              value={form.name}
+              onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
+              placeholder="My App"
+            />
+          </div>
+          <div>
+            <Input
+              required
+              label="Image URL"
+              value={form.imageUrl}
+              onChange={(e) =>
+                setForm((f) => ({ ...f, imageUrl: e.target.value }))
+              }
+              placeholder="registry.io/my-app"
+              helperText={
+                <AnimatedButton
+                  type="button"
+                  variant="secondary"
+                  className="!px-2 !py-1 text-xs mt-1"
+                  onClick={() => setDockerModalOpen(true)}
+                >
+                  Dockerize your app
+                </AnimatedButton>
+              }
+            />
+          </div>
+          <div>
+            <Input
+              required
+              label="Image Tag"
+              value={form.imageTag}
+              onChange={(e) =>
+                setForm((f) => ({ ...f, imageTag: e.target.value }))
+              }
+              placeholder="latest"
+            />
+          </div>
+          <div>
+            <Select
+              label="Registry Credential"
+              value={
+                selectedCredential
+                  ? selectedCredential.name +
+                    ":" +
+                    selectedCredential.registryType
+                  : ""
+              }
+              onChange={(val) => {
+                const [name, registryType] = val.split(":");
+                const cred = credentials.find(
+                  (c) => c.name === name && c.registryType === registryType
+                );
+                setSelectedCredential(cred || null);
+                setForm((f) => ({
+                  ...f,
+                  credentials: cred ? [cred] : [],
+                }));
+              }}
+              options={[
+                { value: "", label: "Select a credential" },
+                ...credentials.map((cred) => ({
+                  value: cred.name + ":" + cred.registryType,
+                  label: `${cred.name} [${cred.registryType}] (${cred.username})`,
+                })),
+              ]}
+              helperText={
+                <a
+                  href="/credentials"
+                  className="text-xs text-blue-400 hover:underline mt-1 inline-block"
+                >
+                  Manage credentials
+                </a>
+              }
+            />
+          </div>
+        </div>
+        <div className="flex gap-4 mt-4">
+          <AnimatedButton
+            type="submit"
+            disabled={loading}
+            className="!px-6 !py-2"
+            icon={<FaPlus />}
+          >
+            {loading ? "Adding..." : "Add Application"}
+          </AnimatedButton>
+          <AnimatedButton
+            type="button"
+            variant="secondary"
+            className="!px-6 !py-2"
+            onClick={() => setDockerModalOpen(true)}
+          >
+            Dockerize
+          </AnimatedButton>
+        </div>
+      </form>
+    </>
   );
 }
