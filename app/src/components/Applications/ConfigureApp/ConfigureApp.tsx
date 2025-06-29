@@ -212,7 +212,7 @@ export default function ConfigureApp({ appId }: { appId: string }) {
   async function handleDelete() {
     setSaving(true);
     try {
-      await axios.delete(`/api/applications/${appId}/delete-all`);
+      await axios.delete(`/api/applications/${appId}`);
       notify("Application and all resources deleted!", "success");
       router.push("/applications");
     } catch (err) {
