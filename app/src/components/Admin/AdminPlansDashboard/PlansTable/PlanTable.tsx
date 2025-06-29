@@ -6,6 +6,11 @@ import Modal from "../../../ui/Modal/Modal";
 import Plan from "../../../../types/Plan/Plan";
 import type PlanTableProps from "../../../../types/Plan/PlanTableProps";
 import { FaEdit, FaTrash, FaCheckCircle, FaRegCircle } from "react-icons/fa";
+import {
+  formatCpu,
+  formatMemory,
+  formatStorage,
+} from "../../../../utils/resources";
 
 const PlanTable: React.FC<PlanTableProps> = ({
   plans,
@@ -96,26 +101,22 @@ const PlanTable: React.FC<PlanTableProps> = ({
                     {plan.resources ? (
                       <div className="text-xs p-2 rounded flex flex-col gap-1">
                         <div>
-                          <span className="font-semibold">Requests:</span>
-                          <span className="ml-2">
-                            CPU: {plan.resources.requests?.cpuMilli}, Memory:{" "}
-                            {plan.resources.requests?.memoryMB}, Storage:{" "}
-                            {plan.resources.requests?.storageGB}
-                          </span>
+                          <span className="font-semibold">Req:</span> CPU:{" "}
+                          {formatCpu(plan.resources.requests?.cpuMilli)}, Mem:{" "}
+                          {formatMemory(plan.resources.requests?.memoryMB)},
+                          Storage:{" "}
+                          {formatStorage(plan.resources.requests?.storageGB)}
                         </div>
                         <div>
-                          <span className="font-semibold">Limits:</span>
-                          <span className="ml-2">
-                            CPU: {plan.resources.limits?.cpuMilli}, Memory:{" "}
-                            {plan.resources.limits?.memoryMB}, Storage:{" "}
-                            {plan.resources.limits?.storageGB}
-                          </span>
+                          <span className="font-semibold">Lim:</span> CPU:{" "}
+                          {formatCpu(plan.resources.limits?.cpuMilli)}, Mem:{" "}
+                          {formatMemory(plan.resources.limits?.memoryMB)},
+                          Storage:{" "}
+                          {formatStorage(plan.resources.limits?.storageGB)}
                         </div>
                       </div>
                     ) : (
-                      <span className="text-xs text-zinc-400">
-                        No resources
-                      </span>
+                      "-"
                     )}
                   </td>
                   <td className="p-2 font-mono text-green-400">{plan.price}</td>

@@ -1,5 +1,10 @@
 import React from "react";
 import Input from "../../../ui/Input/Input";
+import {
+  formatCpu,
+  formatMemory,
+  formatStorage,
+} from "../../../../utils/resources";
 import type ResourcesSectionProps from "../../../../types/Application/Resources/ResourcesSectionProps/ResourcesSectionProps";
 
 const ResourcesSection: React.FC<ResourcesSectionProps> = ({
@@ -23,68 +28,64 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
             Allowed Requests:
             <span className="font-semibold">
               {" "}
-              CPU {resourceLimits.allowed.requests.cpuMilli}{" "}
+              {formatCpu(resourceLimits.allowed.requests.cpuMilli)}{" "}
             </span>
             ,
             <span className="font-semibold">
               {" "}
-              Memory {resourceLimits.allowed.requests.memoryMB}{" "}
+              {formatMemory(resourceLimits.allowed.requests.memoryMB)}{" "}
             </span>
             ,
             <span className="font-semibold">
-              {" "}
-              Storage {resourceLimits.allowed.requests.storageGB}{" "}
+              {formatStorage(resourceLimits.allowed.requests.storageGB)}
             </span>
           </div>
           <div>
             Used:
             <span className="font-semibold">
               {" "}
-              CPU {resourceLimits.usage.requests.cpuMilli}{" "}
+              {formatCpu(resourceLimits.usage.requests.cpuMilli)}{" "}
             </span>
             ,
             <span className="font-semibold">
               {" "}
-              Memory {resourceLimits.usage.requests.memoryMB}{" "}
+              {formatMemory(resourceLimits.usage.requests.memoryMB)}{" "}
             </span>
             ,
             <span className="font-semibold">
-              {" "}
-              Storage {resourceLimits.usage.requests.storageGB}{" "}
+              {formatStorage(resourceLimits.usage.requests.storageGB)}
             </span>
           </div>
           <div>
             Allowed Limits:
             <span className="font-semibold">
               {" "}
-              CPU {resourceLimits.allowed.limits.cpuMilli}{" "}
+              {formatCpu(resourceLimits.allowed.limits.cpuMilli)}{" "}
             </span>
             ,
             <span className="font-semibold">
               {" "}
-              Memory {resourceLimits.allowed.limits.memoryMB}{" "}
+              {formatMemory(resourceLimits.allowed.limits.memoryMB)}{" "}
             </span>
             ,
             <span className="font-semibold">
-              {" "}
-              Storage {resourceLimits.allowed.limits.storageGB}{" "}
+              {formatStorage(resourceLimits.allowed.limits.storageGB)}
             </span>
           </div>
           <div>
             Used:
             <span className="font-semibold">
               {" "}
-              CPU {resourceLimits.usage.limits.cpuMilli}{" "}
+              {formatCpu(resourceLimits.usage.limits.cpuMilli)}{" "}
             </span>
             ,
             <span className="font-semibold">
               {" "}
-              Memory {resourceLimits.usage.limits.memoryMB}{" "}
+              {formatMemory(resourceLimits.usage.limits.memoryMB)}{" "}
             </span>
             ,
             <span className="font-semibold">
-              {" "}
-              Storage {resourceLimits.usage.limits.storageGB}{" "}
+              {formatStorage(resourceLimits.usage.limits.storageGB)}
             </span>
           </div>
         </div>

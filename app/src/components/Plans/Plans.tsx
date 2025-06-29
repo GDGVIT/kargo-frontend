@@ -9,6 +9,7 @@ import Loader from "../ui/Loader/Loader";
 import loadRazorpayScript from "../../utils/loadRazorpayScript";
 import useNotification from "../ui/Notification/Notification";
 import { getRuntimeEnv } from "@/utils/getRuntimeEnv";
+import { formatCpu, formatMemory, formatStorage } from "../../utils/resources";
 
 const Plans = () => {
   const [plans, setPlans] = useState<Plan[]>([]);
@@ -104,15 +105,15 @@ const Plans = () => {
                 <>
                   <div>
                     <span className="font-semibold">Requests:</span> CPU:{" "}
-                    {plan.resources.requests?.cpuMilli}, Memory:{" "}
-                    {plan.resources.requests?.memoryMB}, Storage:{" "}
-                    {plan.resources.requests?.storageGB}
+                    {formatCpu(plan.resources.requests?.cpuMilli)}, Memory:{" "}
+                    {formatMemory(plan.resources.requests?.memoryMB)}, Storage:{" "}
+                    {formatStorage(plan.resources.requests?.storageGB)}
                   </div>
                   <div>
                     <span className="font-semibold">Limits:</span> CPU:{" "}
-                    {plan.resources.limits?.cpuMilli}, Memory:{" "}
-                    {plan.resources.limits?.memoryMB}, Storage:{" "}
-                    {plan.resources.limits?.storageGB}
+                    {formatCpu(plan.resources.limits?.cpuMilli)}, Memory:{" "}
+                    {formatMemory(plan.resources.limits?.memoryMB)}, Storage:{" "}
+                    {formatStorage(plan.resources.limits?.storageGB)}
                   </div>
                 </>
               )}

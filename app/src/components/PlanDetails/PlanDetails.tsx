@@ -7,6 +7,7 @@ import type PlanDetailsProps from "../../types/Plan/PlanDetailsProps";
 import Card from "../ui/Card/Card";
 import Loader from "../ui/Loader/Loader";
 import useNotification from "../ui/Notification/Notification";
+import { formatCpu, formatMemory, formatStorage } from "../../utils/resources";
 
 const ResourceItem = ({
   icon,
@@ -95,7 +96,7 @@ const PlanDetails: React.FC<PlanDetailsProps> = ({ planId, planObj }) => {
                       <FaMicrochip className="w-4 h-4 text-sky-300 shrink-0" />
                     }
                     label="CPU"
-                    value={String(plan.resources.requests.cpuMilli)}
+                    value={formatCpu(plan.resources.requests.cpuMilli)}
                     color="text-sky-200"
                   />
                   <ResourceItem
@@ -103,7 +104,7 @@ const PlanDetails: React.FC<PlanDetailsProps> = ({ planId, planObj }) => {
                       <FaMemory className="w-4 h-4 text-emerald-300 shrink-0" />
                     }
                     label="Memory"
-                    value={String(plan.resources.requests.memoryMB)}
+                    value={formatMemory(plan.resources.requests.memoryMB)}
                     color="text-emerald-200"
                   />
                   <ResourceItem
@@ -111,7 +112,7 @@ const PlanDetails: React.FC<PlanDetailsProps> = ({ planId, planObj }) => {
                       <FaFloppyDisk className="w-4 h-4 text-yellow-300 shrink-0" />
                     }
                     label="Storage"
-                    value={String(plan.resources.requests.storageGB)}
+                    value={formatStorage(plan.resources.requests.storageGB)}
                     color="text-yellow-200"
                   />
                 </div>

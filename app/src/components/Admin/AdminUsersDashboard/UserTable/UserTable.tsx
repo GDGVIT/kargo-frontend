@@ -8,6 +8,12 @@ import ExtraResourcesEditor from "../ExtraResourcesEditor/ExtraResourcesEditor";
 import type UserTableProps from "../../../../types/User/UserTableProps";
 import type User from "../../../../types/User/User";
 
+import {
+  formatCpu,
+  formatMemory,
+  formatStorage,
+} from "../../../../utils/resources";
+
 const UserTable: React.FC<UserTableProps> = ({
   users,
   plans,
@@ -126,16 +132,30 @@ const UserTable: React.FC<UserTableProps> = ({
                   {allowedResources[user._id] ? (
                     <div className="text-xs">
                       <div>
-                        <b>Requests:</b> CPU:{" "}
-                        {allowedResources[user._id].requests.cpuMilli}, Mem:{" "}
-                        {allowedResources[user._id].requests.memoryMB}, Storage:{" "}
-                        {allowedResources[user._id].requests.storageGB}
+                        <span className="font-semibold">Req:</span> CPU:{" "}
+                        {formatCpu(
+                          allowedResources[user._id].requests?.cpuMilli
+                        )}
+                        , Mem:{" "}
+                        {formatMemory(
+                          allowedResources[user._id].requests?.memoryMB
+                        )}
+                        , Storage:{" "}
+                        {formatStorage(
+                          allowedResources[user._id].requests?.storageGB
+                        )}
                       </div>
                       <div>
-                        <b>Limits:</b> CPU:{" "}
-                        {allowedResources[user._id].limits.cpuMilli}, Mem:{" "}
-                        {allowedResources[user._id].limits.memoryMB}, Storage:{" "}
-                        {allowedResources[user._id].limits.storageGB}
+                        <span className="font-semibold">Lim:</span> CPU:{" "}
+                        {formatCpu(allowedResources[user._id].limits?.cpuMilli)}
+                        , Mem:{" "}
+                        {formatMemory(
+                          allowedResources[user._id].limits?.memoryMB
+                        )}
+                        , Storage:{" "}
+                        {formatStorage(
+                          allowedResources[user._id].limits?.storageGB
+                        )}
                       </div>
                     </div>
                   ) : (
@@ -148,15 +168,20 @@ const UserTable: React.FC<UserTableProps> = ({
                     <div className="text-xs mb-1">
                       <div>
                         <b>Requests:</b> CPU:{" "}
-                        {user.extraResources?.requests?.cpuMilli}, Mem:{" "}
-                        {user.extraResources?.requests?.memoryMB}, Storage:{" "}
-                        {user.extraResources?.requests?.storageGB}
+                        {formatCpu(user.extraResources?.requests?.cpuMilli)},
+                        Mem:{" "}
+                        {formatMemory(user.extraResources?.requests?.memoryMB)},
+                        Storage:{" "}
+                        {formatStorage(
+                          user.extraResources?.requests?.storageGB
+                        )}
                       </div>
                       <div>
                         <b>Limits:</b> CPU:{" "}
-                        {user.extraResources?.limits?.cpuMilli}, Mem:{" "}
-                        {user.extraResources?.limits?.memoryMB}, Storage:{" "}
-                        {user.extraResources?.limits?.storageGB}
+                        {formatCpu(user.extraResources?.limits?.cpuMilli)}, Mem:{" "}
+                        {formatMemory(user.extraResources?.limits?.memoryMB)},
+                        Storage:{" "}
+                        {formatStorage(user.extraResources?.limits?.storageGB)}
                       </div>
                     </div>
                     <AnimatedButton
