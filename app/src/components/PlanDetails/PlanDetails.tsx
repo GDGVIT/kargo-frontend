@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import axios from "../../utils/api";
 import { FaCrown, FaMicrochip, FaMemory } from "react-icons/fa";
 import { FaFloppyDisk } from "react-icons/fa6";
-import { formatCpu, formatMemory, formatStorage } from "../../utils/resources";
 import type Plan from "../../types/Plan/Plan";
 import type PlanDetailsProps from "../../types/Plan/PlanDetailsProps";
 import Card from "../ui/Card/Card";
@@ -96,7 +95,7 @@ const PlanDetails: React.FC<PlanDetailsProps> = ({ planId, planObj }) => {
                       <FaMicrochip className="w-4 h-4 text-sky-300 shrink-0" />
                     }
                     label="CPU"
-                    value={formatCpu(plan.resources.requests.cpu)}
+                    value={String(plan.resources.requests.cpuMilli)}
                     color="text-sky-200"
                   />
                   <ResourceItem
@@ -104,7 +103,7 @@ const PlanDetails: React.FC<PlanDetailsProps> = ({ planId, planObj }) => {
                       <FaMemory className="w-4 h-4 text-emerald-300 shrink-0" />
                     }
                     label="Memory"
-                    value={formatMemory(plan.resources.requests.memory)}
+                    value={String(plan.resources.requests.memoryMB)}
                     color="text-emerald-200"
                   />
                   <ResourceItem
@@ -112,7 +111,7 @@ const PlanDetails: React.FC<PlanDetailsProps> = ({ planId, planObj }) => {
                       <FaFloppyDisk className="w-4 h-4 text-yellow-300 shrink-0" />
                     }
                     label="Storage"
-                    value={formatStorage(plan.resources.requests.storage)}
+                    value={String(plan.resources.requests.storageGB)}
                     color="text-yellow-200"
                   />
                 </div>
@@ -132,7 +131,7 @@ const PlanDetails: React.FC<PlanDetailsProps> = ({ planId, planObj }) => {
                       <FaMicrochip className="w-4 h-4 text-sky-300 shrink-0" />
                     }
                     label="CPU"
-                    value={formatCpu(plan.resources.limits.cpu)}
+                    value={String(plan.resources.limits.cpuMilli)}
                     color="text-sky-200"
                   />
                   <ResourceItem
@@ -140,7 +139,7 @@ const PlanDetails: React.FC<PlanDetailsProps> = ({ planId, planObj }) => {
                       <FaMemory className="w-4 h-4 text-emerald-300 shrink-0" />
                     }
                     label="Memory"
-                    value={formatMemory(plan.resources.limits.memory)}
+                    value={String(plan.resources.limits.memoryMB)}
                     color="text-emerald-200"
                   />
                   <ResourceItem
@@ -148,7 +147,7 @@ const PlanDetails: React.FC<PlanDetailsProps> = ({ planId, planObj }) => {
                       <FaFloppyDisk className="w-4 h-4 text-yellow-300 shrink-0" />
                     }
                     label="Storage"
-                    value={formatStorage(plan.resources.limits.storage)}
+                    value={String(plan.resources.limits.storageGB)}
                     color="text-yellow-200"
                   />
                 </div>

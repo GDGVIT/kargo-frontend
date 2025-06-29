@@ -22,7 +22,6 @@ import {
   FaNetworkWired,
   FaChartArea,
 } from "react-icons/fa";
-import { parseCpu, parseMemory, parseStorage } from "../../../utils/resources";
 import Loader from "../../ui/Loader/Loader";
 import { useAuth } from "../../Auth/AuthProvider/AuthProvider";
 import Tabs, { TabItem } from "../../ui/Tabs/Tabs";
@@ -162,17 +161,17 @@ export default function ConfigureApp({ appId }: { appId: string }) {
           return;
         }
       }
-      // Sanitize resources before sending
-      const sanitizedResources = {
+      // Directly use the values from form.resources without parsing/formatting
+      const directResources = {
         requests: {
-          cpu: parseCpu(form.resources?.requests?.cpuMilli),
-          memory: parseMemory(form.resources?.requests?.memoryMB),
-          storage: parseStorage(form.resources?.requests?.storageGB),
+          cpu: form.resources?.requests?.cpuMilli,
+          memory: form.resources?.requests?.memoryMB,
+          storage: form.resources?.requests?.storageGB,
         },
         limits: {
-          cpu: parseCpu(form.resources?.limits?.cpuMilli),
-          memory: parseMemory(form.resources?.limits?.memoryMB),
-          storage: parseStorage(form.resources?.limits?.storageGB),
+          cpu: form.resources?.limits?.cpuMilli,
+          memory: form.resources?.limits?.memoryMB,
+          storage: form.resources?.limits?.storageGB,
         },
       };
       // Save
@@ -181,7 +180,7 @@ export default function ConfigureApp({ appId }: { appId: string }) {
         env: envObj,
         ports: updatedPorts,
         credentials: selectedCredential ? [selectedCredential] : [],
-        resources: sanitizedResources,
+        resources: directResources,
       });
       // Deploy
       await axios.post(`/api/applications/${appId}/apply`);

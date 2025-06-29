@@ -6,7 +6,6 @@ import type Plan from "../../types/Plan/Plan";
 import AnimatedButton from "../ui/AnimatedButton/AnimatedButton";
 import Card from "../ui/Card/Card";
 import Loader from "../ui/Loader/Loader";
-import { formatCpu, formatMemory, formatStorage } from "../../utils/resources";
 import loadRazorpayScript from "../../utils/loadRazorpayScript";
 import useNotification from "../ui/Notification/Notification";
 import { getRuntimeEnv } from "@/utils/getRuntimeEnv";
@@ -105,15 +104,15 @@ const Plans = () => {
                 <>
                   <div>
                     <span className="font-semibold">Requests:</span> CPU:{" "}
-                    {formatCpu(plan.resources.requests?.cpu)}, Memory:{" "}
-                    {formatMemory(plan.resources.requests?.memory)}, Storage:{" "}
-                    {formatStorage(plan.resources.requests?.storage)}
+                    {plan.resources.requests?.cpuMilli}, Memory:{" "}
+                    {plan.resources.requests?.memoryMB}, Storage:{" "}
+                    {plan.resources.requests?.storageGB}
                   </div>
                   <div>
                     <span className="font-semibold">Limits:</span> CPU:{" "}
-                    {formatCpu(plan.resources.limits?.cpu)}, Memory:{" "}
-                    {formatMemory(plan.resources.limits?.memory)}, Storage:{" "}
-                    {formatStorage(plan.resources.limits?.storage)}
+                    {plan.resources.limits?.cpuMilli}, Memory:{" "}
+                    {plan.resources.limits?.memoryMB}, Storage:{" "}
+                    {plan.resources.limits?.storageGB}
                   </div>
                 </>
               )}

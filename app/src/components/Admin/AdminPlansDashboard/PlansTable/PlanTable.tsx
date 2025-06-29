@@ -6,15 +6,6 @@ import Modal from "../../../ui/Modal/Modal";
 import Plan from "../../../../types/Plan/Plan";
 import type PlanTableProps from "../../../../types/Plan/PlanTableProps";
 import { FaEdit, FaTrash, FaCheckCircle, FaRegCircle } from "react-icons/fa";
-import {
-  formatCpu,
-  formatMemory,
-  formatStorage,
-  formatMoney,
-  parseCpu,
-  parseMemory,
-  parseStorage,
-} from "../../../../utils/resources";
 
 const PlanTable: React.FC<PlanTableProps> = ({
   plans,
@@ -107,35 +98,17 @@ const PlanTable: React.FC<PlanTableProps> = ({
                         <div>
                           <span className="font-semibold">Requests:</span>
                           <span className="ml-2">
-                            CPU:{" "}
-                            {formatCpu(
-                              parseCpu(plan.resources.requests?.cpuMilli)
-                            )}
-                            , Memory:{" "}
-                            {formatMemory(
-                              parseMemory(plan.resources.requests?.memoryMB)
-                            )}
-                            , Storage:{" "}
-                            {formatStorage(
-                              parseStorage(plan.resources.requests?.storageGB)
-                            )}
+                            CPU: {plan.resources.requests?.cpuMilli}, Memory:{" "}
+                            {plan.resources.requests?.memoryMB}, Storage:{" "}
+                            {plan.resources.requests?.storageGB}
                           </span>
                         </div>
                         <div>
                           <span className="font-semibold">Limits:</span>
                           <span className="ml-2">
-                            CPU:{" "}
-                            {formatCpu(
-                              parseCpu(plan.resources.limits?.cpuMilli)
-                            )}
-                            , Memory:{" "}
-                            {formatMemory(
-                              parseMemory(plan.resources.limits?.memoryMB)
-                            )}
-                            , Storage:{" "}
-                            {formatStorage(
-                              parseStorage(plan.resources.limits?.storageGB)
-                            )}
+                            CPU: {plan.resources.limits?.cpuMilli}, Memory:{" "}
+                            {plan.resources.limits?.memoryMB}, Storage:{" "}
+                            {plan.resources.limits?.storageGB}
                           </span>
                         </div>
                       </div>
@@ -145,9 +118,7 @@ const PlanTable: React.FC<PlanTableProps> = ({
                       </span>
                     )}
                   </td>
-                  <td className="p-2 font-mono text-green-400">
-                    {formatMoney(plan.price)}
-                  </td>
+                  <td className="p-2 font-mono text-green-400">{plan.price}</td>
                   <td className="p-2 text-center align-middle">
                     <div className="flex items-center justify-center h-full min-h-[28px]">
                       {plan.isDefault ? (

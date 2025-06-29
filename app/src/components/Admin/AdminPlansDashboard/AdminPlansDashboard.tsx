@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import axios from "../../../utils/api";
 import useNotification from "../../ui/Notification/Notification";
 import type Plan from "../../../types/Plan/Plan";
-import type Resource from "../../../types/Application/Resource/Resource";
 import AnimatedButton from "../../ui/AnimatedButton/AnimatedButton";
 import PlanTable from "./PlansTable/PlanTable";
 import PlanFormModal from "./PlanFormModal/PlanFormModal";
@@ -65,18 +64,12 @@ export default function AdminPlansDashboard() {
       setPlanForm({
         name: plan.name,
         description: plan.description || "",
-        requestsCpu:
-          (plan.resources?.requests as Resource)?.cpuMilli?.toString() || "",
-        requestsMemory:
-          (plan.resources?.requests as Resource)?.memoryMB?.toString() || "",
-        requestsStorage:
-          (plan.resources?.requests as Resource)?.storageGB?.toString() || "",
-        limitsCpu:
-          (plan.resources?.limits as Resource)?.cpuMilli?.toString() || "",
-        limitsMemory:
-          (plan.resources?.limits as Resource)?.memoryMB?.toString() || "",
-        limitsStorage:
-          (plan.resources?.limits as Resource)?.storageGB?.toString() || "",
+        requestsCpu: plan.resources?.requests?.cpuMilli?.toString() || "",
+        requestsMemory: plan.resources?.requests?.memoryMB?.toString() || "",
+        requestsStorage: plan.resources?.requests?.storageGB?.toString() || "",
+        limitsCpu: plan.resources?.limits?.cpuMilli?.toString() || "",
+        limitsMemory: plan.resources?.limits?.memoryMB?.toString() || "",
+        limitsStorage: plan.resources?.limits?.storageGB?.toString() || "",
         isDefault: !!plan.isDefault,
         isActive: plan.isActive !== false,
         price: plan.price ? String(plan.price) : "",
@@ -109,35 +102,19 @@ export default function AdminPlansDashboard() {
       description: planForm.description,
       resources: {
         requests: {
-          cpuMilli:
-            planForm.requestsCpu === ""
-              ? undefined
-              : Number(planForm.requestsCpu),
-          memoryMB:
-            planForm.requestsMemory === ""
-              ? undefined
-              : Number(planForm.requestsMemory),
-          storageGB:
-            planForm.requestsStorage === ""
-              ? undefined
-              : Number(planForm.requestsStorage),
-        } as Resource,
+          cpuMilli: planForm.requestsCpu,
+          memoryMB: planForm.requestsMemory,
+          storageGB: planForm.requestsStorage,
+        },
         limits: {
-          cpuMilli:
-            planForm.limitsCpu === "" ? undefined : Number(planForm.limitsCpu),
-          memoryMB:
-            planForm.limitsMemory === ""
-              ? undefined
-              : Number(planForm.limitsMemory),
-          storageGB:
-            planForm.limitsStorage === ""
-              ? undefined
-              : Number(planForm.limitsStorage),
-        } as Resource,
+          cpuMilli: planForm.limitsCpu,
+          memoryMB: planForm.limitsMemory,
+          storageGB: planForm.limitsStorage,
+        },
       },
       isDefault: planForm.isDefault,
       isActive: planForm.isActive,
-      price: planForm.price ? parseInt(planForm.price, 10) : undefined,
+      price: planForm.price ? planForm.price : undefined,
     };
     try {
       if (editingPlan) {

@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import axios from "../../../utils/api";
 import UserManagement from "./UserManagement/UserManagement";
 import Loader from "../../ui/Loader/Loader";
-import { parseCpu, parseMemory, parseStorage } from "../../../utils/resources";
 import type Plan from "../../../types/Plan/Plan";
 import type User from "../../../types/User/User";
 import type Resource from "../../../types/Application/Resource/Resource";
@@ -121,28 +120,14 @@ export default function AdminUsersDashboard() {
       await axios.put(`/api/users/${userId}/extra-resources`, {
         extraResources: {
           requests: {
-            cpuMilli:
-              data.requestsCpu === "" ? undefined : parseCpu(data.requestsCpu),
-            memoryMB:
-              data.requestsMemory === ""
-                ? undefined
-                : parseMemory(data.requestsMemory),
-            storageGB:
-              data.requestsStorage === ""
-                ? undefined
-                : parseStorage(data.requestsStorage),
+            cpuMilli: data.requestsCpu,
+            memoryMB: data.requestsMemory,
+            storageGB: data.requestsStorage,
           },
           limits: {
-            cpuMilli:
-              data.limitsCpu === "" ? undefined : parseCpu(data.limitsCpu),
-            memoryMB:
-              data.limitsMemory === ""
-                ? undefined
-                : parseMemory(data.limitsMemory),
-            storageGB:
-              data.limitsStorage === ""
-                ? undefined
-                : parseStorage(data.limitsStorage),
+            cpuMilli: data.limitsCpu,
+            memoryMB: data.limitsMemory,
+            storageGB: data.limitsStorage,
           },
         },
       });
@@ -154,32 +139,14 @@ export default function AdminUsersDashboard() {
                   ...u,
                   extraResources: {
                     requests: {
-                      cpuMilli:
-                        data.requestsCpu === ""
-                          ? undefined
-                          : parseCpu(data.requestsCpu),
-                      memoryMB:
-                        data.requestsMemory === ""
-                          ? undefined
-                          : parseMemory(data.requestsMemory),
-                      storageGB:
-                        data.requestsStorage === ""
-                          ? undefined
-                          : parseStorage(data.requestsStorage),
+                      cpuMilli: data.requestsCpu,
+                      memoryMB: data.requestsMemory,
+                      storageGB: data.requestsStorage,
                     },
                     limits: {
-                      cpuMilli:
-                        data.limitsCpu === ""
-                          ? undefined
-                          : parseCpu(data.limitsCpu),
-                      memoryMB:
-                        data.limitsMemory === ""
-                          ? undefined
-                          : parseMemory(data.limitsMemory),
-                      storageGB:
-                        data.limitsStorage === ""
-                          ? undefined
-                          : parseStorage(data.limitsStorage),
+                      cpuMilli: data.limitsCpu,
+                      memoryMB: data.limitsMemory,
+                      storageGB: data.limitsStorage,
                     },
                   },
                 }
