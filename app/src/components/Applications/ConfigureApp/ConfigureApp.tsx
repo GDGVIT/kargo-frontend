@@ -172,17 +172,17 @@ export default function ConfigureApp({ appId }: { appId: string }) {
           return;
         }
       }
-      // Directly use the values from form.resources without parsing/formatting
+      // Directly use the values from form.resources with correct keys for backend
       const directResources = {
         requests: {
-          cpu: form.resources?.requests?.cpuMilli,
-          memory: form.resources?.requests?.memoryMB,
-          storage: form.resources?.requests?.storageGB,
+          cpuMilli: form.resources?.requests?.cpuMilli,
+          memoryMB: form.resources?.requests?.memoryMB,
+          storageGB: form.resources?.requests?.storageGB,
         },
         limits: {
-          cpu: form.resources?.limits?.cpuMilli,
-          memory: form.resources?.limits?.memoryMB,
-          storage: form.resources?.limits?.storageGB,
+          cpuMilli: form.resources?.limits?.cpuMilli,
+          memoryMB: form.resources?.limits?.memoryMB,
+          storageGB: form.resources?.limits?.storageGB,
         },
       };
       // Save
