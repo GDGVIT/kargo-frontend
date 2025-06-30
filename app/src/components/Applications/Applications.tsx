@@ -46,9 +46,6 @@ export default function Applications() {
   return (
     <section className="px-2 sm:px-4 md:px-8 lg:px-16 py-2">
       <div className="flex flex-col sm:flex-row items-center justify-between mb-6 gap-3">
-        <h1 className="text-xl font-bold text-white mb-2 sm:mb-0">
-          Applications
-        </h1>
         <AnimatedButton
           onClick={() => router.push("/applications/add")}
           icon={<FaPlus />}
