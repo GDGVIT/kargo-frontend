@@ -104,6 +104,7 @@ const Settings: React.FC = () => {
         {user.plan && (
           <PlanDetails
             planId={typeof user.plan === "string" ? user.plan : user.plan?._id}
+            planObj={typeof user.plan === "object" ? user.plan : undefined}
           />
         )}
         {/* GitHub Integration */}
