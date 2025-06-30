@@ -117,22 +117,21 @@ const MetricsSection: React.FC<MetricsSectionProps> = ({
   let limitLabel = "";
   if (resources) {
     if (metricType === "cpu") {
-      if (resources.requests?.cpu) {
-        requestValue = Number(resources.requests.cpu);
-        requestLabel = `CPU Request (${resources.requests.cpu})`;
+      if (resources.requests?.cpuMilli) {
+        requestValue = Number(resources.requests.cpuMilli);
+        requestLabel = `CPU Request (${resources.requests.cpuMilli})`;
       }
-      if (resources.limits?.cpu) {
-        limitValue = Number(resources.limits.cpu);
-        limitLabel = `CPU Limit (${resources.limits.cpu})`;
+      if (resources.limits?.cpuMilli) {
+        limitValue = Number(resources.limits.cpuMilli);
+        limitLabel = `CPU Limit (${resources.limits.cpuMilli})`;
       }
     } else if (metricType === "memory") {
-      if (resources.requests?.memory) {
-        requestValue = Number(resources.requests.memory);
-        requestLabel = `Memory Request (${resources.requests.memory}Mi)`;
+      if (resources.requests?.memoryMB) {
+        requestValue = Number(resources.requests.memoryMB);
+        requestLabel = `Memory Request (${resources.requests.memoryMB}Mi)`;
       }
-      if (resources.limits?.memory) {
-        limitValue = Number(resources.limits.memory);
-        limitLabel = `Memory Limit (${resources.limits.memory}Mi)`;
+      if (resources.limits?.memoryMB) {
+        limitValue = Number(resources.limits.memoryMB);
       }
     }
     // storage can be added similarly if present
