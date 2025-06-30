@@ -128,13 +128,22 @@ const MetricsSection: React.FC<MetricsSectionProps> = ({
     } else if (metricType === "memory") {
       if (resources.requests?.memoryMB) {
         requestValue = Number(resources.requests.memoryMB);
-        requestLabel = `Memory Request (${resources.requests.memoryMB}Mi)`;
+        requestLabel = `Memory Request (${resources.requests.memoryMB})`;
       }
       if (resources.limits?.memoryMB) {
         limitValue = Number(resources.limits.memoryMB);
+        limitLabel = `Memory Limit (${resources.limits.memoryMB})`;
+      }
+    } else if (metricType === "storage") {
+      if (resources.requests?.storageGB) {
+        requestValue = Number(resources.requests.storageGB);
+        requestLabel = `Storage Request (${resources.requests.storageGB})`;
+      }
+      if (resources.limits?.storageGB) {
+        limitValue = Number(resources.limits.storageGB);
+        limitLabel = `Storage Limit (${resources.limits.storageGB})`;
       }
     }
-    // storage can be added similarly if present
   }
 
   return (

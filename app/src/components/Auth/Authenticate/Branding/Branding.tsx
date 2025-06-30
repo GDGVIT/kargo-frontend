@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 
 export default function Branding() {
@@ -19,7 +21,7 @@ export default function Branding() {
         </p>
       </div>
       <div className="absolute bottom-6 left-0 w-full text-center text-xs text-sky-300 opacity-60">
-        © {new Date().getFullYear()} Kargo
+        © 2025 Kargo
       </div>
     </div>
   );
