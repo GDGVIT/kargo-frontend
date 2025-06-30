@@ -33,6 +33,31 @@ interface Metrics {
   [key: string]: MetricHistory;
 }
 
+const CustomTooltip = ({
+  active,
+  payload,
+  label,
+}: {
+  active?: boolean;
+  payload?: { name: string; value: number }[];
+  label?: string;
+}) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className="bg-gray-900 text-gray-100 rounded-lg shadow-lg px-4 py-2 border border-gray-700 max-w-xs break-words">
+        <div className="font-semibold text-sm mb-1">{label}</div>
+        {payload.map((entry, idx) => (
+          <div key={idx} className="text-base">
+            <span className="font-medium">{entry.name}: </span>
+            <span>{entry.value}</span>
+          </div>
+        ))}
+      </div>
+    );
+  }
+  return null;
+};
+
 export default function AdminOverallMetrics() {
   const [metrics, setMetrics] = useState<Metrics | null>(null);
   const [loading, setLoading] = useState(true);
@@ -57,48 +82,90 @@ export default function AdminOverallMetrics() {
   if (loading) return <Card className="mb-8">Loading overall metrics...</Card>;
   if (!metrics) return <Card className="mb-8">Failed to load metrics.</Card>;
 
+  // Group metrics for layout
+  const metricGroups = [
+    ["cpu", "memory", "storage"],
+    ["pods", "nodes", "apiserver_uptime"],
+    ["network_rx", "network_tx"],
+  ];
+
   return (
     <div className="flex flex-col gap-8 mb-8">
-      {Object.entries(metrics).map(([key, metric]) => {
-        const formattedData = metric.history.map(([timestamp, val]) => ({
-          time: new Date(timestamp * 1000).toLocaleTimeString(),
-          value: parseFloat(val),
-        }));
-
-        return (
-          <Card key={key} className="p-6">
-            <div className="mb-4">
-              <h3 className="text-lg font-semibold">
-                {metricLabels[key] || key}
-              </h3>
-              <div className="text-2xl font-bold">
-                {metric.current
-                  ? parseFloat(metric.current).toLocaleString()
-                  : "N/A"}
-              </div>
-            </div>
-            {formattedData.length > 0 && (
-              <div className="h-48">
-                <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={formattedData}>
-                    <XAxis dataKey="time" />
-                    <YAxis />
-                    <Tooltip />
-                    <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
-                    <Line
-                      type="monotone"
-                      dataKey="value"
-                      stroke="#38bdf8"
-                      strokeWidth={2}
-                      dot={false}
-                    />
-                  </LineChart>
-                </ResponsiveContainer>
-              </div>
-            )}
-          </Card>
-        );
-      })}
+      {metricGroups.map((group, rowIdx) => (
+        <div
+          key={rowIdx}
+          className="flex flex-col sm:flex-row gap-4 md:gap-8 w-full"
+        >
+          {group.map((key) => {
+            const metric = metrics[key];
+            if (!metric) return null;
+            const formattedData = metric.history.map(([timestamp, val]) => ({
+              time: new Date(timestamp * 1000).toLocaleTimeString(),
+              value: Number(parseFloat(val).toFixed(3)),
+            }));
+            return (
+              <Card
+                key={key}
+                className="p-4 md:p-6 flex-1 bg-gray-900 text-gray-100 border border-gray-700 min-w-0"
+              >
+                <div className="mb-4 flex flex-col gap-1">
+                  <h3 className="text-base md:text-lg font-semibold text-gray-200 truncate">
+                    {metricLabels[key] || key}
+                  </h3>
+                  <div className="text-xl md:text-2xl font-bold text-cyan-300 truncate">
+                    {metric.current
+                      ? Number(
+                          parseFloat(metric.current).toFixed(3)
+                        ).toLocaleString()
+                      : "N/A"}
+                  </div>
+                </div>
+                {formattedData.length > 0 && (
+                  <div className="h-40 md:h-48 w-full min-w-0">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <LineChart
+                        data={formattedData}
+                        style={{ background: "#1a202c", borderRadius: 12 }}
+                      >
+                        <XAxis
+                          dataKey="time"
+                          stroke="#cbd5e1"
+                          tick={{ fill: "#cbd5e1", fontSize: 10 }}
+                          minTickGap={20}
+                        />
+                        <YAxis
+                          stroke="#cbd5e1"
+                          tick={{ fill: "#cbd5e1", fontSize: 10 }}
+                          tickFormatter={(val) => {
+                            if (typeof val !== "number") return val;
+                            const rounded = Number(val.toFixed(3));
+                            if (Math.abs(rounded) >= 1e9)
+                              return (rounded / 1e9).toFixed(3) + "G";
+                            if (Math.abs(rounded) >= 1e6)
+                              return (rounded / 1e6).toFixed(3) + "M";
+                            if (Math.abs(rounded) >= 1e3)
+                              return (rounded / 1e3).toFixed(3) + "K";
+                            return rounded.toLocaleString();
+                          }}
+                        />
+                        <Tooltip content={<CustomTooltip />} />
+                        <CartesianGrid stroke="#334155" strokeDasharray="5 5" />
+                        <Line
+                          type="monotone"
+                          dataKey="value"
+                          stroke="#38bdf8"
+                          strokeWidth={2}
+                          dot={false}
+                        />
+                      </LineChart>
+                    </ResponsiveContainer>
+                  </div>
+                )}
+              </Card>
+            );
+          })}
+        </div>
+      ))}
     </div>
   );
 }
