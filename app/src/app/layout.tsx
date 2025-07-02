@@ -15,31 +15,7 @@ export const metadata: Metadata = {
   title: "Kargo",
   description:
     "Kargo lets you deploy containerized applications with full flexibility — AI-powered setup, secure infrastructure, and Kubernetes-native scaling, all from a powerful web interface.",
-  metadataBase: new URL("https://kargo.upayan.dev/"),
-  openGraph: {
-    title: "Kargo",
-    description:
-      "Kargo lets you deploy containerized applications with full flexibility — AI-powered setup, secure infrastructure, and Kubernetes-native scaling, all from a powerful web interface.",
-    url: "https://kargo.upayan.dev/",
-    siteName: "Kargo",
-    images: [
-      {
-        url: "/icon.avif",
-        width: 512,
-        height: 512,
-        alt: "Kargo OpenGraph Image",
-      },
-    ],
-    locale: "en_US",
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Kargo",
-    description:
-      "Kargo lets you deploy containerized applications with full flexibility — AI-powered setup, secure infrastructure, and Kubernetes-native scaling, all from a powerful web interface.",
-    images: ["/icon.avif"],
-  },
+  metadataBase: new URL("https://kargo.upayan.dev"),
 };
 
 export default function RootLayout({
