@@ -50,7 +50,7 @@ export default function AuthForm({
                   type="text"
                   autoComplete="name"
                   value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  onChange={setName}
                   disabled={loading}
                 />
                 <Input
@@ -59,7 +59,7 @@ export default function AuthForm({
                   type="text"
                   autoComplete="username"
                   value={username}
-                  onChange={(e) => setUsername(e.target.value)}
+                  onChange={setUsername}
                   disabled={loading}
                 />
               </>
@@ -70,7 +70,7 @@ export default function AuthForm({
               type="email"
               autoComplete="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={setEmail}
               disabled={loading}
             />
             <Input
@@ -79,7 +79,7 @@ export default function AuthForm({
               type="password"
               autoComplete={isLogin ? "current-password" : "new-password"}
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={setPassword}
               disabled={loading}
             />
           </div>

@@ -36,7 +36,7 @@ export default function CredentialRegister({
         id="cred-name"
         label="Name"
         value={form.name}
-        onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
+        onChange={(val) => setForm((f) => ({ ...f, name: val }))}
         placeholder="e.g. DockerHub Personal"
         title="Credential Name"
       />
@@ -62,7 +62,7 @@ export default function CredentialRegister({
         label="Username"
         title="Registry Username"
         value={form.username}
-        onChange={(e) => setForm((f) => ({ ...f, username: e.target.value }))}
+        onChange={(val) => setForm((f) => ({ ...f, username: val }))}
         placeholder="Registry username"
       />
       <Input
@@ -71,7 +71,7 @@ export default function CredentialRegister({
         label="Personal Access Token"
         title="Personal Access Token"
         value={form.token}
-        onChange={(e) => setForm((f) => ({ ...f, token: e.target.value }))}
+        onChange={(val) => setForm((f) => ({ ...f, token: val }))}
         type="password"
         placeholder="Personal access token"
       />

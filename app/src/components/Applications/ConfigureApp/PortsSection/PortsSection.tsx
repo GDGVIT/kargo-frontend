@@ -69,11 +69,13 @@ const PortsSection: React.FC<PortsSectionProps> = ({ ports, onChange }) => {
                 type="number"
                 min={1}
                 max={65535}
-                value={containerPort}
-                placeholder="Container Port"
-                onChange={(e) =>
-                  updatePort(id, "containerPort", parseInt(e.target.value, 10))
+                value={
+                  containerPort !== undefined && containerPort !== null
+                    ? containerPort.toString()
+                    : ""
                 }
+                placeholder="Container Port"
+                onChange={(val) => updatePort(id, "containerPort", Number(val))}
                 required
                 title="Container port number (1-65535)"
                 label="Container Port"
@@ -109,9 +111,9 @@ const PortsSection: React.FC<PortsSectionProps> = ({ ports, onChange }) => {
               <div className="flex items-center">
                 <Input
                   value={subdomainSegment}
-                  onChange={(e) => {
-                    const newSub = e.target.value
-                      ? `${e.target.value}.${username}.${ingressBaseUrl}`
+                  onChange={(val) => {
+                    const newSub = val
+                      ? `${val}.${username}.${ingressBaseUrl}`
                       : "";
                     updatePort(id, "subdomain", newSub);
                   }}

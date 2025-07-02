@@ -159,8 +159,8 @@ const GithubRepos: React.FC = () => {
     return ["All", ...Array.from(ownerSet).sort()];
   }, [allRepos]);
 
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value);
+  const handleSearchChange = (val: string) => {
+    setSearchTerm(val);
     setPage(1);
   };
 
