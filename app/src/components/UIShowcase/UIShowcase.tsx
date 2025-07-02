@@ -37,7 +37,6 @@ export default function UIPage() {
   const [input3] = React.useState("Read only value");
   const [input4, setInput4] = React.useState("");
   const [input5, setInput5] = React.useState("");
-  const [input6] = React.useState("");
   const [input7, setInput7] = React.useState("");
 
   return (
@@ -174,147 +173,202 @@ export default function UIPage() {
         </div>
       </section>
       <section style={{ marginTop: 40 }}>
-        <h2>Input</h2>
-        <div
-          className="responsive-flex-row"
-          style={{ flexWrap: "wrap", gap: 16 }}
-        >
-          <Input
-            placeholder="Basic input"
-            helperText="Helper text"
-            value={input1}
-            onChange={setInput1}
-          />
-          <Input
-            label="With label"
-            placeholder="Input with label"
-            helperText="Helper text"
-            value={input2}
-            onChange={setInput2}
-          />
-          <Input
-            label="Read only"
-            value={input3}
-            readOnly={true}
-            helperText="Read only input"
-            onChange={() => {}}
-          />
-          <Input
-            label="With icon"
-            icon={<FaCode />}
-            placeholder="Input with icon"
-            helperText="Helper text"
-            value={input4}
-            onChange={setInput4}
-          />
-          <Input
-            label="With error"
-            error="This is an error"
-            placeholder="Input with error"
-            helperText="Helper text"
-            value={input5}
-            onChange={setInput5}
-          />
-          <Input
-            label="Disabled"
-            disabled={true}
-            placeholder="Disabled input"
-            helperText="Disabled input"
-            value={input6}
-            onChange={() => {}}
-          />
-          <Input
-            label="Password"
-            type="password"
-            placeholder="Password input"
-            helperText="Password input"
-            value={input7}
-            onChange={setInput7}
-          />
+        <h2>Inputs</h2>
+        <div className="responsive-flex-row flex flex-wrap gap-4">
+          <Card elevation={2} className="min-w-[320px] flex-1">
+            <h4>Basic Inputs</h4>
+            <Input
+              placeholder="Basic input"
+              helperText="Helper text"
+              value={input1}
+              onChange={setInput1}
+            />
+            <Input
+              label="With label"
+              placeholder="Input with label"
+              helperText="Helper text"
+              value={input2}
+              onChange={setInput2}
+            />
+            <Input
+              label="Read only"
+              value={input3}
+              readOnly={true}
+              helperText="Read only input"
+              onChange={() => {}}
+            />
+          </Card>
+          <Card elevation={2} className="min-w-[320px] flex-1">
+            <h4>Inputs with Icon</h4>
+            <Input
+              label="With icon"
+              icon={<FaCode />}
+              placeholder="Input with icon"
+              helperText="Helper text"
+              value={input4}
+              onChange={setInput4}
+            />
+          </Card>
+          <Card elevation={2} className="min-w-[320px] flex-1">
+            <h4>Inputs with Error</h4>
+            <Input
+              label="With error"
+              error="This is an error"
+              placeholder="Input with error"
+              helperText="Helper text"
+              value={input5}
+              onChange={setInput5}
+            />
+          </Card>
+          <Card elevation={2} className="min-w-[320px] flex-1">
+            <h4>Disabled & Password Inputs</h4>
+            <Input
+              label="Disabled"
+              disabled={true}
+              placeholder="Disabled input"
+              helperText="Disabled input"
+              value={input7}
+              onChange={() => {}}
+            />
+            <Input
+              label="Password"
+              type="password"
+              placeholder="Password input"
+              helperText="Password input"
+              value={input7}
+              onChange={setInput7}
+            />
+          </Card>
+          <Card elevation={2} className="min-w-[320px] flex-1">
+            <h4>Unit Inputs</h4>
+            <Input
+              label="CPU (m/vCPU)"
+              unitType="cpu"
+              value={input1}
+              onChange={setInput1}
+              placeholder="CPU in m or vCPU"
+              helperText="Supports m and vCPU units."
+              displayHelperText={true}
+            />
+            <Input
+              label="Memory (MB/GB)"
+              unitType="memory"
+              value={input2}
+              onChange={setInput2}
+              placeholder="Memory in MB or GB"
+              helperText="Supports MB and GB units."
+              displayHelperText={true}
+            />
+            <Input
+              label="Storage (GB/TB)"
+              unitType="storage"
+              value={input4}
+              onChange={setInput4}
+              placeholder="Storage in GB or TB"
+              helperText="Supports GB and TB units."
+              displayHelperText={true}
+            />
+          </Card>
         </div>
       </section>
       <section style={{ marginTop: 40 }}>
         <h2>Select</h2>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: 16,
-            maxWidth: 400,
-          }}
-        >
-          <Select
-            options={selectOptions}
-            value={selectedOption1}
-            onChange={setSelectedOption1}
-            helperText="Basic select."
-          />
-          <Select
-            label="With label"
-            options={selectOptions}
-            value={selectedOption2}
-            onChange={setSelectedOption2}
-            helperText="Labelled select."
-          />
-          <Select
-            label="With value"
-            options={selectOptions}
-            value={selectedOption3}
-            onChange={setSelectedOption3}
-            helperText="Select with default value."
-          />
-          <Select
-            label="Error"
-            error="This is an error"
-            options={selectOptions}
-            value={selectedOption4}
-            onChange={setSelectedOption4}
-            helperText="Helper text will not show if error is present."
-          />
-          <Select
-            label="Disabled"
-            options={selectOptions}
-            value={""}
-            onChange={() => {}}
-            disabled
-            helperText="Disabled select."
-          />
+        <div className="responsive-flex-row flex flex-wrap gap-4">
+          <Card elevation={2} className="min-w-[320px] flex-1">
+            <h4>Basic Select</h4>
+            <Select
+              options={selectOptions}
+              value={selectedOption1}
+              onChange={setSelectedOption1}
+              helperText="Basic select."
+            />
+          </Card>
+          <Card elevation={2} className="min-w-[320px] flex-1">
+            <h4>With Label</h4>
+            <Select
+              label="With label"
+              options={selectOptions}
+              value={selectedOption2}
+              onChange={setSelectedOption2}
+              helperText="Labelled select."
+            />
+          </Card>
+          <Card elevation={2} className="min-w-[320px] flex-1">
+            <h4>With Value</h4>
+            <Select
+              label="With value"
+              options={selectOptions}
+              value={selectedOption3}
+              onChange={setSelectedOption3}
+              helperText="Select with default value."
+            />
+          </Card>
+          <Card elevation={2} className="min-w-[320px] flex-1">
+            <h4>Error</h4>
+            <Select
+              label="Error"
+              error="This is an error"
+              options={selectOptions}
+              value={selectedOption4}
+              onChange={setSelectedOption4}
+              helperText="Helper text will not show if error is present."
+            />
+          </Card>
+          <Card elevation={2} className="min-w-[320px] flex-1">
+            <h4>Disabled</h4>
+            <Select
+              label="Disabled"
+              options={selectOptions}
+              value={""}
+              onChange={() => {}}
+              disabled
+              helperText="Disabled select."
+            />
+          </Card>
         </div>
       </section>
       <section style={{ marginTop: 40 }}>
         <h2>Textarea</h2>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: 16,
-            maxWidth: 400,
-          }}
-        >
-          <Textarea placeholder="No label" helperText="Basic textarea." />
-          <Textarea
-            label="With label"
-            placeholder="With label"
-            helperText="Labelled textarea."
-          />
-          <Textarea
-            label="With value"
-            value="Value"
-            readOnly
-            helperText="Read-only textarea."
-          />
-          <Textarea
-            label="Error"
-            error="This is an error"
-            placeholder="Error state"
-            helperText="Helper text will not show if error is present."
-          />
-          <Textarea
-            label="Disabled"
-            disabled
-            placeholder="Disabled"
-            helperText="Disabled textarea."
-          />
+        <div className="responsive-flex-row flex flex-wrap gap-4">
+          <Card elevation={2} className="min-w-[320px] flex-1">
+            <h4>Basic Textarea</h4>
+            <Textarea placeholder="No label" helperText="Basic textarea." />
+          </Card>
+          <Card elevation={2} className="min-w-[320px] flex-1">
+            <h4>With Label</h4>
+            <Textarea
+              label="With label"
+              placeholder="With label"
+              helperText="Labelled textarea."
+            />
+          </Card>
+          <Card elevation={2} className="min-w-[320px] flex-1">
+            <h4>With Value</h4>
+            <Textarea
+              label="With value"
+              value="Value"
+              readOnly
+              helperText="Read-only textarea."
+            />
+          </Card>
+          <Card elevation={2} className="min-w-[320px] flex-1">
+            <h4>Error</h4>
+            <Textarea
+              label="Error"
+              error="This is an error"
+              placeholder="Error state"
+              helperText="Helper text will not show if error is present."
+            />
+          </Card>
+          <Card elevation={2} className="min-w-[320px] flex-1">
+            <h4>Disabled</h4>
+            <Textarea
+              label="Disabled"
+              disabled
+              placeholder="Disabled"
+              helperText="Disabled textarea."
+            />
+          </Card>
         </div>
       </section>
       <section style={{ marginTop: 40 }}>
