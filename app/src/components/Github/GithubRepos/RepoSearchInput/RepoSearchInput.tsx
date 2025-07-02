@@ -10,7 +10,7 @@ const RepoSearchInput: React.FC<RepoSearchInputProps> = ({
     type="text"
     placeholder="Search your repositories..."
     value={value}
-    onChange={onChange}
+    onChange={(val) => onChange(val)}
     aria-label="Search your repositories"
   />
 );

@@ -94,45 +94,69 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
         <div>
           <div className="flex items-center gap-1">
             <Input
-              value={resources?.requests?.cpuMilli || ""}
-              onChange={(e) => {
-                handleResourceChange("requests", "cpuMilli", e.target.value);
+              value={
+                resources?.requests?.cpuMilli !== undefined &&
+                resources?.requests?.cpuMilli !== null
+                  ? resources.requests.cpuMilli.toString()
+                  : ""
+              }
+              onChange={(val) => {
+                handleResourceChange("requests", "cpuMilli", val);
               }}
               placeholder="100"
               inputMode="numeric"
               pattern="[0-9]*"
               label="CPU Requests"
               className="!mb-0"
+              type="number"
+              unitType="cpu"
+              displayHelperText
             />
           </div>
         </div>
         <div>
           <div className="flex items-center gap-1">
             <Input
-              value={resources?.requests?.memoryMB || ""}
-              onChange={(e) => {
-                handleResourceChange("requests", "memoryMB", e.target.value);
+              value={
+                resources?.requests?.memoryMB !== undefined &&
+                resources?.requests?.memoryMB !== null
+                  ? resources.requests.memoryMB.toString()
+                  : ""
+              }
+              onChange={(val) => {
+                handleResourceChange("requests", "memoryMB", val);
               }}
               placeholder="256"
               inputMode="numeric"
               pattern="[0-9]*"
               label="Memory Requests"
               className="!mb-0"
+              type="number"
+              unitType="memory"
+              displayHelperText
             />
           </div>
         </div>
         <div>
           <div className="flex items-center gap-1">
             <Input
-              value={resources?.requests?.storageGB || ""}
-              onChange={(e) => {
-                handleResourceChange("requests", "storageGB", e.target.value);
+              value={
+                resources?.requests?.storageGB !== undefined &&
+                resources?.requests?.storageGB !== null
+                  ? resources.requests.storageGB.toString()
+                  : ""
+              }
+              onChange={(val) => {
+                handleResourceChange("requests", "storageGB", val);
               }}
               placeholder="10"
               inputMode="numeric"
               pattern="[0-9]*"
               label="Storage Requests"
               className="!mb-0"
+              type="number"
+              unitType="storage"
+              displayHelperText
             />
           </div>
         </div>
@@ -140,45 +164,69 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
         <div>
           <div className="flex items-center gap-1">
             <Input
-              value={resources?.limits?.cpuMilli || ""}
-              onChange={(e) => {
-                handleResourceChange("limits", "cpuMilli", e.target.value);
+              value={
+                resources?.limits?.cpuMilli !== undefined &&
+                resources?.limits?.cpuMilli !== null
+                  ? resources.limits.cpuMilli.toString()
+                  : ""
+              }
+              onChange={(val) => {
+                handleResourceChange("limits", "cpuMilli", val);
               }}
               placeholder="200"
               inputMode="numeric"
               pattern="[0-9]*"
               label="CPU Limits"
               className="!mb-0"
+              type="number"
+              unitType="cpu"
+              displayHelperText
             />
           </div>
         </div>
         <div>
           <div className="flex items-center gap-1">
             <Input
-              value={resources?.limits?.memoryMB || ""}
-              onChange={(e) => {
-                handleResourceChange("limits", "memoryMB", e.target.value);
+              value={
+                resources?.limits?.memoryMB !== undefined &&
+                resources?.limits?.memoryMB !== null
+                  ? resources.limits.memoryMB.toString()
+                  : ""
+              }
+              onChange={(val) => {
+                handleResourceChange("limits", "memoryMB", val);
               }}
               placeholder="512"
               inputMode="numeric"
               pattern="[0-9]*"
               label="Memory Limits"
               className="!mb-0"
+              type="number"
+              unitType="memory"
+              displayHelperText
             />
           </div>
         </div>
         <div>
           <div className="flex items-center gap-1">
             <Input
-              value={resources?.limits?.storageGB || ""}
-              onChange={(e) => {
-                handleResourceChange("limits", "storageGB", e.target.value);
+              value={
+                resources?.limits?.storageGB !== undefined &&
+                resources?.limits?.storageGB !== null
+                  ? resources.limits.storageGB.toString()
+                  : ""
+              }
+              onChange={(val) => {
+                handleResourceChange("limits", "storageGB", val);
               }}
               placeholder="20"
               inputMode="numeric"
               pattern="[0-9]*"
               label="Storage Limits"
               className="!mb-0"
+              type="number"
+              unitType="storage"
+              displayHelperText
             />
           </div>
         </div>

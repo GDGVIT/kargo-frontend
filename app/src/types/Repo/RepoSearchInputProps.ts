@@ -1,4 +1,4 @@
 export default interface RepoSearchInputProps {
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange: (value: string) => void;
   value: string;
 }

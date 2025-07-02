@@ -30,7 +30,7 @@ const Modal: React.FC<ModalProps> = ({
         >
           <motion.div
             className={clsx(
-              "bg-[var(--card-background)] rounded-2xl shadow-2xl border border-[var(--foreground)]/10 p-4 sm:p-8 w-full max-w-[95vw] sm:max-w-lg relative flex flex-col max-h-[90vh] overflow-y-auto",
+              "bg-[var(--card-background)] rounded-2xl shadow-2xl border border-[var(--foreground)]/10 p-4 sm:p-8 w-full max-w-[95vw] sm:max-w-3xl relative flex flex-col max-h-[90vh] overflow-y-auto",
               className
             )}
             initial={{ scale: 0.92, opacity: 0 }}

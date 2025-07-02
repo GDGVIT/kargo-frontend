@@ -32,10 +32,17 @@ export default function UIPage() {
   const [selectedOption3, setSelectedOption3] = React.useState("one");
   const [selectedOption4, setSelectedOption4] = React.useState("");
 
+  const [input1, setInput1] = React.useState("");
+  const [input2, setInput2] = React.useState("");
+  const [input3] = React.useState("Read only value");
+  const [input4, setInput4] = React.useState("");
+  const [input5, setInput5] = React.useState("");
+  const [input6] = React.useState("");
+  const [input7, setInput7] = React.useState("");
+
   return (
     <>
       {loading && <Loader />}
-
       <Modal
         open={modalOpen}
         onClose={() => setModalOpen(false)}
@@ -48,7 +55,6 @@ export default function UIPage() {
           </p>
         </div>
       </Modal>
-
       <section>
         <h2>Animated Button</h2>
         <div className="responsive-flex-row">
@@ -170,48 +176,60 @@ export default function UIPage() {
       <section style={{ marginTop: 40 }}>
         <h2>Input</h2>
         <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: 16,
-            maxWidth: 400,
-          }}
+          className="responsive-flex-row"
+          style={{ flexWrap: "wrap", gap: 16 }}
         >
-          <Input placeholder="No label" helperText="This is a basic input." />
           <Input
-            label="With label"
-            placeholder="With label"
-            helperText="Labelled input."
+            placeholder="Basic input"
+            helperText="Helper text"
+            value={input1}
+            onChange={setInput1}
           />
           <Input
-            label="With value"
-            value="Value"
-            readOnly
-            helperText="Read-only input."
+            label="With label"
+            placeholder="Input with label"
+            helperText="Helper text"
+            value={input2}
+            onChange={setInput2}
+          />
+          <Input
+            label="Read only"
+            value={input3}
+            readOnly={true}
+            helperText="Read only input"
+            onChange={() => {}}
           />
           <Input
             label="With icon"
-            icon={<FaSave />}
-            placeholder="With icon"
-            helperText="Input with icon."
+            icon={<FaCode />}
+            placeholder="Input with icon"
+            helperText="Helper text"
+            value={input4}
+            onChange={setInput4}
           />
           <Input
-            label="Error"
+            label="With error"
             error="This is an error"
-            placeholder="Error state"
-            helperText="Helper text will not show if error is present."
+            placeholder="Input with error"
+            helperText="Helper text"
+            value={input5}
+            onChange={setInput5}
           />
           <Input
             label="Disabled"
-            disabled
-            placeholder="Disabled"
-            helperText="Disabled input."
+            disabled={true}
+            placeholder="Disabled input"
+            helperText="Disabled input"
+            value={input6}
+            onChange={() => {}}
           />
           <Input
             label="Password"
             type="password"
-            placeholder="Password"
-            helperText="Password input with toggle."
+            placeholder="Password input"
+            helperText="Password input"
+            value={input7}
+            onChange={setInput7}
           />
         </div>
       </section>

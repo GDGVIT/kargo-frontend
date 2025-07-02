@@ -2,11 +2,6 @@ import React from "react";
 import Input from "../../../ui/Input/Input";
 import { HiCheck, HiX } from "react-icons/hi";
 import AnimatedButton from "../../../ui/AnimatedButton/AnimatedButton";
-import {
-  formatCpu,
-  formatMemory,
-  formatStorage,
-} from "../../../../utils/resources";
 import type ExtraResourcesEditorProps from "../../../../types/ExtraResources/ExtraResourcesEditorProps";
 
 const ExtraResourcesEditor: React.FC<ExtraResourcesEditorProps> = ({
@@ -17,84 +12,71 @@ const ExtraResourcesEditor: React.FC<ExtraResourcesEditorProps> = ({
   saving,
 }) => {
   return (
-    <div className="space-y-1">
-      <div className="flex gap-2 mb-1">
-        <div className="flex flex-col w-20">
-          <Input
-            className="w-20 text-xs"
-            placeholder="Req CPU"
-            value={data.requestsCpu}
-            onChange={(e) => onChange("requestsCpu", e.target.value)}
-            type="number"
-          />
-          <span className="text-[10px] text-zinc-400 pl-1">
-            {formatCpu(Number(data.requestsCpu))}
-          </span>
-        </div>
-        <div className="flex flex-col w-24">
-          <Input
-            className="w-24 text-xs"
-            placeholder="Req Mem"
-            value={data.requestsMemory}
-            onChange={(e) => onChange("requestsMemory", e.target.value)}
-            type="number"
-          />
-          <span className="text-[10px] text-zinc-400 pl-1">
-            {formatMemory(Number(data.requestsMemory))}
-          </span>
-        </div>
-        <div className="flex flex-col w-24">
-          <Input
-            className="w-24 text-xs"
-            placeholder="Req Storage"
-            value={data.requestsStorage}
-            onChange={(e) => onChange("requestsStorage", e.target.value)}
-            type="number"
-          />
-          <span className="text-[10px] text-zinc-400 pl-1">
-            {formatStorage(Number(data.requestsStorage))}
-          </span>
-        </div>
+    <div className="space-y-4 w-full max-w-3xl mx-auto">
+      {/* Requests Section */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-2">
+        <Input
+          className="w-full text-xs"
+          placeholder="Req CPU"
+          type="number"
+          unitType="cpu"
+          value={data.requestsCpu}
+          onChange={(val) => onChange("requestsCpu", val)}
+          displayHelperText
+        />
+        <Input
+          className="w-full text-xs"
+          placeholder="Req Mem"
+          type="number"
+          unitType="memory"
+          value={data.requestsMemory}
+          onChange={(val) => onChange("requestsMemory", val)}
+          displayHelperText
+        />
+        <Input
+          className="w-full text-xs"
+          placeholder="Req Storage"
+          type="number"
+          unitType="storage"
+          value={data.requestsStorage}
+          onChange={(val) => onChange("requestsStorage", val)}
+          displayHelperText
+        />
       </div>
-      <div className="flex gap-2 mb-1">
-        <div className="flex flex-col w-20">
-          <Input
-            className="w-20 text-xs"
-            placeholder="Lim CPU"
-            value={data.limitsCpu}
-            onChange={(e) => onChange("limitsCpu", e.target.value)}
-            type="number"
-          />
-          <span className="text-[10px] text-zinc-400 pl-1">
-            {formatCpu(Number(data.limitsCpu))}
-          </span>
-        </div>
-        <div className="flex flex-col w-24">
-          <Input
-            className="w-24 text-xs"
-            placeholder="Lim Mem"
-            value={data.limitsMemory}
-            onChange={(e) => onChange("limitsMemory", e.target.value)}
-            type="number"
-          />
-          <span className="text-[10px] text-zinc-400 pl-1">
-            {formatMemory(Number(data.limitsMemory))}
-          </span>
-        </div>
-        <div className="flex flex-col w-24">
-          <Input
-            className="w-24 text-xs"
-            placeholder="Lim Storage"
-            value={data.limitsStorage}
-            onChange={(e) => onChange("limitsStorage", e.target.value)}
-            type="number"
-          />
-          <span className="text-[10px] text-zinc-400 pl-1">
-            {formatStorage(Number(data.limitsStorage))}
-          </span>
-        </div>
+
+      {/* Limits Section */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-2">
+        <Input
+          className="w-full text-xs"
+          placeholder="Lim CPU"
+          type="number"
+          unitType="cpu"
+          value={data.limitsCpu}
+          onChange={(val) => onChange("limitsCpu", val)}
+          displayHelperText
+        />
+        <Input
+          className="w-full text-xs"
+          placeholder="Lim Mem"
+          type="number"
+          unitType="memory"
+          value={data.limitsMemory}
+          onChange={(val) => onChange("limitsMemory", val)}
+          displayHelperText
+        />
+        <Input
+          className="w-full text-xs"
+          placeholder="Lim Storage"
+          type="number"
+          unitType="storage"
+          value={data.limitsStorage}
+          onChange={(val) => onChange("limitsStorage", val)}
+          displayHelperText
+        />
       </div>
-      <div className="flex gap-2">
+
+      {/* Actions */}
+      <div className="flex gap-2 justify-end mt-4">
         <AnimatedButton
           className="px-2 py-1 text-xs"
           disabled={saving}

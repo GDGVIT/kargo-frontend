@@ -27,7 +27,7 @@ const PlanFormModal: React.FC<PlanFormModalProps> = ({
         <Input
           label="Name"
           value={planForm.name}
-          onChange={(e) => setPlanForm((f) => ({ ...f, name: e.target.value }))}
+          onChange={(val) => setPlanForm((f) => ({ ...f, name: val }))}
           required
           placeholder="Plan name"
           title="Plan name"
@@ -45,76 +45,82 @@ const PlanFormModal: React.FC<PlanFormModalProps> = ({
           <Input
             label="Requests CPU"
             value={planForm.requestsCpu}
-            onChange={(e) => {
-              setPlanForm((f) => ({ ...f, requestsCpu: e.target.value }));
-            }}
+            onChange={(val) => setPlanForm((f) => ({ ...f, requestsCpu: val }))}
             placeholder="CPU"
             title="Requests CPU"
-            type="text"
+            type="number"
+            unitType="cpu"
             icon={<FaMicrochip />}
+            displayHelperText
           />
           <Input
             label="Requests Memory"
             value={planForm.requestsMemory}
-            onChange={(e) => {
-              setPlanForm((f) => ({ ...f, requestsMemory: e.target.value }));
-            }}
+            onChange={(val) =>
+              setPlanForm((f) => ({ ...f, requestsMemory: val }))
+            }
             placeholder="Memory"
             title="Requests Memory"
-            type="text"
+            type="number"
+            unitType="memory"
             icon={<FaMemory />}
+            displayHelperText
           />
           <Input
             label="Requests Storage"
             value={planForm.requestsStorage}
-            onChange={(e) => {
-              setPlanForm((f) => ({ ...f, requestsStorage: e.target.value }));
-            }}
+            onChange={(val) =>
+              setPlanForm((f) => ({ ...f, requestsStorage: val }))
+            }
             placeholder="Storage"
             title="Requests Storage"
-            type="text"
+            type="number"
+            unitType="storage"
+            displayHelperText
           />
         </div>
         <div className="flex gap-4">
           <Input
             label="Limits CPU"
             value={planForm.limitsCpu}
-            onChange={(e) => {
-              setPlanForm((f) => ({ ...f, limitsCpu: e.target.value }));
-            }}
+            onChange={(val) => setPlanForm((f) => ({ ...f, limitsCpu: val }))}
             placeholder="CPU"
             title="Limits CPU"
-            type="text"
+            type="number"
+            unitType="cpu"
             icon={<FaMicrochip />}
+            displayHelperText
           />
           <Input
             label="Limits Memory"
             value={planForm.limitsMemory}
-            onChange={(e) => {
-              setPlanForm((f) => ({ ...f, limitsMemory: e.target.value }));
-            }}
+            onChange={(val) =>
+              setPlanForm((f) => ({ ...f, limitsMemory: val }))
+            }
             placeholder="Memory"
             title="Limits Memory"
-            type="text"
+            type="number"
+            unitType="memory"
             icon={<FaMemory />}
+            displayHelperText
           />
           <Input
             label="Limits Storage"
             value={planForm.limitsStorage}
-            onChange={(e) => {
-              setPlanForm((f) => ({ ...f, limitsStorage: e.target.value }));
-            }}
+            onChange={(val) =>
+              setPlanForm((f) => ({ ...f, limitsStorage: val }))
+            }
             placeholder="Storage"
             title="Limits Storage"
-            type="text"
+            type="number"
+            unitType="storage"
+            displayHelperText
           />
         </div>
         <Input
           label="Price (in paise)"
           value={planForm.price}
-          onChange={(e) => {
-            setPlanForm((f) => ({ ...f, price: e.target.value }));
-          }}
+          onChange={(val) => setPlanForm((f) => ({ ...f, price: val }))}
           placeholder="e.g. 49900 for ₹499.00"
           title="Price in paise"
           type="number"

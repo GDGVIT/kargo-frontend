@@ -17,7 +17,7 @@ const ImageFields: React.FC<ImageFieldsProps> = ({
       <Input
         required
         value={imageUrl}
-        onChange={(e) => setImageUrl(e.target.value)}
+        onChange={setImageUrl}
         placeholder="registry.io/my-app"
         label="Image URL"
       />
@@ -26,7 +26,7 @@ const ImageFields: React.FC<ImageFieldsProps> = ({
       <Input
         required
         value={imageTag}
-        onChange={(e) => setImageTag(e.target.value)}
+        onChange={setImageTag}
         placeholder="latest"
         label="Image Tag"
       />
