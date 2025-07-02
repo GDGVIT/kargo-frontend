@@ -13,6 +13,18 @@ import {
   CartesianGrid,
 } from "recharts";
 
+// Color variables
+const COLORS = {
+  axis: "#64748b",
+  grid: "gray",
+  line: "#06b6d4",
+  tooltipBg: "bg-gray-900",
+  tooltipText: "text-gray-100",
+  tooltipBorder: "border-gray-700",
+  currentValue: "text-cyan-500",
+  cardBorder: "var(--card-border,theme(colors.gray.700))",
+};
+
 const metricLabels: Record<string, string> = {
   cpu: "CPU Usage (cores)",
   memory: "Memory Usage (bytes)",
@@ -44,7 +56,9 @@ const CustomTooltip = ({
 }) => {
   if (active && payload && payload.length) {
     return (
-      <div className="bg-gray-900 text-gray-100 rounded-lg shadow-lg px-4 py-2 border border-gray-700 max-w-xs break-words">
+      <div
+        className={`${COLORS.tooltipBg} ${COLORS.tooltipText} rounded-lg shadow-lg px-4 py-2 border ${COLORS.tooltipBorder} max-w-xs break-words`}
+      >
         <div className="font-semibold text-sm mb-1">{label}</div>
         {payload.map((entry, idx) => (
           <div key={idx} className="text-base">
@@ -101,21 +115,23 @@ export default function AdminOverallMetrics() {
             if (!metric) return null;
             const formattedData = metric.history.map(([timestamp, val]) => ({
               time: new Date(timestamp * 1000).toLocaleTimeString(),
-              value: Number(parseFloat(val).toFixed(3)),
+              value: Number(parseFloat(val).toFixed(2)),
             }));
             return (
               <Card
                 key={key}
-                className="p-4 md:p-6 flex-1 bg-gray-900 text-gray-100 border border-gray-700 min-w-0"
+                className={`p-4 md:p-6 flex-1 text-primary border border-[${COLORS.cardBorder}] min-w-0`}
               >
                 <div className="mb-4 flex flex-col gap-1">
-                  <h3 className="text-base md:text-lg font-semibold text-gray-200 truncate">
+                  <h3 className="text-base md:text-lg font-semibold text-primary truncate">
                     {metricLabels[key] || key}
                   </h3>
-                  <div className="text-xl md:text-2xl font-bold text-cyan-300 truncate">
+                  <div
+                    className={`text-xl md:text-2xl font-bold ${COLORS.currentValue} truncate`}
+                  >
                     {metric.current
                       ? Number(
-                          parseFloat(metric.current).toFixed(3)
+                          parseFloat(metric.current).toFixed(2)
                         ).toLocaleString()
                       : "N/A"}
                   </div>
@@ -125,35 +141,40 @@ export default function AdminOverallMetrics() {
                     <ResponsiveContainer width="100%" height="100%">
                       <LineChart
                         data={formattedData}
-                        style={{ background: "#1a202c", borderRadius: 12 }}
+                        style={{ background: "transparent", borderRadius: 12 }}
                       >
                         <XAxis
                           dataKey="time"
-                          stroke="#cbd5e1"
-                          tick={{ fill: "#cbd5e1", fontSize: 10 }}
+                          stroke={COLORS.axis}
+                          tick={{ fill: COLORS.axis, fontSize: 10 }}
                           minTickGap={20}
                         />
                         <YAxis
-                          stroke="#cbd5e1"
-                          tick={{ fill: "#cbd5e1", fontSize: 10 }}
+                          stroke={COLORS.axis}
+                          tick={{ fill: COLORS.axis, fontSize: 10 }}
                           tickFormatter={(val) => {
                             if (typeof val !== "number") return val;
-                            const rounded = Number(val.toFixed(3));
+                            const rounded = Number(val.toFixed(2));
+                            if (Math.abs(rounded) >= 1e12)
+                              return (rounded / 1e12).toFixed(2) + "T";
                             if (Math.abs(rounded) >= 1e9)
-                              return (rounded / 1e9).toFixed(3) + "G";
+                              return (rounded / 1e9).toFixed(2) + "G";
                             if (Math.abs(rounded) >= 1e6)
-                              return (rounded / 1e6).toFixed(3) + "M";
+                              return (rounded / 1e6).toFixed(2) + "M";
                             if (Math.abs(rounded) >= 1e3)
-                              return (rounded / 1e3).toFixed(3) + "K";
+                              return (rounded / 1e3).toFixed(2) + "K";
                             return rounded.toLocaleString();
                           }}
                         />
                         <Tooltip content={<CustomTooltip />} />
-                        <CartesianGrid stroke="#334155" strokeDasharray="5 5" />
+                        <CartesianGrid
+                          stroke={COLORS.grid}
+                          strokeDasharray="5 5"
+                        />
                         <Line
                           type="monotone"
                           dataKey="value"
-                          stroke="#38bdf8"
+                          stroke={COLORS.line}
                           strokeWidth={2}
                           dot={false}
                         />
