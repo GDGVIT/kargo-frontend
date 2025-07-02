@@ -33,20 +33,23 @@ export default function AdminUsersDashboard() {
   >(null);
   const { notify } = useNotification();
 
-  useEffect(() => {
-    async function fetchUsers() {
-      try {
-        setLoading(true);
-        const res = await axios.get("/api/users");
-        setUsers(res.data.users || []);
-        const me = await axios.get("/api/auth/me");
-        setCurrentUserId(me.data?.user?._id || null);
-      } catch {
-        setError("Failed to load users");
-      } finally {
-        setLoading(false);
-      }
+  // Move fetchUsers outside useEffect so it can be reused
+  async function fetchUsers() {
+    try {
+      setLoading(true);
+      setError("");
+      const res = await axios.get("/api/users");
+      setUsers(res.data.users || []);
+      const me = await axios.get("/api/auth/me");
+      setCurrentUserId(me.data?.user?._id || null);
+    } catch {
+      setError("Failed to load users");
+    } finally {
+      setLoading(false);
     }
+  }
+
+  useEffect(() => {
     fetchUsers();
   }, []);
 
@@ -159,7 +162,8 @@ export default function AdminUsersDashboard() {
         delete copy[userId];
         return copy;
       });
-      notify("Extra resources updated", "success");
+      await fetchUsers();
+      notify("Extra resources updated successfully!", "success");
     } catch {
       notify("Failed to update extra resources", "error");
     } finally {
