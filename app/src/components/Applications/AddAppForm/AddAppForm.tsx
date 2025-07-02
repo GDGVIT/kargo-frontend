@@ -85,7 +85,7 @@ export default function AddAppForm() {
               required
               label="Name"
               value={form.name}
-              onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
+              onChange={(value) => setForm((f) => ({ ...f, name: value }))}
               placeholder="My App"
             />
           </div>
@@ -94,9 +94,7 @@ export default function AddAppForm() {
               required
               label="Image URL"
               value={form.imageUrl}
-              onChange={(e) =>
-                setForm((f) => ({ ...f, imageUrl: e.target.value }))
-              }
+              onChange={(value) => setForm((f) => ({ ...f, imageUrl: value }))}
               placeholder="registry.io/my-app"
               helperText={
                 <AnimatedButton
@@ -115,9 +113,7 @@ export default function AddAppForm() {
               required
               label="Image Tag"
               value={form.imageTag}
-              onChange={(e) =>
-                setForm((f) => ({ ...f, imageTag: e.target.value }))
-              }
+              onChange={(value) => setForm((f) => ({ ...f, imageTag: value }))}
               placeholder="latest"
             />
           </div>
