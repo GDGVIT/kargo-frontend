@@ -12,6 +12,11 @@ import {
   ResponsiveContainer,
   CartesianGrid,
 } from "recharts";
+import {
+  formatCpu,
+  formatMemoryBytes,
+  formatStorage,
+} from "../../../utils/resources";
 
 // Color variables
 const COLORS = {
@@ -72,6 +77,17 @@ const CustomTooltip = ({
   return null;
 };
 
+const ACCURACY = 2;
+
+const formatTime = (timestamp: number) => {
+  const date = new Date(timestamp * 1000);
+  return date.toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  });
+};
+
 export default function AdminOverallMetrics() {
   const [metrics, setMetrics] = useState<Metrics | null>(null);
   const [loading, setLoading] = useState(true);
@@ -89,7 +105,7 @@ export default function AdminOverallMetrics() {
     };
 
     fetchMetrics();
-    const interval = setInterval(fetchMetrics, 10000);
+    const interval = setInterval(fetchMetrics, 1000); // Update every second
     return () => clearInterval(interval);
   }, []);
 
@@ -114,9 +130,42 @@ export default function AdminOverallMetrics() {
             const metric = metrics[key];
             if (!metric) return null;
             const formattedData = metric.history.map(([timestamp, val]) => ({
-              time: new Date(timestamp * 1000).toLocaleTimeString(),
-              value: Number(parseFloat(val).toFixed(2)),
+              time: formatTime(timestamp),
+              value: Number(parseFloat(val)),
             }));
+            // Use resource formatting for current value
+            let formattedCurrent = "N/A";
+            if (metric.current != null) {
+              const numVal = Number(metric.current);
+              if (key === "cpu") {
+                formattedCurrent = formatCpu(Number(numVal.toFixed(ACCURACY)));
+              } else if (
+                key === "memory" ||
+                key === "network_rx" ||
+                key === "network_tx"
+              ) {
+                formattedCurrent = formatMemoryBytes(
+                  Number(numVal.toFixed(ACCURACY))
+                );
+              } else if (key === "storage") {
+                formattedCurrent = formatStorage(
+                  Number((numVal / 1024 ** 3).toFixed(ACCURACY))
+                );
+              } else if (key === "apiserver_uptime") {
+                // Format uptime as HH:MM:SS
+                const totalSeconds = Math.floor(numVal);
+                const hours = Math.floor(totalSeconds / 3600);
+                const minutes = Math.floor((totalSeconds % 3600) / 60);
+                const seconds = totalSeconds % 60;
+                formattedCurrent = `${hours
+                  .toString()
+                  .padStart(2, "0")}:${minutes
+                  .toString()
+                  .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+              } else if (key === "pods" || key === "nodes") {
+                formattedCurrent = numVal.toLocaleString();
+              }
+            }
             return (
               <Card
                 key={key}
@@ -129,11 +178,7 @@ export default function AdminOverallMetrics() {
                   <div
                     className={`text-xl md:text-2xl font-bold ${COLORS.currentValue} truncate`}
                   >
-                    {metric.current
-                      ? Number(
-                          parseFloat(metric.current).toFixed(2)
-                        ).toLocaleString()
-                      : "N/A"}
+                    {formattedCurrent}
                   </div>
                 </div>
                 {formattedData.length > 0 && (
@@ -154,16 +199,22 @@ export default function AdminOverallMetrics() {
                           tick={{ fill: COLORS.axis, fontSize: 10 }}
                           tickFormatter={(val) => {
                             if (typeof val !== "number") return val;
-                            const rounded = Number(val.toFixed(2));
-                            if (Math.abs(rounded) >= 1e12)
-                              return (rounded / 1e12).toFixed(2) + "T";
-                            if (Math.abs(rounded) >= 1e9)
-                              return (rounded / 1e9).toFixed(2) + "G";
-                            if (Math.abs(rounded) >= 1e6)
-                              return (rounded / 1e6).toFixed(2) + "M";
-                            if (Math.abs(rounded) >= 1e3)
-                              return (rounded / 1e3).toFixed(2) + "K";
-                            return rounded.toLocaleString();
+                            // Use resource formatting for Y axis
+                            if (key === "cpu")
+                              return formatCpu(Number(val.toFixed(ACCURACY)));
+                            if (
+                              key === "memory" ||
+                              key === "network_rx" ||
+                              key === "network_tx"
+                            )
+                              return formatMemoryBytes(
+                                Number(val.toFixed(ACCURACY))
+                              );
+                            if (key === "storage")
+                              return formatStorage(
+                                Number((val / 1024 ** 3).toFixed(ACCURACY))
+                              );
+                            return val.toLocaleString();
                           }}
                         />
                         <Tooltip content={<CustomTooltip />} />
