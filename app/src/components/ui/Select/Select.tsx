@@ -82,42 +82,51 @@ const Select: React.FC<SelectProps> = ({
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -4 }}
                   transition={{ duration: 0.15 }}
-                  className="absolute z-50 mt-1 w-full overflow-visible"
+                  className="absolute z-50 mt-1 w-full"
                   style={{ maxWidth: "100vw" }}
                 >
                   <ListboxOptions
-                    className="bg-[#23283A] border border-[#7B8191] rounded-[4px] shadow-lg focus:outline-none text-[15px] sm:text-[16px]"
+                    className="bg-[#23283A] border border-[#7B8191] rounded-[4px] shadow-lg focus:outline-none text-[15px] sm:text-[16px] overflow-hidden"
                     style={{
                       maxHeight: options.length > 5 ? 220 : undefined,
                       overflowY: options.length > 5 ? "auto" : "visible",
                     }}
                   >
-                    {options.map((opt) => (
-                      <ListboxOption
-                        key={opt.value}
-                        value={opt.value}
-                        className={({ active, selected }) =>
-                          `relative cursor-pointer select-none py-2 pl-3 pr-10 text-[15px] sm:text-[16px] font-inter transition-colors ${
-                            active
-                              ? "bg-[#293040] text-white"
-                              : selected
-                              ? "text-white"
-                              : "text-[#7B8191]"
-                          } ${selected ? "font-medium" : "font-normal"}`
-                        }
-                      >
-                        {({ selected }) => (
-                          <>
-                            <span>{opt.label}</span>
-                            {selected && (
-                              <span className="absolute inset-y-0 right-3 flex items-center text-white">
-                                <FiCheck className="w-4 h-4" />
-                              </span>
-                            )}
-                          </>
-                        )}
-                      </ListboxOption>
-                    ))}
+                    {options.map((opt, index) => {
+                      const isFirst = index === 0;
+                      const isLast = index === options.length - 1;
+
+                      return (
+                        <ListboxOption
+                          key={opt.value}
+                          value={opt.value}
+                          className={({ active, selected }) =>
+                            `relative cursor-pointer select-none py-2 pl-3 pr-10 text-[15px] sm:text-[16px] font-inter transition-colors duration-100
+                            ${
+                              active
+                                ? "bg-[#293040] text-white"
+                                : selected
+                                ? "text-white"
+                                : "text-[#7B8191]"
+                            }
+                            ${selected ? "font-medium" : "font-normal"}
+                            ${isFirst ? "rounded-t-[4px]" : ""}
+                            ${isLast ? "rounded-b-[4px]" : ""}`
+                          }
+                        >
+                          {({ selected }) => (
+                            <>
+                              <span>{opt.label}</span>
+                              {selected && (
+                                <span className="absolute inset-y-0 right-3 flex items-center text-white">
+                                  <FiCheck className="w-4 h-4" />
+                                </span>
+                              )}
+                            </>
+                          )}
+                        </ListboxOption>
+                      );
+                    })}
                   </ListboxOptions>
                 </motion.div>
               )}
