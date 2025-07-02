@@ -15,6 +15,7 @@ import GithubAuth from "../Github/GithubAuth/GithubAuth";
 import PlanDetails from "../PlanDetails/PlanDetails";
 import Card from "../ui/Card/Card";
 import AnimatedButton from "../ui/AnimatedButton/AnimatedButton";
+import UserStats from "./UserStats";
 
 const Settings: React.FC = () => {
   const { user, loading, logout } = useAuth();
@@ -97,6 +98,8 @@ const Settings: React.FC = () => {
         >
           Logout
         </AnimatedButton>
+        {/* User Stats Section */}
+        <UserStats />
       </Card>
       {/* Right: Details and Integrations */}
       <div className="flex flex-col w-full md:w-2/3 justify-start">
@@ -107,6 +110,7 @@ const Settings: React.FC = () => {
             planObj={typeof user.plan === "object" ? user.plan : undefined}
           />
         )}
+
         {/* GitHub Integration */}
         <Card className="p-4">
           <GithubAuth />
