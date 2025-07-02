@@ -1,9 +1,50 @@
-import React, { InputHTMLAttributes, forwardRef } from "react";
+import React, {
+  InputHTMLAttributes,
+  forwardRef,
+  useMemo,
+  useState,
+} from "react";
 import { motion } from "framer-motion";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import Select from "../Select/Select";
 
-export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+export type UnitType = "cpu" | "memory" | "storage";
+
+const unitConfigs = {
+  cpu: {
+    units: ["m", "vCPU"],
+    convertToBase: (value: number, unit: string) =>
+      unit === "vCPU" ? value * 1000 : value,
+    convertFromBase: (base: number, unit: string) =>
+      unit === "vCPU" ? base / 1000 : base,
+    format: (val: number, unit: string) =>
+      unit === "vCPU" ? `${(val / 1000).toFixed(2)} vCPU` : `${val} m`,
+    defaultUnit: "m",
+  },
+  memory: {
+    units: ["MB", "GB"],
+    convertToBase: (value: number, unit: string) =>
+      unit === "GB" ? value * 1024 : value,
+    convertFromBase: (base: number, unit: string) =>
+      unit === "GB" ? base / 1024 : base,
+    format: (val: number, unit: string) =>
+      unit === "GB" ? `${(val / 1024).toFixed(2)} GB` : `${val} MB`,
+    defaultUnit: "MB",
+  },
+  storage: {
+    units: ["GB", "TB"],
+    convertToBase: (value: number, unit: string) =>
+      unit === "TB" ? value * 1024 : value,
+    convertFromBase: (base: number, unit: string) =>
+      unit === "TB" ? base / 1024 : base,
+    format: (val: number, unit: string) =>
+      unit === "TB" ? `${(val / 1024).toFixed(2)} TB` : `${val} GB`,
+    defaultUnit: "GB",
+  },
+};
+
+export interface InputProps
+  extends Omit<InputHTMLAttributes<HTMLInputElement>, "onChange" | "value"> {
   label?: string;
   error?: string;
   className?: string;
@@ -11,12 +52,10 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   helperText?: React.ReactNode;
   animationDuration?: number;
   animationEasing?: number[];
-  unitSelect?: {
-    value: string;
-    options: string[];
-    onChange: (unit: string) => void;
-    disabled?: boolean;
-  };
+  unitType?: UnitType;
+  value: string;
+  onChange: (baseValue: string) => void;
+  displayHelperText?: boolean;
 }
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
@@ -27,17 +66,48 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       className = "",
       icon,
       type = "text",
-      helperText,
       disabled = false,
       animationDuration = 0.5,
       animationEasing = [0.42, 0, 0.58, 1],
-      unitSelect,
+      unitType,
+      value,
+      onChange,
+      displayHelperText = false,
       ...props
     },
     ref
   ) => {
-    const [showPassword, setShowPassword] = React.useState(false);
     const isPassword = type === "password";
+    const [showPassword, setShowPassword] = useState(false);
+    const [unit, setUnit] = useState(
+      unitType ? unitConfigs[unitType].defaultUnit : undefined
+    );
+
+    const displayValue = useMemo(() => {
+      if (!unitType || typeof value !== "string") return value;
+      const numeric = Number(value);
+      if (isNaN(numeric)) return "";
+      return unitConfigs[unitType].convertFromBase(numeric, unit!).toString();
+    }, [value, unitType, unit]);
+
+    const helper = useMemo(() => {
+      if (!displayHelperText || !unitType || !value) return null;
+      const numeric = Number(value);
+      if (isNaN(numeric)) return null;
+      return unitConfigs[unitType].format(numeric, unit!);
+    }, [displayHelperText, unitType, value, unit]);
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      const inputValue = Number(e.target.value);
+      if (isNaN(inputValue)) return;
+      if (unitType) {
+        const base = unitConfigs[unitType].convertToBase(inputValue, unit!);
+        onChange(String(base));
+      } else {
+        onChange(e.target.value);
+      }
+    };
+
     return (
       <motion.div
         initial={{ opacity: 0, y: 16 }}
@@ -73,24 +143,24 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             type={isPassword && showPassword ? "text" : type}
             disabled={disabled}
             aria-label={label}
+            value={displayValue}
+            onChange={handleChange}
             {...props}
           />
-          {unitSelect && (
+          {unitType && unit && (
             <div className="flex items-center ml-2 order-2">
               <Select
-                value={unitSelect.value}
-                onChange={unitSelect.onChange}
-                options={unitSelect.options.map((opt) => ({
-                  value: opt,
-                  label: opt,
+                value={unit}
+                onChange={setUnit}
+                options={unitConfigs[unitType].units.map((u) => ({
+                  value: u,
+                  label: u,
                 }))}
-                disabled={unitSelect.disabled || disabled}
+                disabled={disabled}
                 className="!my-0 !mx-0 min-w-[60px] w-auto"
                 placeholder="Unit"
                 animationDuration={0.2}
                 animationEasing={[0.42, 0, 0.58, 1]}
-                helperText={undefined}
-                label={undefined}
               />
             </div>
           )}
@@ -108,14 +178,14 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             </button>
           )}
         </div>
-        {helperText && !error && (
-          <p className="text-xs mt-1 text-zinc-400">{helperText}</p>
+        {helper && !error && (
+          <p className="text-xs mt-1 text-zinc-400">{helper}</p>
         )}
         {error && <p className="text-red-500 text-xs mt-1">{error}</p>}
       </motion.div>
     );
   }
 );
-Input.displayName = "Input";
 
+Input.displayName = "Input";
 export default Input;
