@@ -17,21 +17,23 @@ export function getOgImageJSX({
         height: "100%",
         display: "flex",
         flexDirection: "column",
-        alignItems: "center",
         justifyContent: "center",
-        background: "linear-gradient(135deg, #18181b 0%, #23272f 100%)",
+        alignItems: "center",
+        background: "linear-gradient(135deg, #18181b 60%, #23272f 100%)",
         color: "#fff",
-        fontFamily: "Inter, sans-serif",
+        fontFamily: "Inter, Arial, sans-serif",
         padding: 60,
         boxSizing: "border-box",
       }}
     >
       <div
         style={{
-          fontSize: 72,
+          fontSize: 64,
           fontWeight: 800,
-          marginBottom: 32,
-          letterSpacing: -2,
+          letterSpacing: "-2px",
+          marginBottom: description ? 32 : 0,
+          textAlign: "center",
+          lineHeight: 1.1,
           textShadow: "0 2px 16px #0008",
         }}
       >
@@ -40,11 +42,12 @@ export function getOgImageJSX({
       {description && (
         <div
           style={{
-            fontSize: 36,
+            fontSize: 32,
             fontWeight: 400,
-            opacity: 0.85,
-            maxWidth: 900,
+            color: "#b3b3b3",
             textAlign: "center",
+            maxWidth: 900,
+            lineHeight: 1.3,
             textShadow: "0 1px 8px #0006",
           }}
         >
@@ -56,17 +59,20 @@ export function getOgImageJSX({
           position: "absolute",
           bottom: 40,
           right: 60,
-          fontSize: 32,
-          opacity: 0.5,
+          fontSize: 28,
+          color: "#6366f1",
+          fontWeight: 700,
+          opacity: 0.9,
+          letterSpacing: 2,
         }}
       >
-        kargo.upayan.dev
+        kargo.run
       </div>
     </div>
   );
 }
 
-export default async function ogImageHandler({
+export default function ogImageHandler({
   title,
   description,
 }: {
@@ -75,5 +81,8 @@ export default async function ogImageHandler({
 }) {
   return new ImageResponse(getOgImageJSX({ title, description }), {
     ...defaultSize,
+    headers: {
+      "Cache-Control": "public, max-age=31536000, immutable",
+    },
   });
 }
