@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useState, useRef } from "react";
-import Link from "next/link";
 import api, { baseURL } from "../../../utils/api";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaGithub, FaExclamationCircle } from "react-icons/fa";
@@ -111,12 +110,6 @@ const GithubAuth: React.FC<{ user: User }> = () => {
               installation
               {installationIds.length > 1 ? "s" : ""}.
               <br />
-              <Link
-                href="/dockerize"
-                className="text-sky-400 underline hover:text-sky-300 font-medium"
-              >
-                Dockerize your app!
-              </Link>
             </p>
             <div className="flex justify-center">
               <ReinstallButton />
