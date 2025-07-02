@@ -131,7 +131,7 @@ export default function RootLayout({
         />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://kargo.upayan.dev" />
-        <meta property="og:image" content="/og-image.png" />
+        <meta property="og:image" content="/icon.png" />
         <meta property="og:site_name" content="kargo" />
         <meta property="og:locale" content="en_US" />
         {/* Twitter Card Meta Tags */}
@@ -141,7 +141,7 @@ export default function RootLayout({
           name="twitter:description"
           content="Kargo lets you deploy containerized applications with full flexibility — AI-powered setup, secure infrastructure, and Kubernetes-native scaling, all from a powerful web interface."
         />
-        <meta name="twitter:image" content="/og-image.png" />
+        <meta name="twitter:image" content="/icon.png" />
       </head>
       <body>
         <Script src="/env.js" strategy="beforeInteractive" />
