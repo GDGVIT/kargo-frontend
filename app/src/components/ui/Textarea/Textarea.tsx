@@ -6,7 +6,7 @@ export interface TextareaProps
   label?: string;
   error?: string;
   className?: string;
-  helperText?: string;
+  helperText?: React.ReactNode;
   animationDuration?: number;
   animationEasing?: number[];
 }

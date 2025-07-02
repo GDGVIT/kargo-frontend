@@ -73,6 +73,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       value,
       onChange,
       displayHelperText = false,
+      helperText,
       ...props
     },
     ref
@@ -187,6 +188,9 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             </button>
           )}
         </div>
+        {helperText && !error && (
+          <p className="text-xs mt-1 text-zinc-400">{helperText}</p>
+        )}
         {helper && !error && (
           <p className="text-xs mt-1 text-zinc-400">{helper}</p>
         )}
