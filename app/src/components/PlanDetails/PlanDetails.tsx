@@ -25,12 +25,9 @@ const ResourceItem = ({
   <div className="flex items-center gap-2 min-w-0 text-sm text-zinc-200">
     <div className="text-base">{icon}</div>
     <span className="text-zinc-400">{label}:</span>
-    <span className={`font-mono ${color} truncate`}>{value}</span>
-    {usage && (
-      <span className="ml-auto text-xs text-zinc-500 whitespace-nowrap">
-        (Used: {usage})
-      </span>
-    )}
+    <span className={`font-mono ${color} truncate`}>
+      {usage} / {value}
+    </span>
   </div>
 );
 
@@ -83,14 +80,14 @@ const PlanDetails: React.FC<PlanDetailsProps> = ({ planId, planObj }) => {
   if (error || !plan) return null;
 
   return (
-    <Card className="w-full px-5 py-6">
-      <div className="flex flex-wrap items-center gap-3 mb-4">
-        <span className="bg-sky-900 rounded-full p-2">
+    <Card className="w-full px-3 py-3">
+      <div className="flex flex-wrap items-center gap-2 mb-2">
+        <span className="bg-sky-900 rounded-full p-1.5">
           <FaCrown className="text-yellow-300 text-xl" />
         </span>
         <span className="text-xl font-semibold text-white">{plan.name}</span>
         {plan.price !== undefined && (
-          <span className="text-sm font-medium text-sky-100 bg-sky-800 px-3 py-1 rounded-lg border border-sky-700">
+          <span className="text-sm font-medium text-sky-100 bg-sky-800 px-2 py-0.5 rounded-lg border border-sky-700">
             ₹{(plan.price / 100).toLocaleString("en-IN")}/mo
           </span>
         )}
@@ -101,15 +98,15 @@ const PlanDetails: React.FC<PlanDetailsProps> = ({ planId, planObj }) => {
       )}
 
       {plan.resources && (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {plan.resources.requests && (
             <section>
-              <h5 className="text-xs font-semibold text-sky-300 mb-2">
+              <h5 className="text-xs font-semibold text-sky-300 mb-1">
                 <span className="bg-sky-800 text-sky-100 px-2 py-0.5 rounded-md">
                   Resource Requests
                 </span>
               </h5>
-              <div className="space-y-3 bg-zinc-900/50 p-4 rounded-xl border border-zinc-700">
+              <div className="space-y-2 bg-zinc-900/50 p-2 rounded-xl border border-zinc-700">
                 <ResourceItem
                   icon={<FaMicrochip className="text-sky-300" />}
                   label="CPU"
@@ -143,12 +140,12 @@ const PlanDetails: React.FC<PlanDetailsProps> = ({ planId, planObj }) => {
 
           {plan.resources.limits && (
             <section>
-              <h5 className="text-xs font-semibold text-rose-300 mb-2">
+              <h5 className="text-xs font-semibold text-rose-300 mb-1">
                 <span className="bg-rose-800 text-rose-100 px-2 py-0.5 rounded-md">
                   Resource Limits
                 </span>
               </h5>
-              <div className="space-y-3 bg-zinc-900/50 p-4 rounded-xl border border-zinc-700">
+              <div className="space-y-2 bg-zinc-900/50 p-2 rounded-xl border border-zinc-700">
                 <ResourceItem
                   icon={<FaMicrochip className="text-sky-300" />}
                   label="CPU"
