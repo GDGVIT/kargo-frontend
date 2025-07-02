@@ -3,6 +3,7 @@ import Card from "../ui/Card/Card";
 import Loader from "../ui/Loader/Loader";
 import axios from "../../utils/api";
 import { FaServer, FaNetworkWired, FaKey, FaLock } from "react-icons/fa";
+import type User from "../../types/User/User";
 
 interface UserStatsData {
   servers: number;
@@ -24,7 +25,8 @@ const Stat: React.FC<{
   </div>
 );
 
-const UserStats: React.FC = () => {
+// Accept user prop
+const UserStats: React.FC<{ user: User }> = () => {
   const [stats, setStats] = useState<UserStatsData | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);

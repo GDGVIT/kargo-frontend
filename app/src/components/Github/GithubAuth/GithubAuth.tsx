@@ -7,48 +7,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import { FaGithub, FaExclamationCircle } from "react-icons/fa";
 import gsap from "gsap";
 import AnimatedButton from "../../ui/AnimatedButton/AnimatedButton";
+import type User from "../../../types/User/User";
 
-function InstallButton() {
-  return (
-    <AnimatedButton
-      onClick={() =>
-        window.open(
-          `${baseURL}/api/github/install`,
-          "_blank",
-          "noopener,noreferrer"
-        )
-      }
-      icon={<FaGithub size={22} />}
-      className="px-5 py-2.5"
-      type="button"
-      variant="primary"
-    >
-      Connect GitHub
-    </AnimatedButton>
-  );
-}
-
-function ReinstallButton() {
-  return (
-    <AnimatedButton
-      onClick={() =>
-        window.open(
-          `${baseURL}/api/github/install`,
-          "_blank",
-          "noopener,noreferrer"
-        )
-      }
-      icon={<FaGithub size={22} />}
-      className="px-5 py-2.5"
-      type="button"
-      variant="primary"
-    >
-      Reinstall GitHub App
-    </AnimatedButton>
-  );
-}
-
-const GithubAuth: React.FC = () => {
+const GithubAuth: React.FC<{ user: User }> = () => {
   const [installationIds, setInstallationIds] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
   const iconRef = useRef<HTMLDivElement>(null);
@@ -178,5 +139,45 @@ const GithubAuth: React.FC = () => {
     </>
   );
 };
+
+function InstallButton() {
+  return (
+    <AnimatedButton
+      onClick={() =>
+        window.open(
+          `${baseURL}/api/github/install`,
+          "_blank",
+          "noopener,noreferrer"
+        )
+      }
+      icon={<FaGithub size={22} />}
+      className="px-5 py-2.5"
+      type="button"
+      variant="primary"
+    >
+      Connect GitHub
+    </AnimatedButton>
+  );
+}
+
+function ReinstallButton() {
+  return (
+    <AnimatedButton
+      onClick={() =>
+        window.open(
+          `${baseURL}/api/github/install`,
+          "_blank",
+          "noopener,noreferrer"
+        )
+      }
+      icon={<FaGithub size={22} />}
+      className="px-5 py-2.5"
+      type="button"
+      variant="primary"
+    >
+      Reinstall GitHub App
+    </AnimatedButton>
+  );
+}
 
 export default GithubAuth;

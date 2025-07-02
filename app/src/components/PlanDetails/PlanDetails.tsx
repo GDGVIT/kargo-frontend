@@ -4,7 +4,6 @@ import { FaCrown, FaMicrochip, FaMemory } from "react-icons/fa";
 import { FaFloppyDisk } from "react-icons/fa6";
 import type Plan from "../../types/Plan/Plan";
 import type PlanDetailsProps from "../../types/Plan/PlanDetailsProps";
-import Card from "../ui/Card/Card";
 import Loader from "../ui/Loader/Loader";
 import useNotification from "../ui/Notification/Notification";
 import { formatCpu, formatMemory, formatStorage } from "../../utils/resources";
@@ -80,7 +79,7 @@ const PlanDetails: React.FC<PlanDetailsProps> = ({ planId, planObj }) => {
   if (error || !plan) return null;
 
   return (
-    <Card className="w-full px-3 py-3">
+    <>
       <div className="flex flex-wrap items-center gap-2 mb-2">
         <span className="bg-sky-900 rounded-full p-1.5">
           <FaCrown className="text-yellow-300 text-xl" />
@@ -176,7 +175,7 @@ const PlanDetails: React.FC<PlanDetailsProps> = ({ planId, planObj }) => {
           )}
         </div>
       )}
-    </Card>
+    </>
   );
 };
 
