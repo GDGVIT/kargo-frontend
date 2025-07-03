@@ -3,7 +3,6 @@
 import React from "react";
 import AnimatedButton from "../ui/AnimatedButton/AnimatedButton";
 import Card from "../ui/Card/Card";
-import Form from "../ui/Form/Form";
 import Input from "../ui/Input/Input";
 import Select from "../ui/Select/Select";
 import Textarea from "../ui/Textarea/Textarea";
@@ -190,7 +189,7 @@ export default function UIPage() {
       <section style={{ marginTop: 40 }}>
         <h2>Inputs</h2>
         <div className="responsive-flex-row flex flex-wrap gap-4">
-          <Form elevation={2} className="min-w-[320px] flex-1">
+          <Card form elevation={2} className="min-w-[320px] flex-1">
             <h4>Basic Inputs</h4>
             <Input
               placeholder="Basic input"
@@ -212,8 +211,8 @@ export default function UIPage() {
               helperText="Read only input"
               onChange={() => {}}
             />
-          </Form>
-          <Form elevation={2} className="min-w-[320px] flex-1">
+          </Card>
+          <Card form elevation={2} className="min-w-[320px] flex-1">
             <h4>Inputs with Icon</h4>
             <Input
               label="With icon"
@@ -223,8 +222,8 @@ export default function UIPage() {
               value={input4}
               onChange={setInput4}
             />
-          </Form>
-          <Form elevation={2} className="min-w-[320px] flex-1">
+          </Card>
+          <Card form elevation={2} className="min-w-[320px] flex-1">
             <h4>Inputs with Error</h4>
             <Input
               label="With error"
@@ -234,8 +233,8 @@ export default function UIPage() {
               value={input5}
               onChange={setInput5}
             />
-          </Form>
-          <Form elevation={2} className="min-w-[320px] flex-1">
+          </Card>
+          <Card form elevation={2} className="min-w-[320px] flex-1">
             <h4>Disabled & Password Inputs</h4>
             <Input
               label="Disabled"
@@ -253,8 +252,8 @@ export default function UIPage() {
               value={input7}
               onChange={setInput7}
             />
-          </Form>
-          <Form elevation={2} className="min-w-[320px] flex-1">
+          </Card>
+          <Card form elevation={2} className="min-w-[320px] flex-1">
             <h4>Unit Inputs</h4>
             <Input
               label="CPU (m/vCPU)"
@@ -283,13 +282,13 @@ export default function UIPage() {
               helperText="Supports GB and TB units."
               displayHelperText={true}
             />
-          </Form>
+          </Card>
         </div>
       </section>
       <section style={{ marginTop: 40 }}>
         <h2>Select</h2>
         <div className="responsive-flex-row flex flex-wrap gap-4">
-          <Form elevation={2} className="min-w-[320px] flex-1">
+          <Card form elevation={2} className="min-w-[320px] flex-1">
             <h4>Basic Select</h4>
             <Select
               options={selectOptions}
@@ -297,8 +296,8 @@ export default function UIPage() {
               onChange={setSelectedOption1}
               helperText="Basic select."
             />
-          </Form>
-          <Form elevation={2} className="min-w-[320px] flex-1">
+          </Card>
+          <Card form elevation={2} className="min-w-[320px] flex-1">
             <h4>With Label</h4>
             <Select
               label="With label"
@@ -307,8 +306,8 @@ export default function UIPage() {
               onChange={setSelectedOption2}
               helperText="Labelled select."
             />
-          </Form>
-          <Form elevation={2} className="min-w-[320px] flex-1">
+          </Card>
+          <Card form elevation={2} className="min-w-[320px] flex-1">
             <h4>With Value</h4>
             <Select
               label="With value"
@@ -317,8 +316,8 @@ export default function UIPage() {
               onChange={setSelectedOption3}
               helperText="Select with default value."
             />
-          </Form>
-          <Form elevation={2} className="min-w-[320px] flex-1">
+          </Card>
+          <Card form elevation={2} className="min-w-[320px] flex-1">
             <h4>Error</h4>
             <Select
               label="Error"
@@ -328,8 +327,8 @@ export default function UIPage() {
               onChange={setSelectedOption4}
               helperText="Helper text will not show if error is present."
             />
-          </Form>
-          <Form elevation={2} className="min-w-[320px] flex-1">
+          </Card>
+          <Card form elevation={2} className="min-w-[320px] flex-1">
             <h4>Disabled</h4>
             <Select
               label="Disabled"
@@ -339,25 +338,25 @@ export default function UIPage() {
               disabled
               helperText="Disabled select."
             />
-          </Form>
+          </Card>
         </div>
       </section>
       <section style={{ marginTop: 40 }}>
         <h2>Textarea</h2>
         <div className="responsive-flex-row flex flex-wrap gap-4">
-          <Form elevation={2} className="min-w-[320px] flex-1">
+          <Card form elevation={2} className="min-w-[320px] flex-1">
             <h4>Basic Textarea</h4>
             <Textarea placeholder="No label" helperText="Basic textarea." />
-          </Form>
-          <Form elevation={2} className="min-w-[320px] flex-1">
+          </Card>
+          <Card form elevation={2} className="min-w-[320px] flex-1">
             <h4>With Label</h4>
             <Textarea
               label="With label"
               placeholder="With label"
               helperText="Labelled textarea."
             />
-          </Form>
-          <Form elevation={2} className="min-w-[320px] flex-1">
+          </Card>
+          <Card form elevation={2} className="min-w-[320px] flex-1">
             <h4>With Value</h4>
             <Textarea
               label="With value"
@@ -365,8 +364,8 @@ export default function UIPage() {
               readOnly
               helperText="Read-only textarea."
             />
-          </Form>
-          <Form elevation={2} className="min-w-[320px] flex-1">
+          </Card>
+          <Card form elevation={2} className="min-w-[320px] flex-1">
             <h4>Error</h4>
             <Textarea
               label="Error"
@@ -374,8 +373,8 @@ export default function UIPage() {
               placeholder="Error state"
               helperText="Helper text will not show if error is present."
             />
-          </Form>
-          <Form elevation={2} className="min-w-[320px] flex-1">
+          </Card>
+          <Card form elevation={2} className="min-w-[320px] flex-1">
             <h4>Disabled</h4>
             <Textarea
               label="Disabled"
@@ -383,7 +382,7 @@ export default function UIPage() {
               placeholder="Disabled"
               helperText="Disabled textarea."
             />
-          </Form>
+          </Card>
         </div>
       </section>
       <section style={{ marginTop: 40 }}>

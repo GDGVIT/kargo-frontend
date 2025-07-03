@@ -9,8 +9,7 @@ interface PageHeadingProps {
   className?: string;
   as?: ElementType;
   children?: React.ReactNode;
-  icon?: React.ReactElement<{ style?: React.CSSProperties }> | React.ReactNode;
-  metaDescription?: string; // New prop for meta description
+  metaDescription?: string;
 }
 
 const PageHeading: React.FC<PageHeadingProps> = ({
@@ -19,7 +18,6 @@ const PageHeading: React.FC<PageHeadingProps> = ({
   className = "",
   as: Heading = "h1",
   children,
-  icon,
   metaDescription,
 }) => {
   const HeadingTag = Heading as ElementType;
@@ -61,33 +59,6 @@ const PageHeading: React.FC<PageHeadingProps> = ({
             style={{ margin: 0 }}
           >
             {" "}
-            {/* {icon && (
-              <motion.span
-                className="mr-2 flex-shrink-0"
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.4, ease: "easeOut", delay: 0.1 }}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  height: "2.25rem",
-                  marginTop: 0,
-                }}
-              >
-                {React.isValidElement<{ style?: React.CSSProperties }>(icon)
-                  ? React.cloneElement(icon, {
-                      style: {
-                        ...((icon.props?.style as React.CSSProperties) || {}),
-                        fontSize: "1.6rem",
-                        height: "1em",
-                        width: "1em",
-                        verticalAlign: "middle",
-                        marginTop: "0px",
-                      },
-                    })
-                  : icon}
-              </motion.span>
-            )} */}
             {title}
           </HeadingTag>
           {subtitle && (

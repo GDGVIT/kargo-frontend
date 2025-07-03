@@ -4,7 +4,7 @@ import React, {
   useMemo,
   useState,
 } from "react";
-import { motion } from "framer-motion";
+import { motion, cubicBezier } from "framer-motion";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import Select from "../Select/Select";
 
@@ -122,7 +122,14 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: animationDuration, ease: animationEasing }}
+        transition={{
+          duration: animationDuration,
+          ease: Array.isArray(animationEasing)
+            ? cubicBezier(
+                ...(animationEasing as [number, number, number, number])
+              )
+            : animationEasing,
+        }}
         className={`my-2 sm:my-3 w-full max-w-full ${className}`}
         style={{ maxWidth: "-webkit-fill-available" }}
       >

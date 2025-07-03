@@ -1,6 +1,5 @@
 import ConfigureApp from "../../../components/Applications/ConfigureApp/ConfigureApp";
 import PageHeading from "../../../components/ui/PageHeading/PageHeading";
-import { FiSliders } from "react-icons/fi";
 
 const title = "Application Configuration";
 const description = "Configure your application configuration.";
@@ -19,7 +18,7 @@ export default async function ApplicationConfigPage({
   const { id } = await params;
   return (
     <main>
-      <PageHeading title={title} subtitle={description} icon={<FiSliders />} />
+      <PageHeading title={title} subtitle={description} />
       <ConfigureApp appId={id} />
     </main>
   );

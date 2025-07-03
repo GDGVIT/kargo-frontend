@@ -1,6 +1,5 @@
 import Credentials from "../../components/Credentials/Credentials";
 import PageHeading from "../../components/ui/PageHeading/PageHeading";
-import { FiKey } from "react-icons/fi";
 
 const title = "Manage Your Credentials";
 const description = "Add, edit, or remove your credentials.";
@@ -13,7 +12,7 @@ export const metadata = {
 export default function CredentialsPage() {
   return (
     <main>
-      <PageHeading title={title} subtitle={description} icon={<FiKey />} />
+      <PageHeading title={title} subtitle={description} />
       <Credentials />
     </main>
   );

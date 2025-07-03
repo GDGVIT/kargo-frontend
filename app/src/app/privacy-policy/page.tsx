@@ -1,5 +1,3 @@
-import { FiLock } from "react-icons/fi";
-
 const title = "Privacy Policy";
 
 export const metadata = {
@@ -12,11 +10,7 @@ import PageHeading from "../../components/ui/PageHeading/PageHeading";
 export default function PrivacyPolicyPage() {
   return (
     <main>
-      <PageHeading
-        title={title}
-        subtitle="Last updated: June 18, 2025"
-        icon={<FiLock />}
-      />
+      <PageHeading title={title} subtitle="Last updated: June 18, 2025" />
       <section>
         <h2>1. Introduction</h2>
         <p>

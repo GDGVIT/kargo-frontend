@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useRef, ReactNode, KeyboardEvent } from "react";
-import { motion } from "framer-motion";
+import { motion, Easing } from "framer-motion";
 
 interface CardProps {
   children: ReactNode;
@@ -10,9 +10,10 @@ interface CardProps {
   onClick?: () => void;
   disabled?: boolean;
   animationDuration?: number;
-  animationEasing?: number[];
+  animationEasing?: Easing | Easing[];
   elevation?: 1 | 2 | 3 | 4 | 5;
   "aria-label"?: string;
+  form?: unknown; // Accepts presence only
 }
 
 const elevationMap = {
@@ -30,9 +31,10 @@ const Card = ({
   onClick,
   disabled = false,
   animationDuration = 0.7,
-  animationEasing = [0.42, 0, 0.58, 1],
+  animationEasing = [0.42, 0, 0.58, 1] as Easing,
   elevation = 2,
   "aria-label": ariaLabel,
+  form,
 }: CardProps) => {
   const cardRef = useRef<HTMLDivElement>(null);
 
@@ -51,7 +53,11 @@ const Card = ({
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: animationDuration, ease: animationEasing }}
-      className={`my-3 bg-[var(--card-background)] rounded-lg p-4 sm:px-[24px] sm:py-[32px] transition-all outline-none focus-visible:ring-2 focus-visible:ring-blue-400 border border-[#FFFFFF1F] ${
+      className={`my-3 ${
+        form !== undefined
+          ? "bg-[var(--form-background)]"
+          : "bg-[var(--card-background)]"
+      } rounded-lg p-4 sm:px-[24px] sm:py-[32px] transition-all outline-none focus-visible:ring-2 focus-visible:ring-blue-400 border border-[#FFFFFF1F] ${
         elevationMap[elevation] || "shadow-lg"
       } ${
         hoverable && !disabled

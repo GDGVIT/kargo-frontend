@@ -1,5 +1,3 @@
-import { FiFileText } from "react-icons/fi";
-
 const title = "Terms of Service";
 
 export const metadata = {
@@ -12,11 +10,7 @@ import PageHeading from "../../components/ui/PageHeading/PageHeading";
 export default function TermsOfServicePage() {
   return (
     <main>
-      <PageHeading
-        title={title}
-        subtitle="Last updated: June 18, 2025"
-        icon={<FiFileText />}
-      />
+      <PageHeading title={title} subtitle="Last updated: June 18, 2025" />
       <section>
         <h2>1. Acceptance of Terms</h2>
         <p>

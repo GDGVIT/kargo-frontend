@@ -7,7 +7,7 @@ import {
   ListboxOption,
   ListboxOptions,
 } from "@headlessui/react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, cubicBezier } from "framer-motion";
 import { FiChevronDown, FiCheck } from "react-icons/fi";
 
 export interface SelectOption {
@@ -46,7 +46,14 @@ const Select: React.FC<SelectProps> = ({
     <motion.div
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: animationDuration, ease: animationEasing }}
+      transition={{
+        duration: animationDuration,
+        ease: Array.isArray(animationEasing)
+          ? cubicBezier(
+              ...(animationEasing as [number, number, number, number])
+            )
+          : animationEasing,
+      }}
       className={`my-3 w-full max-w-full ${className}`}
       style={{ maxWidth: "-webkit-fill-available" }}
     >
