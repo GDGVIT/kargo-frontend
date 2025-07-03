@@ -18,7 +18,7 @@ export default function Branding() {
         className="h-8 w-auto"
       />
       <span
-        className="text-[#11D6D1] ml-2 truncate"
+        className="text-[#11D6D1] ml-2 truncate text-3xl"
         style={{ fontFamily: "AirbnbCereal_W_Bd", width: "auto", flex: "none" }}
       >
         KARGO

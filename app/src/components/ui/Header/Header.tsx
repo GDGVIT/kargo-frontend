@@ -15,7 +15,7 @@ const Header: React.FC = () => {
     fixed top-0 right-0
     border-b-2 border-[#2c313f]
     flex items-center justify-between
-    bg-[var(--background)]/50 backdrop-blur-sm
+    bg-[#242837]
     pl-6
     h-[64px]
     w-full

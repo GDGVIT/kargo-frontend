@@ -55,6 +55,20 @@ export default function UIPage() {
           </p>
         </div>
       </Modal>
+
+      <section>
+        <h2>Headings</h2>
+        <Card elevation={1} aria-label="Heading showcase">
+          <div className="responsive-flex-column gap-2">
+            <h1>Heading 1</h1>
+            <h2>Heading 2</h2>
+            <h3>Heading 3</h3>
+            <h4>Heading 4</h4>
+            <h5>Heading 5</h5>
+            <h6>Heading 6</h6>
+          </div>
+        </Card>
+      </section>
       <section>
         <h2>Animated Button</h2>
         <div className="responsive-flex-row">

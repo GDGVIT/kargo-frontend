@@ -57,7 +57,7 @@
 
   --font-weight-light: 300;
   --font-weight-normal: 400;
-  --font-weight-bold: 700;
+  --font-weight-bold: 600;
 
   --transition-fast: 0.2s ease-in-out;
   --transition-medium: 0.4s ease-in-out;
@@ -83,7 +83,7 @@ body {
 
 main {
   margin: auto;
-  padding: var(--padding-medium);
+  padding: 1em 2.3em;
   display: flex;
   flex-direction: column;
   justify-content: baseline;
@@ -155,27 +155,27 @@ h6 {
 }
 
 h1 {
-  font-size: var(--font-size-huge);
+  font-size: 28px;
   font-weight: var(--font-weight-bold);
 }
 h2 {
-  font-size: var(--font-size-large);
+  font-size: 24px;
   font-weight: var(--font-weight-bold);
 }
 h3 {
-  font-size: 1.5rem;
+  font-size: 22px;
   font-weight: var(--font-weight-bold);
 }
 h4 {
-  font-size: 1.25rem;
+  font-size: 20px;
   font-weight: var(--font-weight-normal);
 }
 h5 {
-  font-size: 1.1rem;
+  font-size: 18px;
   font-weight: var(--font-weight-normal);
 }
 h6 {
-  font-size: 1rem;
+  font-size: 16px;
   font-weight: var(--font-weight-light);
 }
 
@@ -261,7 +261,7 @@ section {
   color: var(--foreground);
   border-radius: var(--border-radius-medium);
   margin: var(--margin-medium) 0;
-  padding: var(--padding-small);
+  padding: var(--padding-small) 0;
   transition: background var(--transition-fast);
   box-sizing: border-box;
 }
@@ -314,7 +314,7 @@ section table {
 
 @media (max-width: 1024px) {
   section {
-    padding: var(--padding-medium);
+    padding: var(--padding-medium) 0;
     margin: var(--margin-medium) 0;
   }
   section h1 {
@@ -327,7 +327,7 @@ section table {
 
 @media (max-width: 600px) {
   section {
-    padding: var(--padding-small);
+    padding: var(--padding-small) 0;
     margin: var(--margin-small) 0;
     border-radius: var(--border-radius-small);
   }

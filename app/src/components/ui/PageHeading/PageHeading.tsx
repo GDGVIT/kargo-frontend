@@ -61,7 +61,7 @@ const PageHeading: React.FC<PageHeadingProps> = ({
             style={{ margin: 0 }}
           >
             {" "}
-            {icon && (
+            {/* {icon && (
               <motion.span
                 className="mr-2 flex-shrink-0"
                 initial={{ opacity: 0, x: -20 }}
@@ -87,12 +87,12 @@ const PageHeading: React.FC<PageHeadingProps> = ({
                     })
                   : icon}
               </motion.span>
-            )}
+            )} */}
             {title}
           </HeadingTag>
           {subtitle && (
             <motion.div
-              className="text-base text-zinc-400 font-normal mt-1 ml-1"
+              className="text-base text-zinc-400 font-normal mt-1"
               initial={{ opacity: 0, x: -10 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.4, ease: "easeOut", delay: 0.2 }}
