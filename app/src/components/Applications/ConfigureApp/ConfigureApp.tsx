@@ -27,6 +27,9 @@ import { useAuth } from "../../Auth/AuthProvider/AuthProvider";
 import Tabs, { TabItem } from "../../ui/Tabs/Tabs";
 import MetricsSection from "./MetricsSection/MetricsSection";
 import { GrCloudSoftware } from "react-icons/gr";
+import Input from "../../ui/Input/Input";
+import Select from "../../ui/Select/Select";
+import { FaPlus } from "react-icons/fa";
 
 export default function ConfigureApp({ appId }: { appId: string }) {
   const { user } = useAuth();
@@ -49,6 +52,7 @@ export default function ConfigureApp({ appId }: { appId: string }) {
   const [credentials, setCredentials] = useState<RegistryCredential[]>([]);
   const [selectedCredential, setSelectedCredential] =
     useState<RegistryCredential | null>(null);
+  const [volumes, setVolumes] = useState(form?.volumes || []);
   const router = useRouter();
   const { notify } = useNotification();
 
@@ -185,15 +189,14 @@ export default function ConfigureApp({ appId }: { appId: string }) {
           storageGB: form.resources?.limits?.storageGB,
         },
       };
-      // Save
       await axios.put(`/api/applications/${appId}`, {
         ...form,
         env: envObj,
         ports: updatedPorts,
         credentials: selectedCredential ? [selectedCredential] : [],
         resources: directResources,
+        volumes: volumes.length > 0 ? volumes : undefined,
       });
-      // Deploy
       await axios.post(`/api/applications/${appId}/apply`);
       fetchApp();
       notify("Application saved and deployed successfully!", "success");
@@ -254,6 +257,39 @@ export default function ConfigureApp({ appId }: { appId: string }) {
           }
         : f
     );
+  }
+
+  useEffect(() => {
+    if (form?.volumes) setVolumes(form.volumes);
+  }, [form]);
+
+  function handleVolumeChange(
+    idx: number,
+    key: string,
+    value: string | boolean | string[]
+  ) {
+    setVolumes((prev) => {
+      const updated = [...prev];
+      updated[idx] = { ...updated[idx], [key]: value };
+      return updated;
+    });
+  }
+  function addVolume() {
+    setVolumes((prev) => [
+      ...prev,
+      {
+        name: "",
+        mountPath: "",
+        size: "",
+        accessModes: ["ReadWriteOnce"],
+        storageClassName: "",
+        readOnly: false,
+        type: "pvc",
+      },
+    ]);
+  }
+  function removeVolume(idx: number) {
+    setVolumes((prev) => prev.filter((_, i) => i !== idx));
   }
 
   if (loading || saving) {
@@ -409,6 +445,102 @@ export default function ConfigureApp({ appId }: { appId: string }) {
             );
           }}
         />
+      ),
+    },
+    {
+      key: "Volumes",
+      label: (
+        <span className="flex items-center gap-2">
+          <FaDatabase className="text-purple-400" /> Volumes
+        </span>
+      ),
+      heading: "Persistent Volumes (PVCs)",
+      subheading:
+        "Attach persistent storage to your application using Kubernetes PVCs.",
+      content: (
+        <div className="mt-2">
+          {volumes.map((vol, idx) => (
+            <div
+              key={idx}
+              className="border rounded p-3 mb-3 flex flex-wrap gap-2 items-end bg-zinc-900"
+            >
+              <Input
+                label="Volume Name"
+                value={vol.name}
+                required
+                onChange={(v) => handleVolumeChange(idx, "name", v)}
+                placeholder="my-pvc"
+                className="w-32"
+              />
+              <Input
+                label="Mount Path"
+                value={vol.mountPath}
+                required
+                onChange={(v) => handleVolumeChange(idx, "mountPath", v)}
+                placeholder="/data"
+                className="w-40"
+              />
+              <Input
+                label="Size (e.g. 10Gi)"
+                value={vol.size || ""}
+                required
+                onChange={(v) => handleVolumeChange(idx, "size", v)}
+                placeholder="10Gi"
+                className="w-28"
+              />
+              <Select
+                label="Access Modes"
+                value={vol.accessModes?.[0] || "ReadWriteOnce"}
+                onChange={(v) => handleVolumeChange(idx, "accessModes", [v])}
+                options={[
+                  { value: "ReadWriteOnce", label: "ReadWriteOnce" },
+                  { value: "ReadWriteMany", label: "ReadWriteMany" },
+                  { value: "ReadOnlyMany", label: "ReadOnlyMany" },
+                ]}
+                className="w-40"
+              />
+              <Input
+                label="Storage Class"
+                value={vol.storageClassName || ""}
+                onChange={(v) => handleVolumeChange(idx, "storageClassName", v)}
+                placeholder="(optional)"
+                className="w-40"
+              />
+              <label className="flex items-center gap-1 text-xs">
+                <input
+                  type="checkbox"
+                  checked={!!vol.readOnly}
+                  onChange={(e) =>
+                    handleVolumeChange(idx, "readOnly", e.target.checked)
+                  }
+                />
+                Read Only
+              </label>
+              <AnimatedButton
+                type="button"
+                variant="danger"
+                className="!px-2 !py-1 ml-2"
+                onClick={() => removeVolume(idx)}
+                icon={null}
+              >
+                Remove
+              </AnimatedButton>
+            </div>
+          ))}
+          <AnimatedButton
+            type="button"
+            onClick={addVolume}
+            icon={<FaPlus />}
+            variant="primary"
+            className="mt-2"
+          >
+            Add Volume
+          </AnimatedButton>
+          <div className="text-xs text-zinc-400 mt-2">
+            Volumes are provisioned as PersistentVolumeClaims (PVCs) and are
+            suitable for multi-node, multi-cluster Kubernetes environments.
+          </div>
+        </div>
       ),
     },
     ...metricTabs,

@@ -26,11 +26,15 @@ export default interface Application {
   volumes?: Array<{
     name: string;
     mountPath: string;
-    type?: string;
+    type?: string; // e.g., 'pvc', 'configMap', 'secret'
     configMapName?: string;
     secretName?: string;
-    claimName?: string;
-    size?: string;
+    claimName?: string; // For PVC
+    size?: string; // e.g., '10Gi'
+    accessModes?: string[]; // e.g., ['ReadWriteOnce', 'ReadWriteMany']
+    storageClassName?: string;
+    volumeMode?: string; // e.g., 'Filesystem' or 'Block'
+    annotations?: Record<string, string>;
     readOnly?: boolean;
     secretItems?: Array<{ key: string; path: string }>;
   }>;
