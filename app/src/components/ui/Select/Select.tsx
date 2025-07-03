@@ -47,7 +47,7 @@ const Select: React.FC<SelectProps> = ({
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: animationDuration, ease: animationEasing }}
-      className={`mx-2 my-3 w-full max-w-full ${className}`}
+      className={`my-3 w-full max-w-full ${className}`}
       style={{ maxWidth: "-webkit-fill-available" }}
     >
       {label && (

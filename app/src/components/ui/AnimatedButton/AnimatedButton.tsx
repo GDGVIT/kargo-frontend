@@ -32,8 +32,8 @@ const AnimatedButton = ({
       initialBgColor = "#dc2626";
       break;
     case "secondary":
-      variantClass = "bg-gray-700 hover:bg-gray-800 text-white";
-      initialBgColor = "#374151";
+      variantClass = "border border-[#555968] text-white";
+      initialBgColor = "transparent";
       break;
     case "success":
       variantClass = "bg-green-600 hover:bg-green-700 text-white";

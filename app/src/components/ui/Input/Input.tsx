@@ -123,7 +123,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: animationDuration, ease: animationEasing }}
-        className={`m-2 sm:m-3 w-full max-w-full ${className}`}
+        className={`my-2 sm:my-3 w-full max-w-full ${className}`}
         style={{ maxWidth: "-webkit-fill-available" }}
       >
         {label && (

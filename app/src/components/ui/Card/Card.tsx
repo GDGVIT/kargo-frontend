@@ -51,10 +51,12 @@ const Card = ({
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: animationDuration, ease: animationEasing }}
-      className={`mx-2 my-3 bg-[var(--card-background)] rounded-lg p-4 sm:p-6 transition-all outline-none focus-visible:ring-2 focus-visible:ring-blue-400 ${
+      className={`mx-2 my-3 bg-[var(--card-background)] rounded-lg p-4 sm:px-[24px] sm:py-[32px] transition-all outline-none focus-visible:ring-2 focus-visible:ring-blue-400 border border-[#FFFFFF1F] ${
         elevationMap[elevation] || "shadow-lg"
       } ${
-        hoverable && !disabled ? "hover:shadow-2xl hover:-translate-y-1" : ""
+        hoverable && !disabled
+          ? "hover:shadow-2xl hover:-translate-y-[0.15rem]"
+          : ""
       } ${onClick && !disabled ? "cursor-pointer active:scale-[0.98]" : ""} ${
         disabled ? "opacity-60 pointer-events-none grayscale" : ""
       } ${className} w-full max-w-full sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl 2xl:max-w-3xl`}
