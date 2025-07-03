@@ -59,7 +59,7 @@ const Select: React.FC<SelectProps> = ({
         {({ open }) => (
           <div className="relative w-full" style={{ maxWidth: "100vw" }}>
             <ListboxButton
-              className={`flex items-center justify-between px-3 py-0 h-[44px] sm:h-[50px] w-full bg-[#293040] border ${
+              className={`flex items-center justify-between px-3 py-0 h-[44px] sm:h-[50px] w-full bg-[var(--in-bg)] border ${
                 error ? "border-red-500" : "border-[#7B8191]"
               } rounded-[4px] text-left text-[15px] sm:text-[16px] font-inter focus:outline-none transition-all focus-visible:ring-2 focus-visible:ring-blue-400 ${
                 disabled ? "opacity-60 pointer-events-none grayscale" : ""
@@ -104,7 +104,7 @@ const Select: React.FC<SelectProps> = ({
                             `relative cursor-pointer select-none py-2 pl-3 pr-10 text-[15px] sm:text-[16px] font-inter transition-colors duration-100
                             ${
                               active
-                                ? "bg-[#293040] text-white"
+                                ? "bg-[var(--in-bg)] text-white"
                                 : selected
                                 ? "text-white"
                                 : "text-[#7B8191]"

@@ -51,7 +51,7 @@ const Card = ({
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: animationDuration, ease: animationEasing }}
-      className={`mx-2 my-3 bg-[var(--card-background)] rounded-lg p-4 sm:px-[24px] sm:py-[32px] transition-all outline-none focus-visible:ring-2 focus-visible:ring-blue-400 border border-[#FFFFFF1F] ${
+      className={`my-3 bg-[var(--card-background)] rounded-lg p-4 sm:px-[24px] sm:py-[32px] transition-all outline-none focus-visible:ring-2 focus-visible:ring-blue-400 border border-[#FFFFFF1F] ${
         elevationMap[elevation] || "shadow-lg"
       } ${
         hoverable && !disabled

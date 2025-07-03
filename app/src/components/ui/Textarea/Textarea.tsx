@@ -38,7 +38,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
         </label>
       )}
       <div
-        className={`flex flex-row items-start px-[2px] py-2 h-auto w-full bg-[#293040] border ${
+        className={`flex flex-row items-start px-[2px] py-2 h-auto w-full bg-[var(--in-bg)] border ${
           error ? "border-red-500" : "border-[#7B8191]"
         } rounded-[4px] box-border transition-all focus-within:ring-2 focus-within:ring-blue-400 ${
           disabled ? "opacity-60 pointer-events-none grayscale" : ""

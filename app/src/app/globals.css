@@ -21,7 +21,9 @@
   --foreground: #ffffff;
 
   --card-background: #293040;
+  --form-background: #2f3646;
   --theme-blue: #12d6d1;
+  --in-bg: #293040;
 
   --screen-horizontal-margin: clamp(1rem, 5vw, 4rem);
   --screen-vertical-margin: 0;
