@@ -222,6 +222,30 @@ export default function ConfigureApp({ appId }: { appId: string }) {
     setShowDeleteModal(false);
   }
 
+  async function handleRemoveDeployment() {
+    if (!form?._id) return;
+    setSaving(true);
+    try {
+      await axios.post(`/api/applications/${form._id}/scale-zero`);
+      notify("Deployment scaled to 0 (removed)", "success");
+    } catch {
+      notify("Failed to remove deployment", "error");
+    }
+    setSaving(false);
+  }
+
+  async function handleRolloutRestart() {
+    if (!form?._id) return;
+    setSaving(true);
+    try {
+      await axios.post(`/api/applications/${form._id}/rollout-restart`);
+      notify("Deployment restarted", "success");
+    } catch {
+      notify("Failed to restart deployment", "error");
+    }
+    setSaving(false);
+  }
+
   function handleEnvChange(idx: number, key: string, value: string) {
     setEnvList((prev) =>
       prev.map((pair, i) => (i === idx ? [key, value] : pair))
@@ -425,6 +449,8 @@ export default function ConfigureApp({ appId }: { appId: string }) {
           saving={saving}
           onSaveAndDeploy={handleSaveAndDeploy}
           onRequestDelete={() => setShowDeleteModal(true)}
+          onRemoveDeployment={handleRemoveDeployment}
+          onRolloutRestart={handleRolloutRestart}
         />
       </div>
       <Tabs tabs={tabItems} activeTab={activeTab} setActiveTab={setActiveTab} />
