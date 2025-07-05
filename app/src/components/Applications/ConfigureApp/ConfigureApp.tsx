@@ -33,7 +33,7 @@ export default function ConfigureApp({ appId }: { appId: string }) {
     };
   } | null>(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [activeTab, setActiveTab] = useState("Image");
+  const [activeTab, setActiveTab] = useState("Overview");
   const [credentials, setCredentials] = useState<RegistryCredential[]>([]);
   const [selectedCredential, setSelectedCredential] =
     useState<RegistryCredential | null>(null);
@@ -283,7 +283,11 @@ export default function ConfigureApp({ appId }: { appId: string }) {
   const tabItems: TabItem[] = [
     {
       key: "Overview",
-      label: <span className="flex items-center gap-2">Overview</span>,
+      label: (
+        <span className="flex flex-row justify-center items-center">
+          Overview
+        </span>
+      ),
       heading: "Overview",
       subheading: "Application overview and metrics",
       content: (
@@ -292,7 +296,9 @@ export default function ConfigureApp({ appId }: { appId: string }) {
     },
     {
       key: "Setup",
-      label: <span className="flex items-center gap-2">Setup</span>,
+      label: (
+        <span className="flex flex-row justify-center items-center">Setup</span>
+      ),
       heading: "Setup",
       subheading: "Configure environment, ports, and resources",
       content: (
@@ -315,7 +321,11 @@ export default function ConfigureApp({ appId }: { appId: string }) {
     },
     {
       key: "Settings",
-      label: <span className="flex items-center gap-2">Settings</span>,
+      label: (
+        <span className="flex flex-row justify-center items-center">
+          Settings
+        </span>
+      ),
       heading: "Settings",
       subheading: "Image and credential settings",
       content: (

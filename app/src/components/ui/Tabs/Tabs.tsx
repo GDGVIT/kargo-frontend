@@ -24,34 +24,44 @@ const Tabs: React.FC<TabsProps> = ({
   setActiveTab,
   className = "",
 }) => {
-  const active = tabs.find((tab) => tab.key === activeTab);
+  const activeIndex = tabs.findIndex((tab) => tab.key === activeTab);
+  const tabCount = tabs.length;
 
   return (
-    <div
-      className={`flex flex-col md:flex-row w-full h-full rounded-xl overflow-hidden bg-gray-900 text-white min-h-[50vh] ${className}`}
-    >
-      <div className="flex md:flex-col bg-gray-800 md:min-w-[200px] w-full md:w-auto">
-        {tabs.map((tab) => {
-          const isActive = tab.key === activeTab;
-          return (
-            <button
-              key={tab.key}
-              onClick={() => setActiveTab(tab.key)}
-              className={`w-full px-4 py-3 text-left text-sm font-medium border-l-4 md:border-l-0 md:border-l-transparent transition-all
-                ${
-                  isActive
-                    ? "bg-gray-700 text-blue-400 md:border-l-4 md:border-blue-500"
-                    : "hover:bg-gray-700 text-gray-300"
-                }`}
-            >
-              {tab.label}
-            </button>
-          );
-        })}
+    <div className={`flex flex-col w-full h-full ${className}`}>
+      {/* Tabs Header */}
+      <div className="relative border-b border-[#353A48]">
+        <div className="flex">
+          {tabs.map((tab) => {
+            return (
+              <button
+                key={tab.key}
+                onClick={() => setActiveTab(tab.key)}
+                className="flex-1 relative py-3 text-sm font-medium text-gray-300 hover:text-blue-400 transition-colors text-center"
+              >
+                {tab.label}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Seamless underline background */}
+        <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#353A48] pointer-events-none z-0" />
+
+        {/* Active tab blue indicator */}
+        <motion.div
+          layout
+          transition={{ type: "spring", stiffness: 400, damping: 30 }}
+          className="absolute bottom-0 h-0.5 bg-blue-500 z-10"
+          style={{
+            width: `${100 / tabCount}%`,
+            left: `${(100 / tabCount) * activeIndex}%`,
+          }}
+        />
       </div>
 
-      {/* Content Area */}
-      <div className="flex-1 p-6 overflow-y-auto bg-[var(--card-background)] min-h-[300px]">
+      {/* Tab Content */}
+      <div className="flex-1 p-4 sm:p-6 overflow-y-auto min-h-[300px]">
         <AnimatePresence mode="wait">
           <motion.div
             key={activeTab}
@@ -61,20 +71,38 @@ const Tabs: React.FC<TabsProps> = ({
             transition={{ duration: 0.3 }}
             className="space-y-3"
           >
-            {active?.heading && (
-              <h3 className="text-xl font-semibold" style={{ margin: 0 }}>
-                {active.heading}
+            {tabs[activeIndex]?.heading && (
+              <h3 className="text-xl font-semibold">
+                {tabs[activeIndex].heading}
               </h3>
             )}
-            {active?.subheading && (
-              <p className="text-sm text-gray-400">{active.subheading}</p>
+            {tabs[activeIndex]?.subheading && (
+              <p className="text-sm text-gray-400">
+                {tabs[activeIndex].subheading}
+              </p>
             )}
-            <div>{active?.content}</div>
+            <div>{tabs[activeIndex]?.content}</div>
           </motion.div>
         </AnimatePresence>
       </div>
     </div>
   );
 };
+
+// Utility hook to set default active tab to first item if not provided
+export function useDefaultTab(
+  tabs: TabItem[],
+  activeTab?: string
+): [string, (key: string) => void] {
+  const [currentTab, setCurrentTab] = React.useState(
+    activeTab || (tabs.length > 0 ? tabs[0].key : "")
+  );
+  React.useEffect(() => {
+    if (!activeTab && tabs.length > 0) {
+      setCurrentTab(tabs[0].key);
+    }
+  }, [activeTab, tabs]);
+  return [currentTab, setCurrentTab];
+}
 
 export default Tabs;
