@@ -5,6 +5,7 @@ import Link from "next/link";
 import Branding from "./Branding/Branding";
 import {
   FiBarChart2,
+  FiBook,
   FiKey,
   FiGrid,
   FiSettings,
@@ -30,6 +31,7 @@ export default function Sidebar() {
 
   const navItems = [
     { href: "/applications", label: "Applications", icon: <FiBarChart2 /> },
+    { href: "/logs", label: "Logs", icon: <FiBook /> },
     { href: "/credentials", label: "Credentials", icon: <FiKey /> },
     { href: "/plans", label: "Plans", icon: <FiGrid /> },
     { href: "/settings", label: "Settings", icon: <FiSettings /> },

@@ -45,7 +45,7 @@ const ActionButtons: React.FC<
             "/applications",
             "/logs"
           );
-          window.open(newUrl, "_blank");
+          window.location.assign(newUrl);
         }
       }}
       icon={<FaBook />}
