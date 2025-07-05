@@ -1,9 +1,12 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { FaArrowDown } from "react-icons/fa";
-import api from "../../../utils/api";
-import type LogsProps from "../../../types/Application/LogsProps/LogsProps";
+import { FaArrowDown, FaSearch } from "react-icons/fa";
+import api from "../../utils/api";
+import type LogsProps from "../../types/Application/LogsProps/LogsProps";
+import Input from "../ui/Input/Input";
+import Select from "../ui/Select/Select";
+import Loader from "../ui/Loader/Loader";
 
 // Generate a dark professional HSL background from pod string
 function generateProfessionalHSLColor(pod: string): string {
@@ -23,6 +26,10 @@ export default function Logs({ id }: LogsProps) {
   const [error, setError] = useState<string>("");
   const [podColorMap, setPodColorMap] = useState<Record<string, string>>({});
   const [showScrollButton, setShowScrollButton] = useState(false);
+  const [isAutoScroll, setIsAutoScroll] = useState(true);
+  const [searchText, setSearchText] = useState("");
+  const [selectedPod, setSelectedPod] = useState<string>("all");
+  const [selectedLevel, setSelectedLevel] = useState<string>("all");
   const logsRef = useRef<HTMLDivElement>(null);
   const eventSourceRef = useRef<EventSource | null>(null);
 
@@ -73,20 +80,20 @@ export default function Logs({ id }: LogsProps) {
 
   useEffect(() => {
     if (logsRef.current) {
-      // On initial load, always scroll to bottom
       if (logs.length === 1) {
         logsRef.current.scrollTop = logsRef.current.scrollHeight;
         setShowScrollButton(false);
+        setIsAutoScroll(true);
         return;
       }
       const { scrollTop, scrollHeight, clientHeight } = logsRef.current;
-      const isAtBottom = Math.abs(scrollHeight - clientHeight - scrollTop) < 10; // 10px threshold
-      if (isAtBottom) {
+      const isAtBottom = Math.abs(scrollHeight - clientHeight - scrollTop) < 10;
+      if (isAutoScroll) {
         logsRef.current.scrollTop = logsRef.current.scrollHeight;
       }
       setShowScrollButton(!isAtBottom);
     }
-  }, [logs]);
+  }, [logs, isAutoScroll]);
 
   // Show/hide scroll button on manual scroll
   const handleScroll = () => {
@@ -94,6 +101,7 @@ export default function Logs({ id }: LogsProps) {
       const { scrollTop, scrollHeight, clientHeight } = logsRef.current;
       const isAtBottom = scrollHeight - scrollTop - clientHeight < 10;
       setShowScrollButton(!isAtBottom);
+      setIsAutoScroll(isAtBottom);
     }
   };
 
@@ -101,6 +109,7 @@ export default function Logs({ id }: LogsProps) {
     if (logsRef.current) {
       logsRef.current.scrollTop = logsRef.current.scrollHeight;
       setShowScrollButton(false);
+      setIsAutoScroll(true);
     }
   };
 
@@ -117,19 +126,84 @@ export default function Logs({ id }: LogsProps) {
     return bg ? { backgroundColor: bg } : {};
   }
 
+  // Helper to get unique pods
+  const podList = Object.keys(podColorMap);
+
+  // Helper to get log level from line
+  function getLogLevel(line: string): string {
+    if (/error|fail|exception/i.test(line)) return "error";
+    if (/warn/i.test(line)) return "warn";
+    if (/info/i.test(line)) return "info";
+    if (/debug/i.test(line)) return "debug";
+    return "other";
+  }
+
+  // Filtered logs
+  const filteredLogs = logs.filter((log) => {
+    const matchesSearch =
+      !searchText ||
+      log.line.toLowerCase().includes(searchText.toLowerCase()) ||
+      log.pod.toLowerCase().includes(searchText.toLowerCase());
+    const matchesPod = selectedPod === "all" || log.pod === selectedPod;
+    const matchesLevel =
+      selectedLevel === "all" || getLogLevel(log.line) === selectedLevel;
+    return matchesSearch && matchesPod && matchesLevel;
+  });
+
+  const podOptions = [
+    { value: "all", label: "All Pods" },
+    ...podList.map((pod) => ({ value: pod, label: pod })),
+  ];
+  const levelOptions = [
+    { value: "all", label: "All Levels" },
+    { value: "error", label: "Error" },
+    { value: "warn", label: "Warn" },
+    { value: "info", label: "Info" },
+    { value: "debug", label: "Debug" },
+    { value: "other", label: "Other" },
+  ];
+
   return (
     <div className="flex justify-center items-center">
       <div className="mx-auto p-6 bg-[var(--card-background)] rounded-lg shadow-md border border-gray-800 max-w-6xl w-full">
-        <div className="mb-2 text-sm text-gray-400 text-center">
-          {connected ? "Streaming logs..." : error || "Connecting..."}
+        <div className="flex flex-row gap-2 mb-4 items-center w-full">
+          <Input
+            type="text"
+            placeholder="Search logs..."
+            value={searchText}
+            onChange={setSearchText}
+            icon={<FaSearch className="text-gray-400" />}
+            className="flex-1 min-w-[160px]"
+            aria-label="Search logs"
+          />
+          <Select
+            value={selectedPod}
+            onChange={setSelectedPod}
+            options={podOptions}
+            placeholder="All Pods"
+            className="min-w-[140px]"
+          />
+          <Select
+            value={selectedLevel}
+            onChange={setSelectedLevel}
+            options={levelOptions}
+            placeholder="All Levels"
+            className="min-w-[120px]"
+          />
         </div>
+
+        {!connected && !error ? (
+          <Loader />
+        ) : error ? (
+          <div className="mb-2 text-sm text-red-400 text-center">{error}</div>
+        ) : null}
         <div
           ref={logsRef}
-          className="bg-gray-700 rounded overflow-auto h-96 text-xs font-mono flex flex-col gap-1 p-2 scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800 relative"
+          className="bg-gray-700 rounded overflow-auto h-[75vh] text-xs font-mono flex flex-col gap-1 p-2 scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800 relative"
           onScroll={handleScroll}
         >
-          {logs.length > 0 ? (
-            logs.map((log, idx) => (
+          {filteredLogs.length > 0 ? (
+            filteredLogs.map((log, idx) => (
               <div
                 key={idx}
                 className="w-full rounded px-2 py-1 flex items-start gap-2 break-words"

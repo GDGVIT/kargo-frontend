@@ -64,7 +64,7 @@ export default ApplicationDetails;
 const DetailItemRow: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => (
-  <div className="flex flex-row flex-wrap gap-4 border-b border-[#353A48] px-4 py-2 last:border-b-0 sm:flex-row flex-col sm:gap-4 gap-2">
+  <div className="flex flex-wrap border-b border-[#353A48] px-4 py-2 last:border-b-0 sm:flex-row flex-col sm:gap-4 gap-2">
     {children}
   </div>
 );
