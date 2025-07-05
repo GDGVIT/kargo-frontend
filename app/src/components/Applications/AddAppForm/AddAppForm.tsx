@@ -12,6 +12,7 @@ import Input from "../../ui/Input/Input";
 import Select from "../../ui/Select/Select";
 import Modal from "../../ui/Modal/Modal";
 import GithubRepos from "../../Github/GithubRepos/GithubRepos";
+import Card from "../../ui/Card/Card";
 
 export default function AddAppForm() {
   const [form, setForm] = useState({
@@ -80,7 +81,7 @@ export default function AddAppForm() {
         <GithubRepos />
       </Modal>
       <form onSubmit={handleAdd} className="mb-8 space-y-4 min-h-[470px]">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <Card form className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <Input
               required
@@ -156,7 +157,7 @@ export default function AddAppForm() {
               }
             />
           </div>
-        </div>
+        </Card>
         <div className="flex gap-4 mt-4">
           <AnimatedButton
             type="submit"
