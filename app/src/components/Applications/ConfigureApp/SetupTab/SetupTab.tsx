@@ -4,6 +4,7 @@ import PortsSection from "./PortsSection/PortsSection";
 import ResourcesSection from "./ResourcesSection/ResourcesSection";
 import type Port from "../../../../types/Application/Port/Port";
 import type Resource from "../../../../types/Application/Resource/Resource";
+import Card from "../../../ui/Card/Card";
 
 interface SetupTabProps {
   envList: [string, string][];
@@ -45,18 +46,24 @@ const SetupTab: React.FC<SetupTabProps> = ({
   handleResourceChange,
 }) => (
   <div className="space-y-8">
-    <EnvVarsSection
-      envList={envList}
-      handleEnvChange={handleEnvChange}
-      addEnvVar={addEnvVar}
-      removeEnvVar={removeEnvVar}
-    />
-    <PortsSection ports={ports} onChange={onPortsChange} />
-    <ResourcesSection
-      resourceLimits={resourceLimits}
-      resources={resources}
-      handleResourceChange={handleResourceChange}
-    />
+    <Card form>
+      <EnvVarsSection
+        envList={envList}
+        handleEnvChange={handleEnvChange}
+        addEnvVar={addEnvVar}
+        removeEnvVar={removeEnvVar}
+      />
+    </Card>
+    <Card form>
+      <PortsSection ports={ports} onChange={onPortsChange} />
+    </Card>
+    <Card form>
+      <ResourcesSection
+        resourceLimits={resourceLimits}
+        resources={resources}
+        handleResourceChange={handleResourceChange}
+      />
+    </Card>
   </div>
 );
 

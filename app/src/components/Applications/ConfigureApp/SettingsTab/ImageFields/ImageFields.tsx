@@ -31,7 +31,7 @@ const ImageFields: React.FC<ImageFieldsProps> = ({
         label="Image Tag"
       />
     </div>
-    <div style={{ position: "relative", minHeight: 80, paddingBottom: 70 }}>
+    <div style={{ position: "relative" }}>
       <Select
         label="Image Pull Credential"
         value={selectedCredential}

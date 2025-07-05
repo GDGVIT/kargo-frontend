@@ -1,6 +1,7 @@
 import React from "react";
 import ImageFields from "./ImageFields/ImageFields";
 import type RegistryCredential from "../../../../types/Registry/RegistryCredential/RegistryCredential";
+import Card from "../../../ui/Card/Card";
 
 interface SettingsTabProps {
   imageUrl: string;
@@ -22,15 +23,17 @@ const SettingsTab: React.FC<SettingsTabProps> = ({
   setSelectedCredential,
 }) => (
   <div>
-    <ImageFields
-      imageUrl={imageUrl}
-      imageTag={imageTag}
-      setImageUrl={setImageUrl}
-      setImageTag={setImageTag}
-      credentials={credentials}
-      selectedCredential={selectedCredential}
-      setSelectedCredential={setSelectedCredential}
-    />
+    <Card form>
+      <ImageFields
+        imageUrl={imageUrl}
+        imageTag={imageTag}
+        setImageUrl={setImageUrl}
+        setImageTag={setImageTag}
+        credentials={credentials}
+        selectedCredential={selectedCredential}
+        setSelectedCredential={setSelectedCredential}
+      />
+    </Card>
   </div>
 );
 
