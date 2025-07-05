@@ -16,6 +16,7 @@ import {
 import useNotification from "../ui/Notification/Notification";
 import Loader from "../ui/Loader/Loader";
 import Modal from "../ui/Modal/Modal";
+import Tabs, { TabItem } from "../ui/Tabs/Tabs";
 
 export default function UIPage() {
   const selectOptions = [
@@ -38,6 +39,31 @@ export default function UIPage() {
   const [input4, setInput4] = React.useState("");
   const [input5, setInput5] = React.useState("");
   const [input7, setInput7] = React.useState("");
+
+  const [showcaseTab, setShowcaseTab] = React.useState("tab1");
+  const showcaseTabs: TabItem[] = [
+    {
+      key: "tab1",
+      label: "Tab One",
+      heading: "Tab One Heading",
+      subheading: "This is the first tab.",
+      content: <div>Content for Tab One goes here.</div>,
+    },
+    {
+      key: "tab2",
+      label: "Tab Two",
+      heading: "Tab Two Heading",
+      subheading: "This is the second tab.",
+      content: <div>Content for Tab Two goes here.</div>,
+    },
+    {
+      key: "tab3",
+      label: "Tab Three",
+      heading: "Tab Three Heading",
+      subheading: "This is the third tab.",
+      content: <div>Content for Tab Three goes here.</div>,
+    },
+  ];
 
   return (
     <>
@@ -418,6 +444,17 @@ export default function UIPage() {
           >
             Simulate Modal
           </AnimatedButton>
+        </div>
+      </section>
+      <section style={{ marginTop: 40 }}>
+        <h2>Tabs</h2>
+        <div className="responsive-flex-row">
+          <Tabs
+            tabs={showcaseTabs}
+            activeTab={showcaseTab}
+            setActiveTab={setShowcaseTab}
+            className="max-w-2xl mx-auto"
+          />
         </div>
       </section>
     </>
