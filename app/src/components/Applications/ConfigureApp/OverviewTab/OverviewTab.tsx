@@ -1,6 +1,6 @@
 import React from "react";
 import ApplicationDetails from "./ApplicationDetails/ApplicationDetails";
-import ApplicationMetrics from "./ApplicationMetrics/ApplicationMetrics";
+import ApplicationUsage from "./ApplicationUsage/ApplicationUsage";
 import type Application from "../../../../types/Application/Application";
 import type Resources from "../../../../types/Application/Resources/Resources";
 
@@ -11,7 +11,7 @@ const OverviewTab: React.FC<{
 }> = ({ appId, form, resources }) => (
   <div className="space-y-8">
     <ApplicationDetails form={form} />
-    <ApplicationMetrics appId={appId} resources={resources} />
+    <ApplicationUsage appId={appId} resources={resources} />
   </div>
 );
 

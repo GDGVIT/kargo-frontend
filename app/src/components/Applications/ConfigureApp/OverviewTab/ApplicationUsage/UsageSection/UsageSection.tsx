@@ -17,22 +17,22 @@ import Resources from "../../../../../../types/Application/Resources/Resources";
 import Loader from "../../../../../ui/Loader/Loader";
 import type { TooltipProps } from "recharts";
 
-const metricLabels: Record<string, string> = {
+const usageLabels: Record<string, string> = {
   cpu: "CPU Usage (cores)",
   memory: "Memory Usage (bytes)",
   storage: "Storage Usage (bytes)",
 };
 
-interface MetricHistory {
+interface UsageHistory {
   current: string | null;
   history: [number, string][];
 }
 
-interface Metrics {
-  [key: string]: MetricHistory;
+interface UsageData {
+  [key: string]: UsageHistory;
 }
 
-interface MetricsSectionProps {
+interface UsageSectionProps {
   appId: string;
   metricType?: "cpu" | "memory" | "storage";
   resources?: Resources;
@@ -44,39 +44,39 @@ const WINDOW_OPTIONS = [
   { label: "All", value: "-1" },
 ];
 
-const MetricsSection: React.FC<MetricsSectionProps> = ({
+const UsageSection: React.FC<UsageSectionProps> = ({
   appId,
   metricType = "cpu",
   resources,
 }) => {
-  const [metrics, setMetrics] = useState<Metrics | null>(null);
+  const [usage, setUsage] = useState<UsageData | null>(null);
   const [loading, setLoading] = useState(true);
   const [windowSize, setWindowSize] = useState<string>("60");
 
   useEffect(() => {
     let isMounted = true;
     setLoading(true);
-    async function fetchMetrics() {
+    async function fetchUsage() {
       try {
         const { data } = await axios.get(`/api/applications/${appId}/metrics`);
         if (!isMounted) return;
-        setMetrics(data.metrics);
+        setUsage(data.metrics); // API returns 'metrics', but we treat as 'usage' in UI
       } catch {
         if (!isMounted) return;
-        setMetrics(null);
+        setUsage(null);
       } finally {
         setLoading(false);
       }
     }
-    fetchMetrics();
-    const interval = setInterval(fetchMetrics, 10000);
+    fetchUsage();
+    const interval = setInterval(fetchUsage, 10000);
     return () => {
       isMounted = false;
       clearInterval(interval);
     };
   }, [appId]);
 
-  // Extract requests and limits for the selected metric
+  // Extract requests and limits for the selected usage type
   let requestValue: number | undefined = undefined;
   let limitValue: number | undefined = undefined;
   let requestLabel = "";
@@ -114,10 +114,10 @@ const MetricsSection: React.FC<MetricsSectionProps> = ({
   }
 
   // Prepare chart data
-  const metric = metrics?.[metricType];
+  const usageMetric = usage?.[metricType];
   let formattedData: { time: string; value: number }[] = [];
-  if (metric?.history) {
-    formattedData = metric.history.map(([timestamp, val]) => ({
+  if (usageMetric?.history) {
+    formattedData = usageMetric.history.map(([timestamp, val]) => ({
       time: new Date(timestamp * 1000).toLocaleTimeString(),
       value: parseFloat(val),
     }));
@@ -128,8 +128,8 @@ const MetricsSection: React.FC<MetricsSectionProps> = ({
     }
   }
 
-  // Helper to format metric value with units
-  function formatMetricValue(value: string | null, type: string): string {
+  // Helper to format usage value with units
+  function formatUsageValue(value: string | null, type: string): string {
     if (!value || isNaN(Number(value))) return "N/A";
     const num = parseFloat(value);
     if (type === "cpu") {
@@ -184,12 +184,12 @@ const MetricsSection: React.FC<MetricsSectionProps> = ({
     <div className="mb-8 px-2 md:px-6 py-10 rounded-2xl w-full min-h-[60vh] flex flex-col items-center animate-fade-in">
       <div className="flex flex-col md:flex-row items-center justify-between mb-8 w-full max-w-7xl">
         <span className="text-xl text-gray-800 dark:text-gray-300 font-medium mb-4 md:mb-0">
-          <b>{metricLabels[metricType]}</b>
+          <b>{usageLabels[metricType]}</b>
         </span>
         <div className="flex items-center space-x-3 w-full md:w-auto">
           <label
             className="text-lg text-gray-600 dark:text-gray-400 whitespace-nowrap mr-2"
-            htmlFor="metrics-window-select"
+            htmlFor="usage-window-select"
           >
             Time Window:
           </label>
@@ -206,14 +206,14 @@ const MetricsSection: React.FC<MetricsSectionProps> = ({
         </div>
       </div>
       <div className="mb-4 text-2xl font-bold">
-        {formatMetricValue(metric?.current ?? null, metricType)}
+        {formatUsageValue(usageMetric?.current ?? null, metricType)}
       </div>
       <div className="h-64 w-full max-w-4xl">
         {loading ? (
           <Loader />
         ) : formattedData.length === 0 ? (
           <div className="text-2xl text-gray-400 dark:text-gray-500 mt-24">
-            No metrics available
+            No usage data available
           </div>
         ) : (
           <ResponsiveContainer width="100%" height="100%">
@@ -269,4 +269,4 @@ const MetricsSection: React.FC<MetricsSectionProps> = ({
   );
 };
 
-export default MetricsSection;
+export default UsageSection;
