@@ -1,11 +1,35 @@
 import React from "react";
-import Input from "../../../ui/Input/Input";
+import Input from "../../../../ui/Input/Input";
 import {
   formatCpu,
   formatMemory,
   formatStorage,
-} from "../../../../utils/resources";
-import type ResourcesSectionProps from "../../../../types/Application/Resources/ResourcesSectionProps/ResourcesSectionProps";
+} from "../../../../../utils/resources";
+import type Resource from "../../../../../types/Application/Resource/Resource";
+
+export interface ResourceLimits {
+  allowed: {
+    requests: { cpuMilli: number; memoryMB: number; storageGB: number };
+    limits: { cpuMilli: number; memoryMB: number; storageGB: number };
+  };
+  usage: {
+    requests: { cpuMilli: number; memoryMB: number; storageGB: number };
+    limits: { cpuMilli: number; memoryMB: number; storageGB: number };
+  };
+}
+
+interface ResourcesSectionProps {
+  resourceLimits: ResourceLimits | null;
+  resources: {
+    requests?: Resource;
+    limits?: Resource;
+  };
+  handleResourceChange: (
+    section: "requests" | "limits",
+    field: "cpuMilli" | "memoryMB" | "storageGB",
+    value: string
+  ) => void;
+}
 
 const ResourcesSection: React.FC<ResourcesSectionProps> = ({
   resourceLimits,

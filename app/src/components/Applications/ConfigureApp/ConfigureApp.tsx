@@ -4,29 +4,17 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "../../../utils/api";
 import type Application from "../../../types/Application/Application";
-import type Port from "../../../types/Application/Port/Port";
-import type AppPort from "../../../types/Application/AppPort/AppPort";
 import type RegistryCredential from "../../../types/Registry/RegistryCredential/RegistryCredential";
-import ImageFields from "./ImageFields/ImageFields";
-import EnvVarsSection from "./EnvVarsSection/EnvVarsSection";
-import ResourcesSection from "./ResourcesSection/ResourcesSection";
-import PortsSection from "./PortsSection/PortsSection";
-import ActionButtons from "./ActionButtons/ActionButtons";
-import useNotification from "../../ui/Notification/Notification";
-import Modal from "../../ui/Modal/Modal";
-import AnimatedButton from "../../ui/AnimatedButton/AnimatedButton";
-import {
-  FaDatabase,
-  FaDocker,
-  FaLeaf,
-  FaNetworkWired,
-  FaChartArea,
-} from "react-icons/fa";
 import Loader from "../../ui/Loader/Loader";
 import { useAuth } from "../../Auth/AuthProvider/AuthProvider";
 import Tabs, { TabItem } from "../../ui/Tabs/Tabs";
-import MetricsSection from "./MetricsSection/MetricsSection";
-import { GrCloudSoftware } from "react-icons/gr";
+import useNotification from "../../ui/Notification/Notification";
+import Modal from "../../ui/Modal/Modal";
+import AnimatedButton from "../../ui/AnimatedButton/AnimatedButton";
+import OverviewTab from "./OverviewTab/OverviewTab";
+import SetupTab from "./SetupTab/SetupTab";
+import SettingsTab from "./SettingsTab/SettingsTab";
+import ActionButtons from "./ActionButtons/ActionButtons";
 
 export default function ConfigureApp({ appId }: { appId: string }) {
   const { user } = useAuth();
@@ -122,7 +110,12 @@ export default function ConfigureApp({ appId }: { appId: string }) {
         (acc, [k, v]) => (k ? { ...acc, [k]: v } : acc),
         {} as Record<string, string>
       );
-      const updatedPorts = form.ports || [];
+      const updatedPorts = (form.ports || []).map((p, idx) => ({
+        name: p.name || `port${idx}`,
+        containerPort: Number(p.containerPort),
+        protocol: p.protocol || "TCP",
+        subdomain: p.subdomain || "",
+      }));
 
       if (resourceLimits) {
         function parse(val: string | number | undefined) {
@@ -287,54 +280,46 @@ export default function ConfigureApp({ appId }: { appId: string }) {
     return <div className="text-center text-gray-400 ">App not found</div>;
   }
 
-  const metricTabs: TabItem[] = [
-    {
-      key: "CPUMetrics",
-      label: (
-        <span className="flex items-center gap-2">
-          <FaChartArea className="text-blue-400" /> CPU
-        </span>
-      ),
-      heading: "CPU Metrics",
-      subheading: "View CPU usage metrics for your application",
-      content: <MetricsSection appId={appId} metricType="cpu" />,
-    },
-    {
-      key: "MemoryMetrics",
-      label: (
-        <span className="flex items-center gap-2">
-          <FaChartArea className="text-green-400" /> Memory
-        </span>
-      ),
-      heading: "Memory Metrics",
-      subheading: "View memory usage metrics for your application",
-      content: <MetricsSection appId={appId} metricType="memory" />,
-    },
-    {
-      key: "StorageMetrics",
-      label: (
-        <span className="flex items-center gap-2">
-          <FaChartArea className="text-orange-400" /> Storage
-        </span>
-      ),
-      heading: "Storage Metrics",
-      subheading: "View storage usage metrics for your application",
-      content: <MetricsSection appId={appId} metricType="storage" />,
-    },
-  ];
-
   const tabItems: TabItem[] = [
     {
-      key: "Image",
-      label: (
-        <span className="flex items-center gap-2">
-          <FaDocker className="text-blue-300" /> Image
-        </span>
-      ),
-      heading: "Image Configuration",
-      subheading: "Configure the Docker image for your application",
+      key: "Overview",
+      label: <span className="flex items-center gap-2">Overview</span>,
+      heading: "Overview",
+      subheading: "Application overview and metrics",
       content: (
-        <ImageFields
+        <OverviewTab appId={appId} form={form} resources={form?.resources} />
+      ),
+    },
+    {
+      key: "Setup",
+      label: <span className="flex items-center gap-2">Setup</span>,
+      heading: "Setup",
+      subheading: "Configure environment, ports, and resources",
+      content: (
+        <SetupTab
+          envList={envList}
+          handleEnvChange={handleEnvChange}
+          addEnvVar={addEnvVar}
+          removeEnvVar={removeEnvVar}
+          ports={form?.ports || []}
+          onPortsChange={(
+            updatedPorts: import("../../../types/Application/Port/Port").default[]
+          ) => {
+            setForm((f) => (f ? { ...f, ports: updatedPorts } : f));
+          }}
+          resourceLimits={resourceLimits}
+          resources={form?.resources || { requests: {}, limits: {} }}
+          handleResourceChange={handleResourceChange}
+        />
+      ),
+    },
+    {
+      key: "Settings",
+      label: <span className="flex items-center gap-2">Settings</span>,
+      heading: "Settings",
+      subheading: "Image and credential settings",
+      content: (
+        <SettingsTab
           imageUrl={form?.imageUrl || ""}
           imageTag={form?.imageTag || ""}
           setImageUrl={(url) =>
@@ -352,95 +337,11 @@ export default function ConfigureApp({ appId }: { appId: string }) {
         />
       ),
     },
-    {
-      key: "Env",
-      label: (
-        <span className="flex items-center gap-2">
-          <FaLeaf className="text-green-400" /> Environment
-        </span>
-      ),
-      heading: "Environment Variables",
-      subheading: "Set environment variables for your application",
-      content: (
-        <EnvVarsSection
-          envList={envList}
-          handleEnvChange={handleEnvChange}
-          addEnvVar={addEnvVar}
-          removeEnvVar={removeEnvVar}
-        />
-      ),
-    },
-    {
-      key: "Resources",
-      label: (
-        <span className="flex items-center gap-2">
-          <FaDatabase className="text-blue-300" /> Resources
-        </span>
-      ),
-      heading: "Resources",
-      subheading: "Configure resource limits for your application",
-      content: (
-        <ResourcesSection
-          resourceLimits={
-            resourceLimits || {
-              allowed: {
-                requests: { cpuMilli: 0, memoryMB: 0, storageGB: 0 },
-                limits: { cpuMilli: 0, memoryMB: 0, storageGB: 0 },
-              },
-              usage: {
-                requests: { cpuMilli: 0, memoryMB: 0, storageGB: 0 },
-                limits: { cpuMilli: 0, memoryMB: 0, storageGB: 0 },
-              },
-            }
-          }
-          resources={form?.resources || { requests: {}, limits: {} }}
-          handleResourceChange={handleResourceChange}
-        />
-      ),
-    },
-    {
-      key: "Ports",
-      label: (
-        <span className="flex items-center gap-2">
-          <FaNetworkWired className="text-yellow-300" /> Ports
-        </span>
-      ),
-      heading: "Ports Configuration",
-      subheading: "Configure ports for your application",
-      content: (
-        <PortsSection
-          ports={(form?.ports ?? []).map((port, idx) => {
-            const p = port as AppPort;
-            return {
-              id: `${idx}-${p.containerPort}`,
-              containerPort: p.containerPort,
-              protocol: p.protocol === "UDP" ? "UDP" : "TCP",
-              subdomain: p.subdomain || "",
-            } as Port;
-          })}
-          onChange={(updatedPorts) => {
-            setForm((f) =>
-              f
-                ? {
-                    ...f,
-                    ports: updatedPorts.map((port) => {
-                      const { ...rest } = port;
-                      return { ...rest };
-                    }),
-                  }
-                : f
-            );
-          }}
-        />
-      ),
-    },
-    ...metricTabs,
   ];
 
   return (
     <div>
       <h2 className="text-gray-100" style={{ marginTop: "0" }}>
-        <GrCloudSoftware className="inline-block mr-2 text-2xl" />
         {user && user.username ? <span>{user.username} / </span> : null}
         {form?.name}
       </h2>

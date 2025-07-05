@@ -11,10 +11,10 @@ import {
   CartesianGrid,
   ReferenceLine,
 } from "recharts";
-import axios from "../../../../utils/api";
-import Select from "../../../ui/Select/Select";
-import Resources from "../../../../types/Application/Resources/Resources";
-import Loader from "../../../ui/Loader/Loader";
+import axios from "../../../../../../utils/api";
+import Select from "../../../../../ui/Select/Select";
+import Resources from "../../../../../../types/Application/Resources/Resources";
+import Loader from "../../../../../ui/Loader/Loader";
 import type { TooltipProps } from "recharts";
 
 const metricLabels: Record<string, string> = {

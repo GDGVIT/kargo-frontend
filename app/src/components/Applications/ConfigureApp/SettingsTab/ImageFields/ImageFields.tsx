@@ -1,7 +1,7 @@
 import React from "react";
-import type ImageFieldsProps from "../../../../types/Application/ImageFieldProps/ImageFieldProps";
-import Input from "../../../ui/Input/Input";
-import Select from "../../../ui/Select/Select";
+import type ImageFieldsProps from "../../../../../types/Application/ImageFieldProps/ImageFieldProps";
+import Input from "../../../../ui/Input/Input";
+import Select from "../../../../ui/Select/Select";
 
 const ImageFields: React.FC<ImageFieldsProps> = ({
   imageUrl,

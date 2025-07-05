@@ -1,7 +1,6 @@
 export default interface Port {
-  id: string;
+  name?: string; // optional, backend will generate if not present
   containerPort: number;
-  protocol: "TCP" | "UDP";
-  description?: string;
+  protocol: string; // "TCP" | "UDP" or any string
   subdomain?: string;
 }
