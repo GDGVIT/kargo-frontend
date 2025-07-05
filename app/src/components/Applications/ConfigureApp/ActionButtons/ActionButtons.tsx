@@ -41,7 +41,11 @@ const ActionButtons: React.FC<
       className="!px-4 !py-2"
       onClick={() => {
         if (typeof window !== "undefined" && window.location.pathname) {
-          window.location.assign(window.location.pathname + "/logs");
+          const newUrl = window.location.pathname.replace(
+            "/applications",
+            "/logs"
+          );
+          window.open(newUrl, "_blank");
         }
       }}
       icon={<FaBook />}
