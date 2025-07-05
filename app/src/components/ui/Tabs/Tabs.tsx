@@ -37,7 +37,11 @@ const Tabs: React.FC<TabsProps> = ({
               <button
                 key={tab.key}
                 onClick={() => setActiveTab(tab.key)}
-                className="flex-1 relative py-3 text-sm font-medium text-gray-300 hover:text-blue-400 transition-colors text-center"
+                className="flex-1 relative py-3 text-sm font-medium text-gray-300 transition-colors text-center hover:text-[color:var(--theme-blue)] focus:text-[color:var(--theme-blue)]"
+                style={{
+                  color:
+                    tab.key === activeTab ? "var(--theme-blue)" : undefined,
+                }}
               >
                 {tab.label}
               </button>
@@ -52,10 +56,11 @@ const Tabs: React.FC<TabsProps> = ({
         <motion.div
           layout
           transition={{ type: "spring", stiffness: 400, damping: 30 }}
-          className="absolute bottom-0 h-0.5 bg-blue-500 z-10"
+          className="absolute bottom-0 h-0.5 z-10"
           style={{
             width: `${100 / tabCount}%`,
             left: `${(100 / tabCount) * activeIndex}%`,
+            backgroundColor: "var(--theme-blue)",
           }}
         />
       </div>
