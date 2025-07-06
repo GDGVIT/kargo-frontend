@@ -4,9 +4,9 @@ import React, {
   useMemo,
   useState,
 } from "react";
-import { motion, cubicBezier } from "framer-motion";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import Select from "../Select/Select";
+import UserInput from "../UserInput/UserInput";
 
 export type UnitType = "cpu" | "memory" | "storage";
 
@@ -119,90 +119,74 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     };
 
     return (
-      <motion.div
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{
-          duration: animationDuration,
-          ease: Array.isArray(animationEasing)
-            ? cubicBezier(
-                ...(animationEasing as [number, number, number, number])
-              )
-            : animationEasing,
-        }}
-        className={`my-2 sm:my-3 w-full max-w-full ${className}`}
-        style={{ maxWidth: "-webkit-fill-available" }}
+      <UserInput
+        label={label}
+        error={error}
+        className={className}
+        helperText={helperText || (!error && helper) || undefined}
+        animationDuration={animationDuration}
+        animationEasing={animationEasing}
+        disabled={disabled}
+        containerClassName={`flex flex-row justify-between items-center px-[2px] py-0 h-[44px] sm:h-[50px] w-full bg-[var(--in-bg)] border ${
+          error ? "border-red-500" : "border-[#7B8191]"
+        } rounded-[4px] box-border transition-all focus-within:ring-2 focus-within:ring-blue-400${
+          unitType ? " pr-0" : ""
+        }${unitType ? " !pr-0" : ""}`}
       >
-        {label && (
-          <label className="block mb-1 text-sm font-medium text-[var(--foreground)]">
-            {label}
-          </label>
+        {icon && (
+          <span className="text-zinc-400 mr-2 sm:mr-4 flex-none order-0 w-4 h-4 pl-2">
+            {icon}
+          </span>
         )}
-        <div
-          className={`flex flex-row justify-between items-center px-[2px] py-0 h-[44px] sm:h-[50px] w-full bg-[var(--in-bg)] border ${
-            error ? "border-red-500" : "border-[#7B8191]"
-          } rounded-[4px] box-border transition-all focus-within:ring-2 focus-within:ring-blue-400 ${
-            disabled ? "opacity-60 pointer-events-none grayscale" : ""
-          }`}
-          style={{ maxWidth: "-webkit-fill-available" }}
-        >
-          {icon && (
-            <span className="text-zinc-400 mr-2 sm:mr-4 flex-none order-0 w-4 h-4 pl-2">
-              {icon}
-            </span>
-          )}
-          <input
-            ref={ref}
-            className={`flex-1 order-1 bg-transparent outline-none text-[#7B8191] placeholder-zinc-500 text-[15px] sm:text-[16px] leading-[19px] font-normal font-inter px-0 py-0 border-none ring-0 focus:ring-0 focus:outline-none ${
-              isPassword ? "pr-10" : ""
-            }`}
-            style={{ border: "none", boxShadow: "none", minWidth: 0 }}
-            type={isPassword && showPassword ? "text" : type}
-            disabled={disabled}
-            aria-label={label}
-            value={displayValue}
-            onChange={handleChange}
-            {...props}
-          />
-          {unitType && unit && (
-            <div className="flex items-center ml-2 order-2">
-              <Select
-                value={unit}
-                onChange={setUnit}
-                options={unitConfigs[unitType].units.map((u) => ({
-                  value: u,
-                  label: u,
-                }))}
-                disabled={disabled}
-                className="!my-0 !mx-0 min-w-[60px] w-auto"
-                placeholder="Unit"
-                animationDuration={0.2}
-                animationEasing={[0.42, 0, 0.58, 1]}
-              />
-            </div>
-          )}
-          {isPassword && (
-            <button
-              type="button"
-              aria-label={showPassword ? "Hide password" : "Show password"}
-              onClick={() => setShowPassword((v) => !v)}
-              className="ml-1 sm:ml-2 pr-1 flex items-center justify-center text-zinc-400 focus:outline-none order-2 bg-transparent border-none p-0 cursor-pointer w-8"
-              tabIndex={0}
-              style={{ minWidth: 32 }}
+        <input
+          ref={ref}
+          className={`flex-1 order-1 bg-transparent outline-none text-[#7B8191] placeholder-zinc-500 text-[15px] sm:text-[16px] leading-[19px] font-normal font-inter px-0 py-0 border-none ring-0 focus:ring-0 focus:outline-none ${
+            isPassword ? "pr-10" : ""
+          }${unitType ? " !pr-0" : ""}`}
+          style={{
+            border: "none",
+            boxShadow: "none",
+            minWidth: 0,
+            ...(unitType ? { paddingRight: 0 } : {}),
+          }}
+          type={isPassword && showPassword ? "text" : type}
+          disabled={disabled}
+          aria-label={label}
+          value={displayValue}
+          onChange={handleChange}
+          {...props}
+        />
+        {unitType && unit && (
+          <div className="flex items-center ml-2 order-2">
+            <Select
+              value={unit}
+              onChange={setUnit}
+              options={unitConfigs[unitType].units.map((u) => ({
+                value: u,
+                label: u,
+              }))}
               disabled={disabled}
-            >
-              {showPassword ? <FaEyeSlash size={18} /> : <FaEye size={18} />}
-            </button>
-          )}
-        </div>
-        {helperText && !error && (
-          <p className="text-xs mt-1 text-zinc-400">{helperText}</p>
+              className="!my-0 !mx-0 min-w-[60px] w-auto !border-r-0"
+              placeholder="Unit"
+              animationDuration={0.2}
+              animationEasing={[0.42, 0, 0.58, 1]}
+            />
+          </div>
         )}
-        {helper && !error && (
-          <p className="text-xs mt-1 text-zinc-400">{helper}</p>
+        {isPassword && (
+          <button
+            type="button"
+            aria-label={showPassword ? "Hide password" : "Show password"}
+            onClick={() => setShowPassword((v) => !v)}
+            className="ml-1 sm:ml-2 pr-1 flex items-center justify-center text-zinc-400 focus:outline-none order-2 bg-transparent border-none p-0 cursor-pointer w-8"
+            tabIndex={0}
+            style={{ minWidth: 32 }}
+            disabled={disabled}
+          >
+            {showPassword ? <FaEyeSlash size={18} /> : <FaEye size={18} />}
+          </button>
         )}
-        {error && <p className="text-red-500 text-xs mt-1">{error}</p>}
-      </motion.div>
+      </UserInput>
     );
   }
 );

@@ -7,8 +7,9 @@ import {
   ListboxOption,
   ListboxOptions,
 } from "@headlessui/react";
-import { motion, AnimatePresence, cubicBezier } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { FiChevronDown, FiCheck } from "react-icons/fi";
+import UserInput from "../UserInput/UserInput";
 
 export interface SelectOption {
   value: string;
@@ -43,28 +44,19 @@ const Select: React.FC<SelectProps> = ({
   animationEasing = [0.42, 0, 0.58, 1],
 }) => {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 16 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{
-        duration: animationDuration,
-        ease: Array.isArray(animationEasing)
-          ? cubicBezier(
-              ...(animationEasing as [number, number, number, number])
-            )
-          : animationEasing,
-      }}
-      className={`my-3 w-full max-w-full ${className}`}
-      style={{ maxWidth: "-webkit-fill-available" }}
+    <UserInput
+      label={label}
+      error={error}
+      className={className}
+      helperText={helperText}
+      animationDuration={animationDuration}
+      animationEasing={animationEasing}
+      disabled={disabled}
+      containerClassName="relative w-full"
     >
-      {label && (
-        <label className="block mb-1 text-sm font-medium text-[var(--foreground)]">
-          {label}
-        </label>
-      )}
       <Listbox value={value} onChange={onChange} disabled={disabled}>
         {({ open }) => (
-          <div className="relative w-full" style={{ maxWidth: "100vw" }}>
+          <>
             <ListboxButton
               className={`flex items-center justify-between px-3 py-0 h-[44px] sm:h-[50px] w-full bg-[var(--in-bg)] border ${
                 error ? "border-red-500" : "border-[#7B8191]"
@@ -81,7 +73,6 @@ const Select: React.FC<SelectProps> = ({
               </span>
               <FiChevronDown className="w-4 h-4 text-white ml-2 pointer-events-none" />
             </ListboxButton>
-
             <AnimatePresence>
               {open && !disabled && (
                 <motion.div
@@ -102,7 +93,6 @@ const Select: React.FC<SelectProps> = ({
                     {options.map((opt, index) => {
                       const isFirst = index === 0;
                       const isLast = index === options.length - 1;
-
                       return (
                         <ListboxOption
                           key={opt.value}
@@ -138,14 +128,10 @@ const Select: React.FC<SelectProps> = ({
                 </motion.div>
               )}
             </AnimatePresence>
-          </div>
+          </>
         )}
       </Listbox>
-      {helperText && !error && (
-        <p className="text-xs mt-1 text-zinc-400">{helperText}</p>
-      )}
-      {error && <p className="text-red-500 text-xs mt-1">{error}</p>}
-    </motion.div>
+    </UserInput>
   );
 };
 
