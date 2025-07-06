@@ -81,8 +81,18 @@ export default function UIPage() {
         </div>
       </Modal>
 
-      <section>
-        <h2>Headings</h2>
+      <section id="headings">
+        <h2
+          style={{ cursor: "pointer" }}
+          onClick={() => {
+            document.getElementById("headings")?.scrollIntoView({
+              behavior: "smooth",
+            });
+            window.location.hash = "#headings";
+          }}
+        >
+          Headings
+        </h2>
         <Card elevation={1} aria-label="Heading showcase">
           <div className="responsive-flex-column gap-2">
             <h1>Heading 1</h1>
@@ -94,8 +104,19 @@ export default function UIPage() {
           </div>
         </Card>
       </section>
-      <section>
-        <h2>Animated Button</h2>
+
+      <section id="animated-button">
+        <h2
+          style={{ cursor: "pointer" }}
+          onClick={() => {
+            document.getElementById("animated-button")?.scrollIntoView({
+              behavior: "smooth",
+            });
+            window.location.hash = "#animated-button";
+          }}
+        >
+          Animated Button
+        </h2>
         <div className="responsive-flex-row">
           <AnimatedButton
             onClick={() => notify("Primary button clicked", "info")}
@@ -160,8 +181,19 @@ export default function UIPage() {
           </AnimatedButton>
         </div>
       </section>
-      <section style={{ marginTop: 40 }}>
-        <h2>Card</h2>
+
+      <section id="card" style={{ marginTop: 40 }}>
+        <h2
+          style={{ cursor: "pointer" }}
+          onClick={() => {
+            document.getElementById("card")?.scrollIntoView({
+              behavior: "smooth",
+            });
+            window.location.hash = "#card";
+          }}
+        >
+          Card
+        </h2>
         <div className="responsive-flex-row">
           <Card elevation={1} aria-label="Simple card">
             <div>Simple Card Content</div>
@@ -212,8 +244,19 @@ export default function UIPage() {
           </Card>
         </div>
       </section>
-      <section style={{ marginTop: 40 }}>
-        <h2>Inputs</h2>
+
+      <section id="inputs" style={{ marginTop: 40 }}>
+        <h2
+          style={{ cursor: "pointer" }}
+          onClick={() => {
+            document.getElementById("inputs")?.scrollIntoView({
+              behavior: "smooth",
+            });
+            window.location.hash = "#inputs";
+          }}
+        >
+          Inputs
+        </h2>
         <div className="responsive-flex-row flex flex-wrap gap-4">
           <Card form elevation={2} className="min-w-[320px] flex-1">
             <h4>Basic Inputs</h4>
@@ -311,8 +354,19 @@ export default function UIPage() {
           </Card>
         </div>
       </section>
-      <section style={{ marginTop: 40 }}>
-        <h2>Select</h2>
+
+      <section id="select" style={{ marginTop: 40 }}>
+        <h2
+          style={{ cursor: "pointer" }}
+          onClick={() => {
+            document.getElementById("select")?.scrollIntoView({
+              behavior: "smooth",
+            });
+            window.location.hash = "#select";
+          }}
+        >
+          Select
+        </h2>
         <div className="responsive-flex-row flex flex-wrap gap-4">
           <Card form elevation={2} className="min-w-[320px] flex-1">
             <h4>Basic Select</h4>
@@ -367,8 +421,19 @@ export default function UIPage() {
           </Card>
         </div>
       </section>
-      <section style={{ marginTop: 40 }}>
-        <h2>Textarea</h2>
+
+      <section id="textarea" style={{ marginTop: 40 }}>
+        <h2
+          style={{ cursor: "pointer" }}
+          onClick={() => {
+            document.getElementById("textarea")?.scrollIntoView({
+              behavior: "smooth",
+            });
+            window.location.hash = "#textarea";
+          }}
+        >
+          Textarea
+        </h2>
         <div className="responsive-flex-row flex flex-wrap gap-4">
           <Card form elevation={2} className="min-w-[320px] flex-1">
             <h4>Basic Textarea</h4>
@@ -411,8 +476,19 @@ export default function UIPage() {
           </Card>
         </div>
       </section>
-      <section style={{ marginTop: 40 }}>
-        <h2>Simulate Loader & Modal</h2>
+
+      <section id="loader-modal" style={{ marginTop: 40 }}>
+        <h2
+          style={{ cursor: "pointer" }}
+          onClick={() => {
+            document.getElementById("loader-modal")?.scrollIntoView({
+              behavior: "smooth",
+            });
+            window.location.hash = "#loader-modal";
+          }}
+        >
+          Simulate Loader & Modal
+        </h2>
         <div className="responsive-flex-row" style={{ marginBottom: 24 }}>
           <AnimatedButton
             variant="primary"
@@ -446,8 +522,19 @@ export default function UIPage() {
           </AnimatedButton>
         </div>
       </section>
-      <section style={{ marginTop: 40 }}>
-        <h2>Tabs</h2>
+
+      <section id="tabs" style={{ marginTop: 40 }}>
+        <h2
+          style={{ cursor: "pointer" }}
+          onClick={() => {
+            document.getElementById("tabs")?.scrollIntoView({
+              behavior: "smooth",
+            });
+            window.location.hash = "#tabs";
+          }}
+        >
+          Tabs
+        </h2>
         <div className="responsive-flex-row">
           <Tabs
             tabs={showcaseTabs}
