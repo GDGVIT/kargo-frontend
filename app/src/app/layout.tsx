@@ -123,7 +123,6 @@ export default function RootLayout({
           sizes="180x180"
           href="/apple-touch-icon.webp"
         />
-        {/* Open Graph Meta Tags */}
         <meta property="og:title" content="Kargo" />
         <meta
           property="og:description"
@@ -131,17 +130,16 @@ export default function RootLayout({
         />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://kargo.upayan.dev" />
-        <meta property="og:image" content="/icon.png" />
+        <meta property="og:image" content="/og-image.png" />
         <meta property="og:site_name" content="kargo" />
         <meta property="og:locale" content="en_US" />
-        {/* Twitter Card Meta Tags */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="kargo" />
         <meta
           name="twitter:description"
           content="Kargo lets you deploy containerized applications with full flexibility — AI-powered setup, secure infrastructure, and Kubernetes-native scaling, all from a powerful web interface."
         />
-        <meta name="twitter:image" content="/icon.png" />
+        <meta name="twitter:image" content="/og-image.png" />
       </head>
       <body>
         <Script src="/env.js" strategy="beforeInteractive" />
