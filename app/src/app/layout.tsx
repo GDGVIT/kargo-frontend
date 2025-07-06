@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Script from "next/script";
-
 import { AuthProvider } from "../components/Auth/AuthProvider/AuthProvider";
 import { NotificationProvider } from "../components/ui/Notification/Notification";
 import Header from "../components/ui/Header/Header";
@@ -20,13 +19,12 @@ export const metadata: Metadata = {
     apple: "/icon.svg",
     shortcut: "/icon.svg",
   },
-  metadataBase: new URL("https://kargo.upayan.dev"),
   openGraph: {
     title: "Kargo",
     description:
       "Kargo lets you deploy containerized applications with full flexibility — AI-powered setup, secure infrastructure, and Kubernetes-native scaling, all from a powerful web interface.",
     url: "https://kargo.upayan.dev",
-    siteName: "kargo",
+    siteName: "Kargo",
     images: [
       {
         url: "/og-image.png",
@@ -40,7 +38,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "kargo",
+    title: "Kargo",
     description:
       "Kargo lets you deploy containerized applications with full flexibility — AI-powered setup, secure infrastructure, and Kubernetes-native scaling, all from a powerful web interface.",
     images: ["/og-image.png"],
@@ -56,7 +54,7 @@ export const metadata: Metadata = {
   },
   appleWebApp: {
     capable: true,
-    title: "kargo",
+    title: "Kargo",
     statusBarStyle: "default",
   },
   formatDetection: {
@@ -64,12 +62,13 @@ export const metadata: Metadata = {
     address: false,
     email: false,
   },
+  metadataBase: new URL("https://kargo.upayan.dev"),
   alternates: {
     canonical: "https://kargo.upayan.dev",
-    // types: {
-    //   "application/rss+xml": "/feed.xml",
-    //   "application/atom+xml": "/feed.atom",
-    // },
+    types: {
+      "application/rss+xml": "/feed.xml",
+      "application/atom+xml": "/feed.atom",
+    },
     languages: {
       "en-US": "/",
       "en-GB": "/gb",
@@ -102,10 +101,13 @@ export const metadata: Metadata = {
       url: "https://upayan.dev",
     },
   ],
-  creator: "Upayan Mazumder",
-  applicationName: "kargo",
+  applicationName: "Kargo",
   publisher: "GDGVIT",
   category: "Technology",
+};
+
+export const viewport = {
+  themeColor: "#e35a33",
 };
 
 export default function RootLayout({
@@ -115,32 +117,6 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <head>
-        <meta charSet="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link
-          rel="apple-touch-icon"
-          sizes="180x180"
-          href="/apple-touch-icon.webp"
-        />
-        <meta property="og:title" content="Kargo" />
-        <meta
-          property="og:description"
-          content="Kargo lets you deploy containerized applications with full flexibility — AI-powered setup, secure infrastructure, and Kubernetes-native scaling, all from a powerful web interface."
-        />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://kargo.upayan.dev" />
-        <meta property="og:image" content="/og-image.png" />
-        <meta property="og:site_name" content="kargo" />
-        <meta property="og:locale" content="en_US" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="kargo" />
-        <meta
-          name="twitter:description"
-          content="Kargo lets you deploy containerized applications with full flexibility — AI-powered setup, secure infrastructure, and Kubernetes-native scaling, all from a powerful web interface."
-        />
-        <meta name="twitter:image" content="/og-image.png" />
-      </head>
       <body>
         <Script src="/env.js" strategy="beforeInteractive" />
         <NotificationProvider>
