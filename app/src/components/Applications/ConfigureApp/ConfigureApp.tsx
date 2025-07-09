@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import axios from "../../../utils/api";
+import api from "../../../utils/api";
 import type Application from "../../../types/Application/Application";
 import type RegistryCredential from "../../../types/Registry/RegistryCredential/RegistryCredential";
 import Loader from "../../ui/Loader/Loader";
@@ -64,7 +64,7 @@ export default function ConfigureApp({ appId }: { appId: string }) {
   useEffect(() => {
     async function fetchLimits() {
       try {
-        const res = await axios.get("/api/users/me/resource-usage");
+        const res = await api.get("/api/users/me/resource-usage");
         // Use backend field names directly
         setResourceLimits(res.data);
       } catch {
@@ -76,7 +76,7 @@ export default function ConfigureApp({ appId }: { appId: string }) {
 
   async function fetchApp() {
     try {
-      const res = await axios.get(`/api/applications/${appId}`);
+      const res = await api.get(`/api/applications/${appId}`);
       const app = res.data.application;
       setForm({
         ...app,
@@ -94,7 +94,7 @@ export default function ConfigureApp({ appId }: { appId: string }) {
 
   async function fetchCredentials() {
     try {
-      const res = await axios.get("/api/users/me/credentials");
+      const res = await api.get("/api/users/me/credentials");
       setCredentials(res.data.credentials || []);
     } catch {
       setCredentials([]);
@@ -178,7 +178,7 @@ export default function ConfigureApp({ appId }: { appId: string }) {
           storageGB: form.resources?.limits?.storageGB,
         },
       };
-      await axios.put(`/api/applications/${appId}`, {
+      await api.put(`/api/applications/${appId}`, {
         ...form,
         env: envObj,
         ports: updatedPorts,
@@ -186,7 +186,7 @@ export default function ConfigureApp({ appId }: { appId: string }) {
         resources: directResources,
         // No volumes sent
       });
-      await axios.post(`/api/applications/${appId}/apply`);
+      await api.post(`/api/applications/${appId}/apply`);
       fetchApp();
       notify("Application saved and deployed successfully!", "success");
     } catch (err) {
@@ -204,7 +204,7 @@ export default function ConfigureApp({ appId }: { appId: string }) {
   async function handleDelete() {
     setSaving(true);
     try {
-      await axios.delete(`/api/applications/${appId}`);
+      await api.delete(`/api/applications/${appId}`);
       notify("Application and all resources deleted!", "success");
       router.push("/applications");
     } catch (err) {
@@ -219,7 +219,7 @@ export default function ConfigureApp({ appId }: { appId: string }) {
     if (!form?._id) return;
     setSaving(true);
     try {
-      await axios.post(`/api/applications/${form._id}/scale-zero`);
+      await api.post(`/api/applications/${form._id}/scale-zero`);
       notify("Deployment scaled to 0 (removed)", "success");
     } catch {
       notify("Failed to remove deployment", "error");
@@ -231,7 +231,7 @@ export default function ConfigureApp({ appId }: { appId: string }) {
     if (!form?._id) return;
     setSaving(true);
     try {
-      await axios.post(`/api/applications/${form._id}/rollout-restart`);
+      await api.post(`/api/applications/${form._id}/rollout-restart`);
       notify("Deployment restarted", "success");
     } catch {
       notify("Failed to restart deployment", "error");

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import axios from "../../utils/api";
+import api from "../../utils/api";
 import type Plan from "../../types/Plan/Plan";
 import AnimatedButton from "../ui/AnimatedButton/AnimatedButton";
 import Card from "../ui/Card/Card";
@@ -21,7 +21,7 @@ const Plans = () => {
     async function fetchPlans() {
       setLoading(true);
       try {
-        const res = await axios.get("/api/plans");
+        const res = await api.get("/api/plans");
         setPlans(res.data.plans || []);
       } catch {
         setError("Failed to load plans");
@@ -40,7 +40,7 @@ const Plans = () => {
     }
     try {
       // 1. Create order on backend
-      const { data } = await axios.post(`/api/plans/${plan._id}/create-order`);
+      const { data } = await api.post(`/api/plans/${plan._id}/create-order`);
       const order = data.order;
       // 2. Open Razorpay Checkout
       const options = {
@@ -56,7 +56,7 @@ const Plans = () => {
           razorpay_signature: string;
         }) {
           // 3. Verify payment on backend
-          const verifyRes = await axios.post(`/api/plans/verify-payment`, {
+          const verifyRes = await api.post(`/api/plans/verify-payment`, {
             razorpay_order_id: response.razorpay_order_id,
             razorpay_payment_id: response.razorpay_payment_id,
             razorpay_signature: response.razorpay_signature,

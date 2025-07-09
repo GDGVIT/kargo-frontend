@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import axios from "../../utils/api";
+import api from "../../utils/api";
 import useNotification from "../ui/Notification/Notification";
 import Modal from "../ui/Modal/Modal";
 import AnimatedButton from "../ui/AnimatedButton/AnimatedButton";
@@ -19,7 +19,7 @@ export default function Applications() {
   const fetchApps = useCallback(async () => {
     setLoading(true);
     try {
-      const res = await axios.get("/api/applications");
+      const res = await api.get("/api/applications");
       setApps(res.data.applications);
     } catch {
       notify("Failed to load apps", "error");
@@ -34,7 +34,7 @@ export default function Applications() {
   async function handleDeleteApp(id: string) {
     setLoading(true);
     try {
-      await axios.delete(`/api/applications/${id}`);
+      await api.delete(`/api/applications/${id}`);
       fetchApps();
       notify("Application deleted successfully!", "success");
     } catch {

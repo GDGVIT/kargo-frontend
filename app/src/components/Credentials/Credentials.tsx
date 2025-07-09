@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import axios from "../../utils/api";
+import api from "../../utils/api";
 import useNotification from "../ui/Notification/Notification";
 import type RegistryCredential from "../../types/Registry/RegistryCredential/RegistryCredential";
 import CredentialRegister from "./CredentialRegister/CredentialRegister";
@@ -18,7 +18,7 @@ export default function Credentials() {
   const fetchCredentials = async () => {
     setLoading(true);
     try {
-      const res = await axios.get("/api/users/me/credentials");
+      const res = await api.get("/api/users/me/credentials");
       setCredentials(res.data.credentials);
     } catch {
       notify("Failed to load credentials", "error");
@@ -46,7 +46,7 @@ export default function Credentials() {
       return;
     }
     try {
-      await axios.post("/api/users/me/credentials", form);
+      await api.post("/api/users/me/credentials", form);
       await fetchCredentials();
       notify("Credential added successfully!", "success");
     } catch {
@@ -58,7 +58,7 @@ export default function Credentials() {
   const handleDelete = async (cred: RegistryCredential) => {
     setLoading(true);
     try {
-      await axios.delete("/api/users/me/credentials", {
+      await api.delete("/api/users/me/credentials", {
         data: { name: cred.name, registryType: cred.registryType },
       });
       await fetchCredentials();

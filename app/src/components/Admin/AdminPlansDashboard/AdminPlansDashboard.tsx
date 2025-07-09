@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import axios from "../../../utils/api";
+import api from "../../../utils/api";
 import useNotification from "../../ui/Notification/Notification";
 import type Plan from "../../../types/Plan/Plan";
 import AnimatedButton from "../../ui/AnimatedButton/AnimatedButton";
@@ -47,7 +47,7 @@ export default function AdminPlansDashboard() {
     async function fetchPlans() {
       setPlanLoading(true);
       try {
-        const res = await axios.get("/api/plans");
+        const res = await api.get("/api/plans");
         setPlans(res.data.plans || []);
       } catch {
         setPlanError("Failed to load plans");
@@ -118,13 +118,13 @@ export default function AdminPlansDashboard() {
     };
     try {
       if (editingPlan) {
-        const res = await axios.put(`/api/plans/${editingPlan._id}`, planData);
+        const res = await api.put(`/api/plans/${editingPlan._id}`, planData);
         setPlans((prev) =>
           prev.map((p) => (p._id === editingPlan._id ? res.data.plan : p))
         );
         notify("Plan updated successfully", "success");
       } else {
-        const res = await axios.post("/api/plans", planData);
+        const res = await api.post("/api/plans", planData);
         setPlans((prev) => [...prev, res.data.plan]);
         notify("Plan created successfully", "success");
       }
@@ -156,7 +156,7 @@ export default function AdminPlansDashboard() {
 
   async function handlePlanDelete(planId: string) {
     try {
-      await axios.delete(`/api/plans/${planId}`);
+      await api.delete(`/api/plans/${planId}`);
       setPlans((prev) => prev.filter((p) => p._id !== planId));
       notify("Plan deleted successfully", "success");
     } catch {

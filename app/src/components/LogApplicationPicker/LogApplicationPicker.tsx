@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import AnimatedButton from "../ui/AnimatedButton/AnimatedButton";
-import axios from "../../utils/api";
+import api from "../../utils/api";
 import Select from "../ui/Select/Select";
 
 interface Application {
@@ -24,7 +24,7 @@ export default function LogApplicationPicker({
   useEffect(() => {
     setLoading(true);
     setError("");
-    axios
+    api
       .get("/api/applications")
       .then((res) => {
         setApps(res.data.applications || []);

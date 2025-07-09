@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import axios from "../../../utils/api";
+import api from "../../../utils/api";
 import Card from "../../ui/Card/Card";
 import {
   LineChart,
@@ -95,7 +95,7 @@ export default function AdminOverallMetrics() {
   useEffect(() => {
     const fetchMetrics = async () => {
       try {
-        const { data } = await axios.get("/api/metrics/overall");
+        const { data } = await api.get("/api/metrics/overall");
         setMetrics(data.metrics);
       } catch {
         setMetrics(null);

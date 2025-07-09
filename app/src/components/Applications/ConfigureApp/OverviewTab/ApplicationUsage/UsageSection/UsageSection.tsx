@@ -11,7 +11,7 @@ import {
   CartesianGrid,
   ReferenceLine,
 } from "recharts";
-import axios from "../../../../../../utils/api";
+import api from "../../../../../../utils/api";
 import Select from "../../../../../ui/Select/Select";
 import Resources from "../../../../../../types/Application/Resources/Resources";
 import Loader from "../../../../../ui/Loader/Loader";
@@ -58,7 +58,7 @@ const UsageSection: React.FC<UsageSectionProps> = ({
     setLoading(true);
     async function fetchUsage() {
       try {
-        const { data } = await axios.get(`/api/applications/${appId}/metrics`);
+        const { data } = await api.get(`/api/applications/${appId}/metrics`);
         if (!isMounted) return;
         setUsage(data.metrics); // API returns 'metrics', but we treat as 'usage' in UI
       } catch {

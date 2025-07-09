@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "../../utils/api";
+import api from "../../utils/api";
 import { FaCrown, FaMicrochip, FaMemory } from "react-icons/fa";
 import { FaFloppyDisk } from "react-icons/fa6";
 import type Plan from "../../types/Plan/Plan";
@@ -52,7 +52,7 @@ const PlanDetails: React.FC<PlanDetailsProps> = ({ planId, planObj }) => {
     if (planObj || !planId) return;
     setLoading(true);
     setError(null);
-    axios
+    api
       .get(`/api/plans/${planId}`)
       .then((res) => setPlan(res.data))
       .catch((err) => {
@@ -68,7 +68,7 @@ const PlanDetails: React.FC<PlanDetailsProps> = ({ planId, planObj }) => {
 
   useEffect(() => {
     if (!planId && !planObj) return;
-    axios
+    api
       .get("/api/users/me/resource-usage")
       .then((res) => setUsage(res.data.usage))
       .catch(() => setUsage(null));

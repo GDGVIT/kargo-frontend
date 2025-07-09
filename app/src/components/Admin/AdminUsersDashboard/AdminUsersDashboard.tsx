@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import axios from "../../../utils/api";
+import api from "../../../utils/api";
 import UserManagement from "./UserManagement/UserManagement";
 import Loader from "../../ui/Loader/Loader";
 import type Plan from "../../../types/Plan/Plan";
@@ -38,9 +38,9 @@ export default function AdminUsersDashboard() {
     try {
       setLoading(true);
       setError("");
-      const res = await axios.get("/api/users");
+      const res = await api.get("/api/users");
       setUsers(res.data.users || []);
-      const me = await axios.get("/api/auth/me");
+      const me = await api.get("/api/auth/me");
       setCurrentUserId(me.data?.user?._id || null);
     } catch {
       setError("Failed to load users");
@@ -56,7 +56,7 @@ export default function AdminUsersDashboard() {
   useEffect(() => {
     async function fetchPlans() {
       try {
-        const res = await axios.get("/api/plans");
+        const res = await api.get("/api/plans");
         setPlans(res.data.plans || []);
       } catch {
         notify("Failed to load plans", "error");
@@ -71,7 +71,7 @@ export default function AdminUsersDashboard() {
   ) {
     setRoleUpdating(userId);
     try {
-      await axios.put(`/api/users/${userId}/role`, { role: newRole });
+      await api.put(`/api/users/${userId}/role`, { role: newRole });
       setUsers((prev) =>
         prev.map((u) => (u._id === userId ? { ...u, role: newRole } : u))
       );
@@ -89,7 +89,7 @@ export default function AdminUsersDashboard() {
   async function handlePlanAssign(userId: string, planId: string) {
     setPlanAssigning(userId);
     try {
-      await axios.put(`/api/users/${userId}/plan`, { planId });
+      await api.put(`/api/users/${userId}/plan`, { planId });
       setUsers((prev) =>
         prev.map((u) => (u._id === userId ? { ...u, plan: planId } : u))
       );
@@ -121,7 +121,7 @@ export default function AdminUsersDashboard() {
     setExtraResourcesSaving(userId);
     const data = extraResourcesEdit[userId];
     try {
-      await axios.put(`/api/users/${userId}/extra-resources`, {
+      await api.put(`/api/users/${userId}/extra-resources`, {
         extraResources: {
           requests: {
             cpuMilli: data.requestsCpu,

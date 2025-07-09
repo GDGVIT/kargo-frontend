@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import axios from "../../../utils/api";
+import api from "../../../utils/api";
 import { useRouter } from "next/navigation";
 import useNotification from "../../ui/Notification/Notification";
 import type RegistryCredential from "../../../types/Registry/RegistryCredential/RegistryCredential";
@@ -30,7 +30,7 @@ export default function AddAppForm() {
   const { notify } = useNotification();
 
   useEffect(() => {
-    axios
+    api
       .get("/api/users/me/credentials")
       .then((res) => setCredentials(res.data.credentials));
   }, []);
@@ -57,7 +57,7 @@ export default function AddAppForm() {
       return;
     }
     try {
-      await axios.post("/api/applications", {
+      await api.post("/api/applications", {
         ...form,
         credentials: selectedCredential ? [selectedCredential] : [],
         // No volumes sent
