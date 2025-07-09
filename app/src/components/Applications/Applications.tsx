@@ -7,6 +7,7 @@ import useNotification from "../ui/Notification/Notification";
 import Modal from "../ui/Modal/Modal";
 import AnimatedButton from "../ui/AnimatedButton/AnimatedButton";
 import { FaPlus, FaTrash } from "react-icons/fa";
+import Loader from "../ui/Loader/Loader";
 
 export default function Applications() {
   const [apps, setApps] = useState([]);
@@ -87,7 +88,7 @@ export default function Applications() {
       </Modal>
       <div className="min-h-[250px]">
         {loading ? (
-          <div className="text-center text-gray-400">Loading...</div>
+          <Loader />
         ) : apps.length === 0 ? (
           <div className="text-center text-gray-500">
             No applications yet. Click &quot;Add Application&quot; to create
