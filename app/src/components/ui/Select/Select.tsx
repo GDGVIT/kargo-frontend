@@ -56,7 +56,7 @@ const Select: React.FC<SelectProps> = ({
     >
       <Listbox value={value} onChange={onChange} disabled={disabled}>
         {({ open }) => (
-          <>
+          <div className="relative w-full">
             <ListboxButton
               className={`flex items-center justify-between px-3 py-0 h-[44px] sm:h-[50px] w-full bg-[var(--in-bg)] border ${
                 error ? "border-red-500" : "border-[#7B8191]"
@@ -112,14 +112,14 @@ const Select: React.FC<SelectProps> = ({
                           }
                         >
                           {({ selected }) => (
-                            <>
+                            <div className="flex items-center justify-between w-full">
                               <span>{opt.label}</span>
                               {selected && (
-                                <span className="absolute inset-y-0 right-3 flex items-center text-white">
+                                <span className="flex items-center text-white">
                                   <FiCheck className="w-4 h-4" />
                                 </span>
                               )}
-                            </>
+                            </div>
                           )}
                         </ListboxOption>
                       );
@@ -128,7 +128,7 @@ const Select: React.FC<SelectProps> = ({
                 </motion.div>
               )}
             </AnimatePresence>
-          </>
+          </div>
         )}
       </Listbox>
     </UserInput>
