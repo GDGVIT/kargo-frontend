@@ -110,6 +110,7 @@ const PortsSection: React.FC<PortsSectionProps> = ({ ports, onChange }) => {
               value={containerPort.toString()}
               onChange={(v) => updatePort(id, "containerPort", v)}
               className="w-32"
+              helperText="Port number (1-65535)"
             />
             <Select
               label="Protocol"
@@ -120,6 +121,7 @@ const PortsSection: React.FC<PortsSectionProps> = ({ ports, onChange }) => {
               ]}
               onChange={(v) => updatePort(id, "protocol", v)}
               className="w-28"
+              helperText="Network protocol"
             />
             <Input
               label="Subdomain"
@@ -127,6 +129,18 @@ const PortsSection: React.FC<PortsSectionProps> = ({ ports, onChange }) => {
               onChange={(v) => updatePort(id, "subdomain", v)}
               placeholder="(optional)"
               className="w-48"
+              helperText={
+                <a
+                  href={`https://${
+                    subdomainSegment || "app"
+                  }.${username}.${ingressBaseUrl}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:text-blue-800 underline"
+                >{`${
+                  subdomainSegment || "app"
+                }.${username}.${ingressBaseUrl}`}</a>
+              }
             />
             <AnimatedButton
               onClick={() => removePort(id)}

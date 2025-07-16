@@ -43,7 +43,7 @@ export const metadata: Metadata = {
       "Kargo lets you deploy containerized applications with full flexibility — AI-powered setup, secure infrastructure, and Kubernetes-native scaling, all from a powerful web interface.",
     images: ["/og-image.png"],
   },
-  manifest: "/manifest",
+  manifest: "/manifest.webmanifest",
   robots: {
     index: true,
     follow: true,

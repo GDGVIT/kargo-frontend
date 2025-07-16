@@ -4,7 +4,7 @@ const CACHE_NAME = "Kargo_v0.2.0";
 const CORE_ASSETS = [
   "/",
   "/offline",
-  "/manifest.json",
+  "/manifest.webmanifest",
   "/fonts/AirbnbCereal_W_Bd.otf",
   "/fonts/Inter-VariableFont_opsz,wght.ttf",
   "/fonts/Montserrat-Regular.ttf",
