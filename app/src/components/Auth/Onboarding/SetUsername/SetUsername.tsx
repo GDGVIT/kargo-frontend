@@ -8,6 +8,9 @@ import useNotification, {
   NotificationProvider,
 } from "../../../ui/Notification/Notification";
 import { baseURL } from "../../../../utils/api";
+import Card from "../../../ui/Card/Card";
+import Input from "../../../ui/Input/Input";
+import AnimatedButton from "../../../ui/AnimatedButton/AnimatedButton";
 
 const SetUsername: React.FC = () => {
   const [username, setUsername] = useState("");
@@ -17,23 +20,28 @@ const SetUsername: React.FC = () => {
   const { refreshUser } = useAuth();
   const { notify } = useNotification();
 
-  const usernameRegex = /^[A-Za-z0-9_-]+$/;
+  // Kubernetes-compatible username regex: lowercase alphanumeric and hyphens only
+  // Must start and end with alphanumeric character
+  const usernameRegex = /^[a-z0-9]([a-z0-9-]*[a-z0-9])?$/;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+
+    const trimmedUsername = username.trim().toLowerCase();
+
     if (
       !username ||
       typeof username !== "string" ||
-      username.trim().length === 0 ||
-      !usernameRegex.test(username) ||
-      username.includes(" ")
+      trimmedUsername.length === 0 ||
+      trimmedUsername.length > 63 ||
+      !usernameRegex.test(trimmedUsername)
     ) {
       setError(
-        "Invalid username. Only letters, numbers, underscores, and hyphens. No spaces."
+        "Invalid username. Only lowercase letters, numbers, and hyphens. Must start and end with a letter or number. Max 63 characters."
       );
       notify(
-        "Invalid username. Only letters, numbers, underscores, and hyphens. No spaces.",
+        "Invalid username. Only lowercase letters, numbers, and hyphens. Must start and end with a letter or number. Max 63 characters.",
         "warning"
       );
       return;
@@ -44,7 +52,7 @@ const SetUsername: React.FC = () => {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username }),
+        body: JSON.stringify({ username: trimmedUsername }),
       });
       const data = await res.json();
       if (!res.ok) {
@@ -65,36 +73,48 @@ const SetUsername: React.FC = () => {
 
   return (
     <NotificationProvider>
-      <section className="flex items-center justify-center px-4">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="max-w-md w-fullspace-y-5"
-        >
-          <h2 className="text-2xl font-bold text-center text-white">
-            Choose a Username
-          </h2>
+      <section className="flex items-center justify-center px-4 min-h-screen">
+        <Card className="max-w-md w-full">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="space-y-6"
+          >
+            <div className="text-center">
+              <h2 className="text-2xl font-bold text-white mb-2">
+                Choose a Username
+              </h2>
+              <p className="text-sm text-zinc-400">
+                Set your unique username to continue. It must be
+                Kubernetes-compatible.
+              </p>
+            </div>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <input
-              type="text"
-              className="bg-neutral-800 border border-neutral-700 text-white p-3 w-full rounded placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Enter your username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              required
-            />
-            {error && <div className="text-red-400 text-sm">{error}</div>}
-            <button
-              type="submit"
-              className="w-full py-3 rounded-xl font-medium bg-white text-neutral-950 hover:bg-neutral-200 transition duration-300 disabled:opacity-50"
-              disabled={loading}
-            >
-              {loading ? "Setting..." : "Set Username"}
-            </button>
-          </form>
-        </motion.div>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <Input
+                label="Username"
+                type="text"
+                placeholder="Enter username (lowercase, letters, numbers, hyphens)"
+                value={username}
+                onChange={(value) => setUsername(value)}
+                error={error}
+                helperText="Only lowercase letters, numbers, and hyphens. Must start and end with a letter or number. Max 63 characters."
+                disabled={loading}
+                required
+              />
+
+              <AnimatedButton
+                type="submit"
+                variant="primary"
+                disabled={loading}
+                className="w-full"
+              >
+                {loading ? "Setting..." : "Set Username"}
+              </AnimatedButton>
+            </form>
+          </motion.div>
+        </Card>
       </section>
     </NotificationProvider>
   );

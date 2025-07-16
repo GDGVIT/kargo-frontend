@@ -1,4 +1,4 @@
-import SetUsername from "../../../components/Auth/Onboarding/SetUsername/SetUsername";
+import Onboarding from "../../../components/Auth/Onboarding/Onboarding";
 import PageHeading from "@/components/ui/PageHeading/PageHeading";
 
 export default function OnboardingPage() {
@@ -8,7 +8,7 @@ export default function OnboardingPage() {
         title="Onboarding"
         subtitle="Set up your account and preferences."
       />
-      <SetUsername />
+      <Onboarding />
     </main>
   );
 }
