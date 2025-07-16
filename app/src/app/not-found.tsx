@@ -1,13 +1,16 @@
 import Link from "next/link";
+import { generatePageMetadata } from "../lib/metadata";
 
-const title = "Kargo";
+const title = "Page Not Found";
 const description =
-  "Kargo lets you deploy containerized applications with full flexibility — AI-powered setup, secure infrastructure, and Kubernetes-native scaling, all from a powerful web interface.";
+  "Sorry, the page you are looking for does not exist or has been moved.";
 
-export const metadata = {
+export const metadata = generatePageMetadata({
   title,
   description,
-};
+  path: "/404",
+  imageAlt: "Kargo - Page Not Found",
+});
 
 export default function NotFound() {
   return (
