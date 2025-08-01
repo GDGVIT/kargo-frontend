@@ -1,13 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import api from "../../../utils/api";
 import { useRouter } from "next/navigation";
 import useNotification from "../../ui/Notification/Notification";
+import useImageTest from "../../../hooks/useImageTest";
+import ImageTestErrorModal from "../../Docker/ImageTestErrorModal/ImageTestErrorModal";
 import type RegistryCredential from "../../../types/Registry/RegistryCredential/RegistryCredential";
-import { useEffect } from "react";
 import AnimatedButton from "../../ui/AnimatedButton/AnimatedButton";
-import { FaPlus } from "react-icons/fa";
+import { FaPlus, FaCheck, FaSpinner, FaSearch } from "react-icons/fa";
 import Input from "../../ui/Input/Input";
 import Select from "../../ui/Select/Select";
 import Modal from "../../ui/Modal/Modal";
@@ -26,6 +27,8 @@ export default function AddAppForm() {
   const [selectedCredential, setSelectedCredential] =
     useState<RegistryCredential | null>(null);
   const [dockerModalOpen, setDockerModalOpen] = useState(false);
+  const [showImageErrorModal, setShowImageErrorModal] = useState(false);
+  const { testImage, isLoading: isTestingImage, lastResult } = useImageTest();
   const router = useRouter();
   const { notify } = useNotification();
 
@@ -38,6 +41,47 @@ export default function AddAppForm() {
   function isValidAppName(name: string) {
     return /^[a-z0-9]([-a-z0-9]*[a-z0-9])?$/.test(name);
   }
+
+  const handleTestImage = useCallback(async () => {
+    if (!form.imageUrl.trim()) {
+      notify("Please enter an image URL first", "warning");
+      return;
+    }
+
+    const tag = form.imageTag.trim() || "latest";
+    const credentialIds = selectedCredential
+      ? [`${selectedCredential.name}:${selectedCredential.registryType}`]
+      : undefined;
+    const result = await testImage(form.imageUrl.trim(), tag, credentialIds);
+
+    if (result.available) {
+      notify(
+        `Image ${form.imageUrl}:${tag} is available${
+          result.authTested
+            ? ` (with ${result.testedWith || "authentication"})`
+            : " (public)"
+        }`,
+        "success"
+      );
+    } else {
+      setShowImageErrorModal(true);
+    }
+  }, [form.imageUrl, form.imageTag, selectedCredential, testImage, notify]);
+
+  // Auto-test image when credentials change (but only if image URL is already filled)
+
+  const getTestButtonState = () => {
+    if (isTestingImage) {
+      return {
+        icon: <FaSpinner className="animate-spin" />,
+        text: "Testing...",
+      };
+    }
+    if (lastResult?.available && lastResult?.error === "") {
+      return { icon: <FaCheck />, text: "Available" };
+    }
+    return { icon: <FaSearch />, text: "Test Image" };
+  };
 
   async function handleAdd(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -56,6 +100,19 @@ export default function AddAppForm() {
       setLoading(false);
       return;
     }
+
+    const tag = form.imageTag.trim() || "latest";
+    const credentialIds = selectedCredential
+      ? [`${selectedCredential.name}:${selectedCredential.registryType}`]
+      : undefined;
+    const result = await testImage(form.imageUrl.trim(), tag, credentialIds);
+
+    if (!result.available) {
+      setShowImageErrorModal(true);
+      setLoading(false);
+      return;
+    }
+
     try {
       await api.post("/api/applications", {
         ...form,
@@ -110,14 +167,35 @@ export default function AddAppForm() {
               }
             />
           </div>
-          <div>
-            <Input
-              required
-              label="Image Tag"
-              value={form.imageTag}
-              onChange={(value) => setForm((f) => ({ ...f, imageTag: value }))}
-              placeholder="latest"
-            />
+          <div className="flex gap-2">
+            <div className="flex-1">
+              <Input
+                required
+                label="Image Tag"
+                value={form.imageTag}
+                onChange={(value) =>
+                  setForm((f) => ({ ...f, imageTag: value }))
+                }
+                placeholder="latest"
+              />
+            </div>
+            <div className="flex items-end pb-[35px]">
+              {(() => {
+                const buttonState = getTestButtonState();
+                return (
+                  <AnimatedButton
+                    type="button"
+                    variant={lastResult?.available ? "success" : "secondary"}
+                    onClick={handleTestImage}
+                    disabled={isTestingImage || !form.imageUrl.trim()}
+                    icon={buttonState.icon}
+                    className="!px-3 !py-2 h-[44px] sm:h-[50px]"
+                  >
+                    {buttonState.text}
+                  </AnimatedButton>
+                );
+              })()}
+            </div>
           </div>
           <div>
             <Select
@@ -177,6 +255,18 @@ export default function AddAppForm() {
           </AnimatedButton>
         </div>
       </form>
+
+      <ImageTestErrorModal
+        open={showImageErrorModal}
+        onClose={() => setShowImageErrorModal(false)}
+        imageUrl={form.imageUrl}
+        imageTag={form.imageTag || "latest"}
+        error={lastResult?.error || ""}
+        needsAuth={lastResult?.needsAuth}
+        authTested={lastResult?.authTested}
+        suggestions={lastResult?.suggestions}
+        onNavigateToCredentials={() => router.push("/credentials")}
+      />
     </>
   );
 }

@@ -15,6 +15,8 @@ import OverviewTab from "./OverviewTab/OverviewTab";
 import SetupTab from "./SetupTab/SetupTab";
 import SettingsTab from "./SettingsTab/SettingsTab";
 import ActionButtons from "./ActionButtons/ActionButtons";
+import useImageTest from "../../../hooks/useImageTest";
+import ImageTestErrorModal from "../../Docker/ImageTestErrorModal/ImageTestErrorModal";
 
 export default function ConfigureApp({ appId }: { appId: string }) {
   const { user } = useAuth();
@@ -37,6 +39,8 @@ export default function ConfigureApp({ appId }: { appId: string }) {
   const [credentials, setCredentials] = useState<RegistryCredential[]>([]);
   const [selectedCredential, setSelectedCredential] =
     useState<RegistryCredential | null>(null);
+  const { testImage, lastResult } = useImageTest();
+  const [showImageErrorModal, setShowImageErrorModal] = useState(false);
   const router = useRouter();
   const { notify } = useNotification();
 
@@ -106,6 +110,17 @@ export default function ConfigureApp({ appId }: { appId: string }) {
     setSaving(true);
     try {
       if (!form) return;
+
+      const imageTag = form.imageTag || "latest";
+      const credentialIds = selectedCredential ? [`${selectedCredential.name}:${selectedCredential.registryType}`] : undefined;
+      const imageTestResult = await testImage(form.imageUrl, imageTag, credentialIds);
+      
+      if (!imageTestResult.available) {
+        setShowImageErrorModal(true);
+        setSaving(false);
+        return;
+      }
+
       const envObj = envList.reduce(
         (acc, [k, v]) => (k ? { ...acc, [k]: v } : acc),
         {} as Record<string, string>
@@ -339,9 +354,14 @@ export default function ConfigureApp({ appId }: { appId: string }) {
             setForm((f) => (f ? { ...f, imageTag: tag } : f))
           }
           credentials={credentials}
-          selectedCredential={selectedCredential?.name || ""}
-          setSelectedCredential={(name) => {
-            const cred = credentials.find((c) => c.name === name) || null;
+          selectedCredential={selectedCredential ? `${selectedCredential.name}:${selectedCredential.registryType}` : ""}
+          setSelectedCredential={(value) => {
+            if (!value) {
+              setSelectedCredential(null);
+              return;
+            }
+            const [credName, registryType] = value.split(":");
+            const cred = credentials.find((c) => c.name === credName && c.registryType === registryType) || null;
             setSelectedCredential(cred);
           }}
         />
@@ -397,6 +417,17 @@ export default function ConfigureApp({ appId }: { appId: string }) {
           </AnimatedButton>
         </div>
       </Modal>
+      <ImageTestErrorModal
+        open={showImageErrorModal}
+        onClose={() => setShowImageErrorModal(false)}
+        error={lastResult?.error || ""}
+        imageUrl={form?.imageUrl || ""}
+        imageTag={form?.imageTag || "latest"}
+        needsAuth={lastResult?.needsAuth}
+        authTested={lastResult?.authTested}
+        suggestions={lastResult?.suggestions}
+        onNavigateToCredentials={() => router.push("/credentials")}
+      />
     </div>
   );
 }
