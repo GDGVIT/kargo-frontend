@@ -69,21 +69,6 @@ export default function AddAppForm() {
   }, [form.imageUrl, form.imageTag, selectedCredential, testImage, notify]);
 
   // Auto-test image when credentials change (but only if image URL is already filled)
-  useEffect(() => {
-    if (form.imageUrl.trim() && !isTestingImage) {
-      // Debounce the test to avoid too many requests
-      const timeoutId = setTimeout(() => {
-        handleTestImage();
-      }, 500);
-      return () => clearTimeout(timeoutId);
-    }
-  }, [
-    selectedCredential,
-    form.imageUrl,
-    form.imageTag,
-    handleTestImage,
-    isTestingImage,
-  ]);
 
   const getTestButtonState = () => {
     if (isTestingImage) {
@@ -116,12 +101,14 @@ export default function AddAppForm() {
       return;
     }
 
-    // Test image availability before proceeding
-    if (!lastResult?.available) {
-      notify(
-        "Please test the image availability first by clicking the 'Test Image' button.",
-        "warning"
-      );
+    const tag = form.imageTag.trim() || "latest";
+    const credentialIds = selectedCredential
+      ? [`${selectedCredential.name}:${selectedCredential.registryType}`]
+      : undefined;
+    const result = await testImage(form.imageUrl.trim(), tag, credentialIds);
+
+    if (!result.available) {
+      setShowImageErrorModal(true);
       setLoading(false);
       return;
     }

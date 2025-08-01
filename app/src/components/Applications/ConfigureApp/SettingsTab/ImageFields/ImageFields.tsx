@@ -104,8 +104,8 @@ const ImageFields: React.FC<ImageFieldsProps> = ({
           options={[
             { value: "", label: "No Credential" },
             ...credentials.map((cred) => ({
-              value: cred.name,
-              label: `${cred.name} (${cred.registryType})`,
+              value: cred.name + ":" + cred.registryType,
+              label: `${cred.name} [${cred.registryType}] (${cred.username})`,
             })),
           ]}
           placeholder="Select a credential"
