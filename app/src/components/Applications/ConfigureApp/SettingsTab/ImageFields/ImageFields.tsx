@@ -83,7 +83,7 @@ const ImageFields: React.FC<ImageFieldsProps> = ({
             label="Image Tag"
           />
         </div>
-        <div className="flex items-end">
+        <div className="flex items-end pb-[8px]">
           <AnimatedButton
             type="button"
             variant={lastResult?.available ? "success" : "secondary"}

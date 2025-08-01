@@ -179,7 +179,7 @@ export default function AddAppForm() {
                 placeholder="latest"
               />
             </div>
-            <div className="flex items-end">
+            <div className="flex items-end pb-[35px]">
               {(() => {
                 const buttonState = getTestButtonState();
                 return (
