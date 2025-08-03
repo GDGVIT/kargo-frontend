@@ -121,6 +121,12 @@ export default function ConfigureApp({ appId }: { appId: string }) {
         return;
       }
 
+      // Prepare nodeSelector with architecture recommendations
+      let finalNodeSelector = form.nodeSelector || {};
+      if (imageTestResult.recommendedNodeSelector) {
+        finalNodeSelector = { ...finalNodeSelector, ...imageTestResult.recommendedNodeSelector };
+      }
+
       const envObj = envList.reduce(
         (acc, [k, v]) => (k ? { ...acc, [k]: v } : acc),
         {} as Record<string, string>
@@ -199,6 +205,7 @@ export default function ConfigureApp({ appId }: { appId: string }) {
         ports: updatedPorts,
         credentials: selectedCredential ? [selectedCredential] : [],
         resources: directResources,
+        nodeSelector: finalNodeSelector,
         // No volumes sent
       });
       await api.post(`/api/applications/${appId}/apply`);
@@ -426,6 +433,8 @@ export default function ConfigureApp({ appId }: { appId: string }) {
         needsAuth={lastResult?.needsAuth}
         authTested={lastResult?.authTested}
         suggestions={lastResult?.suggestions}
+        available={lastResult?.available}
+        isArchitectureIssue={lastResult?.isArchitectureIssue}
         onNavigateToCredentials={() => router.push("/credentials")}
       />
     </div>

@@ -63,12 +63,15 @@ export default function AddAppForm() {
         }`,
         "success"
       );
+      
+      // Show modal if there are suggestions OR blocking errors
+      if ((result.suggestions && result.suggestions.length > 0)) {
+        setShowImageErrorModal(true);
+      }
     } else {
       setShowImageErrorModal(true);
     }
   }, [form.imageUrl, form.imageTag, selectedCredential, testImage, notify]);
-
-  // Auto-test image when credentials change (but only if image URL is already filled)
 
   const getTestButtonState = () => {
     if (isTestingImage) {
@@ -77,7 +80,7 @@ export default function AddAppForm() {
         text: "Testing...",
       };
     }
-    if (lastResult?.available && lastResult?.error === "") {
+    if (lastResult?.available) {
       return { icon: <FaCheck />, text: "Available" };
     }
     return { icon: <FaSearch />, text: "Test Image" };
@@ -113,10 +116,18 @@ export default function AddAppForm() {
       return;
     }
 
+    // Prepare nodeSelector with architecture recommendations
+    let finalNodeSelector = {};
+    if (result.recommendedNodeSelector) {
+      console.log('[AddAppForm] Applying recommended nodeSelector:', result.recommendedNodeSelector);
+      finalNodeSelector = { ...result.recommendedNodeSelector };
+    }
+
     try {
       await api.post("/api/applications", {
         ...form,
         credentials: selectedCredential ? [selectedCredential] : [],
+        nodeSelector: finalNodeSelector,
         // No volumes sent
       });
       setForm({ name: "", imageUrl: "", imageTag: "", credentials: [] });
@@ -179,23 +190,6 @@ export default function AddAppForm() {
                 placeholder="latest"
               />
             </div>
-            <div className="flex items-end pb-[35px]">
-              {(() => {
-                const buttonState = getTestButtonState();
-                return (
-                  <AnimatedButton
-                    type="button"
-                    variant={lastResult?.available ? "success" : "secondary"}
-                    onClick={handleTestImage}
-                    disabled={isTestingImage || !form.imageUrl.trim()}
-                    icon={buttonState.icon}
-                    className="!px-3 !py-2 h-[44px] sm:h-[50px]"
-                  >
-                    {buttonState.text}
-                  </AnimatedButton>
-                );
-              })()}
-            </div>
           </div>
           <div>
             <Select
@@ -253,6 +247,16 @@ export default function AddAppForm() {
           >
             Dockerize
           </AnimatedButton>
+          <AnimatedButton
+            type="button"
+            variant={lastResult?.available ? "success" : "secondary"}
+            className="!px-6 !py-2"
+            onClick={handleTestImage}
+            disabled={isTestingImage || !form.imageUrl.trim()}
+            icon={getTestButtonState().icon}
+          >
+            {getTestButtonState().text}
+          </AnimatedButton>
         </div>
       </form>
 
@@ -265,6 +269,8 @@ export default function AddAppForm() {
         needsAuth={lastResult?.needsAuth}
         authTested={lastResult?.authTested}
         suggestions={lastResult?.suggestions}
+        available={lastResult?.available}
+        isArchitectureIssue={lastResult?.isArchitectureIssue}
         onNavigateToCredentials={() => router.push("/credentials")}
       />
     </>

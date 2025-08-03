@@ -1,6 +1,6 @@
 [] Fix parent of loader on settings page
-[] Docker image validation
-[] Architecture validation
+[x] Docker image validation
+[x] Architecture validation
 [] Show environment
 [] Live Status
 [] Node set for volumes

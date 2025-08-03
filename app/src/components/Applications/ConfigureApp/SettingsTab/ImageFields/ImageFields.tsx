@@ -42,25 +42,14 @@ const ImageFields: React.FC<ImageFieldsProps> = ({
         }`,
         "success"
       );
+      
+      if ((result.suggestions && result.suggestions.length > 0)) {
+        setShowErrorModal(true);
+      }
     } else {
       setShowErrorModal(true);
     }
   };
-
-  const getTestButtonState = () => {
-    if (isTestingImage) {
-      return {
-        icon: <FaSpinner className="animate-spin" />,
-        text: "Testing...",
-      };
-    }
-    if (lastResult?.available) {
-      return { icon: <FaCheck />, text: "Available" };
-    }
-    return { icon: <FaSearch />, text: "Test Image" };
-  };
-
-  const buttonState = getTestButtonState();
 
   return (
     <div className="grid grid-cols-1 gap-4 mb-6">
@@ -73,28 +62,14 @@ const ImageFields: React.FC<ImageFieldsProps> = ({
           label="Image URL"
         />
       </div>
-      <div className="flex gap-2">
-        <div className="flex-1">
-          <Input
-            required
-            value={imageTag}
-            onChange={setImageTag}
-            placeholder="latest"
-            label="Image Tag"
-          />
-        </div>
-        <div className="flex items-end pb-[8px]">
-          <AnimatedButton
-            type="button"
-            variant={lastResult?.available ? "success" : "secondary"}
-            onClick={handleTestImage}
-            disabled={isTestingImage || !imageUrl.trim()}
-            icon={buttonState.icon}
-            className="!px-3 !py-2 h-[44px] sm:h-[50px]"
-          >
-            {buttonState.text}
-          </AnimatedButton>
-        </div>
+      <div>
+        <Input
+          required
+          value={imageTag}
+          onChange={setImageTag}
+          placeholder="latest"
+          label="Image Tag"
+        />
       </div>
       <div style={{ position: "relative" }}>
         <Select
@@ -111,6 +86,19 @@ const ImageFields: React.FC<ImageFieldsProps> = ({
           placeholder="Select a credential"
         />
       </div>
+      
+      <div className="flex gap-4 mt-4">
+        <AnimatedButton
+          type="button"
+          variant={lastResult?.available ? "success" : "secondary"}
+          className="!px-6 !py-2"
+          onClick={handleTestImage}
+          disabled={isTestingImage || !imageUrl.trim()}
+          icon={isTestingImage ? <FaSpinner className="animate-spin" /> : lastResult?.available ? <FaCheck /> : <FaSearch />}
+        >
+          {isTestingImage ? "Testing..." : lastResult?.available ? "Available" : "Test Image"}
+        </AnimatedButton>
+      </div>
 
       <ImageTestErrorModal
         open={showErrorModal}
@@ -121,6 +109,8 @@ const ImageFields: React.FC<ImageFieldsProps> = ({
         needsAuth={lastResult?.needsAuth}
         authTested={lastResult?.authTested}
         suggestions={lastResult?.suggestions}
+        available={lastResult?.available}
+        isArchitectureIssue={lastResult?.isArchitectureIssue}
         onNavigateToCredentials={() => router.push("/credentials")}
       />
     </div>

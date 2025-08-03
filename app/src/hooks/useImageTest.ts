@@ -8,6 +8,12 @@ interface ImageTestResult {
   error?: string;
   testedWith?: string;
   suggestions?: string[];
+  isArchitectureIssue?: boolean;
+  architectureSupported?: boolean;
+  supportedArchitectures?: string[];
+  clusterArchitectures?: string[];
+  unsupportedNodes?: string[];
+  recommendedNodeSelector?: { [key: string]: string };
 }
 
 interface UseImageTestReturn {
@@ -34,12 +40,19 @@ export default function useImageTest(): UseImageTestReturn {
         available: response.data.available,
         authTested: response.data.authTested,
         testedWith: response.data.testedWith,
+        suggestions: response.data.suggestions || [], // Include suggestions for successful cases too
+        isArchitectureIssue: response.data.isArchitectureIssue,
+        architectureSupported: response.data.architectureSupported,
+        supportedArchitectures: response.data.supportedArchitectures,
+        clusterArchitectures: response.data.clusterArchitectures,
+        unsupportedNodes: response.data.unsupportedNodes,
+        recommendedNodeSelector: response.data.recommendedNodeSelector,
       };
       
       setLastResult(result);
       return result;
     } catch (error: unknown) {
-      const axiosError = error as { response?: { data?: { needsAuth?: boolean; authTested?: boolean; error?: string; suggestions?: string[] } } };
+      const axiosError = error as { response?: { data?: { needsAuth?: boolean; authTested?: boolean; error?: string; suggestions?: string[]; isArchitectureIssue?: boolean } } };
       const errorMessage = error instanceof Error ? error.message : "Failed to test image";
       
       const result: ImageTestResult = {
@@ -48,6 +61,7 @@ export default function useImageTest(): UseImageTestReturn {
         authTested: axiosError.response?.data?.authTested || false,
         error: axiosError.response?.data?.error || errorMessage,
         suggestions: axiosError.response?.data?.suggestions || [],
+        isArchitectureIssue: axiosError.response?.data?.isArchitectureIssue || false,
       };
       
       setLastResult(result);

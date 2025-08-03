@@ -8,10 +8,12 @@ interface ImageTestErrorModalProps {
   onClose: () => void;
   imageUrl: string;
   imageTag: string;
-  error: string;
+  error?: string;
   needsAuth?: boolean;
   authTested?: boolean;
   suggestions?: string[];
+  available?: boolean; // Add this to handle successful cases with warnings
+  isArchitectureIssue?: boolean; // Add this to distinguish architecture validation issues
   onNavigateToCredentials: () => void;
 }
 
@@ -24,11 +26,43 @@ const ImageTestErrorModal: React.FC<ImageTestErrorModalProps> = ({
   needsAuth,
   authTested,
   suggestions,
+  available,
+  isArchitectureIssue,
   onNavigateToCredentials,
 }) => {
   const fullImageName = `${imageUrl}:${imageTag}`;
 
+  const getTitle = () => {
+    if (available) {
+      return "Image Available with Warnings";
+    }
+    if (isArchitectureIssue) {
+      return "Architecture Validation Failed";
+    }
+    return "Image Not Accessible";
+  };
+
+  const getIcon = () => {
+    if (available) {
+      return <FaExclamationTriangle className="text-yellow-400 text-xl mt-1 flex-shrink-0" />;
+    }
+    return <FaExclamationTriangle className="text-red-400 text-xl mt-1 flex-shrink-0" />;
+  };
+
+  const getMainMessage = () => {
+    if (available) {
+      return "The image is available but there are some compatibility warnings:";
+    }
+    if (isArchitectureIssue) {
+      return "Architecture validation failed - deployment blocked";
+    }
+    return "Docker Image Test Failed";
+  };
+
   const getErrorMessage = () => {
+    if (isArchitectureIssue) {
+      return "The image is accessible but cannot be deployed due to architecture compatibility issues.";
+    }
     if (needsAuth && !authTested) {
       return "The image appears to be private and you don't have any registry credentials configured.";
     }
@@ -39,6 +73,9 @@ const ImageTestErrorModal: React.FC<ImageTestErrorModalProps> = ({
   };
 
   const getActionMessage = () => {
+    if (isArchitectureIssue) {
+      return "Please check the architecture compatibility details below or ensure cluster access is available.";
+    }
     if (needsAuth && !authTested) {
       return "Please configure your registry credentials and try again.";
     }
@@ -49,37 +86,41 @@ const ImageTestErrorModal: React.FC<ImageTestErrorModalProps> = ({
   };
 
   return (
-    <Modal open={open} onClose={onClose} title="Image Not Accessible">
+    <Modal open={open} onClose={onClose} title={getTitle()}>
       <div className="space-y-4">
         <div className="flex items-start gap-3">
-          <FaExclamationTriangle className="text-red-400 text-xl mt-1 flex-shrink-0" />
+          {getIcon()}
           <div className="flex-1">
             <h3 className="text-lg font-semibold text-gray-200 mb-2">
-              Docker Image Test Failed
+              {getMainMessage()}
             </h3>
             <p className="text-gray-300 mb-2">
               <span className="font-mono bg-gray-800 px-2 py-1 rounded text-sm">
                 {fullImageName}
               </span>
             </p>
-            <p className="text-gray-400 mb-3">{getErrorMessage()}</p>
-            <p className="text-gray-400 mb-3">{getActionMessage()}</p>
+            {!available && (
+              <>
+                <p className="text-gray-400 mb-3">{getErrorMessage()}</p>
+                <p className="text-gray-400 mb-3">{getActionMessage()}</p>
+              </>
+            )}
             {suggestions && suggestions.length > 0 && (
               <div className="mb-3">
                 <h4 className="text-sm font-semibold text-gray-300 mb-2">
-                  Suggestions:
+                  {available ? "Warnings:" : "Suggestions:"}
                 </h4>
                 <ul className="text-sm text-gray-400 space-y-1">
                   {suggestions.map((suggestion, index) => (
                     <li key={index} className="flex items-start gap-2">
-                      <span className="text-yellow-400 mt-0.5">•</span>
+                      <span className={available ? "text-yellow-400 mt-0.5" : "text-yellow-400 mt-0.5"}>•</span>
                       <span>{suggestion}</span>
                     </li>
                   ))}
                 </ul>
               </div>
             )}
-            {error && (
+            {error && !available && (
               <details className="mb-3">
                 <summary className="text-sm text-gray-500 cursor-pointer hover:text-gray-400">
                   Technical Details
@@ -99,10 +140,10 @@ const ImageTestErrorModal: React.FC<ImageTestErrorModalProps> = ({
             className="flex-1"
             icon={null}
           >
-            Cancel
+            {available ? "Continue" : "Cancel"}
           </AnimatedButton>
 
-          {needsAuth && (
+          {needsAuth && !available && (
             <AnimatedButton
               variant="primary"
               onClick={() => {
@@ -116,14 +157,16 @@ const ImageTestErrorModal: React.FC<ImageTestErrorModalProps> = ({
             </AnimatedButton>
           )}
 
-          <AnimatedButton
-            variant="primary"
-            onClick={onClose}
-            className="flex-1"
-            icon={<FaCog />}
-          >
-            Update Image Details
-          </AnimatedButton>
+          {!available && (
+            <AnimatedButton
+              variant="primary"
+              onClick={onClose}
+              className="flex-1"
+              icon={<FaCog />}
+            >
+              Update Image Details
+            </AnimatedButton>
+          )}
         </div>
       </div>
     </Modal>
