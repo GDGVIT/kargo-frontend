@@ -3,8 +3,6 @@
 [x] Architecture validation
 [] Show environment
 [] Live Status
-[] Node set for volumes
-[] API Server Uptime Graph
 [] Plans page fixes
 [] Metrics units
 [] Remove default app.<username>.vitians.in
