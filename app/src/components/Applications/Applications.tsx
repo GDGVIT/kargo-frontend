@@ -6,13 +6,14 @@ import api from "../../utils/api";
 import useNotification from "../ui/Notification/Notification";
 import Modal from "../ui/Modal/Modal";
 import AnimatedButton from "../ui/AnimatedButton/AnimatedButton";
-import { FaPlus, FaTrash } from "react-icons/fa";
+import { FaPlus, FaTrash, FaCircle } from "react-icons/fa";
 import Loader from "../ui/Loader/Loader";
 
 export default function Applications() {
   const [apps, setApps] = useState([]);
   const [loading, setLoading] = useState(false);
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
+  const [appStatuses, setAppStatuses] = useState<Record<string, string>>({});
   const router = useRouter();
   const { notify } = useNotification();
 
@@ -27,15 +28,61 @@ export default function Applications() {
     setLoading(false);
   }, [notify]);
 
+  const fetchAppStatuses = useCallback(async () => {
+    try {
+      const res = await api.get("/api/applications/status");
+      const statusMap: Record<string, string> = {};
+      res.data.status.forEach((app: { id: string; status: string }) => {
+        // Store status by the ID from the backend, ensuring it's a string
+        // Backend returns id: app._id, so this should match the frontend _id
+        statusMap[app.id.toString()] = app.status;
+      });
+      setAppStatuses(statusMap);
+    } catch (error) {
+      console.warn("Failed to fetch application statuses:", error);
+      // Silently fail - status is not critical
+    }
+  }, []);
+
   useEffect(() => {
     fetchApps();
-  }, [fetchApps]);
+    fetchAppStatuses();
+
+    // Poll for status updates every 30 seconds
+    const statusInterval = setInterval(fetchAppStatuses, 30000);
+
+    return () => {
+      clearInterval(statusInterval);
+    };
+  }, [fetchApps, fetchAppStatuses]);
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case "online":
+        return "text-green-400";
+      case "starting":
+        return "text-yellow-400";
+      case "partially online":
+        return "text-orange-400";
+      case "stopped":
+        return "text-gray-400";
+      case "offline":
+        return "text-red-400";
+      default:
+        return "text-gray-500";
+    }
+  };
+
+  const getStatusText = (status: string) => {
+    return status || "unknown";
+  };
 
   async function handleDeleteApp(id: string) {
     setLoading(true);
     try {
       await api.delete(`/api/applications/${id}`);
       fetchApps();
+      fetchAppStatuses();
       notify("Application deleted successfully!", "success");
     } catch {
       notify("Failed to delete app", "error");
@@ -112,8 +159,24 @@ export default function Applications() {
                   onClick={() => router.push(`/applications/${app._id}`)}
                   data-animate-delay={idx * 60}
                 >
-                  {/* Status indicator placeholder */}
-                  <div title="Active" />
+                  {/* Status indicator */}
+                  <div className="absolute top-3 right-3 flex items-center gap-1">
+                    <FaCircle
+                      className={`text-xs ${getStatusColor(
+                        appStatuses[app._id.toString()] || "unknown"
+                      )}`}
+                      title={`Status: ${getStatusText(
+                        appStatuses[app._id.toString()]
+                      )}`}
+                    />
+                    <span
+                      className={`text-xs font-medium capitalize ${getStatusColor(
+                        appStatuses[app._id.toString()] || "unknown"
+                      )}`}
+                    >
+                      {getStatusText(appStatuses[app._id.toString()])}
+                    </span>
+                  </div>
                   <h2 className="text-base sm:text-lg font-semibold text-white mb-1 truncate">
                     {app.name}
                   </h2>
