@@ -42,9 +42,8 @@ export default function Sidebar() {
 
   if (loading || !user) return null;
 
-  return (
-    <>
-      {/* DESKTOP SIDEBAR */}
+  function DesktopSidebar() {
+    return (
       <AnimatePresence>
         {user && (
           <motion.aside
@@ -90,8 +89,11 @@ export default function Sidebar() {
           </motion.aside>
         )}
       </AnimatePresence>
+    );
+  }
 
-      {/* MOBILE BOTTOM NAV */}
+  function MobileBottomNav() {
+    return (
       <AnimatePresence>
         {user && (
           <motion.div
@@ -120,6 +122,16 @@ export default function Sidebar() {
           </motion.div>
         )}
       </AnimatePresence>
+    );
+  }
+
+  return (
+    <>
+      {/* DESKTOP SIDEBAR */}
+      <DesktopSidebar />
+
+      {/* MOBILE BOTTOM NAV */}
+      <MobileBottomNav />
     </>
   );
 }

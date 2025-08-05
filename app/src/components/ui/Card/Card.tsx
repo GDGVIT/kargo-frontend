@@ -13,7 +13,7 @@ interface CardProps {
   animationEasing?: Easing | Easing[];
   elevation?: 1 | 2 | 3 | 4 | 5;
   "aria-label"?: string;
-  form?: unknown; // Accepts presence only
+  form?: unknown;
 }
 
 const elevationMap = {
@@ -38,7 +38,6 @@ const Card = ({
 }: CardProps) => {
   const cardRef = useRef<HTMLDivElement>(null);
 
-  // Keyboard accessibility for clickable cards
   const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
     if (disabled) return;
     if (onClick && (e.key === "Enter" || e.key === " ")) {

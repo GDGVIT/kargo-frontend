@@ -43,7 +43,6 @@ const PlanTable: React.FC<PlanTableProps> = ({
 
   return (
     <>
-      {/* Confirm Delete Modal */}
       <Modal
         open={!!deleteId}
         onClose={handleCancelDelete}

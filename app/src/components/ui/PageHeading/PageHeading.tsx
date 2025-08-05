@@ -22,7 +22,6 @@ const PageHeading: React.FC<PageHeadingProps> = ({
 }) => {
   const HeadingTag = Heading as ElementType;
 
-  // Dynamically update document title and meta description
   useEffect(() => {
     if (typeof window !== "undefined") {
       document.title = title;

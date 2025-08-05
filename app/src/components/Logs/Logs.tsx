@@ -8,14 +8,13 @@ import Input from "../ui/Input/Input";
 import Select from "../ui/Select/Select";
 import Loader from "../ui/Loader/Loader";
 
-// Generate a dark professional HSL background from pod string
 function generateProfessionalHSLColor(pod: string): string {
   let hash = 0;
   for (let i = 0; i < pod.length; i++) {
     hash = pod.charCodeAt(i) + ((hash << 5) - hash);
   }
   const hue = Math.abs(hash % 360);
-  return `hsl(${hue}, 45%, 20%)`; // dark, professional tone
+  return `hsl(${hue}, 45%, 20%)`;
 }
 
 export default function Logs({ id }: LogsProps) {
@@ -95,7 +94,6 @@ export default function Logs({ id }: LogsProps) {
     }
   }, [logs, isAutoScroll]);
 
-  // Show/hide scroll button on manual scroll
   const handleScroll = () => {
     if (logsRef.current) {
       const { scrollTop, scrollHeight, clientHeight } = logsRef.current;
@@ -126,10 +124,8 @@ export default function Logs({ id }: LogsProps) {
     return bg ? { backgroundColor: bg } : {};
   }
 
-  // Helper to get unique pods
   const podList = Object.keys(podColorMap);
 
-  // Helper to get log level from line
   function getLogLevel(line: string): string {
     if (/error|fail|exception/i.test(line)) return "error";
     if (/warn/i.test(line)) return "warn";
@@ -138,7 +134,6 @@ export default function Logs({ id }: LogsProps) {
     return "other";
   }
 
-  // Filtered logs
   const filteredLogs = logs.filter((log) => {
     const matchesSearch =
       !searchText ||

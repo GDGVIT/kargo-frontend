@@ -128,7 +128,6 @@ const UserTable: React.FC<UserTableProps> = ({
                   />
                 </td>
                 <td className="p-2">
-                  {/* Show allowed resources (plan + extra) */}
                   {allowedResources[user._id] ? (
                     <div className="text-xs">
                       <div>
@@ -163,7 +162,6 @@ const UserTable: React.FC<UserTableProps> = ({
                   )}
                 </td>
                 <td className="p-2">
-                  {/* Extra resources editor modal trigger */}
                   <div>
                     <div className="text-xs mb-1">
                       <div>

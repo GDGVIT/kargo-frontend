@@ -100,14 +100,12 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       if (unitType) {
-        // Allow empty input for clearing the field
         if (e.target.value === "") {
           onChange("");
           return;
         }
         const inputValue = Number(e.target.value);
         if (isNaN(inputValue)) {
-          // Optionally, allow partial input (like '1.')
           onChange(e.target.value);
           return;
         }

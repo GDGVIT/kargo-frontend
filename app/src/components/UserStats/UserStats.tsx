@@ -25,7 +25,6 @@ const Stat: React.FC<{
   </div>
 );
 
-// Accept user prop
 const UserStats: React.FC<{ user: User }> = () => {
   const [stats, setStats] = useState<UserStatsData | null>(null);
   const [loading, setLoading] = useState(false);

@@ -25,10 +25,10 @@ const StyledWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(10, 20, 40, 0.85); // dark bluish overlay
+  background: rgba(10, 20, 40, 0.85);
   opacity: 0;
   animation: fadeIn 0.4s ease-in forwards;
-  padding: 0.5rem; // Responsive padding for small screens
+  padding: 0.5rem;
 
   @media (max-width: 640px) {
     padding: 0.5rem;
@@ -98,86 +98,86 @@ const StyledWrapper = styled.div`
 
   .item:nth-child(1) {
     margin-top: 6.25em;
-    color: #1e3a8a; // dark blue
+    color: #1e3a8a;
     animation-delay: -1.2s;
   }
 
   .item:nth-child(1):before {
-    color: #2563eb; // blue-600
+    color: #2563eb;
   }
 
   .item:nth-child(1):after {
-    color: #3b82f6; // blue-500
+    color: #3b82f6;
   }
 
   .item:nth-child(2) {
     margin-top: 3.125em;
-    color: #2563eb; // blue-600
+    color: #2563eb;
     animation-delay: -1s;
   }
 
   .item:nth-child(2):before {
-    color: #60a5fa; // blue-400
+    color: #60a5fa;
   }
 
   .item:nth-child(2):after {
-    color: #38bdf8; // sky-400
+    color: #38bdf8;
   }
 
   .item:nth-child(3) {
     margin-top: 0em;
-    color: #3b82f6; // blue-500
+    color: #3b82f6;
     animation-delay: -0.8s;
   }
 
   .item:nth-child(3):before {
-    color: #0ea5e9; // sky-500
+    color: #0ea5e9;
   }
 
   .item:nth-child(3):after {
-    color: #06b6d4; // cyan-500
+    color: #06b6d4;
   }
 
   .item:nth-child(4) {
     margin-top: -3.125em;
-    color: #0ea5e9; // sky-500
+    color: #0ea5e9;
     animation-delay: -0.6s;
   }
 
   .item:nth-child(4):before {
-    color: #38bdf8; // sky-400
+    color: #38bdf8;
   }
 
   .item:nth-child(4):after {
-    color: #67e8f9; // cyan-300
+    color: #67e8f9;
   }
 
   .item:nth-child(5) {
     margin-top: -6.25em;
-    color: #06b6d4; // cyan-500
+    color: #06b6d4;
     animation-delay: -0.4s;
   }
 
   .item:nth-child(5):before {
-    color: #22d3ee; // cyan-400
+    color: #22d3ee;
   }
 
   .item:nth-child(5):after {
-    color: #67e8f9; // cyan-300
+    color: #67e8f9;
   }
 
   .item:nth-child(6) {
     margin-top: -9.375em;
-    color: #0e7490; // cyan-700
+    color: #0e7490;
     animation-delay: -0.2s;
   }
 
   .item:nth-child(6):before {
-    color: #0891b2; // cyan-600
+    color: #0891b2;
   }
 
   .item:nth-child(6):after {
-    color: #22d3ee; // cyan-400
+    color: #22d3ee;
   }
 `;
 

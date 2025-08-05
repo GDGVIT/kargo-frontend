@@ -59,7 +59,7 @@ export default function VerifyEmailPage() {
     };
 
     verify();
-  }, [notify, router]); // Only run once on mount
+  }, [notify, router]);
 
   return (
     <div className="max-w-md mx-auto p-8 mt-16 text-center text-white">

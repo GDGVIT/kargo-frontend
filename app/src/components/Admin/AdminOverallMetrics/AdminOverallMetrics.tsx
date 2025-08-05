@@ -18,7 +18,6 @@ import {
   formatStorage,
 } from "../../../utils/resources";
 
-// Color variables
 const COLORS = {
   axis: "#64748b",
   grid: "gray",
@@ -38,7 +37,6 @@ const metricLabels: Record<string, string> = {
   network_rx: "Network Receive (bytes/sec)",
   network_tx: "Network Transmit (bytes/sec)",
   nodes: "Node Count",
-  apiserver_uptime: "API Server Uptime (seconds)",
 };
 
 interface MetricHistory {
@@ -112,10 +110,9 @@ export default function AdminOverallMetrics() {
   if (loading) return <Card className="mb-8">Loading overall metrics...</Card>;
   if (!metrics) return <Card className="mb-8">Failed to load metrics.</Card>;
 
-  // Group metrics for layout
   const metricGroups = [
     ["cpu", "memory", "storage"],
-    ["pods", "nodes", "apiserver_uptime"],
+    ["pods", "nodes"],
     ["network_rx", "network_tx"],
   ];
 
@@ -133,7 +130,7 @@ export default function AdminOverallMetrics() {
               time: formatTime(timestamp),
               value: Number(parseFloat(val)),
             }));
-            // Use resource formatting for current value
+
             let formattedCurrent = "N/A";
             if (metric.current != null) {
               const numVal = Number(metric.current);
@@ -151,17 +148,6 @@ export default function AdminOverallMetrics() {
                 formattedCurrent = formatStorage(
                   Number((numVal / 1024 ** 3).toFixed(ACCURACY))
                 );
-              } else if (key === "apiserver_uptime") {
-                // Format uptime as HH:MM:SS
-                const totalSeconds = Math.floor(numVal);
-                const hours = Math.floor(totalSeconds / 3600);
-                const minutes = Math.floor((totalSeconds % 3600) / 60);
-                const seconds = totalSeconds % 60;
-                formattedCurrent = `${hours
-                  .toString()
-                  .padStart(2, "0")}:${minutes
-                  .toString()
-                  .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
               } else if (key === "pods" || key === "nodes") {
                 formattedCurrent = numVal.toLocaleString();
               }
@@ -199,7 +185,7 @@ export default function AdminOverallMetrics() {
                           tick={{ fill: COLORS.axis, fontSize: 10 }}
                           tickFormatter={(val) => {
                             if (typeof val !== "number") return val;
-                            // Use resource formatting for Y axis
+
                             if (key === "cpu")
                               return formatCpu(Number(val.toFixed(ACCURACY)));
                             if (

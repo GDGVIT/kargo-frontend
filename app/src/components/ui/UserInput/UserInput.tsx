@@ -9,8 +9,8 @@ export interface UserInputProps {
   animationDuration?: number;
   animationEasing?: number[];
   disabled?: boolean;
-  children: React.ReactNode; // The actual input/textarea/select element
-  containerClassName?: string; // For custom container styling
+  children: React.ReactNode;
+  containerClassName?: string;
 }
 
 const UserInput = forwardRef<HTMLDivElement, UserInputProps>(

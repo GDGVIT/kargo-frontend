@@ -33,7 +33,6 @@ export default function AdminUsersDashboard() {
   >(null);
   const { notify } = useNotification();
 
-  // Move fetchUsers outside useEffect so it can be reused
   async function fetchUsers() {
     try {
       setLoading(true);

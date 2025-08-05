@@ -45,13 +45,12 @@ export default function ConfigureApp({ appId }: { appId: string }) {
   const { notify } = useNotification();
 
   useEffect(() => {
-    setLoading(true); // set loading true before fetch
+    setLoading(true);
     fetchApp();
     fetchCredentials();
     // eslint-disable-next-line
   }, [appId]);
 
-  // Sync selectedCredential with loaded app
   useEffect(() => {
     const credName =
       Array.isArray(form?.credentials) && form.credentials.length > 0
@@ -69,7 +68,7 @@ export default function ConfigureApp({ appId }: { appId: string }) {
     async function fetchLimits() {
       try {
         const res = await api.get("/api/users/me/resource-usage");
-        // Use backend field names directly
+
         setResourceLimits(res.data);
       } catch {
         setResourceLimits(null);
@@ -89,10 +88,10 @@ export default function ConfigureApp({ appId }: { appId: string }) {
       });
       setEnvList(app.env ? Object.entries(app.env) : []);
     } catch {
-      setForm(null); // explicit
+      setForm(null);
       notify("Failed to load app", "error");
     } finally {
-      setLoading(false); // set loading false after fetch
+      setLoading(false);
     }
   }
 
@@ -127,7 +126,6 @@ export default function ConfigureApp({ appId }: { appId: string }) {
         return;
       }
 
-      // Prepare nodeSelector with architecture recommendations
       let finalNodeSelector = form.nodeSelector || {};
       if (imageTestResult.recommendedNodeSelector) {
         finalNodeSelector = {
@@ -157,7 +155,7 @@ export default function ConfigureApp({ appId }: { appId: string }) {
           if (val.endsWith("Gi")) return parseInt(val) * 1024;
           return parseFloat(val);
         }
-        // Clone the usage object
+
         const newUsage = {
           requests: { ...resourceLimits.usage.requests },
           limits: { ...resourceLimits.usage.limits },
@@ -195,7 +193,7 @@ export default function ConfigureApp({ appId }: { appId: string }) {
           return;
         }
       }
-      // Directly use the values from form.resources with correct keys for backend
+
       const directResources = {
         requests: {
           cpuMilli: form.resources?.requests?.cpuMilli,
@@ -215,7 +213,6 @@ export default function ConfigureApp({ appId }: { appId: string }) {
         credentials: selectedCredential ? [selectedCredential] : [],
         resources: directResources,
         nodeSelector: finalNodeSelector,
-        // No volumes sent
       });
       await api.post(`/api/applications/${appId}/apply`);
       fetchApp();
@@ -224,7 +221,7 @@ export default function ConfigureApp({ appId }: { appId: string }) {
       const error = err as unknown as {
         response?: { data?: { message?: string } };
       };
-      console.error(err); // Log the error for debugging
+      console.error(err);
       if (error?.response?.data?.message)
         notify(error.response.data.message, "error");
       else notify("Failed to save & deploy", "error");

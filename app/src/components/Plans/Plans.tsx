@@ -39,12 +39,11 @@ const Plans = () => {
       return;
     }
     try {
-      // 1. Create order on backend
       const { data } = await api.post(`/api/plans/${plan._id}/create-order`);
       const order = data.order;
-      // 2. Open Razorpay Checkout
+
       const options = {
-        key: getRuntimeEnv("NEXT_PUBLIC_RAZORPAY_KEY_ID"), // Use runtime env for Razorpay key
+        key: getRuntimeEnv("NEXT_PUBLIC_RAZORPAY_KEY_ID"),
         amount: order.amount,
         currency: order.currency,
         name: plan.name,
@@ -55,7 +54,6 @@ const Plans = () => {
           razorpay_payment_id: string;
           razorpay_signature: string;
         }) {
-          // 3. Verify payment on backend
           const verifyRes = await api.post(`/api/plans/verify-payment`, {
             razorpay_order_id: response.razorpay_order_id,
             razorpay_payment_id: response.razorpay_payment_id,

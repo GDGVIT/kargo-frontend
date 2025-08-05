@@ -127,14 +127,11 @@ export default function Authenticate() {
   return (
     <section className="flex items-center justify-center px-6 py-12">
       <div className="w-full max-w-4xl bg-[var(--card-background)] rounded-3xl p-0 flex flex-col md:flex-row overflow-hidden">
-        {/* Left Side: Branding/Illustration */}
         <Branding />
-        {/* Right Side: Auth Form */}
+
         <div className="w-full md:w-1/2 p-6 md:p-10 flex flex-col justify-center">
-          {/* Tabs */}
           <AuthTabs isLogin={isLogin} setIsLogin={setIsLogin} />
 
-          {/* Animated height wrapper for form content */}
           <AuthForm
             isLogin={isLogin}
             email={email}
@@ -155,7 +152,6 @@ export default function Authenticate() {
             <div className="h-px flex-grow bg-neutral-700" />
           </div>
 
-          {/* OAuth Buttons - now compact, icon-only, in a row */}
           <OAuthButtons
             googleLogin={googleLogin}
             githubLogin={githubLogin}

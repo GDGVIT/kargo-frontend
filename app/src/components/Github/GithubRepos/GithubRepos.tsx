@@ -73,7 +73,6 @@ const GithubRepos: React.FC = () => {
       setLoading(true);
       setError(null);
       try {
-        // Fetch all repos in a single call using installation_ids param
         const res = await api.get("/api/github/repos", {
           params: { installation_ids: installationIds.join(",") },
           withCredentials: true,
@@ -93,7 +92,7 @@ const GithubRepos: React.FC = () => {
           ) {
             removedInstallationsError = true;
           }
-          // If backend returns 500 or JWT error, treat as fatal
+
           if (
             err.response?.status === 500 ||
             (typeof message === "string" &&
@@ -108,7 +107,6 @@ const GithubRepos: React.FC = () => {
         setAllRepos([]);
         notify(message, "error");
         if (removedInstallationsError) {
-          // Refresh installation IDs to update UI and prevent infinite retry
           try {
             const res = await api.get("/api/github/installation-id", {
               withCredentials: true,
@@ -122,7 +120,6 @@ const GithubRepos: React.FC = () => {
             setInstallationIds([]);
           }
         } else if (isFatal) {
-          // On fatal error, clear installation IDs to stop retrying
           setInstallationIds([]);
         }
       } finally {

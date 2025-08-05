@@ -26,7 +26,6 @@ const PortsSection: React.FC<PortsSectionProps> = ({ ports, onChange }) => {
     process.env.NEXT_PUBLIC_INGRESS_BASE_DOMAIN || "vitians.in";
 
   useEffect(() => {
-    // Sync localPorts if parent changes
     setLocalPorts(
       ports.map((p) => ({
         ...p,

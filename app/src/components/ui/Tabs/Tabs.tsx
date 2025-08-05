@@ -29,7 +29,6 @@ const Tabs: React.FC<TabsProps> = ({
 
   return (
     <div className={`flex flex-col w-full h-full ${className}`}>
-      {/* Tabs Header */}
       <div className="relative border-b border-[#353A48]">
         <div className="flex">
           {tabs.map((tab) => {
@@ -49,10 +48,8 @@ const Tabs: React.FC<TabsProps> = ({
           })}
         </div>
 
-        {/* Seamless underline background */}
         <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#353A48] pointer-events-none z-0" />
 
-        {/* Active tab blue indicator */}
         <motion.div
           layout
           transition={{ type: "spring", stiffness: 400, damping: 30 }}
@@ -65,7 +62,6 @@ const Tabs: React.FC<TabsProps> = ({
         />
       </div>
 
-      {/* Tab Content */}
       <div className="flex-1 p-4 sm:p-6 overflow-y-auto min-h-[300px]">
         <AnimatePresence mode="wait">
           <motion.div
@@ -94,7 +90,6 @@ const Tabs: React.FC<TabsProps> = ({
   );
 };
 
-// Utility hook to set default active tab to first item if not provided
 export function useDefaultTab(
   tabs: TabItem[],
   activeTab?: string

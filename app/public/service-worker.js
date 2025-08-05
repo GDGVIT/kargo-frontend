@@ -35,7 +35,6 @@ const CORE_ASSETS = [
   "/favicon.ico",
 ];
 
-// Pre-cache only the specified static files
 self.addEventListener("install", (event) => {
   console.log("[SW] Installing and caching core assets...");
   event.waitUntil(
@@ -44,7 +43,6 @@ self.addEventListener("install", (event) => {
   self.skipWaiting();
 });
 
-// Clear old caches
 self.addEventListener("activate", (event) => {
   console.log("[SW] Activating and cleaning old caches...");
   event.waitUntil(
@@ -57,29 +55,21 @@ self.addEventListener("activate", (event) => {
   self.clients.claim();
 });
 
-// Serve only the pre-cached assets. Never cache anything else.
 self.addEventListener("fetch", (event) => {
   const url = new URL(event.request.url);
 
-  // Only handle GET requests from our origin
   if (event.request.method !== "GET" || url.origin !== self.location.origin)
     return;
 
-  // Serve core assets if matched
   if (CORE_ASSETS.includes(url.pathname)) {
     event.respondWith(
       caches
         .match(event.request)
         .then((cached) => cached || fetch(event.request))
     );
-  }
-
-  // Fallback to /offline for navigation if offline
-  else if (event.request.mode === "navigate") {
+  } else if (event.request.mode === "navigate") {
     event.respondWith(
       fetch(event.request).catch(() => caches.match("/offline"))
     );
   }
-
-  // Otherwise, do nothing — let the browser handle it (no caching)
 });

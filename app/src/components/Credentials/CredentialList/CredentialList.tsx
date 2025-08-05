@@ -68,7 +68,7 @@ export default function CredentialList({
           })}
         </ul>
       )}
-      {/* Info Modal for viewing credential details */}
+
       <Modal
         open={!!infoModal}
         onClose={() => setInfoModal(null)}
@@ -96,7 +96,7 @@ export default function CredentialList({
           </div>
         )}
       </Modal>
-      {/* Confirmation Modal for Delete */}
+
       <Modal
         open={!!confirmDelete}
         onClose={() => setConfirmDelete(null)}

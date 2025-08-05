@@ -33,14 +33,11 @@ export default function Applications() {
       const res = await api.get("/api/applications/status");
       const statusMap: Record<string, string> = {};
       res.data.status.forEach((app: { id: string; status: string }) => {
-        // Store status by the ID from the backend, ensuring it's a string
-        // Backend returns id: app._id, so this should match the frontend _id
         statusMap[app.id.toString()] = app.status;
       });
       setAppStatuses(statusMap);
     } catch (error) {
       console.warn("Failed to fetch application statuses:", error);
-      // Silently fail - status is not critical
     }
   }, []);
 
@@ -159,7 +156,6 @@ export default function Applications() {
                   onClick={() => router.push(`/applications/${app._id}`)}
                   data-animate-delay={idx * 60}
                 >
-                  {/* Status indicator */}
                   <div className="absolute top-3 right-3 flex items-center gap-1">
                     <FaCircle
                       className={`text-xs ${getStatusColor(

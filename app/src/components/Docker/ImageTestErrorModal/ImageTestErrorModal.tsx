@@ -12,8 +12,8 @@ interface ImageTestErrorModalProps {
   needsAuth?: boolean;
   authTested?: boolean;
   suggestions?: string[];
-  available?: boolean; // Add this to handle successful cases with warnings
-  isArchitectureIssue?: boolean; // Add this to distinguish architecture validation issues
+  available?: boolean;
+  isArchitectureIssue?: boolean;
   onNavigateToCredentials: () => void;
 }
 
@@ -44,9 +44,13 @@ const ImageTestErrorModal: React.FC<ImageTestErrorModalProps> = ({
 
   const getIcon = () => {
     if (available) {
-      return <FaExclamationTriangle className="text-yellow-400 text-xl mt-1 flex-shrink-0" />;
+      return (
+        <FaExclamationTriangle className="text-yellow-400 text-xl mt-1 flex-shrink-0" />
+      );
     }
-    return <FaExclamationTriangle className="text-red-400 text-xl mt-1 flex-shrink-0" />;
+    return (
+      <FaExclamationTriangle className="text-red-400 text-xl mt-1 flex-shrink-0" />
+    );
   };
 
   const getMainMessage = () => {
@@ -113,7 +117,15 @@ const ImageTestErrorModal: React.FC<ImageTestErrorModalProps> = ({
                 <ul className="text-sm text-gray-400 space-y-1">
                   {suggestions.map((suggestion, index) => (
                     <li key={index} className="flex items-start gap-2">
-                      <span className={available ? "text-yellow-400 mt-0.5" : "text-yellow-400 mt-0.5"}>•</span>
+                      <span
+                        className={
+                          available
+                            ? "text-yellow-400 mt-0.5"
+                            : "text-yellow-400 mt-0.5"
+                        }
+                      >
+                        •
+                      </span>
                       <span>{suggestion}</span>
                     </li>
                   ))}
