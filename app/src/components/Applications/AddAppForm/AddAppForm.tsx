@@ -63,9 +63,9 @@ export default function AddAppForm() {
         }`,
         "success"
       );
-      
+
       // Show modal if there are suggestions OR blocking errors
-      if ((result.suggestions && result.suggestions.length > 0)) {
+      if (result.suggestions && result.suggestions.length > 0) {
         setShowImageErrorModal(true);
       }
     } else {
@@ -119,7 +119,10 @@ export default function AddAppForm() {
     // Prepare nodeSelector with architecture recommendations
     let finalNodeSelector = {};
     if (result.recommendedNodeSelector) {
-      console.log('[AddAppForm] Applying recommended nodeSelector:', result.recommendedNodeSelector);
+      console.log(
+        "[AddAppForm] Applying recommended nodeSelector:",
+        result.recommendedNodeSelector
+      );
       finalNodeSelector = { ...result.recommendedNodeSelector };
     }
 
@@ -162,7 +165,7 @@ export default function AddAppForm() {
           <div>
             <Input
               required
-              label="Image URL"
+              label="Image Name"
               value={form.imageUrl}
               onChange={(value) => setForm((f) => ({ ...f, imageUrl: value }))}
               placeholder="registry.io/my-app"

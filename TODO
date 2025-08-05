@@ -1,9 +1,8 @@
 [] Fix parent of loader on settings page
 [x] Docker image validation
 [x] Architecture validation
-[] Show environment
 [] Live Status
 [] Plans page fixes
-[] Metrics units
+[x] Metrics units
 [] Remove default app.<username>.vitians.in
 [] Docs

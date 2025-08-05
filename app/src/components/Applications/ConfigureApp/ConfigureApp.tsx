@@ -23,7 +23,7 @@ export default function ConfigureApp({ appId }: { appId: string }) {
   const [form, setForm] = useState<Application | null>(null);
   const [envList, setEnvList] = useState<[string, string][]>([]);
   const [saving, setSaving] = useState(false);
-  const [loading, setLoading] = useState(true); // <-- add loading state
+  const [loading, setLoading] = useState(true);
   const [resourceLimits, setResourceLimits] = useState<{
     allowed: {
       requests: { cpuMilli: number; memoryMB: number; storageGB: number };
@@ -112,9 +112,15 @@ export default function ConfigureApp({ appId }: { appId: string }) {
       if (!form) return;
 
       const imageTag = form.imageTag || "latest";
-      const credentialIds = selectedCredential ? [`${selectedCredential.name}:${selectedCredential.registryType}`] : undefined;
-      const imageTestResult = await testImage(form.imageUrl, imageTag, credentialIds);
-      
+      const credentialIds = selectedCredential
+        ? [`${selectedCredential.name}:${selectedCredential.registryType}`]
+        : undefined;
+      const imageTestResult = await testImage(
+        form.imageUrl,
+        imageTag,
+        credentialIds
+      );
+
       if (!imageTestResult.available) {
         setShowImageErrorModal(true);
         setSaving(false);
@@ -124,7 +130,10 @@ export default function ConfigureApp({ appId }: { appId: string }) {
       // Prepare nodeSelector with architecture recommendations
       let finalNodeSelector = form.nodeSelector || {};
       if (imageTestResult.recommendedNodeSelector) {
-        finalNodeSelector = { ...finalNodeSelector, ...imageTestResult.recommendedNodeSelector };
+        finalNodeSelector = {
+          ...finalNodeSelector,
+          ...imageTestResult.recommendedNodeSelector,
+        };
       }
 
       const envObj = envList.reduce(
@@ -361,14 +370,21 @@ export default function ConfigureApp({ appId }: { appId: string }) {
             setForm((f) => (f ? { ...f, imageTag: tag } : f))
           }
           credentials={credentials}
-          selectedCredential={selectedCredential ? `${selectedCredential.name}:${selectedCredential.registryType}` : ""}
+          selectedCredential={
+            selectedCredential
+              ? `${selectedCredential.name}:${selectedCredential.registryType}`
+              : ""
+          }
           setSelectedCredential={(value) => {
             if (!value) {
               setSelectedCredential(null);
               return;
             }
             const [credName, registryType] = value.split(":");
-            const cred = credentials.find((c) => c.name === credName && c.registryType === registryType) || null;
+            const cred =
+              credentials.find(
+                (c) => c.name === credName && c.registryType === registryType
+              ) || null;
             setSelectedCredential(cred);
           }}
         />
