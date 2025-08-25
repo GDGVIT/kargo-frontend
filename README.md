@@ -63,6 +63,8 @@ npm run dev
 		<td>
 			Swayam
 			<p align="center">
+			<img src = "https://avatars.githubusercontent.com/u/157891924" width="150" height="150" alt="Upayan Mazumder">
+			</p>
 				<a href = "https://github.com/swayam5342">
 					<img src = "http://www.iconninja.com/files/241/825/211/round-collaboration-social-github-code-circle-network-icon.svg" width="36" height = "36" alt="GitHub"/>
 				</a>
