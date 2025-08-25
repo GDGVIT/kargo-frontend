@@ -15,30 +15,35 @@
 
 
 ## Features
-- [ ]  < feature >
-- [ ]  < feature >
-- [ ]  < feature >
-- [ ]  < feature >
+- [x]  AI-Powered Application Setup - Automatic Dockerfile generation from Git repositories
+- [x]  Real-time Application Monitoring - Live status tracking and metrics visualization
+- [x]  Kubernetes-Native Deployment - Seamless container orchestration and scaling
+- [x]  Multi-Provider Authentication - Google OAuth, GitHub OAuth, and local authentication
 
 <br>
 
 ## Dependencies
- - < dependency >
- - < dependency >
+ - Node.js 20 or higher
+ - Next.js 15.x with React 19
+ - Tailwind CSS 4.x for styling
+ - TypeScript for type safety
 
 
 ## Running
 
 
-< directions to install > 
+Clone the repository and install dependencies
 ```bash
-< insert code >
+git clone https://github.com/GDGVIT/kargo-frontend.git
+cd kargo-frontend
+npm install
+cd app && npm install
 ```
 
-< directions to execute >
+Start the development server
 
 ```bash
-< insert code >
+npm run dev
 ```
 
 ## Contributors
