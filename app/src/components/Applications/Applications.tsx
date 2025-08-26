@@ -65,13 +65,24 @@ export default function Applications() {
         return "text-gray-400";
       case "offline":
         return "text-red-400";
+      case "not deployed":
+        return "text-blue-400";
+      case "cluster unavailable":
+        return "text-purple-400";
       default:
         return "text-gray-500";
     }
   };
 
   const getStatusText = (status: string) => {
-    return status || "unknown";
+    switch (status) {
+      case "not deployed":
+        return "not deployed";
+      case "cluster unavailable":
+        return "cluster unavailable";
+      default:
+        return status || "unknown";
+    }
   };
 
   async function handleDeleteApp(id: string) {
