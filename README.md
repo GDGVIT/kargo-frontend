@@ -73,7 +73,6 @@ npm run dev
 					<img src = "http://www.iconninja.com/files/863/607/751/network-linkedin-social-connection-circular-circle-media-icon.svg" width="36" height="36" alt="LinkedIn"/>
 				</a>
 			</p>
-  		</p>
 	</td>
     <td>
 		Aayush Kumar
