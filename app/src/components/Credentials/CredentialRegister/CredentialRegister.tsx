@@ -5,6 +5,8 @@ import Input from "../../ui/Input/Input";
 import Select from "../../ui/Select/Select";
 import AnimatedButton from "../../ui/AnimatedButton/AnimatedButton";
 import { RiAddLargeFill } from "react-icons/ri";
+import { SiDocker, SiGithub, SiGitlab } from "react-icons/si";
+import { FiBox } from "react-icons/fi";
 
 export default function CredentialRegister({
   onAdd,
@@ -50,10 +52,26 @@ export default function CredentialRegister({
           }))
         }
         options={[
-          { value: "dockerhub", label: "Docker Hub" },
-          { value: "github", label: "GitHub" },
-          { value: "gitlab", label: "GitLab" },
-          { value: "other", label: "Other" },
+          {
+            value: "dockerhub",
+            label: "Docker Hub",
+            icon: <SiDocker className="w-4 h-4" />,
+          },
+          {
+            value: "github",
+            label: "GitHub",
+            icon: <SiGithub className="w-4 h-4" />,
+          },
+          {
+            value: "gitlab",
+            label: "GitLab",
+            icon: <SiGitlab className="w-4 h-4" />,
+          },
+          {
+            value: "other",
+            label: "Other",
+            icon: <FiBox className="w-4 h-4" />,
+          },
         ]}
       />
       <Input

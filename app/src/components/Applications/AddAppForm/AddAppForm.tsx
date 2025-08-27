@@ -152,37 +152,40 @@ export default function AddAppForm() {
         <GithubRepos />
       </Modal>
       <form onSubmit={handleAdd} className="mb-8 space-y-4 min-h-[470px]">
-        <Card form className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <Card form className="space-y-4">
           <div>
             <Input
               required
-              label="Name"
+              label="Application Name"
               value={form.name}
               onChange={(value) => setForm((f) => ({ ...f, name: value }))}
-              placeholder="My App"
+              placeholder="my-app"
             />
           </div>
-          <div>
-            <Input
-              required
-              label="Image Name"
-              value={form.imageUrl}
-              onChange={(value) => setForm((f) => ({ ...f, imageUrl: value }))}
-              placeholder="registry.io/my-app"
-              helperText={
-                <AnimatedButton
-                  type="button"
-                  variant="secondary"
-                  className="!px-2 !py-1 text-xs mt-1"
-                  onClick={() => setDockerModalOpen(true)}
-                >
-                  Dockerize your app
-                </AnimatedButton>
-              }
-            />
-          </div>
-          <div className="flex gap-2">
-            <div className="flex-1">
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="md:col-span-2">
+              <Input
+                required
+                label="Docker Image"
+                value={form.imageUrl}
+                onChange={(value) =>
+                  setForm((f) => ({ ...f, imageUrl: value }))
+                }
+                placeholder="registry.io/my-app"
+                helperText={
+                  <AnimatedButton
+                    type="button"
+                    variant="secondary"
+                    className="!px-2 !py-1 text-xs mt-1"
+                    onClick={() => setDockerModalOpen(true)}
+                  >
+                    Dockerize your app
+                  </AnimatedButton>
+                }
+              />
+            </div>
+            <div>
               <Input
                 required
                 label="Image Tag"
@@ -194,9 +197,11 @@ export default function AddAppForm() {
               />
             </div>
           </div>
+
+          {/* Registry Credentials - Full width */}
           <div>
             <Select
-              label="Registry Credential"
+              label="Registry Credential (Optional)"
               value={
                 selectedCredential
                   ? selectedCredential.name +
@@ -216,7 +221,10 @@ export default function AddAppForm() {
                 }));
               }}
               options={[
-                { value: "", label: "Select a credential" },
+                {
+                  value: "",
+                  label: "Select a credential (for private registries)",
+                },
                 ...credentials.map((cred) => ({
                   value: cred.name + ":" + cred.registryType,
                   label: `${cred.name} [${cred.registryType}] (${cred.username})`,

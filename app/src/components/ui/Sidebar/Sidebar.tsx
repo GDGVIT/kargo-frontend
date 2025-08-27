@@ -7,7 +7,7 @@ import {
   FiBarChart2,
   FiBook,
   FiKey,
-  FiGrid,
+  // FiGrid,
   FiSettings,
   FiShield,
 } from "react-icons/fi";
@@ -33,7 +33,7 @@ export default function Sidebar() {
     { href: "/applications", label: "Applications", icon: <FiBarChart2 /> },
     { href: "/logs", label: "Logs", icon: <FiBook /> },
     { href: "/credentials", label: "Credentials", icon: <FiKey /> },
-    { href: "/plans", label: "Plans", icon: <FiGrid /> },
+    // { href: "/plans", label: "Plans", icon: <FiGrid /> },
     { href: "/settings", label: "Settings", icon: <FiSettings /> },
     ...(isAdmin
       ? [{ href: "/admin", label: "Admin", icon: <FiShield />, admin: true }]

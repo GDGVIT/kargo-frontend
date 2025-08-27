@@ -14,6 +14,7 @@ import UserInput from "../UserInput/UserInput";
 export interface SelectOption {
   value: string;
   label: string;
+  icon?: React.ReactNode;
 }
 
 export interface SelectProps {
@@ -66,7 +67,16 @@ const Select: React.FC<SelectProps> = ({
               aria-label={label}
               style={{ maxWidth: "-webkit-fill-available" }}
             >
-              <span className={`${value ? "text-white" : "text-[#7B8191]"}`}>
+              <span
+                className={`flex items-center gap-2 ${
+                  value ? "text-white" : "text-[#7B8191]"
+                }`}
+              >
+                {value && options.find((opt) => opt.value === value)?.icon && (
+                  <span className="flex items-center">
+                    {options.find((opt) => opt.value === value)?.icon}
+                  </span>
+                )}
                 {options.find((opt) => opt.value === value)?.label || (
                   <span className="text-zinc-500">{placeholder}</span>
                 )}
@@ -113,7 +123,14 @@ const Select: React.FC<SelectProps> = ({
                         >
                           {({ selected }) => (
                             <div className="flex items-center justify-between w-full">
-                              <span>{opt.label}</span>
+                              <div className="flex items-center gap-2">
+                                {opt.icon && (
+                                  <span className="flex items-center">
+                                    {opt.icon}
+                                  </span>
+                                )}
+                                <span>{opt.label}</span>
+                              </div>
                               {selected && (
                                 <span className="flex items-center text-white">
                                   <FiCheck className="w-4 h-4" />

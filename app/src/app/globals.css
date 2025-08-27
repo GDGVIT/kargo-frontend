@@ -81,6 +81,16 @@ body {
   min-height: 100vh;
 }
 
+/* Hide scrollbar for body only */
+body {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+body::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, and Opera */
+}
+
 main {
   margin: auto;
   padding: 1em 2.3em;
@@ -342,10 +352,6 @@ section table {
   }
 }
 
-::-webkit-scrollbar {
-  display: none;
-}
-/* 
 ::-webkit-scrollbar-track {
   background: var(--background);
   border-radius: var(--border-radius-medium);
@@ -369,4 +375,4 @@ section table {
 * {
   scrollbar-width: auto;
   scrollbar-color: #3c445a var(--background);
-} */
+}

@@ -52,7 +52,7 @@ const Settings: React.FC = () => {
       </Card>
       <div className="flex flex-col w-full md:w-2/3 justify-start">
         {user.plan && (
-          <Card>
+          <Card className="mb-0">
             <PlanDetails
               planId={
                 typeof user.plan === "string" ? user.plan : user.plan?._id
