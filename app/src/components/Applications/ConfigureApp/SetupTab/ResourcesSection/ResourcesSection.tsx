@@ -47,76 +47,59 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
   return (
     <div className="mb-6">
       {resourceLimits && (
-        <div className="text-xs text-gray-400 mb-3 space-y-1">
-          <div>
-            Allowed Requests:
-            <span className="font-semibold">
-              {" "}
-              {formatCpu(resourceLimits.allowed.requests.cpuMilli)}{" "}
-            </span>
-            ,
-            <span className="font-semibold">
-              {" "}
-              {formatMemory(resourceLimits.allowed.requests.memoryMB)}{" "}
-            </span>
-            ,
-            <span className="font-semibold">
-              {formatStorage(resourceLimits.allowed.requests.storageGB)}
-            </span>
-          </div>
-          <div>
-            Used:
-            <span className="font-semibold">
-              {" "}
-              {formatCpu(resourceLimits.usage.requests.cpuMilli)}{" "}
-            </span>
-            ,
-            <span className="font-semibold">
-              {" "}
-              {formatMemory(resourceLimits.usage.requests.memoryMB)}{" "}
-            </span>
-            ,
-            <span className="font-semibold">
-              {formatStorage(resourceLimits.usage.requests.storageGB)}
-            </span>
-          </div>
-          <div>
-            Allowed Limits:
-            <span className="font-semibold">
-              {" "}
-              {formatCpu(resourceLimits.allowed.limits.cpuMilli)}{" "}
-            </span>
-            ,
-            <span className="font-semibold">
-              {" "}
-              {formatMemory(resourceLimits.allowed.limits.memoryMB)}{" "}
-            </span>
-            ,
-            <span className="font-semibold">
-              {formatStorage(resourceLimits.allowed.limits.storageGB)}
-            </span>
-          </div>
-          <div>
-            Used:
-            <span className="font-semibold">
-              {" "}
-              {formatCpu(resourceLimits.usage.limits.cpuMilli)}{" "}
-            </span>
-            ,
-            <span className="font-semibold">
-              {" "}
-              {formatMemory(resourceLimits.usage.limits.memoryMB)}{" "}
-            </span>
-            ,
-            <span className="font-semibold">
-              {formatStorage(resourceLimits.usage.limits.storageGB)}
-            </span>
+        <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 mb-6">
+          <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+            Resource Usage Overview
+          </h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+            <div>
+              <div className="font-medium text-gray-600 dark:text-gray-400 mb-2">
+                Requests
+              </div>
+              <div className="space-y-1 text-gray-500 dark:text-gray-500">
+                <div>
+                  Allowed: {formatCpu(resourceLimits.allowed.requests.cpuMilli)}
+                  , {formatMemory(resourceLimits.allowed.requests.memoryMB)},{" "}
+                  {formatStorage(resourceLimits.allowed.requests.storageGB)}
+                </div>
+                <div>
+                  Used: {formatCpu(resourceLimits.usage.requests.cpuMilli)},{" "}
+                  {formatMemory(resourceLimits.usage.requests.memoryMB)},{" "}
+                  {formatStorage(resourceLimits.usage.requests.storageGB)}
+                </div>
+              </div>
+            </div>
+            <div>
+              <div className="font-medium text-gray-600 dark:text-gray-400 mb-2">
+                Limits
+              </div>
+              <div className="space-y-1 text-gray-500 dark:text-gray-500">
+                <div>
+                  Allowed: {formatCpu(resourceLimits.allowed.limits.cpuMilli)},{" "}
+                  {formatMemory(resourceLimits.allowed.limits.memoryMB)},{" "}
+                  {formatStorage(resourceLimits.allowed.limits.storageGB)}
+                </div>
+                <div>
+                  Used: {formatCpu(resourceLimits.usage.limits.cpuMilli)},{" "}
+                  {formatMemory(resourceLimits.usage.limits.memoryMB)},{" "}
+                  {formatStorage(resourceLimits.usage.limits.storageGB)}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       )}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+      <div className="space-y-6">
+        {/* Resource Requests Section */}
         <div>
-          <div className="flex items-center gap-1">
+          <h4 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">
+            Resource Requests
+          </h4>
+          <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+            Minimum guaranteed resources for your application
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <Input
               value={
                 resources?.requests?.cpuMilli !== undefined &&
@@ -130,16 +113,12 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
               placeholder="100"
               inputMode="numeric"
               pattern="[0-9]*"
-              label="CPU Requests"
+              label="CPU"
               className="!mb-0"
               type="number"
               unitType="cpu"
               displayHelperText
             />
-          </div>
-        </div>
-        <div>
-          <div className="flex items-center gap-1">
             <Input
               value={
                 resources?.requests?.memoryMB !== undefined &&
@@ -153,16 +132,12 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
               placeholder="256"
               inputMode="numeric"
               pattern="[0-9]*"
-              label="Memory Requests"
+              label="Memory"
               className="!mb-0"
               type="number"
               unitType="memory"
               displayHelperText
             />
-          </div>
-        </div>
-        <div>
-          <div className="flex items-center gap-1">
             <Input
               value={
                 resources?.requests?.storageGB !== undefined &&
@@ -176,7 +151,7 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
               placeholder="10"
               inputMode="numeric"
               pattern="[0-9]*"
-              label="Storage Requests"
+              label="Storage"
               className="!mb-0"
               type="number"
               unitType="storage"
@@ -184,9 +159,16 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
             />
           </div>
         </div>
-        {/* Limits Section */}
+
+        {/* Resource Limits Section */}
         <div>
-          <div className="flex items-center gap-1">
+          <h4 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">
+            Resource Limits
+          </h4>
+          <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+            Maximum resources your application can use
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <Input
               value={
                 resources?.limits?.cpuMilli !== undefined &&
@@ -200,16 +182,12 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
               placeholder="200"
               inputMode="numeric"
               pattern="[0-9]*"
-              label="CPU Limits"
+              label="CPU"
               className="!mb-0"
               type="number"
               unitType="cpu"
               displayHelperText
             />
-          </div>
-        </div>
-        <div>
-          <div className="flex items-center gap-1">
             <Input
               value={
                 resources?.limits?.memoryMB !== undefined &&
@@ -223,16 +201,12 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
               placeholder="512"
               inputMode="numeric"
               pattern="[0-9]*"
-              label="Memory Limits"
+              label="Memory"
               className="!mb-0"
               type="number"
               unitType="memory"
               displayHelperText
             />
-          </div>
-        </div>
-        <div>
-          <div className="flex items-center gap-1">
             <Input
               value={
                 resources?.limits?.storageGB !== undefined &&
@@ -246,7 +220,7 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
               placeholder="20"
               inputMode="numeric"
               pattern="[0-9]*"
-              label="Storage Limits"
+              label="Storage"
               className="!mb-0"
               type="number"
               unitType="storage"
