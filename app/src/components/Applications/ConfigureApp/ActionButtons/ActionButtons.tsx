@@ -16,6 +16,7 @@ const ActionButtons: React.FC<
   onRolloutRestart,
 }) => (
   <div className="flex flex-wrap gap-3">
+    {/* Primary Action */}
     <AnimatedButton
       type="submit"
       disabled={saving}
@@ -26,16 +27,30 @@ const ActionButtons: React.FC<
     >
       {saving ? "Saving..." : "Save & Deploy"}
     </AnimatedButton>
+
+    {/* Management Actions */}
     <AnimatedButton
       type="button"
       disabled={saving}
-      onClick={onRequestDelete}
+      onClick={onRolloutRestart}
       className="!px-4 !py-2"
-      icon={<FaTrash />}
-      variant="danger"
+      icon={<FaRedo />}
+      variant="secondary"
     >
-      Delete Application
+      Restart Deployment
     </AnimatedButton>
+    <AnimatedButton
+      type="button"
+      disabled={saving}
+      onClick={onRemoveDeployment}
+      className="!px-4 !py-2"
+      icon={<FaPowerOff />}
+      variant="warning"
+    >
+      Remove Deployment
+    </AnimatedButton>
+
+    {/* Information */}
     <AnimatedButton
       type="button"
       className="!px-4 !py-2"
@@ -53,25 +68,17 @@ const ActionButtons: React.FC<
     >
       Logs
     </AnimatedButton>
+
+    {/* Destructive Action */}
     <AnimatedButton
       type="button"
       disabled={saving}
-      onClick={onRemoveDeployment}
+      onClick={onRequestDelete}
       className="!px-4 !py-2"
-      icon={<FaPowerOff />}
-      variant="warning"
+      icon={<FaTrash />}
+      variant="danger"
     >
-      Remove Deployment
-    </AnimatedButton>
-    <AnimatedButton
-      type="button"
-      disabled={saving}
-      onClick={onRolloutRestart}
-      className="!px-4 !py-2"
-      icon={<FaRedo />}
-      variant="secondary"
-    >
-      Restart Deployment
+      Delete Application
     </AnimatedButton>
   </div>
 );

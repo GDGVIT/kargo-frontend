@@ -14,6 +14,7 @@ export default function Applications() {
   const [loading, setLoading] = useState(false);
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
   const [appStatuses, setAppStatuses] = useState<Record<string, string>>({});
+  const [statusLoading, setStatusLoading] = useState(true);
   const router = useRouter();
   const { notify } = useNotification();
 
@@ -36,8 +37,10 @@ export default function Applications() {
         statusMap[app.id.toString()] = app.status;
       });
       setAppStatuses(statusMap);
+      setStatusLoading(false);
     } catch (error) {
       console.warn("Failed to fetch application statuses:", error);
+      setStatusLoading(false);
     }
   }, []);
 
@@ -46,7 +49,22 @@ export default function Applications() {
     fetchAppStatuses();
 
     // Poll for status updates every 30 seconds
-    const statusInterval = setInterval(fetchAppStatuses, 30000);
+    const statusInterval = setInterval(() => {
+      // Don't show loading for subsequent polls
+      const fetchStatusesWithoutLoading = async () => {
+        try {
+          const res = await api.get("/api/applications/status");
+          const statusMap: Record<string, string> = {};
+          res.data.status.forEach((app: { id: string; status: string }) => {
+            statusMap[app.id.toString()] = app.status;
+          });
+          setAppStatuses(statusMap);
+        } catch (error) {
+          console.warn("Failed to fetch application statuses:", error);
+        }
+      };
+      fetchStatusesWithoutLoading();
+    }, 30000);
 
     return () => {
       clearInterval(statusInterval);
@@ -69,6 +87,8 @@ export default function Applications() {
         return "text-blue-400";
       case "cluster unavailable":
         return "text-purple-400";
+      case "loading":
+        return "text-yellow-300";
       default:
         return "text-gray-500";
     }
@@ -80,6 +100,8 @@ export default function Applications() {
         return "not deployed";
       case "cluster unavailable":
         return "cluster unavailable";
+      case "loading":
+        return "loading";
       default:
         return status || "unknown";
     }
@@ -170,18 +192,28 @@ export default function Applications() {
                   <div className="absolute top-3 right-3 flex items-center gap-1">
                     <FaCircle
                       className={`text-xs ${getStatusColor(
-                        appStatuses[app._id.toString()] || "unknown"
+                        statusLoading
+                          ? "loading"
+                          : appStatuses[app._id.toString()] || "unknown"
                       )}`}
                       title={`Status: ${getStatusText(
-                        appStatuses[app._id.toString()]
+                        statusLoading
+                          ? "loading"
+                          : appStatuses[app._id.toString()] || "unknown"
                       )}`}
                     />
                     <span
                       className={`text-xs font-medium capitalize ${getStatusColor(
-                        appStatuses[app._id.toString()] || "unknown"
+                        statusLoading
+                          ? "loading"
+                          : appStatuses[app._id.toString()] || "unknown"
                       )}`}
                     >
-                      {getStatusText(appStatuses[app._id.toString()])}
+                      {getStatusText(
+                        statusLoading
+                          ? "loading"
+                          : appStatuses[app._id.toString()] || "unknown"
+                      )}
                     </span>
                   </div>
                   <h2 className="text-base sm:text-lg font-semibold text-white mb-1 truncate">

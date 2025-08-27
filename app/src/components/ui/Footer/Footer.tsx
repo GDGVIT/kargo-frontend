@@ -1,5 +1,5 @@
 import React from "react";
-// import Link from "next/link";
+import Link from "next/link";
 
 const Footer: React.FC = () => {
   return (
@@ -14,9 +14,9 @@ const Footer: React.FC = () => {
         >
           GitHub
         </a>
-        {/* <Link href="/docs" style={{ color: "lightgray" }}>
+        <Link href="/docs" style={{ color: "lightgray" }}>
           Docs
-        </Link> */}
+        </Link>
       </div>
     </footer>
   );
