@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const baseURL =
-  process.env.NEXT_PUBLIC_API_URL || "https://api.kargo.upayan.dev";
+  process.env.NEXT_PUBLIC_API_URL || "https://api.kargo.dscvit.com";
 
 const instance = axios.create({
   baseURL,

@@ -15,7 +15,7 @@ export function generatePageMetadata({
   image = "/og-image.png",
   imageAlt,
 }: PageMetadataOptions): Metadata {
-  const url = `https://kargo.upayan.dev${path}`;
+  const url = `https://kargo.dscvit.com${path}`;
   const fullTitle = path === "" ? title : `${title} - Kargo`;
   const altText = imageAlt || `${title} - Kargo`;
 
