@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     title: "Kargo",
     description:
       "Kargo lets you deploy containerized applications with full flexibility — AI-powered setup, secure infrastructure, and Kubernetes-native scaling, all from a powerful web interface.",
-    url: "https://kargo.upayan.dev",
+    url: "https://kargo.dscvit.com",
     siteName: "Kargo",
     images: [
       {
@@ -62,9 +62,9 @@ export const metadata: Metadata = {
     address: false,
     email: false,
   },
-  metadataBase: new URL("https://kargo.upayan.dev"),
+  metadataBase: new URL("https://kargo.dscvit.com"),
   alternates: {
-    canonical: "https://kargo.upayan.dev",
+    canonical: "https://kargo.dscvit.com",
     types: {
       "application/rss+xml": "/feed.xml",
       "application/atom+xml": "/feed.atom",
@@ -98,7 +98,7 @@ export const metadata: Metadata = {
   authors: [
     {
       name: "Upayan Mazumder",
-      url: "https://upayan.dev",
+      url: "https://dscvit.com",
     },
   ],
   applicationName: "Kargo",
