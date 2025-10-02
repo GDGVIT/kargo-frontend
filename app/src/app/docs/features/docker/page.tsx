@@ -1,4 +1,5 @@
-import { generatePageMetadata } from "../../../../lib/metadata";
+"use client";
+
 import {
   FaDocker,
   FaShieldAlt,
@@ -8,19 +9,19 @@ import {
   FaChartBar,
   FaBuilding,
   FaSearch,
+  FaStore,
+  FaAws,
+  FaGlobe,
+  FaGitlab,
+  FaLock,
+  FaCheckCircle,
+  FaCheck,
+  FaTimes,
+  FaClipboardList,
+  FaBug,
 } from "react-icons/fa";
 import { HiSparkles, HiCloud } from "react-icons/hi";
-
-const title = "Docker Support";
-const description =
-  "Learn how Kargo provides comprehensive Docker support with intelligent containerization, optimization, and deployment features.";
-
-export const metadata = generatePageMetadata({
-  title,
-  description,
-  path: "/docs/features/docker",
-  imageAlt: "Kargo Docker Support",
-});
+import AnimatedButton from "../../../../components/ui/AnimatedButton/AnimatedButton";
 
 export default function DockerPage() {
   return (
@@ -208,7 +209,9 @@ CMD ["npm", "start"]`}
 
         <h2>Container Registry Integration</h2>
         <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-6 mb-8">
-          <h3 className="font-semibold mb-4">🏪 Multi-Registry Support</h3>
+          <h3 className="font-semibold mb-4 flex items-center">
+            <FaStore className="mr-2" /> Multi-Registry Support
+          </h3>
           <p className="text-gray-600 dark:text-gray-400 mb-4">
             Connect to any container registry for storing and managing your
             Docker images.
@@ -226,7 +229,7 @@ CMD ["npm", "start"]`}
                   </span>
                 </div>
                 <div className="flex items-center p-2 bg-orange-50 dark:bg-orange-900/20 rounded">
-                  <span className="text-orange-600 mr-2">🔶</span>
+                  <FaAws className="text-orange-600 mr-2" />
                   <span className="text-sm">
                     <strong>AWS ECR</strong> - Elastic Container Registry
                   </span>
@@ -238,13 +241,13 @@ CMD ["npm", "start"]`}
                   </span>
                 </div>
                 <div className="flex items-center p-2 bg-blue-50 dark:bg-blue-900/20 rounded">
-                  <span className="text-blue-600 mr-2">🌐</span>
+                  <FaGlobe className="text-blue-600 mr-2" />
                   <span className="text-sm">
                     <strong>Azure ACR</strong> - Azure Container Registry
                   </span>
                 </div>
                 <div className="flex items-center p-2 bg-purple-50 dark:bg-purple-900/20 rounded">
-                  <span className="text-purple-600 mr-2">🦊</span>
+                  <FaGitlab className="text-purple-600 mr-2" />
                   <span className="text-sm">
                     <strong>GitLab Registry</strong> - Integrated with GitLab
                   </span>
@@ -277,7 +280,8 @@ image:
         <div className="space-y-6 mb-8">
           <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-6">
             <h3 className="font-semibold mb-4">
-              🔒 Automated Security Scanning
+              <FaLock className="mr-2" />
+              Automated Security Scanning
             </h3>
             <p className="text-gray-600 dark:text-gray-400 mb-4">
               Every container image is automatically scanned for vulnerabilities
@@ -332,7 +336,8 @@ image:
                   </div>
                   <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-600">
                     <p className="text-xs text-green-600">
-                      ✅ Deployment approved - No critical vulnerabilities
+                      <FaCheckCircle className="mr-2 text-green-500" />
+                      Deployment approved - No critical vulnerabilities
                     </p>
                   </div>
                 </div>
@@ -448,7 +453,8 @@ image:
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <h4 className="font-semibold mb-2 text-green-600">
-                  ✅ Best Practices
+                  <FaCheck className="mr-2" />
+                  Best Practices
                 </h4>
                 <ul className="space-y-1 text-sm">
                   <li>• Copy package files before source code</li>
@@ -464,7 +470,8 @@ image:
 
               <div>
                 <h4 className="font-semibold mb-2 text-red-600">
-                  ❌ Avoid These
+                  <FaTimes className="mr-2" />
+                  Avoid These
                 </h4>
                 <ul className="space-y-1 text-sm">
                   <li>• Installing development dependencies in production</li>
@@ -481,7 +488,9 @@ image:
 
         <h2>Docker Compose Integration</h2>
         <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-6 mb-8">
-          <h3 className="font-semibold mb-4">📋 Local Development</h3>
+          <h3 className="font-semibold mb-4 flex items-center">
+            <FaClipboardList className="mr-2" /> Local Development
+          </h3>
           <p className="text-gray-600 dark:text-gray-400 mb-4">
             Automatically generate Docker Compose files for local development
             and testing.
@@ -609,7 +618,9 @@ volumes:
           </div>
 
           <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-6">
-            <h3 className="font-semibold mb-4">🐛 Debug Tools</h3>
+            <h3 className="font-semibold mb-4 flex items-center">
+              <FaBug className="mr-2" /> Debug Tools
+            </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <h4 className="font-semibold mb-2">Container Shell Access</h4>
@@ -659,18 +670,22 @@ ls -la /app/`}
             and reliability.
           </p>
           <div className="flex flex-col sm:flex-row gap-3">
-            <a
-              href="/docs/quick-start"
-              className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors font-medium"
+            <AnimatedButton
+              onClick={() => (window.location.href = "/docs/quick-start")}
+              variant="primary"
+              className="font-medium px-4 py-2"
             >
               Deploy Your First Container
-            </a>
-            <a
-              href="/docs/applications/creating"
-              className="inline-flex items-center px-4 py-2 border border-blue-300 dark:border-blue-600 text-blue-700 dark:text-blue-300 rounded-md hover:bg-blue-50 dark:hover:bg-blue-900/50 transition-colors font-medium"
+            </AnimatedButton>
+            <AnimatedButton
+              onClick={() =>
+                (window.location.href = "/docs/applications/creating")
+              }
+              variant="secondary"
+              className="font-medium px-4 py-2"
             >
               Learn More About Applications
-            </a>
+            </AnimatedButton>
           </div>
         </div>
       </div>

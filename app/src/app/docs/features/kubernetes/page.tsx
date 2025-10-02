@@ -1,4 +1,5 @@
-import { generatePageMetadata } from "../../../../lib/metadata";
+"use client";
+
 import {
   FaSync,
   FaBolt,
@@ -9,19 +10,13 @@ import {
   FaChartBar,
   FaRocket,
   FaExclamationTriangle,
+  FaLock,
+  FaCircle,
+  FaRobot,
+  FaCheck,
 } from "react-icons/fa";
 import { SiKubernetes } from "react-icons/si";
-
-const title = "Kubernetes Management";
-const description =
-  "Learn how Kargo leverages Kubernetes for container orchestration, scaling, and advanced deployment strategies.";
-
-export const metadata = generatePageMetadata({
-  title,
-  description,
-  path: "/docs/features/kubernetes",
-  imageAlt: "Kargo Kubernetes Management",
-});
+import AnimatedButton from "../../../../components/ui/AnimatedButton/AnimatedButton";
 
 export default function KubernetesPage() {
   return (
@@ -100,7 +95,7 @@ export default function KubernetesPage() {
 
           <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-6">
             <h4 className="font-semibold mb-3 flex items-center">
-              <span className="text-purple-500 mr-2">🔒</span>
+              <FaLock className="text-purple-500 mr-2" />
               Security & Compliance
             </h4>
             <ul className="space-y-2 text-sm">
@@ -175,7 +170,9 @@ strategy:
           </div>
 
           <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-6">
-            <h3 className="font-semibold mb-4">🔵 Blue-Green Deployments</h3>
+            <h3 className="font-semibold mb-4 flex items-center">
+              <FaCircle className="text-blue-500 mr-2" /> Blue-Green Deployments
+            </h3>
             <p className="text-gray-600 dark:text-gray-400 mb-4">
               Deploy to a parallel environment, then switch traffic instantly
               for minimal risk deployments.
@@ -280,7 +277,8 @@ volumeClaimTemplates:
 
           <div className="mt-4 p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
             <h5 className="font-semibold text-purple-900 dark:text-purple-100 mb-2">
-              🤖 AI-Powered Optimization
+              <FaRobot className="mr-2" />
+              AI-Powered Optimization
             </h5>
             <ul className="space-y-1 text-sm text-purple-800 dark:text-purple-200">
               <li>• Analyzes application type and framework requirements</li>
@@ -402,7 +400,8 @@ spec:
         <h2>Multi-Cluster Management</h2>
         <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-6 mb-8">
           <h3 className="font-semibold mb-4">
-            🌍 Global Application Deployment
+            <FaGlobe className="mr-2" />
+            Global Application Deployment
           </h3>
           <p className="text-gray-600 dark:text-gray-400 mb-4">
             Deploy applications across multiple Kubernetes clusters for global
@@ -458,7 +457,8 @@ spec:
         <div className="space-y-4 mb-8">
           <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-700 rounded-lg p-4">
             <h4 className="font-semibold text-green-900 dark:text-green-100 mb-2">
-              ✅ Recommended Practices
+              <FaCheck className="mr-2" />
+              Recommended Practices
             </h4>
             <ul className="space-y-1 text-sm text-green-800 dark:text-green-200">
               <li>
@@ -510,18 +510,22 @@ spec:
             to powerful orchestration features when you need them.
           </p>
           <div className="flex flex-col sm:flex-row gap-3">
-            <a
-              href="/docs/quick-start"
-              className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors font-medium"
+            <AnimatedButton
+              onClick={() => (window.location.href = "/docs/quick-start")}
+              variant="primary"
+              className="font-medium px-4 py-2"
             >
               Deploy Your First App
-            </a>
-            <a
-              href="/docs/applications/configuration"
-              className="inline-flex items-center px-4 py-2 border border-blue-300 dark:border-blue-600 text-blue-700 dark:text-blue-300 rounded-md hover:bg-blue-50 dark:hover:bg-blue-900/50 transition-colors font-medium"
+            </AnimatedButton>
+            <AnimatedButton
+              onClick={() =>
+                (window.location.href = "/docs/applications/configuration")
+              }
+              variant="secondary"
+              className="font-medium px-4 py-2"
             >
               Advanced Configuration
-            </a>
+            </AnimatedButton>
           </div>
         </div>
       </div>

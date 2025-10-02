@@ -1,4 +1,5 @@
 import { generatePageMetadata } from "../../../../lib/metadata";
+import { FaRobot } from "react-icons/fa";
 
 const title = "AI-Powered Setup";
 const description =
@@ -62,8 +63,8 @@ export default function AISetupPage() {
         </ol>
 
         <div className="bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-lg p-6 mt-8">
-          <h3 className="text-lg font-semibold text-purple-900 dark:text-purple-100 mb-2">
-            🤖 AI Features
+          <h3 className="text-lg font-semibold text-purple-900 dark:text-purple-100 mb-2 flex items-center">
+            <FaRobot className="mr-2" /> AI Features
           </h3>
           <p className="text-purple-800 dark:text-purple-200">
             Kargo&apos;s AI is continuously learning and improving. The more you

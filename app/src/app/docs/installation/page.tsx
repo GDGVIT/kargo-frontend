@@ -11,6 +11,12 @@ import {
   FaBox,
   FaLock,
   FaCog,
+  FaApple,
+  FaChartBar,
+  FaShieldAlt,
+  FaSearch,
+  FaFileAlt,
+  FaBook,
 } from "react-icons/fa";
 import { SiKubernetes } from "react-icons/si";
 
@@ -228,7 +234,9 @@ choco install nodejs docker-desktop git`}</code>
             </div>
 
             <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
-              <h5 className="font-semibold mb-2">🍎 macOS</h5>
+              <h5 className="font-semibold mb-2 flex items-center">
+                <FaApple className="mr-1" /> macOS
+              </h5>
               <pre className="text-xs bg-white dark:bg-gray-700 p-2 rounded">
                 <code>{`# Using Homebrew
 brew install node
@@ -419,7 +427,9 @@ SENTRY_DSN=your-sentry-dsn`}
               </p>
             </div>
             <div className="bg-white dark:bg-gray-800 rounded p-3">
-              <h5 className="font-semibold mb-1">📊 Observability</h5>
+              <h5 className="font-semibold mb-1 flex items-center">
+                <FaChartBar className="mr-1" /> Observability
+              </h5>
               <p className="text-xs text-gray-600 dark:text-gray-400">
                 Monitoring, logging, and alerting stack
               </p>
@@ -473,122 +483,74 @@ SENTRY_DSN=your-sentry-dsn`}
           </ul>
         </div>
 
-        <h3>Deployment Options</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-          <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
-            <h4 className="font-semibold mb-2">
-              <FaBullseye className="inline mr-1" /> Helm Charts (Recommended)
-            </h4>
-            <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
-              One-command deployment with configurable values
-            </p>
-            <pre className="bg-gray-100 dark:bg-gray-800 p-3 rounded text-sm">
-              <code>
-                {`# Add Kargo Helm repository
-helm repo add kargo https://charts.kargo.dscvit.com
-helm repo update
+        <h3>Container-Based Production Deployment</h3>
+        <p className="mb-4">
+          For production deployment, you&apos;ll need to containerize both the
+          frontend and backend applications and deploy them to your Kubernetes
+          cluster or container orchestration platform.
+        </p>
 
-# Install with custom values
-helm install kargo kargo/kargo \\
-  --namespace kargo-system \\
-  --create-namespace \\
-  --values production-values.yaml`}
-              </code>
-            </pre>
-          </div>
+        <h4>Step 1: Build Production Images</h4>
+        <pre className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg text-sm overflow-x-auto mb-4">
+          <code>
+            {`# Build frontend image
+cd kargo-frontend
+docker build -t your-registry/kargo-frontend:latest .
 
-          <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
-            <h4 className="font-semibold mb-2">
-              <FaCog className="inline mr-1" /> Kubernetes Manifests
-            </h4>
-            <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
-              Direct deployment with YAML manifests
-            </p>
-            <pre className="bg-gray-100 dark:bg-gray-800 p-3 rounded text-sm">
-              <code>
-                {`# Clone deployment repository
-git clone https://github.com/gdgvit/kargo-deploy.git
-cd kargo-deploy/kubernetes
+# Build backend image
+cd ../kargo-backend
+docker build -t your-registry/kargo-backend:latest .
 
-# Apply manifests
-kubectl apply -f namespace.yaml
-kubectl apply -f configmaps/
-kubectl apply -f secrets/
-kubectl apply -f deployments/`}
-              </code>
-            </pre>
-          </div>
-        </div>
+# Push to your container registry
+docker push your-registry/kargo-frontend:latest
+docker push your-registry/kargo-backend:latest`}
+          </code>
+        </pre>
 
-        <h3>Production Configuration Example</h3>
-        <p className="mb-3">
-          Sample <code>production-values.yaml</code> for Helm deployment:
+        <h4>Step 2: Create Kubernetes Deployments</h4>
+        <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+          Create your own Kubernetes manifests based on your infrastructure
+          requirements:
         </p>
         <pre className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg text-sm overflow-x-auto mb-6">
           <code>
-            {`# Kargo Production Configuration
-global:
-  domain: "kargo.dscvit.com"
-  tlsSecretName: "kargo-tls"
-  storageClass: "fast-ssd"
-
-frontend:
-  replicaCount: 3
-  image:
-    repository: "your-registry/kargo-frontend"
-    tag: "v1.0.0"
-  resources:
-    requests:
-      cpu: "100m"
-      memory: "256Mi"
-    limits:
-      cpu: "500m"
-      memory: "512Mi"
-  
-  autoscaling:
-    enabled: true
-    minReplicas: 3
-    maxReplicas: 10
-    targetCPUUtilizationPercentage: 70
-
-backend:
-  replicaCount: 2
-  image:
-    repository: "your-registry/kargo-backend"
-    tag: "v1.0.0"
-  resources:
-    requests:
-      cpu: "200m"
-      memory: "512Mi"
-    limits:
-      cpu: "1000m"
-      memory: "1Gi"
-
-database:
-  external: true
-  connectionString: "mongodb+srv://user:pass@cluster.mongodb.net/kargo"
-
-monitoring:
-  enabled: true
-  prometheus:
-    enabled: true
-  grafana:
-    enabled: true
-    adminPassword: "secure-password"
-
-ingress:
-  enabled: true
-  className: "nginx"
-  annotations:
-    cert-manager.io/cluster-issuer: "letsencrypt-prod"
-    nginx.ingress.kubernetes.io/ssl-redirect: "true"`}
+            {`# Example deployment structure
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kargo-frontend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: kargo-frontend
+  template:
+    metadata:
+      labels:
+        app: kargo-frontend
+    spec:
+      containers:
+      - name: frontend
+        image: your-registry/kargo-frontend:latest
+        ports:
+        - containerPort: 3000
+        env:
+        - name: NEXT_PUBLIC_API_URL
+          value: "https://api.yourdomain.com"
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "256Mi"
+          limits:
+            cpu: "500m"
+            memory: "512Mi"`}
           </code>
         </pre>
 
         <h3>Security Best Practices</h3>
         <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-700 rounded-lg p-6 mb-8">
           <h4 className="font-semibold text-red-900 dark:text-red-100 mb-3 flex items-center">
-            <span className="mr-2">🔐</span>
+            <FaShieldAlt className="mr-2" />
             Critical Security Checklist
           </h4>
           <ul className="space-y-2 text-sm text-red-800 dark:text-red-200">
@@ -639,7 +601,9 @@ curl https://kargo.yourdomain.com`}
         <h2>Troubleshooting</h2>
         <div className="space-y-4 mb-8">
           <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
-            <h4 className="font-semibold mb-2">🔍 Common Issues</h4>
+            <h4 className="font-semibold mb-2 flex items-center">
+              <FaSearch className="mr-1" /> Common Issues
+            </h4>
             <div className="space-y-3 text-sm">
               <div>
                 <strong>Port already in use:</strong>
@@ -672,7 +636,9 @@ curl https://kargo.yourdomain.com`}
           </div>
 
           <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
-            <h4 className="font-semibold mb-2">📝 Getting Help</h4>
+            <h4 className="font-semibold mb-2 flex items-center">
+              <FaFileAlt className="mr-1" /> Getting Help
+            </h4>
             <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
               If you encounter issues during installation:
             </p>
@@ -720,7 +686,8 @@ curl https://kargo.yourdomain.com`}
 
         <div className="bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 border border-green-200 dark:border-green-700 rounded-lg p-6 mt-8">
           <h3 className="text-lg font-semibold text-green-900 dark:text-green-100 mb-2">
-            🎉 Installation Complete!
+            <FaCheck className="mr-2" />
+            Installation Complete!
           </h3>
           <p className="text-green-800 dark:text-green-200 mb-4">
             Congratulations! You now have Kargo running. Here&apos;s what to do
@@ -729,7 +696,9 @@ curl https://kargo.yourdomain.com`}
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <h5 className="font-semibold mb-2">🚀 Next Steps</h5>
+              <h5 className="font-semibold mb-2 flex items-center">
+                <FaRocket className="mr-1" /> Next Steps
+              </h5>
               <ul className="space-y-1 text-sm">
                 <li>
                   •{" "}
@@ -762,7 +731,9 @@ curl https://kargo.yourdomain.com`}
             </div>
 
             <div>
-              <h5 className="font-semibold mb-2">📚 Learn More</h5>
+              <h5 className="font-semibold mb-2 flex items-center">
+                <FaBook className="mr-1" /> Learn More
+              </h5>
               <ul className="space-y-1 text-sm">
                 <li>
                   •{" "}

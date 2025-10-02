@@ -1,4 +1,5 @@
-import { generatePageMetadata } from "../../../lib/metadata";
+"use client";
+
 import Link from "next/link";
 import {
   FaClock,
@@ -7,24 +8,18 @@ import {
   FaLightbulb,
   FaGithub,
   FaSearch,
-  FaCircle,
-  FaPython,
   FaRocket,
   FaBuilding,
   FaComments,
+  FaRobot,
+  FaGlobe,
+  FaChartBar,
+  FaSync,
+  FaChartLine,
+  FaWrench,
 } from "react-icons/fa";
 import { HiSparkles } from "react-icons/hi";
-
-const title = "Quick Start Guide";
-const description =
-  "Get started with Kargo in minutes. Deploy your first application with our step-by-step guide.";
-
-export const metadata = generatePageMetadata({
-  title,
-  description,
-  path: "/docs/quick-start",
-  imageAlt: "Kargo Quick Start Guide",
-});
+import AnimatedButton from "../../../components/ui/AnimatedButton/AnimatedButton";
 
 export default function QuickStartPage() {
   return (
@@ -75,18 +70,6 @@ export default function QuickStartPage() {
               <li>• Custom domain name</li>
             </ul>
           </div>
-        </div>
-
-        <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-700 rounded-lg p-4 mb-8">
-          <p className="text-yellow-800 dark:text-yellow-200 flex items-start">
-            <span className="text-yellow-600 dark:text-yellow-400 mr-2 mt-0.5">
-              💡
-            </span>
-            <span>
-              <strong>Don&apos;t have a project ready?</strong> We&apos;ll
-              provide a sample repository you can fork and deploy in Step 2.
-            </span>
-          </p>
         </div>
 
         <h2>Step 1: Create Your Kargo Account</h2>
@@ -165,42 +148,6 @@ export default function QuickStartPage() {
               <li>• A port that your application listens on</li>
             </ul>
           </div>
-
-          <div className="border-t border-gray-200 dark:border-gray-700 pt-4">
-            <h4 className="font-semibold mb-2">
-              Option B: Fork Our Sample Application
-            </h4>
-            <p className="text-gray-600 dark:text-gray-400 text-sm mb-3">
-              Try Kargo with our ready-to-deploy sample applications:
-            </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              <a
-                href="https://github.com/kargo-dev/sample-node-app"
-                className="block bg-gray-50 dark:bg-gray-800 rounded-lg p-3 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-              >
-                <div className="flex items-center mb-1">
-                  <FaCircle className="text-green-500 mr-2" />
-                  <span className="font-medium text-sm">Node.js + Express</span>
-                </div>
-                <p className="text-xs text-gray-600 dark:text-gray-400">
-                  Simple REST API with health checks
-                </p>
-              </a>
-
-              <a
-                href="https://github.com/kargo-dev/sample-python-app"
-                className="block bg-gray-50 dark:bg-gray-800 rounded-lg p-3 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-              >
-                <div className="flex items-center mb-1">
-                  <FaPython className="text-blue-500 mr-2" />
-                  <span className="font-medium text-sm">Python + FastAPI</span>
-                </div>
-                <p className="text-xs text-gray-600 dark:text-gray-400">
-                  ML-ready API with async support
-                </p>
-              </a>
-            </div>
-          </div>
         </div>
 
         <h2>Step 3: Deploy Your Application</h2>
@@ -276,7 +223,7 @@ export default function QuickStartPage() {
                 </p>
                 <div className="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-4">
                   <h5 className="font-semibold text-purple-900 dark:text-purple-100 mb-2 flex items-center">
-                    <span className="mr-2">🤖</span>
+                    <FaRobot className="mr-2" />
                     AI will automatically configure:
                   </h5>
                   <ul className="space-y-1 text-sm text-purple-800 dark:text-purple-200">
@@ -342,15 +289,25 @@ export default function QuickStartPage() {
           <div className="mt-4 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
             <h5 className="font-semibold mb-2">Your application will have:</h5>
             <ul className="space-y-1 text-sm">
-              <li>
-                • 🌍 Public HTTPS URL (e.g., https://your-app-abc123.kargo.app)
+              <li className="flex items-center">
+                <FaGlobe className="mr-2 text-blue-500" /> Public HTTPS URL
+                (e.g., https://your-app-abc123.kargo.app)
               </li>
-              <li>• 📊 Real-time monitoring dashboard</li>
+              <li className="flex items-center">
+                <FaChartBar className="mr-2 text-blue-500" /> Real-time
+                monitoring dashboard
+              </li>
               <li>
                 • <FaFileAlt className="inline mr-1" /> Live application logs
               </li>
-              <li>• 🔄 Automatic health checks</li>
-              <li>• 📈 Performance metrics</li>
+              <li className="flex items-center">
+                <FaSync className="mr-2 text-blue-500" /> Automatic health
+                checks
+              </li>
+              <li className="flex items-center">
+                <FaChartLine className="mr-2 text-blue-500" /> Performance
+                metrics
+              </li>
             </ul>
           </div>
         </div>
@@ -367,14 +324,18 @@ export default function QuickStartPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
             <div className="bg-white dark:bg-gray-800 rounded-lg p-3">
-              <h6 className="font-semibold text-sm mb-1">🌐 Access Your App</h6>
+              <h6 className="font-semibold text-sm mb-1 flex items-center">
+                <FaGlobe className="mr-1" /> Access Your App
+              </h6>
               <p className="text-xs text-gray-600 dark:text-gray-400">
                 Click the generated URL to see your live application
               </p>
             </div>
 
             <div className="bg-white dark:bg-gray-800 rounded-lg p-3">
-              <h6 className="font-semibold text-sm mb-1">📊 View Metrics</h6>
+              <h6 className="font-semibold text-sm mb-1 flex items-center">
+                <FaChartBar className="mr-1" /> View Metrics
+              </h6>
               <p className="text-xs text-gray-600 dark:text-gray-400">
                 Monitor performance, requests, and resource usage
               </p>
@@ -394,7 +355,9 @@ export default function QuickStartPage() {
         <h2>What&apos;s Next?</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
           <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-6">
-            <h4 className="font-semibold mb-3">🔧 Level Up Your Deployment</h4>
+            <h4 className="font-semibold mb-3 flex items-center">
+              <FaWrench className="mr-2" /> Level Up Your Deployment
+            </h4>
             <ul className="space-y-2 text-sm">
               <li>
                 <Link
@@ -481,24 +444,32 @@ export default function QuickStartPage() {
             deployment.
           </p>
           <div className="flex flex-wrap gap-3">
-            <a
-              href="https://discord.gg/kargo"
-              className="inline-flex items-center px-3 py-1 bg-blue-600 text-white text-sm rounded-md hover:bg-blue-700 transition-colors"
+            <AnimatedButton
+              onClick={() => window.open("https://discord.gg/kargo", "_blank")}
+              variant="primary"
+              className="text-sm px-3 py-1"
             >
               Discord Community
-            </a>
-            <a
-              href="https://github.com/kargo-dev/kargo/discussions"
-              className="inline-flex items-center px-3 py-1 border border-blue-300 dark:border-blue-600 text-blue-700 dark:text-blue-300 text-sm rounded-md hover:bg-blue-50 dark:hover:bg-blue-900/50 transition-colors"
+            </AnimatedButton>
+            <AnimatedButton
+              onClick={() =>
+                window.open(
+                  "https://github.com/kargo-dev/kargo/discussions",
+                  "_blank"
+                )
+              }
+              variant="secondary"
+              className="text-sm px-3 py-1"
             >
               GitHub Discussions
-            </a>
-            <a
-              href="/support"
-              className="inline-flex items-center px-3 py-1 border border-blue-300 dark:border-blue-600 text-blue-700 dark:text-blue-300 text-sm rounded-md hover:bg-blue-50 dark:hover:bg-blue-900/50 transition-colors"
+            </AnimatedButton>
+            <AnimatedButton
+              onClick={() => (window.location.href = "/support")}
+              variant="secondary"
+              className="text-sm px-3 py-1"
             >
               Support Center
-            </a>
+            </AnimatedButton>
           </div>
         </div>
       </div>

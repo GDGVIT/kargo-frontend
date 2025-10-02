@@ -1,16 +1,7 @@
+"use client";
+
 import Link from "next/link";
-import { generatePageMetadata } from "../../lib/metadata";
-
-const title = "Documentation Page Not Found";
-const description =
-  "The documentation page you are looking for does not exist. Browse our available documentation or return to the docs home.";
-
-export const metadata = generatePageMetadata({
-  title,
-  description,
-  path: "/docs/404",
-  imageAlt: "Kargo Documentation - Page Not Found",
-});
+import AnimatedButton from "../../components/ui/AnimatedButton/AnimatedButton";
 
 export default function DocsNotFound() {
   return (
@@ -30,18 +21,20 @@ export default function DocsNotFound() {
         </div>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-          <Link
-            href="/docs"
-            className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+          <AnimatedButton
+            onClick={() => (window.location.href = "/docs")}
+            variant="primary"
+            className="text-base font-medium px-6 py-3"
           >
             Back to Documentation
-          </Link>
-          <Link
-            href="/"
-            className="inline-flex items-center px-6 py-3 border border-gray-300 dark:border-gray-600 text-base font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+          </AnimatedButton>
+          <AnimatedButton
+            onClick={() => (window.location.href = "/")}
+            variant="secondary"
+            className="text-base font-medium px-6 py-3"
           >
             Go to Homepage
-          </Link>
+          </AnimatedButton>
         </div>
 
         <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-8">

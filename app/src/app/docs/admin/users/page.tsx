@@ -1,16 +1,15 @@
-import { generatePageMetadata } from "../../../../lib/metadata";
-import { FaUsers, FaTheaterMasks, FaCircle, FaCog } from "react-icons/fa";
+"use client";
 
-const title = "User Management";
-const description =
-  "Learn how to manage users, teams, permissions, and access control in your Kargo organization.";
-
-export const metadata = generatePageMetadata({
-  title,
-  description,
-  path: "/docs/admin/users",
-  imageAlt: "Kargo User Management",
-});
+import {
+  FaUsers,
+  FaTheaterMasks,
+  FaCircle,
+  FaCog,
+  FaLock,
+  FaEnvelope,
+  FaClipboardList,
+} from "react-icons/fa";
+import AnimatedButton from "../../../../components/ui/AnimatedButton/AnimatedButton";
 
 export default function UserManagementPage() {
   return (
@@ -210,7 +209,9 @@ export default function UserManagementPage() {
         <h2>Team Management</h2>
         <div className="space-y-6 mb-8">
           <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-6">
-            <h3 className="font-semibold mb-4">👨‍👩‍👧‍👦 Teams & Collaboration</h3>
+            <h3 className="font-semibold mb-4 flex items-center">
+              <FaUsers className="mr-2" /> Teams & Collaboration
+            </h3>
             <p className="text-gray-600 dark:text-gray-400 mb-4">
               Organize users into teams with shared access to applications and
               resources.
@@ -331,8 +332,8 @@ export default function UserManagementPage() {
 
         <h2>Single Sign-On (SSO) Integration</h2>
         <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-6 mb-8">
-          <h3 className="font-semibold mb-4">
-            🔐 Enterprise Identity Integration
+          <h3 className="font-semibold mb-4 flex items-center">
+            <FaLock className="mr-2" /> Enterprise Identity Integration
           </h3>
           <p className="text-gray-600 dark:text-gray-400 mb-6">
             Integrate with your existing identity providers for seamless
@@ -344,7 +345,7 @@ export default function UserManagementPage() {
               <h4 className="font-semibold mb-3">Supported Providers</h4>
               <div className="space-y-2">
                 <div className="flex items-center p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-                  <span className="text-blue-600 mr-3 text-xl">🔵</span>
+                  <FaCircle className="text-blue-600 mr-3 text-xl" />
                   <div>
                     <h5 className="font-semibold text-sm">SAML 2.0</h5>
                     <p className="text-xs text-gray-600 dark:text-gray-400">
@@ -354,7 +355,7 @@ export default function UserManagementPage() {
                 </div>
 
                 <div className="flex items-center p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
-                  <span className="text-green-600 mr-3 text-xl">🟢</span>
+                  <FaCircle className="text-green-600 mr-3 text-xl" />
                   <div>
                     <h5 className="font-semibold text-sm">
                       OAuth 2.0 / OpenID Connect
@@ -366,7 +367,7 @@ export default function UserManagementPage() {
                 </div>
 
                 <div className="flex items-center p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
-                  <span className="text-purple-600 mr-3 text-xl">🟣</span>
+                  <FaCircle className="text-purple-600 mr-3 text-xl" />
                   <div>
                     <h5 className="font-semibold text-sm">
                       LDAP / Active Directory
@@ -422,7 +423,9 @@ export default function UserManagementPage() {
         <h2>User Invitation & Onboarding</h2>
         <div className="space-y-6 mb-8">
           <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-6">
-            <h3 className="font-semibold mb-4">📧 Invitation Workflow</h3>
+            <h3 className="font-semibold mb-4 flex items-center">
+              <FaEnvelope className="mr-2" /> Invitation Workflow
+            </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <h4 className="font-semibold mb-3">Invite New Users</h4>
@@ -522,7 +525,9 @@ export default function UserManagementPage() {
 
         <h2>Audit Logging & Compliance</h2>
         <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-6 mb-8">
-          <h3 className="font-semibold mb-4">📋 Activity Monitoring</h3>
+          <h3 className="font-semibold mb-4 flex items-center">
+            <FaClipboardList className="mr-2" /> Activity Monitoring
+          </h3>
           <p className="text-gray-600 dark:text-gray-400 mb-6">
             Comprehensive audit logging for security, compliance, and
             operational visibility.
@@ -616,25 +621,28 @@ export default function UserManagementPage() {
 
         <div className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 border border-blue-200 dark:border-blue-700 rounded-lg p-6 mt-8">
           <h3 className="text-lg font-semibold text-blue-900 dark:text-blue-100 mb-2">
-            👥 Ready to Manage Your Team?
+            <FaUsers className="mr-2" />
+            Ready to Manage Your Team?
           </h3>
           <p className="text-blue-800 dark:text-blue-200 mb-4">
             Kargo&apos;s user management system scales from small teams to large
             enterprises with comprehensive security and compliance features.
           </p>
           <div className="flex flex-col sm:flex-row gap-3">
-            <a
-              href="/settings/users"
-              className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors font-medium"
+            <AnimatedButton
+              onClick={() => (window.location.href = "/settings/users")}
+              variant="primary"
+              className="font-medium px-4 py-2"
             >
               Manage Users
-            </a>
-            <a
-              href="/docs/admin/plans"
-              className="inline-flex items-center px-4 py-2 border border-blue-300 dark:border-blue-600 text-blue-700 dark:text-blue-300 rounded-md hover:bg-blue-50 dark:hover:bg-blue-900/50 transition-colors font-medium"
+            </AnimatedButton>
+            <AnimatedButton
+              onClick={() => (window.location.href = "/docs/admin/plans")}
+              variant="secondary"
+              className="font-medium px-4 py-2"
             >
               Plans & Billing
-            </a>
+            </AnimatedButton>
           </div>
         </div>
       </div>

@@ -1,4 +1,5 @@
-import { generatePageMetadata } from "../../lib/metadata";
+"use client";
+
 import {
   FaRocket,
   FaRobot,
@@ -16,17 +17,7 @@ import {
   FaUsers,
 } from "react-icons/fa";
 import { SiKubernetes } from "react-icons/si";
-
-const title = "Documentation - Introduction";
-const description =
-  "Learn how to use Kargo to deploy containerized applications with AI-powered setup and Kubernetes-native scaling.";
-
-export const metadata = generatePageMetadata({
-  title,
-  description,
-  path: "/docs",
-  imageAlt: "Kargo Documentation",
-});
+import AnimatedButton from "../../components/ui/AnimatedButton/AnimatedButton";
 
 export default function DocsPage() {
   return (
@@ -243,12 +234,13 @@ export default function DocsPage() {
               <li>3. Deploy with one click</li>
               <li>4. Access your live application</li>
             </ol>
-            <a
-              href="/docs/quick-start"
-              className="inline-block mt-4 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+            <AnimatedButton
+              onClick={() => (window.location.href = "/docs/quick-start")}
+              variant="primary"
+              className="mt-4"
             >
               Start Quick Tutorial
-            </a>
+            </AnimatedButton>
           </div>
 
           <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-6">
@@ -265,12 +257,13 @@ export default function DocsPage() {
               <li>3. Configure production settings</li>
               <li>4. Deploy your first application</li>
             </ol>
-            <a
-              href="/docs/installation"
-              className="inline-block mt-4 px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors"
+            <AnimatedButton
+              onClick={() => (window.location.href = "/docs/installation")}
+              variant="success"
+              className="mt-4"
             >
               Full Installation Guide
-            </a>
+            </AnimatedButton>
           </div>
         </div>
 
@@ -379,18 +372,20 @@ export default function DocsPage() {
             deployments. Start with our free tier and scale as you grow.
           </p>
           <div className="flex flex-col sm:flex-row gap-3">
-            <a
-              href="/docs/quick-start"
-              className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors font-medium"
+            <AnimatedButton
+              onClick={() => (window.location.href = "/docs/quick-start")}
+              variant="primary"
+              className="font-medium"
             >
               Deploy Your First App
-            </a>
-            <a
-              href="/docs/installation"
-              className="inline-flex items-center px-4 py-2 border border-blue-300 dark:border-blue-600 text-blue-700 dark:text-blue-300 rounded-md hover:bg-blue-50 dark:hover:bg-blue-900/50 transition-colors font-medium"
+            </AnimatedButton>
+            <AnimatedButton
+              onClick={() => (window.location.href = "/docs/installation")}
+              variant="secondary"
+              className="font-medium"
             >
               Read Full Documentation
-            </a>
+            </AnimatedButton>
           </div>
         </div>
       </div>

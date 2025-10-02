@@ -1,4 +1,11 @@
 import { generatePageMetadata } from "../../../../lib/metadata";
+import {
+  FaCheckCircle,
+  FaClock,
+  FaTimesCircle,
+  FaSync,
+  FaLink,
+} from "react-icons/fa";
 
 const title = "GitHub Integration";
 const description =
@@ -105,10 +112,19 @@ export default function GitHubIntegrationPage() {
         <h3>Deployment Status</h3>
         <p>Kargo updates GitHub with deployment information:</p>
         <ul>
-          <li>✅ Deployment successful</li>
-          <li>⏳ Deployment in progress</li>
-          <li>❌ Deployment failed</li>
-          <li>🔄 Deployment pending</li>
+          <li className="flex items-center">
+            <FaCheckCircle className="mr-2 text-green-500" /> Deployment
+            successful
+          </li>
+          <li className="flex items-center">
+            <FaClock className="mr-2 text-yellow-500" /> Deployment in progress
+          </li>
+          <li className="flex items-center">
+            <FaTimesCircle className="mr-2 text-red-500" /> Deployment failed
+          </li>
+          <li className="flex items-center">
+            <FaSync className="mr-2 text-blue-500" /> Deployment pending
+          </li>
         </ul>
 
         <h2>Repository Analysis</h2>
@@ -169,8 +185,8 @@ export default function GitHubIntegrationPage() {
         </ul>
 
         <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-6 mt-8">
-          <h3 className="text-lg font-semibold text-blue-900 dark:text-blue-100 mb-2">
-            🔗 Integration Benefits
+          <h3 className="text-lg font-semibold text-blue-900 dark:text-blue-100 mb-2 flex items-center">
+            <FaLink className="mr-2" /> Integration Benefits
           </h3>
           <ul className="text-blue-800 dark:text-blue-200">
             <li>Seamless developer workflow</li>
