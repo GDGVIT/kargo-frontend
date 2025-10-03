@@ -53,16 +53,18 @@ export default function DocsLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex min-h-screen">
+    <div className="min-h-screen">
       {/* Main content */}
-      <div className="flex-1 p-8 my-2">{children}</div>
+      <div className="mr-64 overflow-y-auto min-h-screen">
+        <div className="p-8 my-2">{children}</div>
+      </div>
 
       {/* Sidebar */}
       <aside
-        className="w-64 px-6 py-10"
+        className="w-64 fixed right-0 top-0 h-screen overflow-y-auto px-6 py-10"
         style={{
           backgroundColor: "var(--card-background)",
-          borderRight: "1px solid #3a4152",
+          borderLeft: "1px solid #3a4152",
         }}
       >
         <nav className="space-y-8">
