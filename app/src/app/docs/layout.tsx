@@ -1,57 +1,53 @@
-"use client";
+'use client';
 
-import Link from "next/link";
+import Link from 'next/link';
 
 const docsNavigation = [
   {
-    title: "Getting Started",
+    title: 'Getting Started',
     items: [
-      { name: "Introduction", href: "/docs" },
-      { name: "Quick Start", href: "/docs/quick-start" },
-      { name: "Installation", href: "/docs/installation" },
+      { name: 'Introduction', href: '/docs' },
+      { name: 'Quick Start', href: '/docs/quick-start' },
+      { name: 'Installation', href: '/docs/installation' },
     ],
   },
   {
-    title: "Applications",
+    title: 'Applications',
     items: [
-      { name: "Creating Applications", href: "/docs/applications/creating" },
-      { name: "Configuration", href: "/docs/applications/configuration" },
-      { name: "Deployment", href: "/docs/applications/deployment" },
-      { name: "Environment Variables", href: "/docs/applications/environment" },
+      { name: 'Creating Applications', href: '/docs/applications/creating' },
+      { name: 'Configuration', href: '/docs/applications/configuration' },
+      { name: 'Deployment', href: '/docs/applications/deployment' },
+      { name: 'Environment Variables', href: '/docs/applications/environment' },
     ],
   },
   {
-    title: "Platform Features",
+    title: 'Platform Features',
     items: [
-      { name: "AI-Powered Setup", href: "/docs/features/ai-setup" },
-      { name: "GitHub Integration", href: "/docs/features/github" },
-      { name: "Kubernetes Management", href: "/docs/features/kubernetes" },
-      { name: "Docker Support", href: "/docs/features/docker" },
+      { name: 'AI-Powered Setup', href: '/docs/features/ai-setup' },
+      { name: 'GitHub Integration', href: '/docs/features/github' },
+      { name: 'Kubernetes Management', href: '/docs/features/kubernetes' },
+      { name: 'Docker Support', href: '/docs/features/docker' },
     ],
   },
   {
-    title: "Administration",
+    title: 'Administration',
     items: [
-      { name: "User Management", href: "/docs/admin/users" },
-      { name: "Plans & Billing", href: "/docs/admin/plans" },
-      { name: "Resource Management", href: "/docs/admin/resources" },
+      { name: 'User Management', href: '/docs/admin/users' },
+      { name: 'Plans & Billing', href: '/docs/admin/plans' },
+      { name: 'Resource Management', href: '/docs/admin/resources' },
     ],
   },
   {
-    title: "API Reference",
+    title: 'API Reference',
     items: [
-      { name: "Authentication", href: "/docs/api/authentication" },
-      { name: "Applications API", href: "/docs/api/applications" },
-      { name: "Users API", href: "/docs/api/users" },
+      { name: 'Authentication', href: '/docs/api/authentication' },
+      { name: 'Applications API', href: '/docs/api/applications' },
+      { name: 'Users API', href: '/docs/api/users' },
     ],
   },
 ];
 
-export default function DocsLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function DocsLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen">
       {/* Main content */}
@@ -63,17 +59,14 @@ export default function DocsLayout({
       <aside
         className="w-64 fixed right-0 top-0 h-screen overflow-y-auto px-6 py-10"
         style={{
-          backgroundColor: "var(--card-background)",
-          borderLeft: "1px solid #3a4152",
+          backgroundColor: 'var(--card-background)',
+          borderLeft: '1px solid #3a4152',
         }}
       >
         <nav className="space-y-8">
           {docsNavigation.map((section) => (
             <div key={section.title}>
-              <h3
-                className="font-semibold mb-3"
-                style={{ color: "var(--foreground)" }}
-              >
+              <h3 className="font-semibold mb-3" style={{ color: 'var(--foreground)' }}>
                 {section.title}
               </h3>
               <ul className="space-y-2">
@@ -83,14 +76,14 @@ export default function DocsLayout({
                       href={item.href}
                       className="sidebar-link transition-colors"
                       style={{
-                        color: "#a0aec0",
-                        textDecoration: "none",
+                        color: '#a0aec0',
+                        textDecoration: 'none',
                       }}
                       onMouseEnter={(e) => {
-                        e.currentTarget.style.color = "var(--theme-blue)";
+                        e.currentTarget.style.color = 'var(--theme-blue)';
                       }}
                       onMouseLeave={(e) => {
-                        e.currentTarget.style.color = "#a0aec0";
+                        e.currentTarget.style.color = '#a0aec0';
                       }}
                     >
                       {item.name}

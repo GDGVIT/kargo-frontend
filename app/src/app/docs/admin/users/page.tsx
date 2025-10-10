@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   FaUsers,
@@ -8,8 +8,8 @@ import {
   FaLock,
   FaEnvelope,
   FaClipboardList,
-} from "react-icons/fa";
-import AnimatedButton from "../../../../components/ui/AnimatedButton/AnimatedButton";
+} from 'react-icons/fa';
+import AnimatedButton from '../../../../components/ui/AnimatedButton/AnimatedButton';
 
 export default function UserManagementPage() {
   return (
@@ -18,8 +18,8 @@ export default function UserManagementPage() {
 
       <div className="prose dark:prose-invert max-w-none">
         <p className="text-xl text-gray-600 dark:text-gray-400 mb-8">
-          Comprehensive user and team management with role-based access control,
-          single sign-on integration, and audit logging for enterprise security.
+          Comprehensive user and team management with role-based access control, single sign-on
+          integration, and audit logging for enterprise security.
         </p>
 
         <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700 rounded-lg p-6 mb-8">
@@ -28,8 +28,8 @@ export default function UserManagementPage() {
             Enterprise-Grade Access Control
           </h3>
           <p className="text-blue-800 dark:text-blue-200">
-            Kargo provides fine-grained access control with support for teams,
-            custom roles, and integration with your existing identity providers.
+            Kargo provides fine-grained access control with support for teams, custom roles, and
+            integration with your existing identity providers.
           </p>
         </div>
 
@@ -44,8 +44,7 @@ export default function UserManagementPage() {
                 <div className="space-y-4">
                   <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-700 rounded-lg p-4">
                     <h4 className="font-semibold text-red-900 dark:text-red-100 mb-2">
-                      <FaCircle className="inline mr-1 text-red-500" />{" "}
-                      Organization Owner
+                      <FaCircle className="inline mr-1 text-red-500" /> Organization Owner
                     </h4>
                     <p className="text-red-800 dark:text-red-200 text-sm mb-2">
                       Full administrative access
@@ -61,8 +60,7 @@ export default function UserManagementPage() {
 
                   <div className="bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-700 rounded-lg p-4">
                     <h4 className="font-semibold text-orange-900 dark:text-orange-100 mb-2">
-                      <FaCircle className="inline mr-1 text-orange-500" />{" "}
-                      Administrator
+                      <FaCircle className="inline mr-1 text-orange-500" /> Administrator
                     </h4>
                     <p className="text-orange-800 dark:text-orange-200 text-sm mb-2">
                       Administrative access without billing
@@ -82,8 +80,7 @@ export default function UserManagementPage() {
                 <div className="space-y-4">
                   <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-700 rounded-lg p-4">
                     <h4 className="font-semibold text-green-900 dark:text-green-100 mb-2">
-                      <FaCircle className="inline mr-1 text-green-500" />{" "}
-                      Developer
+                      <FaCircle className="inline mr-1 text-green-500" /> Developer
                     </h4>
                     <p className="text-green-800 dark:text-green-200 text-sm mb-2">
                       Full application development access
@@ -122,8 +119,8 @@ export default function UserManagementPage() {
               <FaCog className="inline mr-1" /> Custom Roles
             </h3>
             <p className="text-gray-600 dark:text-gray-400 mb-4">
-              Create custom roles with specific permissions tailored to your
-              organization&apos;s needs.
+              Create custom roles with specific permissions tailored to your organization&apos;s
+              needs.
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -134,21 +131,11 @@ export default function UserManagementPage() {
                     <h5 className="font-semibold text-sm mb-1">Applications</h5>
                     <div className="text-xs space-y-1">
                       <label className="flex items-center">
-                        <input
-                          type="checkbox"
-                          className="mr-2"
-                          checked
-                          readOnly
-                        />
+                        <input type="checkbox" className="mr-2" checked readOnly />
                         <span>Create applications</span>
                       </label>
                       <label className="flex items-center">
-                        <input
-                          type="checkbox"
-                          className="mr-2"
-                          checked
-                          readOnly
-                        />
+                        <input type="checkbox" className="mr-2" checked readOnly />
                         <span>Deploy applications</span>
                       </label>
                       <label className="flex items-center">
@@ -162,12 +149,7 @@ export default function UserManagementPage() {
                     <h5 className="font-semibold text-sm mb-1">Resources</h5>
                     <div className="text-xs space-y-1">
                       <label className="flex items-center">
-                        <input
-                          type="checkbox"
-                          className="mr-2"
-                          checked
-                          readOnly
-                        />
+                        <input type="checkbox" className="mr-2" checked readOnly />
                         <span>View metrics</span>
                       </label>
                       <label className="flex items-center">
@@ -213,8 +195,7 @@ export default function UserManagementPage() {
               <FaUsers className="mr-2" /> Teams & Collaboration
             </h3>
             <p className="text-gray-600 dark:text-gray-400 mb-4">
-              Organize users into teams with shared access to applications and
-              resources.
+              Organize users into teams with shared access to applications and resources.
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -302,9 +283,7 @@ export default function UserManagementPage() {
                 <h4 className="font-semibold mb-3">Team Permissions</h4>
                 <div className="space-y-3">
                   <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-3">
-                    <h5 className="font-semibold text-sm mb-2">
-                      Application Access
-                    </h5>
+                    <h5 className="font-semibold text-sm mb-2">Application Access</h5>
                     <ul className="text-xs space-y-1">
                       <li>• Teams can be assigned to specific applications</li>
                       <li>• Inherited permissions from team role</li>
@@ -314,9 +293,7 @@ export default function UserManagementPage() {
                   </div>
 
                   <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-3">
-                    <h5 className="font-semibold text-sm mb-2">
-                      Resource Sharing
-                    </h5>
+                    <h5 className="font-semibold text-sm mb-2">Resource Sharing</h5>
                     <ul className="text-xs space-y-1">
                       <li>• Shared secrets and configurations</li>
                       <li>• Team-specific resource quotas</li>
@@ -336,8 +313,8 @@ export default function UserManagementPage() {
             <FaLock className="mr-2" /> Enterprise Identity Integration
           </h3>
           <p className="text-gray-600 dark:text-gray-400 mb-6">
-            Integrate with your existing identity providers for seamless
-            authentication and user provisioning.
+            Integrate with your existing identity providers for seamless authentication and user
+            provisioning.
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
@@ -357,9 +334,7 @@ export default function UserManagementPage() {
                 <div className="flex items-center p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
                   <FaCircle className="text-green-600 mr-3 text-xl" />
                   <div>
-                    <h5 className="font-semibold text-sm">
-                      OAuth 2.0 / OpenID Connect
-                    </h5>
+                    <h5 className="font-semibold text-sm">OAuth 2.0 / OpenID Connect</h5>
                     <p className="text-xs text-gray-600 dark:text-gray-400">
                       Modern authentication protocol
                     </p>
@@ -369,9 +344,7 @@ export default function UserManagementPage() {
                 <div className="flex items-center p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
                   <FaCircle className="text-purple-600 mr-3 text-xl" />
                   <div>
-                    <h5 className="font-semibold text-sm">
-                      LDAP / Active Directory
-                    </h5>
+                    <h5 className="font-semibold text-sm">LDAP / Active Directory</h5>
                     <p className="text-xs text-gray-600 dark:text-gray-400">
                       Directory service integration
                     </p>
@@ -393,9 +366,7 @@ export default function UserManagementPage() {
                   <span className="text-xs font-semibold">Azure AD</span>
                 </div>
                 <div className="bg-gray-50 dark:bg-gray-800 rounded p-2 text-center">
-                  <span className="text-xs font-semibold">
-                    Google Workspace
-                  </span>
+                  <span className="text-xs font-semibold">Google Workspace</span>
                 </div>
                 <div className="bg-gray-50 dark:bg-gray-800 rounded p-2 text-center">
                   <span className="text-xs font-semibold">Ping Identity</span>
@@ -431,9 +402,7 @@ export default function UserManagementPage() {
                 <h4 className="font-semibold mb-3">Invite New Users</h4>
                 <div className="space-y-3">
                   <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-3">
-                    <h5 className="font-semibold text-sm mb-2">
-                      Single Invitation
-                    </h5>
+                    <h5 className="font-semibold text-sm mb-2">Single Invitation</h5>
                     <div className="space-y-2 text-xs">
                       <input
                         type="email"
@@ -441,18 +410,12 @@ export default function UserManagementPage() {
                         className="w-full p-2 border rounded text-gray-900"
                         readOnly
                       />
-                      <select
-                        className="w-full p-2 border rounded text-gray-900"
-                        disabled
-                      >
+                      <select className="w-full p-2 border rounded text-gray-900" disabled>
                         <option>Developer</option>
                         <option>Administrator</option>
                         <option>Viewer</option>
                       </select>
-                      <select
-                        className="w-full p-2 border rounded text-gray-900"
-                        disabled
-                      >
+                      <select className="w-full p-2 border rounded text-gray-900" disabled>
                         <option>Frontend Team</option>
                         <option>Backend Team</option>
                         <option>DevOps Team</option>
@@ -461,9 +424,7 @@ export default function UserManagementPage() {
                   </div>
 
                   <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-3">
-                    <h5 className="font-semibold text-sm mb-2">
-                      Bulk Invitation
-                    </h5>
+                    <h5 className="font-semibold text-sm mb-2">Bulk Invitation</h5>
                     <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">
                       Upload CSV file with user details and assignments
                     </p>
@@ -497,9 +458,7 @@ export default function UserManagementPage() {
                     <div className="w-6 h-6 bg-purple-500 text-white rounded-full flex items-center justify-center text-xs mr-3">
                       3
                     </div>
-                    <span className="text-sm">
-                      Account setup and verification
-                    </span>
+                    <span className="text-sm">Account setup and verification</span>
                   </div>
 
                   <div className="flex items-center p-2 bg-green-50 dark:bg-green-900/20 rounded">
@@ -513,9 +472,7 @@ export default function UserManagementPage() {
                     <div className="w-6 h-6 bg-blue-500 text-white rounded-full flex items-center justify-center text-xs mr-3">
                       5
                     </div>
-                    <span className="text-sm">
-                      Access granted to assigned resources
-                    </span>
+                    <span className="text-sm">Access granted to assigned resources</span>
                   </div>
                 </div>
               </div>
@@ -529,8 +486,7 @@ export default function UserManagementPage() {
             <FaClipboardList className="mr-2" /> Activity Monitoring
           </h3>
           <p className="text-gray-600 dark:text-gray-400 mb-6">
-            Comprehensive audit logging for security, compliance, and
-            operational visibility.
+            Comprehensive audit logging for security, compliance, and operational visibility.
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -538,9 +494,7 @@ export default function UserManagementPage() {
               <h4 className="font-semibold mb-3">Tracked Activities</h4>
               <div className="space-y-2">
                 <div className="bg-red-50 dark:bg-red-900/20 rounded p-2">
-                  <span className="text-red-600 text-sm font-semibold">
-                    Security Events
-                  </span>
+                  <span className="text-red-600 text-sm font-semibold">Security Events</span>
                   <ul className="text-xs mt-1 space-y-1">
                     <li>• User login/logout</li>
                     <li>• Permission changes</li>
@@ -550,9 +504,7 @@ export default function UserManagementPage() {
                 </div>
 
                 <div className="bg-blue-50 dark:bg-blue-900/20 rounded p-2">
-                  <span className="text-blue-600 text-sm font-semibold">
-                    Application Events
-                  </span>
+                  <span className="text-blue-600 text-sm font-semibold">Application Events</span>
                   <ul className="text-xs mt-1 space-y-1">
                     <li>• Application deployments</li>
                     <li>• Configuration changes</li>
@@ -580,8 +532,8 @@ export default function UserManagementPage() {
               <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-3">
                 <div className="text-xs font-mono space-y-2">
                   <div className="pb-2 border-b border-gray-300 dark:border-gray-600">
-                    <span className="text-green-600">2025-01-02 14:30:25</span>{" "}
-                    -<span className="text-blue-600"> USER_LOGIN</span>
+                    <span className="text-green-600">2025-01-02 14:30:25</span> -
+                    <span className="text-blue-600"> USER_LOGIN</span>
                     <br />
                     <span className="text-gray-600 dark:text-gray-400">
                       user: john@company.com, ip: 192.168.1.100
@@ -589,8 +541,8 @@ export default function UserManagementPage() {
                   </div>
 
                   <div className="pb-2 border-b border-gray-300 dark:border-gray-600">
-                    <span className="text-green-600">2025-01-02 14:32:10</span>{" "}
-                    -<span className="text-purple-600"> APP_DEPLOY</span>
+                    <span className="text-green-600">2025-01-02 14:32:10</span> -
+                    <span className="text-purple-600"> APP_DEPLOY</span>
                     <br />
                     <span className="text-gray-600 dark:text-gray-400">
                       app: web-frontend, version: v2.1.0, user: john@company.com
@@ -598,12 +550,11 @@ export default function UserManagementPage() {
                   </div>
 
                   <div className="pb-2 border-b border-gray-300 dark:border-gray-600">
-                    <span className="text-green-600">2025-01-02 14:45:33</span>{" "}
-                    -<span className="text-orange-600"> PERMISSION_CHANGE</span>
+                    <span className="text-green-600">2025-01-02 14:45:33</span> -
+                    <span className="text-orange-600"> PERMISSION_CHANGE</span>
                     <br />
                     <span className="text-gray-600 dark:text-gray-400">
-                      target: sarah@company.com, role: developer→admin, by:
-                      john@company.com
+                      target: sarah@company.com, role: developer→admin, by: john@company.com
                     </span>
                   </div>
                 </div>
@@ -611,8 +562,7 @@ export default function UserManagementPage() {
 
               <div className="mt-3 p-2 bg-yellow-50 dark:bg-yellow-900/20 rounded">
                 <p className="text-xs text-yellow-800 dark:text-yellow-200">
-                  <strong>Retention:</strong> Audit logs are retained for 1 year
-                  (configurable)
+                  <strong>Retention:</strong> Audit logs are retained for 1 year (configurable)
                 </p>
               </div>
             </div>
@@ -625,19 +575,19 @@ export default function UserManagementPage() {
             Ready to Manage Your Team?
           </h3>
           <p className="text-blue-800 dark:text-blue-200 mb-4">
-            Kargo&apos;s user management system scales from small teams to large
-            enterprises with comprehensive security and compliance features.
+            Kargo&apos;s user management system scales from small teams to large enterprises with
+            comprehensive security and compliance features.
           </p>
           <div className="flex flex-col sm:flex-row gap-3">
             <AnimatedButton
-              onClick={() => (window.location.href = "/settings/users")}
+              onClick={() => (window.location.href = '/settings/users')}
               variant="primary"
               className="font-medium px-4 py-2"
             >
               Manage Users
             </AnimatedButton>
             <AnimatedButton
-              onClick={() => (window.location.href = "/docs/admin/plans")}
+              onClick={() => (window.location.href = '/docs/admin/plans')}
               variant="secondary"
               className="font-medium px-4 py-2"
             >

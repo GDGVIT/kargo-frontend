@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import { FaCopy, FaDocker } from "react-icons/fa";
-import DockerModalProps from "../../../../types/DockerModalProps/DockerModalProps";
-import { DockerfileParser } from "dockerfile-ast";
-import yaml from "js-yaml";
-import Button from "../../../ui/AnimatedButton/AnimatedButton";
-import Modal from "../../../ui/Modal/Modal";
+import React, { useState } from 'react';
+import { FaCopy, FaDocker } from 'react-icons/fa';
+import DockerModalProps from '../../../../types/DockerModalProps/DockerModalProps';
+import { DockerfileParser } from 'dockerfile-ast';
+import yaml from 'js-yaml';
+import Button from '../../../ui/AnimatedButton/AnimatedButton';
+import Modal from '../../../ui/Modal/Modal';
 
 const DockerModal: React.FC<DockerModalProps> = ({
   open,
@@ -13,9 +13,7 @@ const DockerModal: React.FC<DockerModalProps> = ({
   repoName,
   onClose,
 }) => {
-  const [activeTab, setActiveTab] = useState(
-    dockerfile ? "dockerfile" : "dockerCompose"
-  );
+  const [activeTab, setActiveTab] = useState(dockerfile ? 'dockerfile' : 'dockerCompose');
   const [copied, setCopied] = useState<string | null>(null);
 
   const handleCopy = (text: string, type: string) => {
@@ -25,39 +23,39 @@ const DockerModal: React.FC<DockerModalProps> = ({
   };
 
   const formatContent = (content?: string) => {
-    if (!content) return "";
+    if (!content) return '';
     let formatted = content.trim();
 
-    formatted = formatted.replace(/^\\n+|\\n+$/g, "");
+    formatted = formatted.replace(/^\\n+|\\n+$/g, '');
 
-    formatted = formatted.replace(/^# No codebase provided\s*\n?/i, "");
+    formatted = formatted.replace(/^# No codebase provided\s*\n?/i, '');
 
-    formatted = formatted.replace(/^['"]|['"]$/g, "");
+    formatted = formatted.replace(/^['"]|['"]$/g, '');
 
-    formatted = formatted.replace(/\\n/g, "\n");
+    formatted = formatted.replace(/\\n/g, '\n');
 
-    formatted = formatted.replace(/\n{3,}/g, "\n\n");
+    formatted = formatted.replace(/\n{3,}/g, '\n\n');
 
     formatted = formatted
-      .split("\n")
+      .split('\n')
       .map((line) => line.trimEnd())
-      .join("\n");
+      .join('\n');
 
-    formatted = formatted.replace(/'([^']+)'/g, "$1");
+    formatted = formatted.replace(/'([^']+)'/g, '$1');
 
     formatted = formatted.replace(/\\'/g, "'").replace(/\\"/g, '"');
 
     formatted = formatted
-      .split("\n")
-      .map((line) => line.replace(/^['"]|['"]$/g, ""))
-      .join("\n");
+      .split('\n')
+      .map((line) => line.replace(/^['"]|['"]$/g, ''))
+      .join('\n');
 
-    formatted = formatted.replace(/\\(\d+)\\/g, "$1");
+    formatted = formatted.replace(/\\(\d+)\\/g, '$1');
     return formatted;
   };
 
   const validateDockerfile = (content?: string) => {
-    if (!content) return { valid: false, error: "No Dockerfile content" };
+    if (!content) return { valid: false, error: 'No Dockerfile content' };
     try {
       DockerfileParser.parse(content);
       return { valid: true };
@@ -70,8 +68,7 @@ const DockerModal: React.FC<DockerModalProps> = ({
   };
 
   const validateDockerCompose = (content?: string) => {
-    if (!content)
-      return { valid: false, error: "No docker-compose.yml content" };
+    if (!content) return { valid: false, error: 'No docker-compose.yml content' };
     try {
       yaml.load(content);
       return { valid: true };
@@ -84,7 +81,7 @@ const DockerModal: React.FC<DockerModalProps> = ({
   };
 
   const formatDockerCompose = (content?: string) => {
-    if (!content) return "";
+    if (!content) return '';
     try {
       const obj = yaml.load(content);
       return yaml.dump(obj, { noRefs: true, lineWidth: 120 });
@@ -94,14 +91,12 @@ const DockerModal: React.FC<DockerModalProps> = ({
   };
 
   const renderTabContent = () => {
-    if (activeTab === "dockerfile" && dockerfile) {
+    if (activeTab === 'dockerfile' && dockerfile) {
       const validation = validateDockerfile(dockerfile);
       if (!validation.valid) {
         return (
           <div className="text-center text-red-400 mt-6">
-            <p className="mb-2 font-semibold">
-              Invalid Dockerfile: {validation.error}
-            </p>
+            <p className="mb-2 font-semibold">Invalid Dockerfile: {validation.error}</p>
           </div>
         );
       }
@@ -109,10 +104,10 @@ const DockerModal: React.FC<DockerModalProps> = ({
         <div className="relative">
           <Button
             className="absolute top-2 right-2 text-xs px-2 py-1 bg-blue-700 hover:bg-blue-800 text-white rounded flex items-center gap-1"
-            onClick={() => handleCopy(formatContent(dockerfile), "dockerfile")}
+            onClick={() => handleCopy(formatContent(dockerfile), 'dockerfile')}
             variant="primary"
           >
-            <FaCopy /> {copied === "dockerfile" ? "Copied!" : "Copy"}
+            <FaCopy /> {copied === 'dockerfile' ? 'Copied!' : 'Copy'}
           </Button>
           <pre className="bg-neutral-800 p-4 text-sm overflow-x-auto text-blue-200 whitespace-pre-wrap border border-blue-700 shadow-inner mt-6">
             {formatContent(dockerfile)}
@@ -120,14 +115,12 @@ const DockerModal: React.FC<DockerModalProps> = ({
         </div>
       );
     }
-    if (activeTab === "dockerCompose" && dockerCompose) {
+    if (activeTab === 'dockerCompose' && dockerCompose) {
       const validation = validateDockerCompose(dockerCompose);
       if (!validation.valid) {
         return (
           <div className="text-center text-red-400 mt-6">
-            <p className="mb-2 font-semibold">
-              Invalid docker-compose.yml: {validation.error}
-            </p>
+            <p className="mb-2 font-semibold">Invalid docker-compose.yml: {validation.error}</p>
           </div>
         );
       }
@@ -135,12 +128,10 @@ const DockerModal: React.FC<DockerModalProps> = ({
         <div className="relative">
           <Button
             className="absolute top-2 right-2 text-xs px-2 py-1 bg-pink-700 hover:bg-pink-800 text-white rounded flex items-center gap-1"
-            onClick={() =>
-              handleCopy(formatDockerCompose(dockerCompose), "dockerCompose")
-            }
+            onClick={() => handleCopy(formatDockerCompose(dockerCompose), 'dockerCompose')}
             variant="primary"
           >
-            <FaCopy /> {copied === "dockerCompose" ? "Copied!" : "Copy"}
+            <FaCopy /> {copied === 'dockerCompose' ? 'Copied!' : 'Copy'}
           </Button>
           <pre className="bg-neutral-800 p-4 text-sm overflow-x-auto text-pink-200 whitespace-pre-wrap border border-pink-700 shadow-inner mt-6">
             {formatDockerCompose(dockerCompose)}
@@ -151,12 +142,12 @@ const DockerModal: React.FC<DockerModalProps> = ({
     return (
       <div className="text-center text-red-400 mt-6">
         <p className="mb-2 font-semibold">
-          No {activeTab === "dockerfile" ? "Dockerfile" : "docker-compose.yml"}{" "}
-          could be generated for this repository.
+          No {activeTab === 'dockerfile' ? 'Dockerfile' : 'docker-compose.yml'} could be generated
+          for this repository.
         </p>
         <p className="text-xs text-zinc-400">
-          This may be due to an unsupported project structure or missing
-          configuration files in the repository.
+          This may be due to an unsupported project structure or missing configuration files in the
+          repository.
         </p>
       </div>
     );
@@ -166,33 +157,33 @@ const DockerModal: React.FC<DockerModalProps> = ({
     <Modal
       open={open}
       onClose={onClose}
-      title={`Dockerization for ${repoName || ""}`}
+      title={`Dockerization for ${repoName || ''}`}
       className="max-w-2xl w-full"
       showCloseButton
     >
       <div className="flex justify-center mb-4 gap-2">
         <Button
           className={`px-4 py-2 rounded-t-lg font-semibold transition-colors duration-200 border-b-2 focus:outline-none flex items-center gap-2 ${
-            activeTab === "dockerfile"
-              ? "bg-blue-700 text-white border-blue-400"
-              : "bg-neutral-800 text-zinc-400 border-transparent hover:bg-neutral-700"
+            activeTab === 'dockerfile'
+              ? 'bg-blue-700 text-white border-blue-400'
+              : 'bg-neutral-800 text-zinc-400 border-transparent hover:bg-neutral-700'
           }`}
-          onClick={() => setActiveTab("dockerfile")}
+          onClick={() => setActiveTab('dockerfile')}
           disabled={!dockerfile}
-          variant={activeTab === "dockerfile" ? "primary" : "secondary"}
+          variant={activeTab === 'dockerfile' ? 'primary' : 'secondary'}
           icon={<FaDocker />}
         >
           Dockerfile
         </Button>
         <Button
           className={`px-4 py-2 rounded-t-lg font-semibold transition-colors duration-200 border-b-2 focus:outline-none flex items-center gap-2 ${
-            activeTab === "dockerCompose"
-              ? "bg-pink-700 text-white border-pink-400"
-              : "bg-neutral-800 text-zinc-400 border-transparent hover:bg-neutral-700"
+            activeTab === 'dockerCompose'
+              ? 'bg-pink-700 text-white border-pink-400'
+              : 'bg-neutral-800 text-zinc-400 border-transparent hover:bg-neutral-700'
           }`}
-          onClick={() => setActiveTab("dockerCompose")}
+          onClick={() => setActiveTab('dockerCompose')}
           disabled={!dockerCompose}
-          variant={activeTab === "dockerCompose" ? "primary" : "secondary"}
+          variant={activeTab === 'dockerCompose' ? 'primary' : 'secondary'}
           icon={<FaDocker />}
         >
           docker-compose.yml

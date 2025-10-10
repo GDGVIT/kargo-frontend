@@ -1,5 +1,5 @@
-import React from "react";
-import Link from "next/link";
+import React from 'react';
+import Link from 'next/link';
 
 const Footer: React.FC = () => {
   return (
@@ -10,11 +10,11 @@ const Footer: React.FC = () => {
           href="https://github.com/GDGVIT/kargo-frontend"
           target="_blank"
           rel="noopener noreferrer"
-          style={{ color: "lightgray" }}
+          style={{ color: 'lightgray' }}
         >
           GitHub
         </a>
-        <Link href="/docs" style={{ color: "lightgray" }}>
+        <Link href="/docs" style={{ color: 'lightgray' }}>
           Docs
         </Link>
       </div>

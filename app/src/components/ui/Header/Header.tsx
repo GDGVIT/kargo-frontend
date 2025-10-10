@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import React from "react";
-import Auth from "./Auth/Auth";
-import { useAuth } from "../../Auth/AuthProvider/AuthProvider";
-import Link from "next/link";
-import Breadcrumbs from "./Breadcrumbs/Breadcrumbs";
+import React from 'react';
+import Auth from './Auth/Auth';
+import { useAuth } from '../../Auth/AuthProvider/AuthProvider';
+import Link from 'next/link';
+import Breadcrumbs from './Breadcrumbs/Breadcrumbs';
 
 const HEADER_HEIGHT = 64;
 
@@ -21,7 +21,7 @@ const Header: React.FC = () => {
     w-full
     z-50
     left-0
-    ${user ? "md:w-[calc(100%-208px)] md:left-[208px] md:z-30" : ""}
+    ${user ? 'md:w-[calc(100%-208px)] md:left-[208px] md:z-30' : ''}
   `;
 
   return (
@@ -33,7 +33,7 @@ const Header: React.FC = () => {
         <Link href="/">
           <span
             className="text-[#9DA3B3] text-base font-normal select-none mr-1 pl-5 flex items-center h-full"
-            style={{ letterSpacing: "1px" }}
+            style={{ letterSpacing: '1px' }}
           >
             Kargo
           </span>

@@ -1,15 +1,15 @@
-import { generatePageMetadata } from "../../../../lib/metadata";
-import { FaRobot } from "react-icons/fa";
+import { generatePageMetadata } from '../../../../lib/metadata';
+import { FaRobot } from 'react-icons/fa';
 
-const title = "AI-Powered Setup";
+const title = 'AI-Powered Setup';
 const description =
   "Discover how Kargo's AI features help optimize and automate your application deployments.";
 
 export const metadata = generatePageMetadata({
   title,
   description,
-  path: "/docs/features/ai-setup",
-  imageAlt: "Kargo AI-Powered Setup",
+  path: '/docs/features/ai-setup',
+  imageAlt: 'Kargo AI-Powered Setup',
 });
 
 export default function AISetupPage() {
@@ -19,15 +19,12 @@ export default function AISetupPage() {
 
       <div className="prose dark:prose-invert max-w-none">
         <p className="text-xl text-gray-600 dark:text-gray-400 mb-8">
-          Kargo&apos;s AI features help you optimize configurations, automate
-          deployments, and follow best practices.
+          Kargo&apos;s AI features help you optimize configurations, automate deployments, and
+          follow best practices.
         </p>
 
         <h2>Automated Dockerization</h2>
-        <p>
-          Kargo can automatically generate Docker configurations for your
-          projects:
-        </p>
+        <p>Kargo can automatically generate Docker configurations for your projects:</p>
         <ul>
           <li>Analyzes your codebase and dependencies</li>
           <li>Generates optimized Dockerfiles</li>
@@ -67,9 +64,8 @@ export default function AISetupPage() {
             <FaRobot className="mr-2" /> AI Features
           </h3>
           <p className="text-purple-800 dark:text-purple-200">
-            Kargo&apos;s AI is continuously learning and improving. The more you
-            use it, the better it becomes at understanding your preferences and
-            requirements.
+            Kargo&apos;s AI is continuously learning and improving. The more you use it, the better
+            it becomes at understanding your preferences and requirements.
           </p>
         </div>
 
@@ -97,9 +93,7 @@ export default function AISetupPage() {
         </div>
 
         <h2>Smart Deployment Suggestions</h2>
-        <p>
-          AI analyzes your application to suggest optimal deployment strategies:
-        </p>
+        <p>AI analyzes your application to suggest optimal deployment strategies:</p>
 
         <h3>Application Analysis</h3>
         <ul>

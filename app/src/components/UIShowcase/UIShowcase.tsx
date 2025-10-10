@@ -1,66 +1,60 @@
-"use client";
+'use client';
 
-import React from "react";
-import AnimatedButton from "../ui/AnimatedButton/AnimatedButton";
-import Card from "../ui/Card/Card";
-import Input from "../ui/Input/Input";
-import Select from "../ui/Select/Select";
-import Textarea from "../ui/Textarea/Textarea";
-import {
-  FaSave,
-  FaTrash,
-  FaCheck,
-  FaExclamationTriangle,
-  FaCode,
-} from "react-icons/fa";
-import useNotification from "../ui/Notification/Notification";
-import Loader from "../ui/Loader/Loader";
-import Modal from "../ui/Modal/Modal";
-import Tabs, { TabItem } from "../ui/Tabs/Tabs";
+import React from 'react';
+import AnimatedButton from '../ui/AnimatedButton/AnimatedButton';
+import Card from '../ui/Card/Card';
+import Input from '../ui/Input/Input';
+import Select from '../ui/Select/Select';
+import Textarea from '../ui/Textarea/Textarea';
+import { FaSave, FaTrash, FaCheck, FaExclamationTriangle, FaCode } from 'react-icons/fa';
+import useNotification from '../ui/Notification/Notification';
+import Loader from '../ui/Loader/Loader';
+import Modal from '../ui/Modal/Modal';
+import Tabs, { TabItem } from '../ui/Tabs/Tabs';
 
 export default function UIPage() {
   const selectOptions = [
-    { value: "", label: "Select an option" },
-    { value: "one", label: "Option One" },
-    { value: "two", label: "Option Two" },
+    { value: '', label: 'Select an option' },
+    { value: 'one', label: 'Option One' },
+    { value: 'two', label: 'Option Two' },
   ];
   const { notify } = useNotification();
   const [loading, setLoading] = React.useState(false);
   const [modalOpen, setModalOpen] = React.useState(false);
 
-  const [selectedOption1, setSelectedOption1] = React.useState("");
-  const [selectedOption2, setSelectedOption2] = React.useState("");
-  const [selectedOption3, setSelectedOption3] = React.useState("one");
-  const [selectedOption4, setSelectedOption4] = React.useState("");
+  const [selectedOption1, setSelectedOption1] = React.useState('');
+  const [selectedOption2, setSelectedOption2] = React.useState('');
+  const [selectedOption3, setSelectedOption3] = React.useState('one');
+  const [selectedOption4, setSelectedOption4] = React.useState('');
 
-  const [input1, setInput1] = React.useState("");
-  const [input2, setInput2] = React.useState("");
-  const [input3] = React.useState("Read only value");
-  const [input4, setInput4] = React.useState("");
-  const [input5, setInput5] = React.useState("");
-  const [input7, setInput7] = React.useState("");
+  const [input1, setInput1] = React.useState('');
+  const [input2, setInput2] = React.useState('');
+  const [input3] = React.useState('Read only value');
+  const [input4, setInput4] = React.useState('');
+  const [input5, setInput5] = React.useState('');
+  const [input7, setInput7] = React.useState('');
 
-  const [showcaseTab, setShowcaseTab] = React.useState("tab1");
+  const [showcaseTab, setShowcaseTab] = React.useState('tab1');
   const showcaseTabs: TabItem[] = [
     {
-      key: "tab1",
-      label: "Tab One",
-      heading: "Tab One Heading",
-      subheading: "This is the first tab.",
+      key: 'tab1',
+      label: 'Tab One',
+      heading: 'Tab One Heading',
+      subheading: 'This is the first tab.',
       content: <div>Content for Tab One goes here.</div>,
     },
     {
-      key: "tab2",
-      label: "Tab Two",
-      heading: "Tab Two Heading",
-      subheading: "This is the second tab.",
+      key: 'tab2',
+      label: 'Tab Two',
+      heading: 'Tab Two Heading',
+      subheading: 'This is the second tab.',
       content: <div>Content for Tab Two goes here.</div>,
     },
     {
-      key: "tab3",
-      label: "Tab Three",
-      heading: "Tab Three Heading",
-      subheading: "This is the third tab.",
+      key: 'tab3',
+      label: 'Tab Three',
+      heading: 'Tab Three Heading',
+      subheading: 'This is the third tab.',
       content: <div>Content for Tab Three goes here.</div>,
     },
   ];
@@ -68,27 +62,22 @@ export default function UIPage() {
   return (
     <>
       {loading && <Loader />}
-      <Modal
-        open={modalOpen}
-        onClose={() => setModalOpen(false)}
-        title="Demo Modal"
-      >
+      <Modal open={modalOpen} onClose={() => setModalOpen(false)} title="Demo Modal">
         <div style={{ minHeight: 60 }}>
           <p>
-            This is a simulated modal. You can close it using the close button
-            or outside click.
+            This is a simulated modal. You can close it using the close button or outside click.
           </p>
         </div>
       </Modal>
 
       <section id="headings">
         <h2
-          style={{ cursor: "pointer" }}
+          style={{ cursor: 'pointer' }}
           onClick={() => {
-            document.getElementById("headings")?.scrollIntoView({
-              behavior: "smooth",
+            document.getElementById('headings')?.scrollIntoView({
+              behavior: 'smooth',
             });
-            window.location.hash = "#headings";
+            window.location.hash = '#headings';
           }}
         >
           Headings
@@ -107,49 +96,40 @@ export default function UIPage() {
 
       <section id="animated-button">
         <h2
-          style={{ cursor: "pointer" }}
+          style={{ cursor: 'pointer' }}
           onClick={() => {
-            document.getElementById("animated-button")?.scrollIntoView({
-              behavior: "smooth",
+            document.getElementById('animated-button')?.scrollIntoView({
+              behavior: 'smooth',
             });
-            window.location.hash = "#animated-button";
+            window.location.hash = '#animated-button';
           }}
         >
           Animated Button
         </h2>
         <div className="responsive-flex-row">
           <AnimatedButton
-            onClick={() => notify("Primary button clicked", "info")}
+            onClick={() => notify('Primary button clicked', 'info')}
             icon={<FaCode />}
           ></AnimatedButton>
           <AnimatedButton
             variant="primary"
-            onClick={() => notify("Primary button clicked", "info")}
+            onClick={() => notify('Primary button clicked', 'info')}
           >
             Primary
           </AnimatedButton>
           <AnimatedButton
             variant="secondary"
-            onClick={() => notify("Secondary button clicked", "info")}
+            onClick={() => notify('Secondary button clicked', 'info')}
           >
             Secondary
           </AnimatedButton>
-          <AnimatedButton
-            variant="success"
-            onClick={() => notify("Success!", "success")}
-          >
+          <AnimatedButton variant="success" onClick={() => notify('Success!', 'success')}>
             Success
           </AnimatedButton>
-          <AnimatedButton
-            variant="danger"
-            onClick={() => notify("Danger!", "error")}
-          >
+          <AnimatedButton variant="danger" onClick={() => notify('Danger!', 'error')}>
             Danger
           </AnimatedButton>
-          <AnimatedButton
-            variant="warning"
-            onClick={() => notify("Warning!", "warning")}
-          >
+          <AnimatedButton variant="warning" onClick={() => notify('Warning!', 'warning')}>
             Warning
           </AnimatedButton>
           <AnimatedButton variant="primary" disabled>
@@ -158,14 +138,14 @@ export default function UIPage() {
           <AnimatedButton
             variant="primary"
             icon={<FaSave />}
-            onClick={() => notify("Saved!", "success")}
+            onClick={() => notify('Saved!', 'success')}
           >
             With Icon
           </AnimatedButton>
           <AnimatedButton
             variant="danger"
             icon={<FaTrash />}
-            onClick={() => notify("Deleted!", "error")}
+            onClick={() => notify('Deleted!', 'error')}
           >
             Danger + Icon
           </AnimatedButton>
@@ -175,7 +155,7 @@ export default function UIPage() {
           <AnimatedButton
             variant="warning"
             icon={<FaExclamationTriangle />}
-            onClick={() => notify("Warning with icon!", "warning")}
+            onClick={() => notify('Warning with icon!', 'warning')}
           >
             Warning + Icon
           </AnimatedButton>
@@ -184,12 +164,12 @@ export default function UIPage() {
 
       <section id="card" style={{ marginTop: 40 }}>
         <h2
-          style={{ cursor: "pointer" }}
+          style={{ cursor: 'pointer' }}
           onClick={() => {
-            document.getElementById("card")?.scrollIntoView({
-              behavior: "smooth",
+            document.getElementById('card')?.scrollIntoView({
+              behavior: 'smooth',
             });
-            window.location.hash = "#card";
+            window.location.hash = '#card';
           }}
         >
           Card
@@ -205,7 +185,7 @@ export default function UIPage() {
             </div>
           </Card>
           <Card
-            onClick={() => notify("Card clicked!", "info")}
+            onClick={() => notify('Card clicked!', 'info')}
             elevation={3}
             aria-label="Clickable card"
           >
@@ -216,7 +196,7 @@ export default function UIPage() {
           </Card>
           <Card
             hoverable
-            onClick={() => notify("Hoverable & Clickable Card!", "success")}
+            onClick={() => notify('Hoverable & Clickable Card!', 'success')}
             elevation={4}
             aria-label="Hoverable and clickable card"
             animationDuration={1}
@@ -235,7 +215,7 @@ export default function UIPage() {
           </Card>
           <Card>
             <div className="responsive-flex-center">
-              <ul style={{ textAlign: "center" }}>
+              <ul style={{ textAlign: 'center' }}>
                 <li>List item 1</li>
                 <li>List item 2</li>
                 <li>List item 3</li>
@@ -247,12 +227,12 @@ export default function UIPage() {
 
       <section id="inputs" style={{ marginTop: 40 }}>
         <h2
-          style={{ cursor: "pointer" }}
+          style={{ cursor: 'pointer' }}
           onClick={() => {
-            document.getElementById("inputs")?.scrollIntoView({
-              behavior: "smooth",
+            document.getElementById('inputs')?.scrollIntoView({
+              behavior: 'smooth',
             });
-            window.location.hash = "#inputs";
+            window.location.hash = '#inputs';
           }}
         >
           Inputs
@@ -357,12 +337,12 @@ export default function UIPage() {
 
       <section id="select" style={{ marginTop: 40 }}>
         <h2
-          style={{ cursor: "pointer" }}
+          style={{ cursor: 'pointer' }}
           onClick={() => {
-            document.getElementById("select")?.scrollIntoView({
-              behavior: "smooth",
+            document.getElementById('select')?.scrollIntoView({
+              behavior: 'smooth',
             });
-            window.location.hash = "#select";
+            window.location.hash = '#select';
           }}
         >
           Select
@@ -413,7 +393,7 @@ export default function UIPage() {
             <Select
               label="Disabled"
               options={selectOptions}
-              value={""}
+              value={''}
               onChange={() => {}}
               disabled
               helperText="Disabled select."
@@ -424,12 +404,12 @@ export default function UIPage() {
 
       <section id="textarea" style={{ marginTop: 40 }}>
         <h2
-          style={{ cursor: "pointer" }}
+          style={{ cursor: 'pointer' }}
           onClick={() => {
-            document.getElementById("textarea")?.scrollIntoView({
-              behavior: "smooth",
+            document.getElementById('textarea')?.scrollIntoView({
+              behavior: 'smooth',
             });
-            window.location.hash = "#textarea";
+            window.location.hash = '#textarea';
           }}
         >
           Textarea
@@ -441,20 +421,11 @@ export default function UIPage() {
           </Card>
           <Card form elevation={2} className="min-w-[320px] flex-1">
             <h4>With Label</h4>
-            <Textarea
-              label="With label"
-              placeholder="With label"
-              helperText="Labelled textarea."
-            />
+            <Textarea label="With label" placeholder="With label" helperText="Labelled textarea." />
           </Card>
           <Card form elevation={2} className="min-w-[320px] flex-1">
             <h4>With Value</h4>
-            <Textarea
-              label="With value"
-              value="Value"
-              readOnly
-              helperText="Read-only textarea."
-            />
+            <Textarea label="With value" value="Value" readOnly helperText="Read-only textarea." />
           </Card>
           <Card form elevation={2} className="min-w-[320px] flex-1">
             <h4>Error</h4>
@@ -479,12 +450,12 @@ export default function UIPage() {
 
       <section id="loader-modal" style={{ marginTop: 40 }}>
         <h2
-          style={{ cursor: "pointer" }}
+          style={{ cursor: 'pointer' }}
           onClick={() => {
-            document.getElementById("loader-modal")?.scrollIntoView({
-              behavior: "smooth",
+            document.getElementById('loader-modal')?.scrollIntoView({
+              behavior: 'smooth',
             });
-            window.location.hash = "#loader-modal";
+            window.location.hash = '#loader-modal';
           }}
         >
           Simulate Loader & Modal
@@ -494,10 +465,10 @@ export default function UIPage() {
             variant="primary"
             onClick={async () => {
               setLoading(true);
-              notify("Loading for 3 seconds...", "info");
+              notify('Loading for 3 seconds...', 'info');
               await new Promise((res) => setTimeout(res, 3000));
               setLoading(false);
-              notify("3s Loader finished!", "success");
+              notify('3s Loader finished!', 'success');
             }}
           >
             Simulate 3s Loader
@@ -506,18 +477,15 @@ export default function UIPage() {
             variant="warning"
             onClick={async () => {
               setLoading(true);
-              notify("Loading for 30 seconds...", "warning");
+              notify('Loading for 30 seconds...', 'warning');
               await new Promise((res) => setTimeout(res, 30000));
               setLoading(false);
-              notify("30s Loader finished!", "success");
+              notify('30s Loader finished!', 'success');
             }}
           >
             Simulate 30s Loader
           </AnimatedButton>
-          <AnimatedButton
-            variant="secondary"
-            onClick={() => setModalOpen(true)}
-          >
+          <AnimatedButton variant="secondary" onClick={() => setModalOpen(true)}>
             Simulate Modal
           </AnimatedButton>
         </div>
@@ -525,12 +493,12 @@ export default function UIPage() {
 
       <section id="tabs" style={{ marginTop: 40 }}>
         <h2
-          style={{ cursor: "pointer" }}
+          style={{ cursor: 'pointer' }}
           onClick={() => {
-            document.getElementById("tabs")?.scrollIntoView({
-              behavior: "smooth",
+            document.getElementById('tabs')?.scrollIntoView({
+              behavior: 'smooth',
             });
-            window.location.hash = "#tabs";
+            window.location.hash = '#tabs';
           }}
         >
           Tabs

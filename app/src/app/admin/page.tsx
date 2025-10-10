@@ -1,8 +1,8 @@
-import AdminDashboard from "../../components/Admin/AdminDashboard";
-import PageHeading from "../../components/ui/PageHeading/PageHeading";
+import AdminDashboard from '../../components/Admin/AdminDashboard';
+import PageHeading from '../../components/ui/PageHeading/PageHeading';
 
-const title = "Admin Dashboard";
-const description = "Manage your application settings.";
+const title = 'Admin Dashboard';
+const description = 'Manage your application settings.';
 
 export const metadata = {
   title,

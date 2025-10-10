@@ -1,10 +1,10 @@
-import React from "react";
-import Modal from "../../../ui/Modal/Modal";
-import Input from "../../../ui/Input/Input";
-import Textarea from "../../../ui/Textarea/Textarea";
-import AnimatedButton from "../../../ui/AnimatedButton/AnimatedButton";
-import { FaMicrochip, FaMemory } from "react-icons/fa6";
-import type PlanFormModalProps from "../../../../types/Plan/PlanFormModalProps";
+import React from 'react';
+import Modal from '../../../ui/Modal/Modal';
+import Input from '../../../ui/Input/Input';
+import Textarea from '../../../ui/Textarea/Textarea';
+import AnimatedButton from '../../../ui/AnimatedButton/AnimatedButton';
+import { FaMicrochip, FaMemory } from 'react-icons/fa6';
+import type PlanFormModalProps from '../../../../types/Plan/PlanFormModalProps';
 
 const PlanFormModal: React.FC<PlanFormModalProps> = ({
   show,
@@ -18,11 +18,7 @@ const PlanFormModal: React.FC<PlanFormModalProps> = ({
 }) => {
   if (!show) return null;
   return (
-    <Modal
-      open={show}
-      onClose={onClose}
-      title={editingPlan ? "Edit Plan" : "New Plan"}
-    >
+    <Modal open={show} onClose={onClose} title={editingPlan ? 'Edit Plan' : 'New Plan'}>
       <form onSubmit={onSubmit} className="space-y-4">
         <Input
           label="Name"
@@ -35,9 +31,7 @@ const PlanFormModal: React.FC<PlanFormModalProps> = ({
         <Textarea
           label="Description"
           value={planForm.description}
-          onChange={(e) =>
-            setPlanForm((f) => ({ ...f, description: e.target.value }))
-          }
+          onChange={(e) => setPlanForm((f) => ({ ...f, description: e.target.value }))}
           placeholder="Description"
           title="Description"
         />
@@ -56,9 +50,7 @@ const PlanFormModal: React.FC<PlanFormModalProps> = ({
           <Input
             label="Requests Memory"
             value={planForm.requestsMemory}
-            onChange={(val) =>
-              setPlanForm((f) => ({ ...f, requestsMemory: val }))
-            }
+            onChange={(val) => setPlanForm((f) => ({ ...f, requestsMemory: val }))}
             placeholder="Memory"
             title="Requests Memory"
             type="number"
@@ -69,9 +61,7 @@ const PlanFormModal: React.FC<PlanFormModalProps> = ({
           <Input
             label="Requests Storage"
             value={planForm.requestsStorage}
-            onChange={(val) =>
-              setPlanForm((f) => ({ ...f, requestsStorage: val }))
-            }
+            onChange={(val) => setPlanForm((f) => ({ ...f, requestsStorage: val }))}
             placeholder="Storage"
             title="Requests Storage"
             type="number"
@@ -94,9 +84,7 @@ const PlanFormModal: React.FC<PlanFormModalProps> = ({
           <Input
             label="Limits Memory"
             value={planForm.limitsMemory}
-            onChange={(val) =>
-              setPlanForm((f) => ({ ...f, limitsMemory: val }))
-            }
+            onChange={(val) => setPlanForm((f) => ({ ...f, limitsMemory: val }))}
             placeholder="Memory"
             title="Limits Memory"
             type="number"
@@ -107,9 +95,7 @@ const PlanFormModal: React.FC<PlanFormModalProps> = ({
           <Input
             label="Limits Storage"
             value={planForm.limitsStorage}
-            onChange={(val) =>
-              setPlanForm((f) => ({ ...f, limitsStorage: val }))
-            }
+            onChange={(val) => setPlanForm((f) => ({ ...f, limitsStorage: val }))}
             placeholder="Storage"
             title="Limits Storage"
             type="number"
@@ -131,9 +117,7 @@ const PlanFormModal: React.FC<PlanFormModalProps> = ({
             <input
               type="checkbox"
               checked={planForm.isDefault}
-              onChange={(e) =>
-                setPlanForm((f) => ({ ...f, isDefault: e.target.checked }))
-              }
+              onChange={(e) => setPlanForm((f) => ({ ...f, isDefault: e.target.checked }))}
             />
             Default (BASE)
           </label>
@@ -141,9 +125,7 @@ const PlanFormModal: React.FC<PlanFormModalProps> = ({
             <input
               type="checkbox"
               checked={planForm.isActive}
-              onChange={(e) =>
-                setPlanForm((f) => ({ ...f, isActive: e.target.checked }))
-              }
+              onChange={(e) => setPlanForm((f) => ({ ...f, isActive: e.target.checked }))}
             />
             Active
           </label>
@@ -154,11 +136,7 @@ const PlanFormModal: React.FC<PlanFormModalProps> = ({
           className="w-full py-2 !rounded !bg-sky-600 hover:!bg-sky-700 font-semibold"
           icon={null}
         >
-          {planFormLoading
-            ? "Saving..."
-            : editingPlan
-            ? "Update Plan"
-            : "Create Plan"}
+          {planFormLoading ? 'Saving...' : editingPlan ? 'Update Plan' : 'Create Plan'}
         </AnimatedButton>
       </form>
     </Modal>

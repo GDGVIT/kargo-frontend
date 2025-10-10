@@ -1,7 +1,7 @@
-import React from "react";
-import { FaUser, FaEnvelope, FaSignOutAlt } from "react-icons/fa";
-import AnimatedButton from "../ui/AnimatedButton/AnimatedButton";
-import { FaUser as FaUserIcon } from "react-icons/fa";
+import React from 'react';
+import { FaUser, FaEnvelope, FaSignOutAlt } from 'react-icons/fa';
+import AnimatedButton from '../ui/AnimatedButton/AnimatedButton';
+import { FaUser as FaUserIcon } from 'react-icons/fa';
 
 interface ProfileProps {
   user: {
@@ -15,12 +15,7 @@ interface ProfileProps {
   handleLogout: () => void;
 }
 
-const Profile: React.FC<ProfileProps> = ({
-  user,
-  imageError,
-  setImageError,
-  handleLogout,
-}) => {
+const Profile: React.FC<ProfileProps> = ({ user, imageError, setImageError, handleLogout }) => {
   return (
     <>
       <div className="relative">
@@ -41,19 +36,13 @@ const Profile: React.FC<ProfileProps> = ({
       <div className="flex flex-col items-center md:items-start gap-1 w-full">
         <div className="flex flex-wrap items-center gap-3 text-xl font-bold text-white select-text w-full">
           <FaUser className="text-sky-400 flex-shrink-0" />
-          <span
-            className="break-words flex-1 min-w-0"
-            style={{ wordBreak: "break-word" }}
-          >
+          <span className="break-words flex-1 min-w-0" style={{ wordBreak: 'break-word' }}>
             {user.name}
           </span>
         </div>
         <div className="flex flex-wrap items-center gap-2 text-zinc-300 text-base select-text w-full">
           <FaEnvelope className="text-sky-400 flex-shrink-0" />
-          <span
-            className="break-words flex-1 min-w-0"
-            style={{ wordBreak: "break-word" }}
-          >
+          <span className="break-words flex-1 min-w-0" style={{ wordBreak: 'break-word' }}>
             {user.email}
           </span>
         </div>

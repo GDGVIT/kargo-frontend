@@ -1,10 +1,10 @@
-import Card from "../../ui/Card/Card";
-import { FaDocker, FaGithub, FaGitlab, FaKey } from "react-icons/fa";
-import AnimatedButton from "../../ui/AnimatedButton/AnimatedButton";
-import Modal from "../../ui/Modal/Modal";
-import type RegistryCredential from "../../../types/Registry/RegistryCredential/RegistryCredential";
-import { useState } from "react";
-import { FaTrash } from "react-icons/fa";
+import Card from '../../ui/Card/Card';
+import { FaDocker, FaGithub, FaGitlab, FaKey } from 'react-icons/fa';
+import AnimatedButton from '../../ui/AnimatedButton/AnimatedButton';
+import Modal from '../../ui/Modal/Modal';
+import type RegistryCredential from '../../../types/Registry/RegistryCredential/RegistryCredential';
+import { useState } from 'react';
+import { FaTrash } from 'react-icons/fa';
 
 export default function CredentialList({
   credentials,
@@ -23,18 +23,16 @@ export default function CredentialList({
 
   return (
     <div>
-      <h3 className="text-lg font-semibold text-gray-200 mb-2">
-        Saved Credentials
-      </h3>
+      <h3 className="text-lg font-semibold text-gray-200 mb-2">Saved Credentials</h3>
       {credentials.length === 0 ? (
         <div className="text-gray-400">No credentials saved yet.</div>
       ) : (
         <ul className="space-y-2 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
           {credentials.map((cred) => {
             let Icon = FaKey;
-            if (cred.registryType === "dockerhub") Icon = FaDocker;
-            else if (cred.registryType === "github") Icon = FaGithub;
-            else if (cred.registryType === "gitlab") Icon = FaGitlab;
+            if (cred.registryType === 'dockerhub') Icon = FaDocker;
+            else if (cred.registryType === 'github') Icon = FaGithub;
+            else if (cred.registryType === 'gitlab') Icon = FaGitlab;
             return (
               <li key={cred.name + cred.registryType} className="flex">
                 <Card
@@ -69,26 +67,20 @@ export default function CredentialList({
         </ul>
       )}
 
-      <Modal
-        open={!!infoModal}
-        onClose={() => setInfoModal(null)}
-        title="Credential Info"
-      >
+      <Modal open={!!infoModal} onClose={() => setInfoModal(null)} title="Credential Info">
         {infoModal && (
           <div className="space-y-2">
             <div>
               <span className="font-semibold">Name:</span> {infoModal.name}
             </div>
             <div>
-              <span className="font-semibold">Registry:</span>{" "}
-              {infoModal.registryType}
+              <span className="font-semibold">Registry:</span> {infoModal.registryType}
             </div>
             <div>
-              <span className="font-semibold">Username:</span>{" "}
-              {infoModal.username}
+              <span className="font-semibold">Username:</span> {infoModal.username}
             </div>
             <div>
-              <span className="font-semibold">Token:</span>{" "}
+              <span className="font-semibold">Token:</span>{' '}
               <span className="font-mono bg-zinc-800 px-2 py-1 rounded text-xs">
                 {infoModal.token}
               </span>
@@ -103,11 +95,8 @@ export default function CredentialList({
         title="Delete Credential?"
       >
         <div className="mb-4">
-          Are you sure you want to delete the credential{" "}
-          <span className="font-semibold text-red-400">
-            {confirmDelete?.name}
-          </span>
-          ?
+          Are you sure you want to delete the credential{' '}
+          <span className="font-semibold text-red-400">{confirmDelete?.name}</span>?
         </div>
         <div className="flex gap-3 justify-end">
           <AnimatedButton
@@ -126,7 +115,7 @@ export default function CredentialList({
             disabled={loading}
             icon={<FaTrash />}
           >
-            {loading ? "Deleting..." : "Delete"}
+            {loading ? 'Deleting...' : 'Delete'}
           </AnimatedButton>
         </div>
       </Modal>

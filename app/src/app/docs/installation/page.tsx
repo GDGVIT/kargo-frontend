@@ -1,4 +1,4 @@
-import { generatePageMetadata } from "../../../lib/metadata";
+import { generatePageMetadata } from '../../../lib/metadata';
 import {
   FaRocket,
   FaLaptopCode,
@@ -17,18 +17,17 @@ import {
   FaSearch,
   FaFileAlt,
   FaBook,
-} from "react-icons/fa";
-import { SiKubernetes } from "react-icons/si";
+} from 'react-icons/fa';
+import { SiKubernetes } from 'react-icons/si';
 
-const title = "Installation Guide";
-const description =
-  "Learn how to install and set up Kargo for development or production use.";
+const title = 'Installation Guide';
+const description = 'Learn how to install and set up Kargo for development or production use.';
 
 export const metadata = generatePageMetadata({
   title,
   description,
-  path: "/docs/installation",
-  imageAlt: "Kargo Installation Guide",
+  path: '/docs/installation',
+  imageAlt: 'Kargo Installation Guide',
 });
 
 export default function InstallationPage() {
@@ -38,9 +37,8 @@ export default function InstallationPage() {
 
       <div className="prose dark:prose-invert max-w-none">
         <p className="text-xl text-gray-600 dark:text-gray-400 mb-8">
-          Complete installation guide for Kargo across different environments.
-          Choose your deployment strategy based on your needs: development,
-          staging, or production.
+          Complete installation guide for Kargo across different environments. Choose your
+          deployment strategy based on your needs: development, staging, or production.
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
@@ -64,8 +62,7 @@ export default function InstallationPage() {
               <FaLaptopCode className="inline mr-1" /> Development
             </h4>
             <p className="text-green-800 dark:text-green-200 text-sm mb-3">
-              Full development environment with hot reload and debugging
-              capabilities.
+              Full development environment with hot reload and debugging capabilities.
             </p>
             <a
               href="#development-setup"
@@ -80,8 +77,7 @@ export default function InstallationPage() {
               <FaBuilding className="inline mr-1" /> Production
             </h4>
             <p className="text-purple-800 dark:text-purple-200 text-sm mb-3">
-              Enterprise-grade deployment with Kubernetes, monitoring, and
-              scaling.
+              Enterprise-grade deployment with Kubernetes, monitoring, and scaling.
             </p>
             <a
               href="#production-deployment"
@@ -150,9 +146,8 @@ export default function InstallationPage() {
         </h2>
         <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700 rounded-lg p-6 mb-8">
           <p className="text-blue-800 dark:text-blue-200 mb-4">
-            <strong>Fastest way to get started!</strong> This method sets up the
-            entire Kargo stack with a single command. Perfect for testing and
-            development.
+            <strong>Fastest way to get started!</strong> This method sets up the entire Kargo stack
+            with a single command. Perfect for testing and development.
           </p>
 
           <div className="space-y-4">
@@ -196,13 +191,13 @@ docker-compose logs -f
             <p className="text-sm">
               <strong>
                 <FaClock className="inline mr-1" /> Setup time:
-              </strong>{" "}
+              </strong>{' '}
               ~3-5 minutes
             </p>
             <p className="text-sm">
               <strong>
                 <FaBullseye className="inline mr-1" /> Best for:
-              </strong>{" "}
+              </strong>{' '}
               Quick testing, demos, local development
             </p>
           </div>
@@ -213,9 +208,8 @@ docker-compose logs -f
         </h2>
         <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-6 mb-8">
           <p className="mb-4">
-            Set up a full development environment with hot reload, debugging,
-            and development tools. Kargo consists of separate frontend and
-            backend repositories for better maintainability.
+            Set up a full development environment with hot reload, debugging, and development tools.
+            Kargo consists of separate frontend and backend repositories for better maintainability.
           </p>
 
           <h3>Step 1: Prerequisites Installation</h3>
@@ -313,8 +307,8 @@ npm run dev
               <FaCheck className="inline mr-1" /> Development Environment Ready!
             </h5>
             <p className="text-green-800 dark:text-green-200 text-sm">
-              Both services should now be running with hot reload enabled.
-              Changes to your code will automatically refresh the application.
+              Both services should now be running with hot reload enabled. Changes to your code will
+              automatically refresh the application.
             </p>
           </div>
         </div>
@@ -324,8 +318,7 @@ npm run dev
           <div>
             <h3>Frontend Environment Variables</h3>
             <p className="text-gray-600 dark:text-gray-400 mb-3">
-              Configure <code>kargo-frontend/.env</code> with the following
-              variables:
+              Configure <code>kargo-frontend/.env</code> with the following variables:
             </p>
             <pre className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg text-sm overflow-x-auto">
               <code>
@@ -354,8 +347,7 @@ NEXT_PUBLIC_ENABLE_ANALYTICS=false`}
           <div>
             <h3>Backend Environment Variables</h3>
             <p className="text-gray-600 dark:text-gray-400 mb-3">
-              Configure <code>kargo-backend/.env</code> with the following
-              variables:
+              Configure <code>kargo-backend/.env</code> with the following variables:
             </p>
             <pre className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg text-sm overflow-x-auto">
               <code>
@@ -403,9 +395,8 @@ SENTRY_DSN=your-sentry-dsn`}
         </h2>
         <div className="bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-700 rounded-lg p-6 mb-8">
           <p className="text-purple-800 dark:text-purple-200 mb-4">
-            <strong>Enterprise-ready deployment</strong> with high availability,
-            monitoring, and scalability. This section covers deploying Kargo to
-            a production Kubernetes cluster.
+            <strong>Enterprise-ready deployment</strong> with high availability, monitoring, and
+            scalability. This section covers deploying Kargo to a production Kubernetes cluster.
           </p>
 
           <h3>Architecture Overview</h3>
@@ -445,8 +436,7 @@ SENTRY_DSN=your-sentry-dsn`}
               <div>
                 <strong>Kubernetes Cluster</strong>
                 <p className="text-sm text-gray-600 dark:text-gray-400">
-                  Production-grade cluster (EKS, GKE, AKS, or self-managed) with
-                  at least 3 nodes
+                  Production-grade cluster (EKS, GKE, AKS, or self-managed) with at least 3 nodes
                 </p>
               </div>
             </li>
@@ -455,8 +445,7 @@ SENTRY_DSN=your-sentry-dsn`}
               <div>
                 <strong>Database</strong>
                 <p className="text-sm text-gray-600 dark:text-gray-400">
-                  MongoDB Atlas, Amazon DocumentDB, or self-hosted MongoDB with
-                  replica set
+                  MongoDB Atlas, Amazon DocumentDB, or self-hosted MongoDB with replica set
                 </p>
               </div>
             </li>
@@ -465,8 +454,7 @@ SENTRY_DSN=your-sentry-dsn`}
               <div>
                 <strong>Container Registry</strong>
                 <p className="text-sm text-gray-600 dark:text-gray-400">
-                  Docker Hub, AWS ECR, Google GCR, or Azure ACR for storing
-                  container images
+                  Docker Hub, AWS ECR, Google GCR, or Azure ACR for storing container images
                 </p>
               </div>
             </li>
@@ -475,8 +463,7 @@ SENTRY_DSN=your-sentry-dsn`}
               <div>
                 <strong>SSL/TLS Certificates</strong>
                 <p className="text-sm text-gray-600 dark:text-gray-400">
-                  Valid certificates for your domain (Let&apos;s Encrypt,
-                  CloudFlare, or commercial)
+                  Valid certificates for your domain (Let&apos;s Encrypt, CloudFlare, or commercial)
                 </p>
               </div>
             </li>
@@ -485,9 +472,9 @@ SENTRY_DSN=your-sentry-dsn`}
 
         <h3>Container-Based Production Deployment</h3>
         <p className="mb-4">
-          For production deployment, you&apos;ll need to containerize both the
-          frontend and backend applications and deploy them to your Kubernetes
-          cluster or container orchestration platform.
+          For production deployment, you&apos;ll need to containerize both the frontend and backend
+          applications and deploy them to your Kubernetes cluster or container orchestration
+          platform.
         </p>
 
         <h4>Step 1: Build Production Images</h4>
@@ -509,8 +496,7 @@ docker push your-registry/kargo-backend:latest`}
 
         <h4>Step 2: Create Kubernetes Deployments</h4>
         <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
-          Create your own Kubernetes manifests based on your infrastructure
-          requirements:
+          Create your own Kubernetes manifests based on your infrastructure requirements:
         </p>
         <pre className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg text-sm overflow-x-auto mb-6">
           <code>
@@ -554,24 +540,14 @@ spec:
             Critical Security Checklist
           </h4>
           <ul className="space-y-2 text-sm text-red-800 dark:text-red-200">
-            <li>
-              • Use strong, unique secrets for all JWT tokens and API keys
-            </li>
-            <li>
-              • Enable TLS/SSL for all communications (internal and external)
-            </li>
-            <li>
-              • Configure proper RBAC (Role-Based Access Control) in Kubernetes
-            </li>
+            <li>• Use strong, unique secrets for all JWT tokens and API keys</li>
+            <li>• Enable TLS/SSL for all communications (internal and external)</li>
+            <li>• Configure proper RBAC (Role-Based Access Control) in Kubernetes</li>
             <li>• Use network policies to restrict pod-to-pod communication</li>
             <li>• Enable pod security standards and admission controllers</li>
-            <li>
-              • Regularly update container images and scan for vulnerabilities
-            </li>
+            <li>• Regularly update container images and scan for vulnerabilities</li>
             <li>• Configure proper backup and disaster recovery procedures</li>
-            <li>
-              • Set up centralized logging and monitoring for security events
-            </li>
+            <li>• Set up centralized logging and monitoring for security events</li>
           </ul>
         </div>
 
@@ -608,28 +584,21 @@ curl https://kargo.yourdomain.com`}
               <div>
                 <strong>Port already in use:</strong>
                 <pre className="bg-gray-100 dark:bg-gray-800 p-2 rounded mt-1">
-                  <code>
-                    lsof -ti:3000 | xargs kill -9 # Kill process on port 3000
-                  </code>
+                  <code>lsof -ti:3000 | xargs kill -9 # Kill process on port 3000</code>
                 </pre>
               </div>
 
               <div>
                 <strong>MongoDB connection failed:</strong>
                 <pre className="bg-gray-100 dark:bg-gray-800 p-2 rounded mt-1">
-                  <code>
-                    docker ps | grep mongo # Check if MongoDB container is
-                    running
-                  </code>
+                  <code>docker ps | grep mongo # Check if MongoDB container is running</code>
                 </pre>
               </div>
 
               <div>
                 <strong>Environment variables not loaded:</strong>
                 <pre className="bg-gray-100 dark:bg-gray-800 p-2 rounded mt-1">
-                  <code>
-                    ls -la .env # Verify .env file exists and is readable
-                  </code>
+                  <code>ls -la .env # Verify .env file exists and is readable</code>
                 </pre>
               </div>
             </div>
@@ -644,7 +613,7 @@ curl https://kargo.yourdomain.com`}
             </p>
             <ul className="space-y-1 text-sm">
               <li>
-                • Check our{" "}
+                • Check our{' '}
                 <a
                   href="https://github.com/gdgvit/kargo/discussions"
                   className="text-blue-600 hover:text-blue-700"
@@ -653,26 +622,23 @@ curl https://kargo.yourdomain.com`}
                 </a>
               </li>
               <li>
-                • Join our{" "}
-                <a
-                  href="https://discord.gg/kargo"
-                  className="text-blue-600 hover:text-blue-700"
-                >
+                • Join our{' '}
+                <a href="https://discord.gg/kargo" className="text-blue-600 hover:text-blue-700">
                   Discord Community
                 </a>
               </li>
               <li>
-                • Review{" "}
+                • Review{' '}
                 <a
                   href="https://github.com/gdgvit/kargo/issues"
                   className="text-blue-600 hover:text-blue-700"
                 >
                   existing issues
-                </a>{" "}
+                </a>{' '}
                 on GitHub
               </li>
               <li>
-                • Contact support at{" "}
+                • Contact support at{' '}
                 <a
                   href="mailto:support@kargo.dscvit.com"
                   className="text-blue-600 hover:text-blue-700"
@@ -690,8 +656,7 @@ curl https://kargo.yourdomain.com`}
             Installation Complete!
           </h3>
           <p className="text-green-800 dark:text-green-200 mb-4">
-            Congratulations! You now have Kargo running. Here&apos;s what to do
-            next:
+            Congratulations! You now have Kargo running. Here&apos;s what to do next:
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -701,16 +666,13 @@ curl https://kargo.yourdomain.com`}
               </h5>
               <ul className="space-y-1 text-sm">
                 <li>
-                  •{" "}
-                  <a
-                    href="/docs/quick-start"
-                    className="text-blue-600 hover:text-blue-700"
-                  >
+                  •{' '}
+                  <a href="/docs/quick-start" className="text-blue-600 hover:text-blue-700">
                     Deploy your first application
                   </a>
                 </li>
                 <li>
-                  •{" "}
+                  •{' '}
                   <a
                     href="/docs/applications/configuration"
                     className="text-blue-600 hover:text-blue-700"
@@ -719,11 +681,8 @@ curl https://kargo.yourdomain.com`}
                   </a>
                 </li>
                 <li>
-                  •{" "}
-                  <a
-                    href="/docs/features/ai-setup"
-                    className="text-blue-600 hover:text-blue-700"
-                  >
+                  •{' '}
+                  <a href="/docs/features/ai-setup" className="text-blue-600 hover:text-blue-700">
                     Explore AI-powered features
                   </a>
                 </li>
@@ -736,29 +695,20 @@ curl https://kargo.yourdomain.com`}
               </h5>
               <ul className="space-y-1 text-sm">
                 <li>
-                  •{" "}
-                  <a
-                    href="/docs/api/authentication"
-                    className="text-blue-600 hover:text-blue-700"
-                  >
+                  •{' '}
+                  <a href="/docs/api/authentication" className="text-blue-600 hover:text-blue-700">
                     API documentation
                   </a>
                 </li>
                 <li>
-                  •{" "}
-                  <a
-                    href="/docs/admin/users"
-                    className="text-blue-600 hover:text-blue-700"
-                  >
+                  •{' '}
+                  <a href="/docs/admin/users" className="text-blue-600 hover:text-blue-700">
                     User management
                   </a>
                 </li>
                 <li>
-                  •{" "}
-                  <a
-                    href="/docs/admin/resources"
-                    className="text-blue-600 hover:text-blue-700"
-                  >
+                  •{' '}
+                  <a href="/docs/admin/resources" className="text-blue-600 hover:text-blue-700">
                     Resource optimization
                   </a>
                 </li>

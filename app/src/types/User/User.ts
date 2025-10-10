@@ -1,7 +1,7 @@
-import ExtraResource from "../ExtraResources/ExtraResource";
-import RegistryCredential from "../Registry/RegistryCredential/RegistryCredential";
-import type Plan from "../Plan/Plan";
-import Resource from "../Application/Resource/Resource";
+import ExtraResource from '../ExtraResources/ExtraResource';
+import RegistryCredential from '../Registry/RegistryCredential/RegistryCredential';
+import type Plan from '../Plan/Plan';
+import Resource from '../Application/Resource/Resource';
 
 export default interface User {
   _id: string;
@@ -18,7 +18,7 @@ export default interface User {
     requests?: Resource;
     limits?: Resource;
   };
-  role?: "user" | "admin" | "superadmin";
+  role?: 'user' | 'admin' | 'superadmin';
   extraResources?: ExtraResource;
   plan?: string | Plan;
   credentials?: RegistryCredential[];

@@ -1,4 +1,4 @@
-import ResourceDetails from "../Resource/Resource";
+import ResourceDetails from '../Resource/Resource';
 
 export default interface Resources {
   requests?: ResourceDetails;

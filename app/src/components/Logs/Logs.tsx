@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import { useEffect, useRef, useState } from "react";
-import { FaArrowDown, FaSearch } from "react-icons/fa";
-import api from "../../utils/api";
-import type LogsProps from "../../types/Application/LogsProps/LogsProps";
-import Input from "../ui/Input/Input";
-import Select from "../ui/Select/Select";
-import Loader from "../ui/Loader/Loader";
+import { useEffect, useRef, useState } from 'react';
+import { FaArrowDown, FaSearch } from 'react-icons/fa';
+import api from '../../utils/api';
+import type LogsProps from '../../types/Application/LogsProps/LogsProps';
+import Input from '../ui/Input/Input';
+import Select from '../ui/Select/Select';
+import Loader from '../ui/Loader/Loader';
 
 function generateProfessionalHSLColor(pod: string): string {
   let hash = 0;
@@ -18,17 +18,15 @@ function generateProfessionalHSLColor(pod: string): string {
 }
 
 export default function Logs({ id }: LogsProps) {
-  const [logs, setLogs] = useState<
-    Array<{ timestamp: string; pod: string; line: string }>
-  >([]);
+  const [logs, setLogs] = useState<Array<{ timestamp: string; pod: string; line: string }>>([]);
   const [connected, setConnected] = useState(false);
-  const [error, setError] = useState<string>("");
+  const [error, setError] = useState<string>('');
   const [podColorMap, setPodColorMap] = useState<Record<string, string>>({});
   const [showScrollButton, setShowScrollButton] = useState(false);
   const [isAutoScroll, setIsAutoScroll] = useState(true);
-  const [searchText, setSearchText] = useState("");
-  const [selectedPod, setSelectedPod] = useState<string>("all");
-  const [selectedLevel, setSelectedLevel] = useState<string>("all");
+  const [searchText, setSearchText] = useState('');
+  const [selectedPod, setSelectedPod] = useState<string>('all');
+  const [selectedLevel, setSelectedLevel] = useState<string>('all');
   const logsRef = useRef<HTMLDivElement>(null);
   const eventSourceRef = useRef<EventSource | null>(null);
 
@@ -36,7 +34,7 @@ export default function Logs({ id }: LogsProps) {
     if (!id) return;
 
     setLogs([]);
-    setError("");
+    setError('');
     setConnected(false);
     setPodColorMap({});
 
@@ -62,13 +60,13 @@ export default function Logs({ id }: LogsProps) {
 
         setLogs((prev) => [...prev, { timestamp, pod, line }]);
       } else {
-        setLogs((prev) => [...prev, { timestamp: "", pod: "", line: e.data }]);
+        setLogs((prev) => [...prev, { timestamp: '', pod: '', line: e.data }]);
       }
     };
 
     es.onerror = () => {
       setConnected(false);
-      setError("Connection lost or log stream ended.");
+      setError('Connection lost or log stream ended.');
       es.close();
     };
 
@@ -112,11 +110,11 @@ export default function Logs({ id }: LogsProps) {
   };
 
   function getLogTextColor(line: string): string {
-    if (/error|fail|exception/i.test(line)) return "text-red-500";
-    if (/warn/i.test(line)) return "text-yellow-400";
-    if (/info/i.test(line)) return "text-blue-400";
-    if (/debug/i.test(line)) return "text-purple-400";
-    return "text-white";
+    if (/error|fail|exception/i.test(line)) return 'text-red-500';
+    if (/warn/i.test(line)) return 'text-yellow-400';
+    if (/info/i.test(line)) return 'text-blue-400';
+    if (/debug/i.test(line)) return 'text-purple-400';
+    return 'text-white';
   }
 
   function getPodStyle(pod: string): React.CSSProperties {
@@ -127,11 +125,11 @@ export default function Logs({ id }: LogsProps) {
   const podList = Object.keys(podColorMap);
 
   function getLogLevel(line: string): string {
-    if (/error|fail|exception/i.test(line)) return "error";
-    if (/warn/i.test(line)) return "warn";
-    if (/info/i.test(line)) return "info";
-    if (/debug/i.test(line)) return "debug";
-    return "other";
+    if (/error|fail|exception/i.test(line)) return 'error';
+    if (/warn/i.test(line)) return 'warn';
+    if (/info/i.test(line)) return 'info';
+    if (/debug/i.test(line)) return 'debug';
+    return 'other';
   }
 
   const filteredLogs = logs.filter((log) => {
@@ -139,23 +137,22 @@ export default function Logs({ id }: LogsProps) {
       !searchText ||
       log.line.toLowerCase().includes(searchText.toLowerCase()) ||
       log.pod.toLowerCase().includes(searchText.toLowerCase());
-    const matchesPod = selectedPod === "all" || log.pod === selectedPod;
-    const matchesLevel =
-      selectedLevel === "all" || getLogLevel(log.line) === selectedLevel;
+    const matchesPod = selectedPod === 'all' || log.pod === selectedPod;
+    const matchesLevel = selectedLevel === 'all' || getLogLevel(log.line) === selectedLevel;
     return matchesSearch && matchesPod && matchesLevel;
   });
 
   const podOptions = [
-    { value: "all", label: "All Pods" },
+    { value: 'all', label: 'All Pods' },
     ...podList.map((pod) => ({ value: pod, label: pod })),
   ];
   const levelOptions = [
-    { value: "all", label: "All Levels" },
-    { value: "error", label: "Error" },
-    { value: "warn", label: "Warn" },
-    { value: "info", label: "Info" },
-    { value: "debug", label: "Debug" },
-    { value: "other", label: "Other" },
+    { value: 'all', label: 'All Levels' },
+    { value: 'error', label: 'Error' },
+    { value: 'warn', label: 'Warn' },
+    { value: 'info', label: 'Info' },
+    { value: 'debug', label: 'Debug' },
+    { value: 'other', label: 'Other' },
   ];
 
   return (
@@ -214,9 +211,7 @@ export default function Logs({ id }: LogsProps) {
                     {log.pod}
                   </span>
                 )}
-                <span
-                  className={`${getLogTextColor(log.line)} flex-1 break-words`}
-                >
+                <span className={`${getLogTextColor(log.line)} flex-1 break-words`}>
                   {log.line}
                 </span>
               </div>
@@ -229,7 +224,7 @@ export default function Logs({ id }: LogsProps) {
           <button
             onClick={scrollToBottom}
             className="fixed bottom-24 right-12 z-50 bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-full shadow-lg transition-all duration-200 flex items-center justify-center"
-            style={{ boxShadow: "0 2px 8px rgba(0,0,0,0.2)" }}
+            style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.2)' }}
             aria-label="Scroll to bottom"
           >
             <FaArrowDown size={20} />

@@ -1,5 +1,5 @@
-import Plan from "./Plan";
-import PlanForm from "./PlanForm";
+import Plan from './Plan';
+import PlanForm from './PlanForm';
 
 export default interface PlanFormModalProps {
   show: boolean;

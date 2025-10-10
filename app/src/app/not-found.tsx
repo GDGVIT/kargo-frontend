@@ -1,27 +1,22 @@
-import Link from "next/link";
-import { generatePageMetadata } from "../lib/metadata";
+import Link from 'next/link';
+import { generatePageMetadata } from '../lib/metadata';
 
-const title = "Page Not Found";
-const description =
-  "Sorry, the page you are looking for does not exist or has been moved.";
+const title = 'Page Not Found';
+const description = 'Sorry, the page you are looking for does not exist or has been moved.';
 
 export const metadata = generatePageMetadata({
   title,
   description,
-  path: "/404",
-  imageAlt: "Kargo - Page Not Found",
+  path: '/404',
+  imageAlt: 'Kargo - Page Not Found',
 });
 
 export default function NotFound() {
   return (
     <main className="flex flex-col items-center justify-center min-h-[60vh] px-4">
       <div className="text-center">
-        <h1 className="text-6xl font-bold text-gray-400 dark:text-gray-600 mb-4">
-          404
-        </h1>
-        <h2 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">
-          Page Not Found
-        </h2>
+        <h1 className="text-6xl font-bold text-gray-400 dark:text-gray-600 mb-4">404</h1>
+        <h2 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">Page Not Found</h2>
         <p className="text-xl text-gray-600 dark:text-gray-400 mb-8 max-w-md mx-auto">
           Sorry, the page you are looking for does not exist or has been moved.
         </p>

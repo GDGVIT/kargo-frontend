@@ -1,6 +1,6 @@
-import React from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import clsx from "clsx";
+import React from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import clsx from 'clsx';
 
 interface ModalProps {
   open: boolean;
@@ -16,7 +16,7 @@ const Modal: React.FC<ModalProps> = ({
   onClose,
   title,
   children,
-  className = "",
+  className = '',
   showCloseButton = true,
 }) => {
   return (
@@ -30,14 +30,14 @@ const Modal: React.FC<ModalProps> = ({
         >
           <motion.div
             className={clsx(
-              "bg-[var(--card-background)] rounded-2xl shadow-2xl border border-[var(--foreground)]/10 p-4 sm:p-8 w-full max-w-[95vw] sm:max-w-3xl relative flex flex-col max-h-[90vh] overflow-y-auto",
+              'bg-[var(--card-background)] rounded-2xl shadow-2xl border border-[var(--foreground)]/10 p-4 sm:p-8 w-full max-w-[95vw] sm:max-w-3xl relative flex flex-col max-h-[90vh] overflow-y-auto',
               className
             )}
             initial={{ scale: 0.92, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.92, opacity: 0 }}
             transition={{
-              type: "spring",
+              type: 'spring',
               stiffness: 260,
               damping: 22,
               duration: 0.28,

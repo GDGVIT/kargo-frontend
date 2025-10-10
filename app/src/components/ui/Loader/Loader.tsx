@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
 const Loader = () => {
   return (
@@ -83,7 +83,7 @@ const StyledWrapper = styled.div`
     transform-origin: 0 100%;
     box-shadow: inherit;
     background: currentColor;
-    content: "";
+    content: '';
   }
 
   .item:before {

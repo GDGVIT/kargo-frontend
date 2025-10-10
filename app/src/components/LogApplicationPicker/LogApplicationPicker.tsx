@@ -1,37 +1,33 @@
-"use client";
+'use client';
 
-import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import AnimatedButton from "../ui/AnimatedButton/AnimatedButton";
-import api from "../../utils/api";
-import Select from "../ui/Select/Select";
+import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import AnimatedButton from '../ui/AnimatedButton/AnimatedButton';
+import api from '../../utils/api';
+import Select from '../ui/Select/Select';
 
 interface Application {
   _id: string;
   name: string;
 }
 
-export default function LogApplicationPicker({
-  selectedId,
-}: {
-  selectedId?: string;
-}) {
+export default function LogApplicationPicker({ selectedId }: { selectedId?: string }) {
   const [apps, setApps] = useState<Application[]>([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
   const router = useRouter();
 
   useEffect(() => {
     setLoading(true);
-    setError("");
+    setError('');
     api
-      .get("/api/applications")
+      .get('/api/applications')
       .then((res) => {
         setApps(res.data.applications || []);
         setLoading(false);
       })
       .catch(() => {
-        setError("Failed to load applications");
+        setError('Failed to load applications');
         setLoading(false);
       });
   }, []);
@@ -42,19 +38,19 @@ export default function LogApplicationPicker({
         Select Application:
       </label>
       <Select
-        value={selectedId || ""}
+        value={selectedId || ''}
         onChange={(id) => {
           if (id) router.push(`/logs/${id}`);
         }}
         options={apps.map((app) => ({ value: app._id, label: app.name }))}
-        placeholder={loading ? "Loading..." : "Choose an application"}
+        placeholder={loading ? 'Loading...' : 'Choose an application'}
         disabled={loading || !apps.length}
         className="min-w-[180px]"
         error={error}
       />
       {error && <span className="text-red-400 ml-2">{error}</span>}
       <AnimatedButton
-        onClick={() => router.push("/applications/add")}
+        onClick={() => router.push('/applications/add')}
         variant="primary"
         icon={null}
         className="ml-2"

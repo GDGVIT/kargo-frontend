@@ -1,4 +1,4 @@
-import User from "../../User/User";
+import User from '../../User/User';
 
 export default interface AuthContextType {
   user: User | null;

@@ -1,8 +1,8 @@
-import { AnimatePresence, motion } from "framer-motion";
-import Input from "../../../ui/Input/Input";
-import { FaEnvelope, FaLock, FaUser, FaUserCircle } from "react-icons/fa";
-import AnimatedButton from "../../../ui/AnimatedButton/AnimatedButton";
-import Loader from "../../../ui/Loader/Loader";
+import { AnimatePresence, motion } from 'framer-motion';
+import Input from '../../../ui/Input/Input';
+import { FaEnvelope, FaLock, FaUser, FaUserCircle } from 'react-icons/fa';
+import AnimatedButton from '../../../ui/AnimatedButton/AnimatedButton';
+import Loader from '../../../ui/Loader/Loader';
 
 type AuthFormProps = {
   isLogin: boolean;
@@ -32,7 +32,7 @@ export default function AuthForm({
   handleSubmit,
 }: AuthFormProps) {
   return (
-    <motion.div layout transition={{ duration: 0.4, type: "spring" }}>
+    <motion.div layout transition={{ duration: 0.4, type: 'spring' }}>
       <AnimatePresence mode="wait">
         <motion.div
           key="auth-form"
@@ -75,9 +75,9 @@ export default function AuthForm({
             />
             <Input
               icon={<FaLock />}
-              placeholder={isLogin ? "Password" : "Password (min 6 characters)"}
+              placeholder={isLogin ? 'Password' : 'Password (min 6 characters)'}
               type="password"
-              autoComplete={isLogin ? "current-password" : "new-password"}
+              autoComplete={isLogin ? 'current-password' : 'new-password'}
               value={password}
               onChange={setPassword}
               disabled={loading}
@@ -92,7 +92,7 @@ export default function AuthForm({
           type="button"
           className="w-48 block"
         >
-          {loading ? <Loader /> : isLogin ? "Login" : "Sign Up"}
+          {loading ? <Loader /> : isLogin ? 'Login' : 'Sign Up'}
         </AnimatedButton>
       </div>
     </motion.div>

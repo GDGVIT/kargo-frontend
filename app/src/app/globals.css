@@ -1,19 +1,18 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @font-face {
-  font-family: "Montserrat-Regular";
-  src: url("../../public/fonts/Montserrat-Regular.ttf") format("truetype");
+  font-family: 'Montserrat-Regular';
+  src: url('../../public/fonts/Montserrat-Regular.ttf') format('truetype');
 }
 
 @font-face {
-  font-family: "Inter";
-  src: url("../../public/fonts/Inter-VariableFont_opsz\,wght.ttf")
-    format("truetype");
+  font-family: 'Inter';
+  src: url('../../public/fonts/Inter-VariableFont_opsz\,wght.ttf') format('truetype');
 }
 
 @font-face {
-  font-family: "AirbnbCereal_W_Bd";
-  src: url("../../public/fonts/AirbnbCereal_W_Bd.otf") format("opentype");
+  font-family: 'AirbnbCereal_W_Bd';
+  src: url('../../public/fonts/AirbnbCereal_W_Bd.otf') format('opentype');
 }
 
 :root {
@@ -70,7 +69,7 @@ html,
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: "Inter", sans-serif;
+  font-family: 'Inter', sans-serif;
   scroll-behavior: smooth;
   overflow-y: scroll;
   display: flex;
@@ -233,7 +232,7 @@ pre {
   background: #23283a;
   color: #e0e6f0;
   border-radius: var(--border-radius-tiny);
-  font-family: "Fira Mono", "Consolas", monospace;
+  font-family: 'Fira Mono', 'Consolas', monospace;
   font-size: 0.95em;
 }
 pre {

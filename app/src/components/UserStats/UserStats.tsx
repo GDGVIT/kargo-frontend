@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
-import Card from "../ui/Card/Card";
-import Loader from "../ui/Loader/Loader";
-import axios from "../../utils/api";
-import { FaServer, FaNetworkWired, FaKey, FaLock } from "react-icons/fa";
-import type User from "../../types/User/User";
+import React, { useEffect, useState } from 'react';
+import Card from '../ui/Card/Card';
+import Loader from '../ui/Loader/Loader';
+import axios from '../../utils/api';
+import { FaServer, FaNetworkWired, FaKey, FaLock } from 'react-icons/fa';
+import type User from '../../types/User/User';
 
 interface UserStatsData {
   servers: number;
@@ -18,7 +18,7 @@ const Stat: React.FC<{
   value: number;
   className?: string;
 }> = ({ icon, label, value, className }) => (
-  <div className={`flex items-center rounded  ${className ?? ""}`}>
+  <div className={`flex items-center rounded  ${className ?? ''}`}>
     {icon}
     <span className="font-bold text-xs md:text-sm mr-1">{label}</span>
     <span className="text-sm md:text-base ml-auto">{value}</span>
@@ -34,9 +34,9 @@ const UserStats: React.FC<{ user: User }> = () => {
     setLoading(true);
     setError(null);
     axios
-      .get("/api/users/me/settings-stats")
+      .get('/api/users/me/settings-stats')
       .then((res) => setStats(res.data))
-      .catch(() => setError("Failed to load user stats."))
+      .catch(() => setError('Failed to load user stats.'))
       .finally(() => setLoading(false));
   }, []);
 
@@ -52,9 +52,7 @@ const UserStats: React.FC<{ user: User }> = () => {
         value={stats.servers}
       />
       <Stat
-        icon={
-          <FaNetworkWired className="text-lg md:text-xl text-gray-400 mr-2" />
-        }
+        icon={<FaNetworkWired className="text-lg md:text-xl text-gray-400 mr-2" />}
         label="Ports"
         value={stats.ports}
       />

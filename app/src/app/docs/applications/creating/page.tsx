@@ -1,13 +1,13 @@
-import { generatePageMetadata } from "../../../../lib/metadata";
+import { generatePageMetadata } from '../../../../lib/metadata';
 
-const title = "Creating Applications";
-const description = "Learn how to create and configure applications in Kargo.";
+const title = 'Creating Applications';
+const description = 'Learn how to create and configure applications in Kargo.';
 
 export const metadata = generatePageMetadata({
   title,
   description,
-  path: "/docs/applications/creating",
-  imageAlt: "Creating Applications in Kargo",
+  path: '/docs/applications/creating',
+  imageAlt: 'Creating Applications in Kargo',
 });
 
 export default function CreatingApplicationsPage() {
@@ -46,10 +46,7 @@ export default function CreatingApplicationsPage() {
           <li>Click &quot;Connect with GitHub&quot;</li>
           <li>Select your repository from the list</li>
           <li>Choose the branch to deploy from</li>
-          <li>
-            Kargo will automatically detect your Dockerfile or suggest build
-            configurations
-          </li>
+          <li>Kargo will automatically detect your Dockerfile or suggest build configurations</li>
         </ol>
 
         <h2>Manual Configuration</h2>
@@ -75,8 +72,8 @@ export default function CreatingApplicationsPage() {
             💡 Pro Tip
           </h3>
           <p className="text-blue-800 dark:text-blue-200">
-            Use the &quot;Dockerize&quot; feature on GitHub repositories to
-            automatically generate Docker configurations for your applications.
+            Use the &quot;Dockerize&quot; feature on GitHub repositories to automatically generate
+            Docker configurations for your applications.
           </p>
         </div>
       </div>

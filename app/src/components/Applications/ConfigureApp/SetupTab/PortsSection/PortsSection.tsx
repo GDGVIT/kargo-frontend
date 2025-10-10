@@ -1,29 +1,28 @@
-import React, { useState, useEffect } from "react";
-import { useAuth } from "../../../../Auth/AuthProvider/AuthProvider";
-import type Port from "../../../../../types/Application/Port/Port";
-import type PortsSectionProps from "../../../../../types/Application/Port/PortSectionProps/PortSectionProps";
-import Input from "../../../../ui/Input/Input";
-import Select from "../../../../ui/Select/Select";
-import AnimatedButton from "../../../../ui/AnimatedButton/AnimatedButton";
-import { FaPlus } from "react-icons/fa";
+import React, { useState, useEffect } from 'react';
+import { useAuth } from '../../../../Auth/AuthProvider/AuthProvider';
+import type Port from '../../../../../types/Application/Port/Port';
+import type PortsSectionProps from '../../../../../types/Application/Port/PortSectionProps/PortSectionProps';
+import Input from '../../../../ui/Input/Input';
+import Select from '../../../../ui/Select/Select';
+import AnimatedButton from '../../../../ui/AnimatedButton/AnimatedButton';
+import { FaPlus } from 'react-icons/fa';
 
 const defaultPort: Port = {
   containerPort: 80,
-  protocol: "TCP",
-  subdomain: "",
+  protocol: 'TCP',
+  subdomain: '',
 };
 
 const PortsSection: React.FC<PortsSectionProps> = ({ ports, onChange }) => {
   const { user } = useAuth();
-  const username = user?.username || "user";
+  const username = user?.username || 'user';
   const [localPorts, setLocalPorts] = useState<(Port & { id?: string })[]>(
     ports.map((p) => ({
       ...p,
       id: p.name || Math.random().toString(36).substring(2, 9),
     }))
   );
-  const ingressBaseUrl =
-    process.env.NEXT_PUBLIC_INGRESS_BASE_DOMAIN || "vitians.in";
+  const ingressBaseUrl = process.env.NEXT_PUBLIC_INGRESS_BASE_DOMAIN || 'vitians.in';
 
   useEffect(() => {
     setLocalPorts(
@@ -34,11 +33,7 @@ const PortsSection: React.FC<PortsSectionProps> = ({ ports, onChange }) => {
     );
   }, [ports]);
 
-  const updatePort = (
-    id: string | undefined,
-    key: keyof Port,
-    value: string | number
-  ) => {
+  const updatePort = (id: string | undefined, key: keyof Port, value: string | number) => {
     const updatedPorts = localPorts.map((port) =>
       port.id === id ? { ...port, [key]: value } : port
     );
@@ -48,8 +43,8 @@ const PortsSection: React.FC<PortsSectionProps> = ({ ports, onChange }) => {
       updatedPorts.map((p, idx) => ({
         name: p.name || `port${idx}`,
         containerPort: Number(p.containerPort),
-        protocol: p.protocol || "TCP",
-        subdomain: p.subdomain || "",
+        protocol: p.protocol || 'TCP',
+        subdomain: p.subdomain || '',
       }))
     );
   };
@@ -65,8 +60,8 @@ const PortsSection: React.FC<PortsSectionProps> = ({ ports, onChange }) => {
       updatedPorts.map((p, idx) => ({
         name: p.name || `port${idx}`,
         containerPort: Number(p.containerPort),
-        protocol: p.protocol || "TCP",
-        subdomain: p.subdomain || "",
+        protocol: p.protocol || 'TCP',
+        subdomain: p.subdomain || '',
       }))
     );
   };
@@ -78,8 +73,8 @@ const PortsSection: React.FC<PortsSectionProps> = ({ ports, onChange }) => {
       updatedPorts.map((p, idx) => ({
         name: p.name || `port${idx}`,
         containerPort: Number(p.containerPort),
-        protocol: p.protocol || "TCP",
-        subdomain: p.subdomain || "",
+        protocol: p.protocol || 'TCP',
+        subdomain: p.subdomain || '',
       }))
     );
   };
@@ -87,10 +82,10 @@ const PortsSection: React.FC<PortsSectionProps> = ({ ports, onChange }) => {
   return (
     <div className="mb-6">
       {localPorts.map(({ id, containerPort, protocol, subdomain }, idx) => {
-        let subdomainSegment = "";
+        let subdomainSegment = '';
         if (subdomain) {
           const regex = new RegExp(
-            `^([^.]+)\\.${username}\\.${ingressBaseUrl.replace(".", "\\.")}$`
+            `^([^.]+)\\.${username}\\.${ingressBaseUrl.replace('.', '\\.')}$`
           );
           const match = subdomain.match(regex);
           if (match) {
@@ -107,38 +102,34 @@ const PortsSection: React.FC<PortsSectionProps> = ({ ports, onChange }) => {
               min={1}
               max={65535}
               value={containerPort.toString()}
-              onChange={(v) => updatePort(id, "containerPort", v)}
+              onChange={(v) => updatePort(id, 'containerPort', v)}
               className="w-32"
               helperText="Port number (1-65535)"
             />
             <Select
               label="Protocol"
-              value={protocol || "TCP"}
+              value={protocol || 'TCP'}
               options={[
-                { label: "TCP", value: "TCP" },
-                { label: "UDP", value: "UDP" },
+                { label: 'TCP', value: 'TCP' },
+                { label: 'UDP', value: 'UDP' },
               ]}
-              onChange={(v) => updatePort(id, "protocol", v)}
+              onChange={(v) => updatePort(id, 'protocol', v)}
               className="w-28"
               helperText="Network protocol"
             />
             <Input
               label="Subdomain"
               value={subdomainSegment}
-              onChange={(v) => updatePort(id, "subdomain", v)}
+              onChange={(v) => updatePort(id, 'subdomain', v)}
               placeholder="(optional)"
               className="w-48"
               helperText={
                 <a
-                  href={`https://${
-                    subdomainSegment || "app"
-                  }.${username}.${ingressBaseUrl}`}
+                  href={`https://${subdomainSegment || 'app'}.${username}.${ingressBaseUrl}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-blue-600 hover:text-blue-800 underline"
-                >{`${
-                  subdomainSegment || "app"
-                }.${username}.${ingressBaseUrl}`}</a>
+                >{`${subdomainSegment || 'app'}.${username}.${ingressBaseUrl}`}</a>
               }
             />
             <AnimatedButton

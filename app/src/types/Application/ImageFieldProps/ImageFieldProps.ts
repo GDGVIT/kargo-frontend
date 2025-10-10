@@ -1,4 +1,4 @@
-import RegistryCredential from "@/types/Registry/RegistryCredential/RegistryCredential";
+import RegistryCredential from '@/types/Registry/RegistryCredential/RegistryCredential';
 
 export default interface ImageFieldsProps {
   imageUrl: string;
