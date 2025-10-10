@@ -196,7 +196,8 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
 							onChange={(val) => {
 								handleResourceChange("limits", "memory", val);
 							}}
-							placeholder="536870912"
+							// 512MB in bytes
+							placeholder={(512 * 1024 * 1024).toString()}
 							inputMode="numeric"
 							pattern="[0-9]*"
 							label="Memory"
