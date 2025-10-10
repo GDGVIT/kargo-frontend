@@ -111,7 +111,8 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
 								handleResourceChange("requests", "cpu", val);
 							}}
 							placeholder="0.1"
-							inputMode="decimal"
+							inputMode="numeric"
+							step="0.001"
 							label="CPU"
 							className="!mb-0"
 							type="number"
