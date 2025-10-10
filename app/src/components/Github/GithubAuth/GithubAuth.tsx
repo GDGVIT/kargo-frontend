@@ -8,7 +8,7 @@ import gsap from 'gsap';
 import AnimatedButton from '../../ui/AnimatedButton/AnimatedButton';
 import type User from '../../../types/User/User';
 
-const GithubAuth: React.FC<{ user: User }> = () => {
+const GithubAuth: React.FC = () => {
   const [installationIds, setInstallationIds] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
   const iconRef = useRef<HTMLDivElement>(null);
