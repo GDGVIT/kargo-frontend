@@ -1,14 +1,21 @@
 'use client';
 
 import React, { useEffect, useState, useRef } from 'react';
+import type User from '../../../types/User/User';
 import api, { baseURL } from '../../../utils/api';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaGithub, FaExclamationCircle } from 'react-icons/fa';
 import gsap from 'gsap';
 import AnimatedButton from '../../ui/AnimatedButton/AnimatedButton';
 
-const GithubAuth: React.FC = () => {
-  const [installationIds, setInstallationIds] = useState<string[]>([]);
+interface GithubAuthProps {
+  user: User;
+}
+
+const GithubAuth: React.FC<GithubAuthProps> = ({ user }) => {
+  const [installationIds, setInstallationIds] = useState<string[]>(
+    () => user.githubInstallationId || []
+  );
   const [error, setError] = useState<string | null>(null);
   const iconRef = useRef<HTMLDivElement>(null);
 
@@ -101,6 +108,12 @@ const GithubAuth: React.FC = () => {
               GitHub connected with{' '}
               <span className="font-bold text-sky-400">{installationIds.length}</span> installation
               {installationIds.length > 1 ? 's' : ''}.
+              {user.username ? (
+                <>
+                  {' '}
+                  Connected as <span className="font-semibold">{user.username}</span>.
+                </>
+              ) : null}
               <br />
             </p>
             <div className="flex justify-center">
