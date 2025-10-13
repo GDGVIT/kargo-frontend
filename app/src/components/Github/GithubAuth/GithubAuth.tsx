@@ -6,7 +6,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { FaGithub, FaExclamationCircle } from 'react-icons/fa';
 import gsap from 'gsap';
 import AnimatedButton from '../../ui/AnimatedButton/AnimatedButton';
-import type User from '../../../types/User/User';
 
 const GithubAuth: React.FC = () => {
   const [installationIds, setInstallationIds] = useState<string[]>([]);
