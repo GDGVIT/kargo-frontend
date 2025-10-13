@@ -4,9 +4,11 @@ import { useAuth } from '../../../Auth/AuthProvider/AuthProvider';
 import Loader from '../../Loader/Loader';
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useRouter } from 'next/navigation';
 
 export default function Auth() {
   const { user, loading, logout } = useAuth();
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [imageError, setImageError] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -29,7 +31,7 @@ export default function Auth() {
       <div className="relative" ref={dropdownRef} style={{ height: '100%' }}>
         <div
           className="flex items-center gap-2 cursor-pointer px-2 hover:bg-[#11131887] transition h-full"
-          onClick={() => (window.location.href = '/settings')}
+          onClick={() => router.push('/settings')}
         >
           {user.profilePicture && !imageError && (
             // eslint-disable-next-line @next/next/no-img-element
@@ -102,7 +104,7 @@ export default function Auth() {
                 onClick={async () => {
                   setOpen(false);
                   await logout();
-                  window.location.href = '/auth';
+                  router.push('/auth');
                 }}
                 className="w-full px-4 py-2 text-sm bg-[#23283a] hover:bg-[#293040] text-red-400 hover:text-red-300 rounded-md transition border border-[#3a4152]"
               >
@@ -117,7 +119,7 @@ export default function Auth() {
 
   return (
     <button
-      onClick={() => (window.location.href = '/auth')}
+      onClick={() => router.push('/auth')}
       className="px-4 py-1.5 text-sm rounded-md transition"
     >
       Sign In

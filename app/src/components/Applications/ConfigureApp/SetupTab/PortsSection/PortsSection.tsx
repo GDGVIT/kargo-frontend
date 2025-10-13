@@ -84,9 +84,8 @@ const PortsSection: React.FC<PortsSectionProps> = ({ ports, onChange }) => {
       {localPorts.map(({ id, containerPort, protocol, subdomain }, idx) => {
         let subdomainSegment = '';
         if (subdomain) {
-          const regex = new RegExp(
-            `^([^.]+)\\.${username}\\.${ingressBaseUrl.replace('.', '\\.')}$`
-          );
+          const safeDomain = ingressBaseUrl.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+          const regex = new RegExp(`^([^.]+)\\.${username}\\.${safeDomain}$`);
           const match = subdomain.match(regex);
           if (match) {
             subdomainSegment = match[1];
