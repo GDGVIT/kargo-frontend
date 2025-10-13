@@ -6,6 +6,7 @@ import Input from '../../../../ui/Input/Input';
 import Select from '../../../../ui/Select/Select';
 import AnimatedButton from '../../../../ui/AnimatedButton/AnimatedButton';
 import { FaPlus } from 'react-icons/fa';
+import { extractSubdomainSegment } from '../../../../../../src/utils/subdomain';
 
 const defaultPort: Port = {
   containerPort: 80,
@@ -84,12 +85,11 @@ const PortsSection: React.FC<PortsSectionProps> = ({ ports, onChange }) => {
       {localPorts.map(({ id, containerPort, protocol, subdomain }, idx) => {
         let subdomainSegment = '';
         if (subdomain) {
-          const safeDomain = ingressBaseUrl.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-          const regex = new RegExp(`^([^.]+)\\.${username}\\.${safeDomain}$`);
-          const match = subdomain.match(regex);
-          if (match) {
-            subdomainSegment = match[1];
+          const extracted = extractSubdomainSegment(subdomain, username, ingressBaseUrl);
+          if (extracted) {
+            subdomainSegment = extracted;
           } else if (!subdomain.includes(`.${username}.${ingressBaseUrl}`)) {
+            // If the subdomain doesn't already include the username+base domain, use it as provided
             subdomainSegment = subdomain;
           }
         }
