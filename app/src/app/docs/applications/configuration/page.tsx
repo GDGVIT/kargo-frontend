@@ -1,14 +1,14 @@
-import { generatePageMetadata } from "../../../../lib/metadata";
+import { generatePageMetadata } from '../../../../lib/metadata';
 
-const title = "Application Configuration";
+const title = 'Application Configuration';
 const description =
-  "Learn how to configure applications for optimal performance and security in Kargo.";
+  'Learn how to configure applications for optimal performance and security in Kargo.';
 
 export const metadata = generatePageMetadata({
   title,
   description,
-  path: "/docs/applications/configuration",
-  imageAlt: "Application Configuration in Kargo",
+  path: '/docs/applications/configuration',
+  imageAlt: 'Application Configuration in Kargo',
 });
 
 export default function ApplicationConfigurationPage() {
@@ -18,8 +18,7 @@ export default function ApplicationConfigurationPage() {
 
       <div className="prose dark:prose-invert max-w-none">
         <p className="text-xl text-gray-600 dark:text-gray-400 mb-8">
-          Configure your applications for optimal performance, security, and
-          scalability.
+          Configure your applications for optimal performance, security, and scalability.
         </p>
 
         <h2>Basic Configuration</h2>
@@ -67,15 +66,13 @@ export default function ApplicationConfigurationPage() {
         <h3>Storage Configuration</h3>
         <ul>
           <li>
-            <strong>Persistent Volumes</strong> - For data that needs to survive
-            restarts
+            <strong>Persistent Volumes</strong> - For data that needs to survive restarts
           </li>
           <li>
             <strong>Temporary Storage</strong> - For cache and temporary files
           </li>
           <li>
-            <strong>Volume Mounts</strong> - Where to mount storage in your
-            container
+            <strong>Volume Mounts</strong> - Where to mount storage in your container
           </li>
         </ul>
 
@@ -100,15 +97,13 @@ export default function ApplicationConfigurationPage() {
         <p>Set up automatic scaling for your application:</p>
         <ul>
           <li>
-            <strong>Horizontal Pod Autoscaler (HPA)</strong> - Scale based on
-            CPU/memory usage
+            <strong>Horizontal Pod Autoscaler (HPA)</strong> - Scale based on CPU/memory usage
           </li>
           <li>
             <strong>Manual Scaling</strong> - Set fixed number of replicas
           </li>
           <li>
-            <strong>Custom Metrics</strong> - Scale based on
-            application-specific metrics
+            <strong>Custom Metrics</strong> - Scale based on application-specific metrics
           </li>
         </ul>
 
@@ -119,8 +114,7 @@ export default function ApplicationConfigurationPage() {
             <strong>Security Context</strong> - Run containers as non-root user
           </li>
           <li>
-            <strong>Network Policies</strong> - Control traffic between
-            applications
+            <strong>Network Policies</strong> - Control traffic between applications
           </li>
           <li>
             <strong>Secrets Management</strong> - Store sensitive data securely
@@ -135,19 +129,10 @@ export default function ApplicationConfigurationPage() {
             ⚙️ Configuration Tips
           </h3>
           <ul className="text-amber-800 dark:text-amber-200">
-            <li>
-              Start with conservative resource limits and adjust based on
-              monitoring
-            </li>
+            <li>Start with conservative resource limits and adjust based on monitoring</li>
             <li>Always configure health checks for production applications</li>
-            <li>
-              Use environment-specific configurations for different deployment
-              stages
-            </li>
-            <li>
-              Enable security features like non-root containers and network
-              policies
-            </li>
+            <li>Use environment-specific configurations for different deployment stages</li>
+            <li>Enable security features like non-root containers and network policies</li>
           </ul>
         </div>
       </div>

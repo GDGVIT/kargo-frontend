@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   FaGithub,
   FaLock,
@@ -7,14 +7,11 @@ import {
   FaEye,
   FaExclamationCircle,
   FaUser,
-} from "react-icons/fa";
-import Repo from "../../../../types/Repo/Repo";
-import Card from "../../../ui/Card/Card";
+} from 'react-icons/fa';
+import Repo from '../../../../types/Repo/Repo';
+import Card from '../../../ui/Card/Card';
 
-const RepoListItem: React.FC<{ repo: Repo; actions?: React.ReactNode }> = ({
-  repo,
-  actions,
-}) => {
+const RepoListItem: React.FC<{ repo: Repo; actions?: React.ReactNode }> = ({ repo, actions }) => {
   return (
     <Card className="flex flex-col gap-4 sm:flex-row sm:items-center justify-between px-4 py-3 group relative overflow-hidden">
       <div className="w-full sm:w-auto flex-1 min-w-0">
@@ -46,10 +43,7 @@ const RepoListItem: React.FC<{ repo: Repo; actions?: React.ReactNode }> = ({
       </div>
       <div className="mt-2 sm:mt-0 text-xs text-zinc-400 text-right min-w-[140px] sm:min-w-[180px] font-mono flex flex-col gap-1 w-full sm:w-auto">
         <div>
-          Language:{" "}
-          <span className="font-semibold text-white">
-            {repo.language || "N/A"}
-          </span>
+          Language: <span className="font-semibold text-white">{repo.language || 'N/A'}</span>
         </div>
         <div className="flex gap-2 items-center justify-end flex-wrap">
           <span className="flex items-center gap-1">

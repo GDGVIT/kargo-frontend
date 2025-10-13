@@ -1,15 +1,15 @@
-import ConfigureApp from "../../../components/Applications/ConfigureApp/ConfigureApp";
-import PageHeading from "../../../components/ui/PageHeading/PageHeading";
-import { generatePageMetadata } from "../../../lib/metadata";
+import ConfigureApp from '../../../components/Applications/ConfigureApp/ConfigureApp';
+import PageHeading from '../../../components/ui/PageHeading/PageHeading';
+import { generatePageMetadata } from '../../../lib/metadata';
 
-const title = "Application Configuration";
-const description = "Configure your application configuration.";
+const title = 'Application Configuration';
+const description = 'Configure your application configuration.';
 
 export const metadata = generatePageMetadata({
   title,
   description,
-  path: "/applications",
-  imageAlt: "Kargo - Application Configuration",
+  path: '/applications',
+  imageAlt: 'Kargo - Application Configuration',
 });
 
 export default async function ApplicationConfigPage({

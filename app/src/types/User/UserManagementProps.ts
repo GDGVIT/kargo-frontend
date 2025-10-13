@@ -1,6 +1,6 @@
-import User from "./User";
-import ExtraResourcesEditState from "../ExtraResources/ExtraResourcesEditState";
-import Resource from "../Application/Resource/Resource";
+import User from './User';
+import ExtraResourcesEditState from '../ExtraResources/ExtraResourcesEditState';
+import Resource from '../Application/Resource/Resource';
 
 export default interface UserManagementProps {
   users: User[];
@@ -10,11 +10,7 @@ export default interface UserManagementProps {
   extraResourcesSaving: string | null;
   onPlanAssign: (userId: string, planId: string) => void;
   onOpenExtraResourcesEdit: (user: User) => void;
-  onExtraResourcesChange: (
-    userId: string,
-    field: string,
-    value: string
-  ) => void;
+  onExtraResourcesChange: (userId: string, field: string, value: string) => void;
   onExtraResourcesSave: (userId: string) => void;
   onExtraResourcesCancel: (userId: string) => void;
   getRoleActions: (user: User) => React.ReactNode;

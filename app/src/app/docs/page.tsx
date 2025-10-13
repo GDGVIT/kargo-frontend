@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   FaRocket,
@@ -15,9 +15,9 @@ import {
   FaSearch,
   FaBook,
   FaUsers,
-} from "react-icons/fa";
-import { SiKubernetes } from "react-icons/si";
-import AnimatedButton from "../../components/ui/AnimatedButton/AnimatedButton";
+} from 'react-icons/fa';
+import { SiKubernetes } from 'react-icons/si';
+import AnimatedButton from '../../components/ui/AnimatedButton/AnimatedButton';
 
 export default function DocsPage() {
   return (
@@ -26,10 +26,10 @@ export default function DocsPage() {
 
       <div className="prose dark:prose-invert max-w-none">
         <p className="text-xl text-gray-600 dark:text-gray-400 mb-8">
-          Welcome to Kargo, a comprehensive, AI-augmented deployment platform
-          that empowers developers to deploy containerized applications with
-          unprecedented ease and intelligence. Experience the future of cloud
-          deployment with Kubernetes-native scaling and AI-powered optimization.
+          Welcome to Kargo, a comprehensive, AI-augmented deployment platform that empowers
+          developers to deploy containerized applications with unprecedented ease and intelligence.
+          Experience the future of cloud deployment with Kubernetes-native scaling and AI-powered
+          optimization.
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
@@ -37,12 +37,9 @@ export default function DocsPage() {
             <div className="text-blue-600 dark:text-blue-400 text-2xl mb-3">
               <FaRocket />
             </div>
-            <h3 className="font-semibold text-blue-900 dark:text-blue-100 mb-2">
-              Quick Deploy
-            </h3>
+            <h3 className="font-semibold text-blue-900 dark:text-blue-100 mb-2">Quick Deploy</h3>
             <p className="text-blue-800 dark:text-blue-200 text-sm">
-              Deploy your first app in under 5 minutes with our streamlined
-              workflow.
+              Deploy your first app in under 5 minutes with our streamlined workflow.
             </p>
             <a
               href="/docs/quick-start"
@@ -56,12 +53,9 @@ export default function DocsPage() {
             <div className="text-purple-600 dark:text-purple-400 text-2xl mb-3">
               <FaRobot />
             </div>
-            <h3 className="font-semibold text-purple-900 dark:text-purple-100 mb-2">
-              AI-Powered
-            </h3>
+            <h3 className="font-semibold text-purple-900 dark:text-purple-100 mb-2">AI-Powered</h3>
             <p className="text-purple-800 dark:text-purple-200 text-sm">
-              Let AI optimize your configurations and suggest best practices
-              automatically.
+              Let AI optimize your configurations and suggest best practices automatically.
             </p>
             <a
               href="/docs/features/ai-setup"
@@ -79,8 +73,7 @@ export default function DocsPage() {
               Enterprise Ready
             </h3>
             <p className="text-green-800 dark:text-green-200 text-sm">
-              Production-grade Kubernetes infrastructure with monitoring and
-              scaling.
+              Production-grade Kubernetes infrastructure with monitoring and scaling.
             </p>
             <a
               href="/docs/installation"
@@ -93,18 +86,16 @@ export default function DocsPage() {
 
         <h2>What is Kargo?</h2>
         <p>
-          Kargo is a next-generation deployment platform that bridges the gap
-          between traditional deployment complexity and modern developer
-          productivity. By combining the robust foundation of Kubernetes with
-          intelligent AI-driven automation, Kargo makes container deployment
-          accessible to developers of all skill levels.
+          Kargo is a next-generation deployment platform that bridges the gap between traditional
+          deployment complexity and modern developer productivity. By combining the robust
+          foundation of Kubernetes with intelligent AI-driven automation, Kargo makes container
+          deployment accessible to developers of all skill levels.
         </p>
 
         <p>
-          Whether you&apos;re a startup deploying your first MVP, a growing
-          company scaling microservices, or an enterprise managing complex
-          distributed systems, Kargo provides the tools, intelligence, and
-          reliability you need to succeed.
+          Whether you&apos;re a startup deploying your first MVP, a growing company scaling
+          microservices, or an enterprise managing complex distributed systems, Kargo provides the
+          tools, intelligence, and reliability you need to succeed.
         </p>
 
         <h2>Core Capabilities</h2>
@@ -178,9 +169,8 @@ export default function DocsPage() {
               Full-Stack Web Applications
             </h4>
             <p className="text-gray-600 dark:text-gray-400">
-              Deploy React, Vue, or Angular frontends with Node.js, Python, or
-              Go backends. Automatic HTTPS, CDN integration, and database
-              connections.
+              Deploy React, Vue, or Angular frontends with Node.js, Python, or Go backends.
+              Automatic HTTPS, CDN integration, and database connections.
             </p>
           </div>
 
@@ -190,8 +180,8 @@ export default function DocsPage() {
               Microservices Architecture
             </h4>
             <p className="text-gray-600 dark:text-gray-400">
-              Orchestrate complex microservices with intelligent service
-              discovery, load balancing, and inter-service communication.
+              Orchestrate complex microservices with intelligent service discovery, load balancing,
+              and inter-service communication.
             </p>
           </div>
 
@@ -201,8 +191,8 @@ export default function DocsPage() {
               AI/ML Model Deployment
             </h4>
             <p className="text-gray-600 dark:text-gray-400">
-              Deploy machine learning models with auto-scaling inference
-              endpoints, GPU support, and model versioning.
+              Deploy machine learning models with auto-scaling inference endpoints, GPU support, and
+              model versioning.
             </p>
           </div>
 
@@ -212,8 +202,8 @@ export default function DocsPage() {
               High-Traffic Applications
             </h4>
             <p className="text-gray-600 dark:text-gray-400">
-              Handle millions of requests with horizontal pod autoscaling,
-              intelligent caching, and global load distribution.
+              Handle millions of requests with horizontal pod autoscaling, intelligent caching, and
+              global load distribution.
             </p>
           </div>
         </div>
@@ -235,7 +225,7 @@ export default function DocsPage() {
               <li>4. Access your live application</li>
             </ol>
             <AnimatedButton
-              onClick={() => (window.location.href = "/docs/quick-start")}
+              onClick={() => (window.location.href = '/docs/quick-start')}
               variant="primary"
               className="mt-4"
             >
@@ -258,7 +248,7 @@ export default function DocsPage() {
               <li>4. Deploy your first application</li>
             </ol>
             <AnimatedButton
-              onClick={() => (window.location.href = "/docs/installation")}
+              onClick={() => (window.location.href = '/docs/installation')}
               variant="success"
               className="mt-4"
             >
@@ -276,8 +266,7 @@ export default function DocsPage() {
               </div>
               <h4 className="font-semibold mb-2">Control Plane</h4>
               <p className="text-sm text-gray-600 dark:text-gray-400">
-                Web dashboard, API server, and AI engine for intelligent
-                deployment management
+                Web dashboard, API server, and AI engine for intelligent deployment management
               </p>
             </div>
 
@@ -287,8 +276,7 @@ export default function DocsPage() {
               </div>
               <h4 className="font-semibold mb-2">Kubernetes Cluster</h4>
               <p className="text-sm text-gray-600 dark:text-gray-400">
-                Production-grade container orchestration with auto-scaling and
-                high availability
+                Production-grade container orchestration with auto-scaling and high availability
               </p>
             </div>
 
@@ -298,8 +286,7 @@ export default function DocsPage() {
               </div>
               <h4 className="font-semibold mb-2">Observability Stack</h4>
               <p className="text-sm text-gray-600 dark:text-gray-400">
-                Comprehensive monitoring, logging, and alerting for all your
-                applications
+                Comprehensive monitoring, logging, and alerting for all your applications
               </p>
             </div>
           </div>
@@ -317,29 +304,20 @@ export default function DocsPage() {
             </p>
             <ul className="space-y-1 text-sm">
               <li>
-                •{" "}
-                <a
-                  href="/docs/quick-start"
-                  className="text-blue-600 hover:text-blue-700"
-                >
+                •{' '}
+                <a href="/docs/quick-start" className="text-blue-600 hover:text-blue-700">
                   Quick Start Guide
                 </a>
               </li>
               <li>
-                •{" "}
-                <a
-                  href="/docs/api/authentication"
-                  className="text-blue-600 hover:text-blue-700"
-                >
+                •{' '}
+                <a href="/docs/api/authentication" className="text-blue-600 hover:text-blue-700">
                   API Documentation
                 </a>
               </li>
               <li>
-                •{" "}
-                <a
-                  href="/docs/applications/creating"
-                  className="text-blue-600 hover:text-blue-700"
-                >
+                •{' '}
+                <a href="/docs/applications/creating" className="text-blue-600 hover:text-blue-700">
                   Best Practices
                 </a>
               </li>
@@ -368,19 +346,19 @@ export default function DocsPage() {
             Ready to Deploy?
           </h3>
           <p className="text-blue-800 dark:text-blue-200 mb-4">
-            Join thousands of developers who trust Kargo for their production
-            deployments. Start with our free tier and scale as you grow.
+            Join thousands of developers who trust Kargo for their production deployments. Start
+            with our free tier and scale as you grow.
           </p>
           <div className="flex flex-col sm:flex-row gap-3">
             <AnimatedButton
-              onClick={() => (window.location.href = "/docs/quick-start")}
+              onClick={() => (window.location.href = '/docs/quick-start')}
               variant="primary"
               className="font-medium"
             >
               Deploy Your First App
             </AnimatedButton>
             <AnimatedButton
-              onClick={() => (window.location.href = "/docs/installation")}
+              onClick={() => (window.location.href = '/docs/installation')}
               variant="secondary"
               className="font-medium"
             >

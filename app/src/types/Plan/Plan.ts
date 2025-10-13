@@ -1,4 +1,4 @@
-import Resource from "../../types/Application/Resource/Resource";
+import Resource from '../../types/Application/Resource/Resource';
 
 export default interface Plan {
   _id: string;

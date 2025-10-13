@@ -1,4 +1,4 @@
-import type Resource from "../Resource";
+import type Resource from '../Resource';
 
 export default interface ResourceLimits {
   allowed: {

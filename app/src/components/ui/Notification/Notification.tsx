@@ -1,18 +1,11 @@
-"use client";
+'use client';
 
-import React, {
-  useState,
-  createContext,
-  useContext,
-  useEffect,
-  useRef,
-  ReactNode,
-} from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import { X, CheckCircle, AlertCircle, Info, AlertTriangle } from "lucide-react";
-import clsx from "clsx";
+import React, { useState, createContext, useContext, useEffect, useRef, ReactNode } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { X, CheckCircle, AlertCircle, Info, AlertTriangle } from 'lucide-react';
+import clsx from 'clsx';
 
-export type NotificationType = "success" | "error" | "info" | "warning";
+export type NotificationType = 'success' | 'error' | 'info' | 'warning';
 
 interface Notification {
   id: string;
@@ -24,16 +17,11 @@ interface NotificationContextType {
   notify: (message: string, type?: NotificationType) => void;
 }
 
-const NotificationContext = createContext<NotificationContextType | undefined>(
-  undefined
-);
+const NotificationContext = createContext<NotificationContextType | undefined>(undefined);
 
 const useNotification = () => {
   const context = useContext(NotificationContext);
-  if (!context)
-    throw new Error(
-      "useNotification must be used within a NotificationProvider"
-    );
+  if (!context) throw new Error('useNotification must be used within a NotificationProvider');
   return context;
 };
 
@@ -49,16 +37,17 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
     };
   }, []);
 
-  const notify = (message: string, type: NotificationType = "info") => {
+  const notify = (message: string, type: NotificationType = 'info') => {
     const id = crypto.randomUUID();
     setNotifications((prev) => [...prev, { id, message, type }]);
 
-    const timeoutId = setTimeout(() => {
-      setNotifications((prev) => prev.filter((n) => n.id !== id));
-      removalQueue.current = removalQueue.current.filter(
-        (t) => t !== timeoutId
-      );
-    }, 4000 + notifications.length * 300);
+    const timeoutId = setTimeout(
+      () => {
+        setNotifications((prev) => prev.filter((n) => n.id !== id));
+        removalQueue.current = removalQueue.current.filter((t) => t !== timeoutId);
+      },
+      4000 + notifications.length * 300
+    );
 
     removalQueue.current.push(timeoutId);
   };
@@ -68,14 +57,10 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const iconMap: Record<NotificationType, React.ReactElement> = {
-    success: (
-      <CheckCircle className="text-emerald-400 drop-shadow-lg" size={24} />
-    ),
+    success: <CheckCircle className="text-emerald-400 drop-shadow-lg" size={24} />,
     error: <AlertCircle className="text-rose-400 drop-shadow-lg" size={24} />,
     info: <Info className="text-sky-400 drop-shadow-lg" size={24} />,
-    warning: (
-      <AlertTriangle className="text-yellow-400 drop-shadow-lg" size={24} />
-    ),
+    warning: <AlertTriangle className="text-yellow-400 drop-shadow-lg" size={24} />,
   };
 
   return (
@@ -99,18 +84,18 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
                 exit={{ opacity: 0, y: 40, scale: 0.95 }}
                 transition={{
                   duration: 0.5,
-                  type: "spring",
+                  type: 'spring',
                   stiffness: 300,
                   damping: 30,
                   delay: index * 0.08,
                 }}
                 className={clsx(
-                  "relative flex items-center gap-2 sm:gap-3 px-2 sm:px-4 py-1.5 rounded-xl w-full shadow-2xl h-auto bg-[rgba(24,24,27,0.65)] backdrop-blur border border-white/10",
+                  'relative flex items-center gap-2 sm:gap-3 px-2 sm:px-4 py-1.5 rounded-xl w-full shadow-2xl h-auto bg-[rgba(24,24,27,0.65)] backdrop-blur border border-white/10',
                   {
-                    "border-emerald-400/40": n.type === "success",
-                    "border-rose-400/40": n.type === "error",
-                    "border-sky-400/40": n.type === "info",
-                    "border-yellow-400/40": n.type === "warning",
+                    'border-emerald-400/40': n.type === 'success',
+                    'border-rose-400/40': n.type === 'error',
+                    'border-sky-400/40': n.type === 'info',
+                    'border-yellow-400/40': n.type === 'warning',
                   }
                 )}
               >

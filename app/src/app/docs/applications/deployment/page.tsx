@@ -1,13 +1,13 @@
-import { generatePageMetadata } from "../../../../lib/metadata";
+import { generatePageMetadata } from '../../../../lib/metadata';
 
-const title = "Application Deployment";
-const description = "Learn how to deploy and manage applications in Kargo.";
+const title = 'Application Deployment';
+const description = 'Learn how to deploy and manage applications in Kargo.';
 
 export const metadata = generatePageMetadata({
   title,
   description,
-  path: "/docs/applications/deployment",
-  imageAlt: "Application Deployment in Kargo",
+  path: '/docs/applications/deployment',
+  imageAlt: 'Application Deployment in Kargo',
 });
 
 export default function ApplicationDeploymentPage() {
@@ -17,8 +17,7 @@ export default function ApplicationDeploymentPage() {
 
       <div className="prose dark:prose-invert max-w-none">
         <p className="text-xl text-gray-600 dark:text-gray-400 mb-8">
-          Deploy and manage your applications with Kargo&apos;s powerful
-          deployment features.
+          Deploy and manage your applications with Kargo&apos;s powerful deployment features.
         </p>
 
         <h2>Deployment Strategies</h2>
@@ -60,8 +59,7 @@ export default function ApplicationDeploymentPage() {
             <strong>Deploy</strong> - Image is deployed to Kubernetes
           </li>
           <li>
-            <strong>Verify</strong> - Health checks confirm successful
-            deployment
+            <strong>Verify</strong> - Health checks confirm successful deployment
           </li>
           <li>
             <strong>Monitor</strong> - Ongoing monitoring ensures stability

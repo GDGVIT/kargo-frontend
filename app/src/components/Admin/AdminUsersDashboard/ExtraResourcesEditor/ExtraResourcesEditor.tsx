@@ -1,8 +1,8 @@
-import React from "react";
-import Input from "../../../ui/Input/Input";
-import { HiCheck, HiX } from "react-icons/hi";
-import AnimatedButton from "../../../ui/AnimatedButton/AnimatedButton";
-import type ExtraResourcesEditorProps from "../../../../types/ExtraResources/ExtraResourcesEditorProps";
+import React from 'react';
+import Input from '../../../ui/Input/Input';
+import { HiCheck, HiX } from 'react-icons/hi';
+import AnimatedButton from '../../../ui/AnimatedButton/AnimatedButton';
+import type ExtraResourcesEditorProps from '../../../../types/ExtraResources/ExtraResourcesEditorProps';
 
 const ExtraResourcesEditor: React.FC<ExtraResourcesEditorProps> = ({
   data,
@@ -21,7 +21,7 @@ const ExtraResourcesEditor: React.FC<ExtraResourcesEditorProps> = ({
           type="number"
           unitType="cpu"
           value={data.requestsCpu}
-          onChange={(val) => onChange("requestsCpu", val)}
+          onChange={(val) => onChange('requestsCpu', val)}
           displayHelperText
         />
         <Input
@@ -30,7 +30,7 @@ const ExtraResourcesEditor: React.FC<ExtraResourcesEditorProps> = ({
           type="number"
           unitType="memory"
           value={data.requestsMemory}
-          onChange={(val) => onChange("requestsMemory", val)}
+          onChange={(val) => onChange('requestsMemory', val)}
           displayHelperText
         />
         <Input
@@ -39,7 +39,7 @@ const ExtraResourcesEditor: React.FC<ExtraResourcesEditorProps> = ({
           type="number"
           unitType="storage"
           value={data.requestsStorage}
-          onChange={(val) => onChange("requestsStorage", val)}
+          onChange={(val) => onChange('requestsStorage', val)}
           displayHelperText
         />
       </div>
@@ -52,7 +52,7 @@ const ExtraResourcesEditor: React.FC<ExtraResourcesEditorProps> = ({
           type="number"
           unitType="cpu"
           value={data.limitsCpu}
-          onChange={(val) => onChange("limitsCpu", val)}
+          onChange={(val) => onChange('limitsCpu', val)}
           displayHelperText
         />
         <Input
@@ -61,7 +61,7 @@ const ExtraResourcesEditor: React.FC<ExtraResourcesEditorProps> = ({
           type="number"
           unitType="memory"
           value={data.limitsMemory}
-          onChange={(val) => onChange("limitsMemory", val)}
+          onChange={(val) => onChange('limitsMemory', val)}
           displayHelperText
         />
         <Input
@@ -70,7 +70,7 @@ const ExtraResourcesEditor: React.FC<ExtraResourcesEditorProps> = ({
           type="number"
           unitType="storage"
           value={data.limitsStorage}
-          onChange={(val) => onChange("limitsStorage", val)}
+          onChange={(val) => onChange('limitsStorage', val)}
           displayHelperText
         />
       </div>

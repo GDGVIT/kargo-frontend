@@ -1,21 +1,15 @@
-import { generatePageMetadata } from "../../../../lib/metadata";
-import {
-  FaCheckCircle,
-  FaClock,
-  FaTimesCircle,
-  FaSync,
-  FaLink,
-} from "react-icons/fa";
+import { generatePageMetadata } from '../../../../lib/metadata';
+import { FaCheckCircle, FaClock, FaTimesCircle, FaSync, FaLink } from 'react-icons/fa';
 
-const title = "GitHub Integration";
+const title = 'GitHub Integration';
 const description =
-  "Learn how to integrate GitHub repositories with Kargo for seamless deployments.";
+  'Learn how to integrate GitHub repositories with Kargo for seamless deployments.';
 
 export const metadata = generatePageMetadata({
   title,
   description,
-  path: "/docs/features/github",
-  imageAlt: "GitHub Integration with Kargo",
+  path: '/docs/features/github',
+  imageAlt: 'GitHub Integration with Kargo',
 });
 
 export default function GitHubIntegrationPage() {
@@ -25,8 +19,8 @@ export default function GitHubIntegrationPage() {
 
       <div className="prose dark:prose-invert max-w-none">
         <p className="text-xl text-gray-600 dark:text-gray-400 mb-8">
-          Seamlessly connect your GitHub repositories with Kargo for automated
-          deployments and CI/CD workflows.
+          Seamlessly connect your GitHub repositories with Kargo for automated deployments and CI/CD
+          workflows.
         </p>
 
         <h2>Setting Up GitHub Integration</h2>
@@ -52,8 +46,7 @@ export default function GitHubIntegrationPage() {
             <strong>Write Status</strong> - Update commit status for deployments
           </li>
           <li>
-            <strong>Read Webhooks</strong> - Receive notifications on code
-            changes
+            <strong>Read Webhooks</strong> - Receive notifications on code changes
           </li>
         </ul>
 
@@ -113,8 +106,7 @@ export default function GitHubIntegrationPage() {
         <p>Kargo updates GitHub with deployment information:</p>
         <ul>
           <li className="flex items-center">
-            <FaCheckCircle className="mr-2 text-green-500" /> Deployment
-            successful
+            <FaCheckCircle className="mr-2 text-green-500" /> Deployment successful
           </li>
           <li className="flex items-center">
             <FaClock className="mr-2 text-yellow-500" /> Deployment in progress

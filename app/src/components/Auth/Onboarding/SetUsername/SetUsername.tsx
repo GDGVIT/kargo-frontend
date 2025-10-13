@@ -1,20 +1,18 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
-import { useRouter } from "next/navigation";
-import { useAuth } from "../../AuthProvider/AuthProvider";
-import { motion } from "framer-motion";
-import useNotification, {
-  NotificationProvider,
-} from "../../../ui/Notification/Notification";
-import { baseURL } from "../../../../utils/api";
-import Card from "../../../ui/Card/Card";
-import Input from "../../../ui/Input/Input";
-import AnimatedButton from "../../../ui/AnimatedButton/AnimatedButton";
+import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '../../AuthProvider/AuthProvider';
+import { motion } from 'framer-motion';
+import useNotification, { NotificationProvider } from '../../../ui/Notification/Notification';
+import { baseURL } from '../../../../utils/api';
+import Card from '../../../ui/Card/Card';
+import Input from '../../../ui/Input/Input';
+import AnimatedButton from '../../../ui/AnimatedButton/AnimatedButton';
 
 const SetUsername: React.FC = () => {
-  const [username, setUsername] = useState("");
-  const [error, setError] = useState("");
+  const [username, setUsername] = useState('');
+  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const { refreshUser } = useAuth();
@@ -26,46 +24,46 @@ const SetUsername: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
+    setError('');
 
     const trimmedUsername = username.trim().toLowerCase();
 
     if (
       !username ||
-      typeof username !== "string" ||
+      typeof username !== 'string' ||
       trimmedUsername.length === 0 ||
       trimmedUsername.length > 63 ||
       !usernameRegex.test(trimmedUsername)
     ) {
       setError(
-        "Invalid username. Only lowercase letters, numbers, and hyphens. Must start and end with a letter or number. Max 63 characters."
+        'Invalid username. Only lowercase letters, numbers, and hyphens. Must start and end with a letter or number. Max 63 characters.'
       );
       notify(
-        "Invalid username. Only lowercase letters, numbers, and hyphens. Must start and end with a letter or number. Max 63 characters.",
-        "warning"
+        'Invalid username. Only lowercase letters, numbers, and hyphens. Must start and end with a letter or number. Max 63 characters.',
+        'warning'
       );
       return;
     }
     setLoading(true);
     try {
       const res = await fetch(`${baseURL}/api/auth/set-username`, {
-        method: "POST",
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username: trimmedUsername }),
       });
       const data = await res.json();
       if (!res.ok) {
-        setError(data.message || "Failed to set username");
-        notify(data.message || "Failed to set username", "error");
+        setError(data.message || 'Failed to set username');
+        notify(data.message || 'Failed to set username', 'error');
       } else {
-        notify("Username set successfully!", "success");
+        notify('Username set successfully!', 'success');
         await refreshUser();
-        router.replace("/settings");
+        router.replace('/settings');
       }
     } catch {
-      setError("Something went wrong. Please try again.");
-      notify("Something went wrong. Please try again.", "error");
+      setError('Something went wrong. Please try again.');
+      notify('Something went wrong. Please try again.', 'error');
     } finally {
       setLoading(false);
     }
@@ -82,12 +80,9 @@ const SetUsername: React.FC = () => {
             className="space-y-6"
           >
             <div className="text-center">
-              <h2 className="text-2xl font-bold text-white mb-2">
-                Choose a Username
-              </h2>
+              <h2 className="text-2xl font-bold text-white mb-2">Choose a Username</h2>
               <p className="text-sm text-zinc-400">
-                Set your unique username to continue. It must be
-                Kubernetes-compatible.
+                Set your unique username to continue. It must be Kubernetes-compatible.
               </p>
             </div>
 
@@ -104,13 +99,8 @@ const SetUsername: React.FC = () => {
                 required
               />
 
-              <AnimatedButton
-                type="submit"
-                variant="primary"
-                disabled={loading}
-                className="w-full"
-              >
-                {loading ? "Setting..." : "Set Username"}
+              <AnimatedButton type="submit" variant="primary" disabled={loading} className="w-full">
+                {loading ? 'Setting...' : 'Set Username'}
               </AnimatedButton>
             </form>
           </motion.div>

@@ -1,12 +1,12 @@
-import ResourceLimits from "../../Resource/ResourceLimits/ResourceLimits";
-import Resources from "../Resources";
+import ResourceLimits from '../../Resource/ResourceLimits/ResourceLimits';
+import Resources from '../Resources';
 
 export default interface ResourcesSectionProps {
-	resourceLimits: ResourceLimits;
-	resources: Resources;
-	handleResourceChange: (
-		section: "requests" | "limits",
-		field: "cpu" | "memory" | "storage",
-		value: string
-	) => void;
+  resourceLimits: ResourceLimits;
+  resources: Resources;
+  handleResourceChange: (
+    section: 'requests' | 'limits',
+    field: 'cpu' | 'memory' | 'storage',
+    value: string
+  ) => void;
 }

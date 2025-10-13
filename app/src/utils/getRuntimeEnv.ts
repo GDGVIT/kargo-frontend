@@ -7,7 +7,7 @@ declare global {
 }
 
 export function getRuntimeEnv(key: string): string | undefined {
-  if (typeof window !== "undefined" && window.env) {
+  if (typeof window !== 'undefined' && window.env) {
     return window.env[key];
   }
   return undefined;

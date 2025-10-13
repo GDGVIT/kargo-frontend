@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import React from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export interface TabItem {
   key: string;
@@ -18,12 +18,7 @@ interface TabsProps {
   className?: string;
 }
 
-const Tabs: React.FC<TabsProps> = ({
-  tabs,
-  activeTab,
-  setActiveTab,
-  className = "",
-}) => {
+const Tabs: React.FC<TabsProps> = ({ tabs, activeTab, setActiveTab, className = '' }) => {
   const activeIndex = tabs.findIndex((tab) => tab.key === activeTab);
   const tabCount = tabs.length;
 
@@ -38,8 +33,7 @@ const Tabs: React.FC<TabsProps> = ({
                 onClick={() => setActiveTab(tab.key)}
                 className="flex-1 relative py-3 text-sm font-medium text-gray-300 transition-colors text-center hover:text-[color:var(--theme-blue)] focus:text-[color:var(--theme-blue)]"
                 style={{
-                  color:
-                    tab.key === activeTab ? "var(--theme-blue)" : undefined,
+                  color: tab.key === activeTab ? 'var(--theme-blue)' : undefined,
                 }}
               >
                 {tab.label}
@@ -52,12 +46,12 @@ const Tabs: React.FC<TabsProps> = ({
 
         <motion.div
           layout
-          transition={{ type: "spring", stiffness: 400, damping: 30 }}
+          transition={{ type: 'spring', stiffness: 400, damping: 30 }}
           className="absolute bottom-0 h-0.5 z-10"
           style={{
             width: `${100 / tabCount}%`,
             left: `${(100 / tabCount) * activeIndex}%`,
-            backgroundColor: "var(--theme-blue)",
+            backgroundColor: 'var(--theme-blue)',
           }}
         />
       </div>
@@ -73,14 +67,10 @@ const Tabs: React.FC<TabsProps> = ({
             className="space-y-3"
           >
             {tabs[activeIndex]?.heading && (
-              <h3 className="text-xl font-semibold">
-                {tabs[activeIndex].heading}
-              </h3>
+              <h3 className="text-xl font-semibold">{tabs[activeIndex].heading}</h3>
             )}
             {tabs[activeIndex]?.subheading && (
-              <p className="text-sm text-gray-400">
-                {tabs[activeIndex].subheading}
-              </p>
+              <p className="text-sm text-gray-400">{tabs[activeIndex].subheading}</p>
             )}
             <div>{tabs[activeIndex]?.content}</div>
           </motion.div>
@@ -95,7 +85,7 @@ export function useDefaultTab(
   activeTab?: string
 ): [string, (key: string) => void] {
   const [currentTab, setCurrentTab] = React.useState(
-    activeTab || (tabs.length > 0 ? tabs[0].key : "")
+    activeTab || (tabs.length > 0 ? tabs[0].key : '')
   );
   React.useEffect(() => {
     if (!activeTab && tabs.length > 0) {

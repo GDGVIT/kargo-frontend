@@ -1,4 +1,4 @@
-import RegistryType from "../RegistryType/RegistryType";
+import RegistryType from '../RegistryType/RegistryType';
 
 export default interface RegistryCredential {
   name: string;

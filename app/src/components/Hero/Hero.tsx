@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { motion } from "framer-motion";
-import Link from "next/link";
-import Marquee from "react-fast-marquee";
+import { motion } from 'framer-motion';
+import Link from 'next/link';
+import Marquee from 'react-fast-marquee';
 
 export default function Hero() {
   return (
@@ -10,23 +10,20 @@ export default function Hero() {
       className="relative flex flex-col items-center justify-center w-full text-white"
       style={{
         padding: `var(--padding-large) var(--screen-horizontal-margin)`,
-        minHeight: "70vh",
+        minHeight: '70vh',
       }}
     >
-      <div
-        className="max-w-5xl w-full text-center"
-        style={{ gap: "var(--margin-large)" }}
-      >
+      <div className="max-w-5xl w-full text-center" style={{ gap: 'var(--margin-large)' }}>
         <motion.h1
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           className="font-semibold leading-tight tracking-tight"
           style={{
-            fontSize: "clamp(2.5rem, 8vw, 4rem)",
-            color: "var(--foreground)",
-            fontWeight: "var(--font-weight-bold)",
-            marginBottom: "var(--margin-medium)",
+            fontSize: 'clamp(2.5rem, 8vw, 4rem)',
+            color: 'var(--foreground)',
+            fontWeight: 'var(--font-weight-bold)',
+            marginBottom: 'var(--margin-medium)',
           }}
         >
           Kargo
@@ -39,14 +36,13 @@ export default function Hero() {
           speed={25}
           className="font-semibold max-w-2xl mx-auto"
           style={{
-            fontSize: "var(--font-size-large)",
-            color: "#a0aec0",
+            fontSize: 'var(--font-size-large)',
+            color: '#a0aec0',
             margin: `var(--margin-large) auto`,
-            fontWeight: "var(--font-weight-normal)",
+            fontWeight: 'var(--font-weight-normal)',
           }}
         >
-          Effortless Docker Application
-          Deployment&nbsp;&nbsp;|&nbsp;&nbsp;Enterprise-Grade
+          Effortless Docker Application Deployment&nbsp;&nbsp;|&nbsp;&nbsp;Enterprise-Grade
           Security&nbsp;&nbsp;|&nbsp;&nbsp;Automated, AI-Driven
           Configuration&nbsp;&nbsp;|&nbsp;&nbsp;Kubernetes-Native
           Scalability&nbsp;&nbsp;|&nbsp;&nbsp;Robust Infrastructure
@@ -59,16 +55,15 @@ export default function Hero() {
           transition={{ delay: 0.2, duration: 0.8 }}
           className="max-w-2xl mx-auto"
           style={{
-            fontSize: "var(--font-size-medium)",
-            color: "#7b8191",
-            fontWeight: "var(--font-weight-normal)",
-            marginBottom: "var(--margin-large)",
-            lineHeight: "1.6",
+            fontSize: 'var(--font-size-medium)',
+            color: '#7b8191',
+            fontWeight: 'var(--font-weight-normal)',
+            marginBottom: 'var(--margin-large)',
+            lineHeight: '1.6',
           }}
         >
-          Kargo lets you deploy containerized applications with full flexibility
-          — AI-powered setup, secure infrastructure, and Kubernetes-native
-          scaling, all from a powerful web interface.
+          Kargo lets you deploy containerized applications with full flexibility — AI-powered setup,
+          secure infrastructure, and Kubernetes-native scaling, all from a powerful web interface.
         </motion.p>
 
         <motion.div
@@ -76,25 +71,25 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4, duration: 0.7 }}
           className="flex flex-col sm:flex-row justify-center items-center responsive-flex-center"
-          style={{ gap: "var(--margin-medium)" }}
+          style={{ gap: 'var(--margin-medium)' }}
         >
           <Link
             href="/settings"
             className="inline-block font-medium"
             style={{
               padding: `var(--padding-small) var(--padding-medium)`,
-              borderRadius: "var(--border-radius-medium)",
-              backgroundColor: "var(--foreground)",
-              color: "var(--background)",
-              fontWeight: "var(--font-weight-bold)",
-              transition: "all var(--transition-fast)",
-              textDecoration: "none",
+              borderRadius: 'var(--border-radius-medium)',
+              backgroundColor: 'var(--foreground)',
+              color: 'var(--background)',
+              fontWeight: 'var(--font-weight-bold)',
+              transition: 'all var(--transition-fast)',
+              textDecoration: 'none',
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = "#e0e6f0";
+              e.currentTarget.style.backgroundColor = '#e0e6f0';
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = "var(--foreground)";
+              e.currentTarget.style.backgroundColor = 'var(--foreground)';
             }}
           >
             Get Started
@@ -104,20 +99,20 @@ export default function Hero() {
             className="inline-block font-medium"
             style={{
               padding: `var(--padding-small) var(--padding-medium)`,
-              borderRadius: "var(--border-radius-medium)",
-              border: "2px solid #3a4152",
-              color: "var(--foreground)",
-              fontWeight: "var(--font-weight-normal)",
-              transition: "all var(--transition-fast)",
-              textDecoration: "none",
+              borderRadius: 'var(--border-radius-medium)',
+              border: '2px solid #3a4152',
+              color: 'var(--foreground)',
+              fontWeight: 'var(--font-weight-normal)',
+              transition: 'all var(--transition-fast)',
+              textDecoration: 'none',
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = "var(--card-background)";
-              e.currentTarget.style.borderColor = "#4e5a76";
+              e.currentTarget.style.backgroundColor = 'var(--card-background)';
+              e.currentTarget.style.borderColor = '#4e5a76';
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = "transparent";
-              e.currentTarget.style.borderColor = "#3a4152";
+              e.currentTarget.style.backgroundColor = 'transparent';
+              e.currentTarget.style.borderColor = '#3a4152';
             }}
           >
             Documentation
