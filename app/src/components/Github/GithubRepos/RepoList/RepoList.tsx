@@ -1,7 +1,7 @@
-import React from "react";
-import { motion } from "framer-motion";
-import RepoListItem from "../RepoListItem/RepoListItem";
-import Repo from "../../../../types/Repo/Repo";
+import React from 'react';
+import { motion } from 'framer-motion';
+import RepoListItem from '../RepoListItem/RepoListItem';
+import Repo from '../../../../types/Repo/Repo';
 
 const RepoList: React.FC<{
   repos: Repo[];
@@ -10,8 +10,8 @@ const RepoList: React.FC<{
   <motion.ul
     className="divide-y divide-neutral-800 rounded-lg  mb-6  overflow-auto"
     style={{
-      scrollbarWidth: "none",
-      msOverflowStyle: "none",
+      scrollbarWidth: 'none',
+      msOverflowStyle: 'none',
     }}
     initial="hidden"
     animate="visible"

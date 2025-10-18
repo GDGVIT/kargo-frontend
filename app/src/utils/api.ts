@@ -1,7 +1,6 @@
-import axios from "axios";
+import axios from 'axios';
 
-const baseURL =
-  process.env.NEXT_PUBLIC_API_URL || "https://api.kargo.dscvit.com";
+const baseURL = process.env.NEXT_PUBLIC_API_URL || 'https://api.kargo.dscvit.com';
 
 const instance = axios.create({
   baseURL,
@@ -9,8 +8,8 @@ const instance = axios.create({
 });
 
 instance.interceptors.request.use((config) => {
-  if (typeof window !== "undefined") {
-    const token = sessionStorage.getItem("token");
+  if (typeof window !== 'undefined') {
+    const token = sessionStorage.getItem('token');
     if (token) {
       config.headers = config.headers || {};
       config.headers.Authorization = `Bearer ${token}`;

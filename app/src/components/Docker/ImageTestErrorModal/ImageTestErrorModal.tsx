@@ -1,7 +1,7 @@
-import React from "react";
-import Modal from "../../ui/Modal/Modal";
-import AnimatedButton from "../../ui/AnimatedButton/AnimatedButton";
-import { FaExclamationTriangle, FaKey, FaCog } from "react-icons/fa";
+import React from 'react';
+import Modal from '../../ui/Modal/Modal';
+import AnimatedButton from '../../ui/AnimatedButton/AnimatedButton';
+import { FaExclamationTriangle, FaKey, FaCog } from 'react-icons/fa';
 
 interface ImageTestErrorModalProps {
   open: boolean;
@@ -34,59 +34,55 @@ const ImageTestErrorModal: React.FC<ImageTestErrorModalProps> = ({
 
   const getTitle = () => {
     if (available) {
-      return "Image Available with Warnings";
+      return 'Image Available with Warnings';
     }
     if (isArchitectureIssue) {
-      return "Architecture Validation Failed";
+      return 'Architecture Validation Failed';
     }
-    return "Image Not Accessible";
+    return 'Image Not Accessible';
   };
 
   const getIcon = () => {
     if (available) {
-      return (
-        <FaExclamationTriangle className="text-yellow-400 text-xl mt-1 flex-shrink-0" />
-      );
+      return <FaExclamationTriangle className="text-yellow-400 text-xl mt-1 flex-shrink-0" />;
     }
-    return (
-      <FaExclamationTriangle className="text-red-400 text-xl mt-1 flex-shrink-0" />
-    );
+    return <FaExclamationTriangle className="text-red-400 text-xl mt-1 flex-shrink-0" />;
   };
 
   const getMainMessage = () => {
     if (available) {
-      return "The image is available but there are some compatibility warnings:";
+      return 'The image is available but there are some compatibility warnings:';
     }
     if (isArchitectureIssue) {
-      return "Architecture validation failed - deployment blocked";
+      return 'Architecture validation failed - deployment blocked';
     }
-    return "Docker Image Test Failed";
+    return 'Docker Image Test Failed';
   };
 
   const getErrorMessage = () => {
     if (isArchitectureIssue) {
-      return "The image is accessible but cannot be deployed due to architecture compatibility issues.";
+      return 'The image is accessible but cannot be deployed due to architecture compatibility issues.';
     }
     if (needsAuth && !authTested) {
       return "The image appears to be private and you don't have any registry credentials configured.";
     }
     if (needsAuth && authTested) {
-      return "The image is not accessible with your current credentials. The image may not exist or you may need different credentials.";
+      return 'The image is not accessible with your current credentials. The image may not exist or you may need different credentials.';
     }
-    return "The image could not be found or accessed.";
+    return 'The image could not be found or accessed.';
   };
 
   const getActionMessage = () => {
     if (isArchitectureIssue) {
-      return "Please check the architecture compatibility details below or ensure cluster access is available.";
+      return 'Please check the architecture compatibility details below or ensure cluster access is available.';
     }
     if (needsAuth && !authTested) {
-      return "Please configure your registry credentials and try again.";
+      return 'Please configure your registry credentials and try again.';
     }
     if (needsAuth && authTested) {
-      return "Please check your credentials or verify the image exists.";
+      return 'Please check your credentials or verify the image exists.';
     }
-    return "Please verify the image name and tag are correct.";
+    return 'Please verify the image name and tag are correct.';
   };
 
   return (
@@ -95,9 +91,7 @@ const ImageTestErrorModal: React.FC<ImageTestErrorModalProps> = ({
         <div className="flex items-start gap-3">
           {getIcon()}
           <div className="flex-1">
-            <h3 className="text-lg font-semibold text-gray-200 mb-2">
-              {getMainMessage()}
-            </h3>
+            <h3 className="text-lg font-semibold text-gray-200 mb-2">{getMainMessage()}</h3>
             <p className="text-gray-300 mb-2">
               <span className="font-mono bg-gray-800 px-2 py-1 rounded text-sm">
                 {fullImageName}
@@ -112,17 +106,13 @@ const ImageTestErrorModal: React.FC<ImageTestErrorModalProps> = ({
             {suggestions && suggestions.length > 0 && (
               <div className="mb-3">
                 <h4 className="text-sm font-semibold text-gray-300 mb-2">
-                  {available ? "Warnings:" : "Suggestions:"}
+                  {available ? 'Warnings:' : 'Suggestions:'}
                 </h4>
                 <ul className="text-sm text-gray-400 space-y-1">
                   {suggestions.map((suggestion, index) => (
                     <li key={index} className="flex items-start gap-2">
                       <span
-                        className={
-                          available
-                            ? "text-yellow-400 mt-0.5"
-                            : "text-yellow-400 mt-0.5"
-                        }
+                        className={available ? 'text-yellow-400 mt-0.5' : 'text-yellow-400 mt-0.5'}
                       >
                         •
                       </span>
@@ -146,13 +136,8 @@ const ImageTestErrorModal: React.FC<ImageTestErrorModalProps> = ({
         </div>
 
         <div className="flex flex-col sm:flex-row gap-3 pt-4 border-t border-gray-700">
-          <AnimatedButton
-            variant="secondary"
-            onClick={onClose}
-            className="flex-1"
-            icon={null}
-          >
-            {available ? "Continue" : "Cancel"}
+          <AnimatedButton variant="secondary" onClick={onClose} className="flex-1" icon={null}>
+            {available ? 'Continue' : 'Cancel'}
           </AnimatedButton>
 
           {needsAuth && !available && (
@@ -165,17 +150,12 @@ const ImageTestErrorModal: React.FC<ImageTestErrorModalProps> = ({
               className="flex-1"
               icon={<FaKey />}
             >
-              {authTested ? "Manage Credentials" : "Add Credentials"}
+              {authTested ? 'Manage Credentials' : 'Add Credentials'}
             </AnimatedButton>
           )}
 
           {!available && (
-            <AnimatedButton
-              variant="primary"
-              onClick={onClose}
-              className="flex-1"
-              icon={<FaCog />}
-            >
+            <AnimatedButton variant="primary" onClick={onClose} className="flex-1" icon={<FaCog />}>
               Update Image Details
             </AnimatedButton>
           )}

@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
-import { useAuth } from "../Auth/AuthProvider/AuthProvider";
-import Loader from "../ui/Loader/Loader";
-import useNotification from "../ui/Notification/Notification";
-import GithubAuth from "../Github/GithubAuth/GithubAuth";
-import PlanDetails from "../PlanDetails/PlanDetails";
-import Card from "../ui/Card/Card";
-import UserStats from "../UserStats/UserStats";
-import Profile from "../Profile/Profile";
+import { useAuth } from '../Auth/AuthProvider/AuthProvider';
+import Loader from '../ui/Loader/Loader';
+import useNotification from '../ui/Notification/Notification';
+import GithubAuth from '../Github/GithubAuth/GithubAuth';
+import PlanDetails from '../PlanDetails/PlanDetails';
+import Card from '../ui/Card/Card';
+import UserStats from '../UserStats/UserStats';
+import Profile from '../Profile/Profile';
 
 const Settings: React.FC = () => {
   const { user, loading, logout } = useAuth();
@@ -19,9 +19,9 @@ const Settings: React.FC = () => {
   const handleLogout = async () => {
     try {
       await logout();
-      notify("Logged out successfully!", "success");
+      notify('Logged out successfully!', 'success');
     } catch {
-      notify("Logout failed. Please try again.", "error");
+      notify('Logout failed. Please try again.', 'error');
     }
   };
 
@@ -54,10 +54,8 @@ const Settings: React.FC = () => {
         {user.plan && (
           <Card className="mb-0">
             <PlanDetails
-              planId={
-                typeof user.plan === "string" ? user.plan : user.plan?._id
-              }
-              planObj={typeof user.plan === "object" ? user.plan : undefined}
+              planId={typeof user.plan === 'string' ? user.plan : user.plan?._id}
+              planObj={typeof user.plan === 'object' ? user.plan : undefined}
             />
           </Card>
         )}

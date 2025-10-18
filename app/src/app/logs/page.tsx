@@ -1,8 +1,8 @@
-import PageHeading from "../../components/ui/PageHeading/PageHeading";
-import LogApplicationPicker from "../../components/LogApplicationPicker/LogApplicationPicker";
+import PageHeading from '../../components/ui/PageHeading/PageHeading';
+import LogApplicationPicker from '../../components/LogApplicationPicker/LogApplicationPicker';
 
-const title = "Application Logs";
-const description = "View the logs for your application.";
+const title = 'Application Logs';
+const description = 'View the logs for your application.';
 
 export default function LogsPage() {
   return (

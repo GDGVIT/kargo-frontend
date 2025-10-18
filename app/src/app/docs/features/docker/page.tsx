@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   FaDocker,
@@ -19,9 +19,9 @@ import {
   FaTimes,
   FaClipboardList,
   FaBug,
-} from "react-icons/fa";
-import { HiSparkles, HiCloud } from "react-icons/hi";
-import AnimatedButton from "../../../../components/ui/AnimatedButton/AnimatedButton";
+} from 'react-icons/fa';
+import { HiSparkles, HiCloud } from 'react-icons/hi';
+import AnimatedButton from '../../../../components/ui/AnimatedButton/AnimatedButton';
 
 export default function DockerPage() {
   return (
@@ -30,9 +30,8 @@ export default function DockerPage() {
 
       <div className="prose dark:prose-invert max-w-none">
         <p className="text-xl text-gray-600 dark:text-gray-400 mb-8">
-          Kargo provides comprehensive Docker support with AI-powered
-          containerization, multi-stage builds, security scanning, and
-          intelligent optimization for production deployments.
+          Kargo provides comprehensive Docker support with AI-powered containerization, multi-stage
+          builds, security scanning, and intelligent optimization for production deployments.
         </p>
 
         <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700 rounded-lg p-6 mb-8">
@@ -41,18 +40,17 @@ export default function DockerPage() {
             Docker-First Platform
           </h3>
           <p className="text-blue-800 dark:text-blue-200">
-            Built with containers at its core, Kargo understands Docker deeply
-            and provides intelligent automation for building, optimizing, and
-            deploying containerized applications.
+            Built with containers at its core, Kargo understands Docker deeply and provides
+            intelligent automation for building, optimizing, and deploying containerized
+            applications.
           </p>
         </div>
 
         <h2>Intelligent Dockerfile Generation</h2>
         <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-6 mb-8">
           <p className="text-gray-600 dark:text-gray-400 mb-4">
-            Kargo&apos;s AI analyzes your codebase and automatically generates
-            optimized Dockerfiles tailored to your application&apos;s specific
-            requirements and best practices.
+            Kargo&apos;s AI analyzes your codebase and automatically generates optimized Dockerfiles
+            tailored to your application&apos;s specific requirements and best practices.
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -66,8 +64,8 @@ export default function DockerPage() {
                     Node.js Projects
                   </h5>
                   <p className="text-green-800 dark:text-green-200 text-xs">
-                    Detects package.json, optimizes npm/yarn installs, handles
-                    node_modules efficiently
+                    Detects package.json, optimizes npm/yarn installs, handles node_modules
+                    efficiently
                   </p>
                 </div>
 
@@ -76,8 +74,8 @@ export default function DockerPage() {
                     Python Applications
                   </h5>
                   <p className="text-blue-800 dark:text-blue-200 text-xs">
-                    Recognizes requirements.txt/Pipfile, optimizes pip installs,
-                    handles virtual environments
+                    Recognizes requirements.txt/Pipfile, optimizes pip installs, handles virtual
+                    environments
                   </p>
                 </div>
 
@@ -86,8 +84,7 @@ export default function DockerPage() {
                     Java/Spring
                   </h5>
                   <p className="text-purple-800 dark:text-purple-200 text-xs">
-                    Detects Maven/Gradle, optimizes build processes, handles
-                    JAR/WAR deployments
+                    Detects Maven/Gradle, optimizes build processes, handles JAR/WAR deployments
                   </p>
                 </div>
               </div>
@@ -116,8 +113,8 @@ CMD ["npm", "start"]`}
               </pre>
               <div className="mt-2 p-2 bg-yellow-50 dark:bg-yellow-900/20 rounded">
                 <p className="text-yellow-800 dark:text-yellow-200 text-xs">
-                  <HiSparkles className="inline mr-1" /> Generated automatically
-                  based on your project structure
+                  <HiSparkles className="inline mr-1" /> Generated automatically based on your
+                  project structure
                 </p>
               </div>
             </div>
@@ -131,8 +128,8 @@ CMD ["npm", "start"]`}
               <FaBuilding className="inline mr-1" /> Build Stage Separation
             </h3>
             <p className="text-gray-600 dark:text-gray-400 mb-4">
-              Kargo automatically creates multi-stage builds to minimize final
-              image size and improve security.
+              Kargo automatically creates multi-stage builds to minimize final image size and
+              improve security.
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -180,9 +177,7 @@ CMD ["npm", "start"]`}
             </h3>
             <div className="space-y-4">
               <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded">
-                <span className="font-medium">
-                  Traditional Single-Stage Build
-                </span>
+                <span className="font-medium">Traditional Single-Stage Build</span>
                 <div className="flex items-center">
                   <div className="w-32 h-4 bg-red-300 rounded mr-2"></div>
                   <span className="text-sm">~800MB</span>
@@ -200,8 +195,8 @@ CMD ["npm", "start"]`}
 
             <div className="mt-4 p-3 bg-green-50 dark:bg-green-900/20 rounded">
               <p className="text-green-800 dark:text-green-200 text-sm">
-                <strong>Result:</strong> 81% smaller images leading to faster
-                deployments, reduced bandwidth costs, and improved security.
+                <strong>Result:</strong> 81% smaller images leading to faster deployments, reduced
+                bandwidth costs, and improved security.
               </p>
             </div>
           </div>
@@ -213,8 +208,7 @@ CMD ["npm", "start"]`}
             <FaStore className="mr-2" /> Multi-Registry Support
           </h3>
           <p className="text-gray-600 dark:text-gray-400 mb-4">
-            Connect to any container registry for storing and managing your
-            Docker images.
+            Connect to any container registry for storing and managing your Docker images.
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -224,8 +218,7 @@ CMD ["npm", "start"]`}
                 <div className="flex items-center p-2 bg-blue-50 dark:bg-blue-900/20 rounded">
                   <FaDocker className="text-blue-600 mr-2" />
                   <span className="text-sm">
-                    <strong>Docker Hub</strong> - Public and private
-                    repositories
+                    <strong>Docker Hub</strong> - Public and private repositories
                   </span>
                 </div>
                 <div className="flex items-center p-2 bg-orange-50 dark:bg-orange-900/20 rounded">
@@ -284,8 +277,7 @@ image:
               Automated Security Scanning
             </h3>
             <p className="text-gray-600 dark:text-gray-400 mb-4">
-              Every container image is automatically scanned for vulnerabilities
-              before deployment.
+              Every container image is automatically scanned for vulnerabilities before deployment.
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -294,9 +286,7 @@ image:
                 <div className="space-y-3">
                   <div className="flex items-center p-2 bg-blue-50 dark:bg-blue-900/20 rounded">
                     <div className="w-3 h-3 bg-blue-500 rounded-full mr-3"></div>
-                    <span className="text-sm">
-                      Base image vulnerability scan
-                    </span>
+                    <span className="text-sm">Base image vulnerability scan</span>
                   </div>
                   <div className="flex items-center p-2 bg-yellow-50 dark:bg-yellow-900/20 rounded">
                     <div className="w-3 h-3 bg-yellow-500 rounded-full mr-3"></div>
@@ -354,32 +344,25 @@ image:
                 <h4 className="font-semibold mb-2">Automatic Hardening</h4>
                 <ul className="space-y-1 text-sm">
                   <li>
-                    • <strong>Non-root user:</strong> Containers run as
-                    non-privileged user
+                    • <strong>Non-root user:</strong> Containers run as non-privileged user
                   </li>
                   <li>
-                    • <strong>Read-only filesystem:</strong> Immutable container
-                    filesystem
+                    • <strong>Read-only filesystem:</strong> Immutable container filesystem
                   </li>
                   <li>
-                    • <strong>Minimal base images:</strong> Distroless or Alpine
-                    Linux
+                    • <strong>Minimal base images:</strong> Distroless or Alpine Linux
                   </li>
                   <li>
-                    • <strong>Capability dropping:</strong> Remove unnecessary
-                    Linux capabilities
+                    • <strong>Capability dropping:</strong> Remove unnecessary Linux capabilities
                   </li>
                   <li>
-                    • <strong>Security contexts:</strong> Proper Kubernetes
-                    security contexts
+                    • <strong>Security contexts:</strong> Proper Kubernetes security contexts
                   </li>
                 </ul>
               </div>
 
               <div>
-                <h4 className="font-semibold mb-2">
-                  Generated Security Config
-                </h4>
+                <h4 className="font-semibold mb-2">Generated Security Config</h4>
                 <pre className="bg-gray-100 dark:bg-gray-800 p-3 rounded text-xs">
                   <code>
                     {`securityContext:
@@ -405,8 +388,8 @@ image:
               <FaBolt className="inline mr-1" /> Layer Caching
             </h3>
             <p className="text-gray-600 dark:text-gray-400 mb-4">
-              Intelligent layer caching reduces build times by reusing unchanged
-              layers across builds.
+              Intelligent layer caching reduces build times by reusing unchanged layers across
+              builds.
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -414,16 +397,13 @@ image:
                 <h4 className="font-semibold mb-2">Cache Strategy</h4>
                 <div className="space-y-2 text-sm">
                   <div className="p-2 bg-blue-50 dark:bg-blue-900/20 rounded">
-                    <strong>Base image caching:</strong> Shared across all
-                    applications
+                    <strong>Base image caching:</strong> Shared across all applications
                   </div>
                   <div className="p-2 bg-green-50 dark:bg-green-900/20 rounded">
-                    <strong>Dependency caching:</strong> npm/pip/maven
-                    dependencies cached
+                    <strong>Dependency caching:</strong> npm/pip/maven dependencies cached
                   </div>
                   <div className="p-2 bg-purple-50 dark:bg-purple-900/20 rounded">
-                    <strong>Build artifact caching:</strong> Compiled code and
-                    assets
+                    <strong>Build artifact caching:</strong> Compiled code and assets
                   </div>
                 </div>
               </div>
@@ -437,9 +417,7 @@ image:
                   </div>
                   <div className="flex justify-between items-center p-2 bg-green-50 dark:bg-green-900/20 rounded">
                     <span className="text-sm">Cached build:</span>
-                    <span className="text-sm font-semibold text-green-600">
-                      ~30-60 seconds
-                    </span>
+                    <span className="text-sm font-semibold text-green-600">~30-60 seconds</span>
                   </div>
                 </div>
               </div>
@@ -460,9 +438,7 @@ image:
                   <li>• Copy package files before source code</li>
                   <li>• Use .dockerignore to exclude unnecessary files</li>
                   <li>• Leverage multi-stage builds for size reduction</li>
-                  <li>
-                    • Use specific base image tags, not &quot;latest&quot;
-                  </li>
+                  <li>• Use specific base image tags, not &quot;latest&quot;</li>
                   <li>• Combine RUN instructions to reduce layers</li>
                   <li>• Clean up package caches in the same RUN command</li>
                 </ul>
@@ -492,15 +468,12 @@ image:
             <FaClipboardList className="mr-2" /> Local Development
           </h3>
           <p className="text-gray-600 dark:text-gray-400 mb-4">
-            Automatically generate Docker Compose files for local development
-            and testing.
+            Automatically generate Docker Compose files for local development and testing.
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <h4 className="font-semibold mb-2">
-                Generated docker-compose.yml
-              </h4>
+              <h4 className="font-semibold mb-2">Generated docker-compose.yml</h4>
               <pre className="bg-gray-100 dark:bg-gray-800 p-3 rounded text-xs overflow-x-auto">
                 <code>
                   {`version: '3.8'
@@ -538,8 +511,7 @@ volumes:
                 <li className="flex items-start">
                   <span className="text-green-500 mr-2 mt-0.5">✓</span>
                   <span>
-                    <strong>Hot reload:</strong> Code changes reflected
-                    instantly
+                    <strong>Hot reload:</strong> Code changes reflected instantly
                   </span>
                 </li>
                 <li className="flex items-start">
@@ -557,8 +529,7 @@ volumes:
                 <li className="flex items-start">
                   <span className="text-green-500 mr-2 mt-0.5">✓</span>
                   <span>
-                    <strong>Environment variables:</strong> Development
-                    configuration
+                    <strong>Environment variables:</strong> Development configuration
                   </span>
                 </li>
                 <li className="flex items-start">
@@ -665,22 +636,19 @@ ls -la /app/`}
             <FaDocker className="inline mr-1" /> Ready to Containerize?
           </h3>
           <p className="text-blue-800 dark:text-blue-200 mb-4">
-            Kargo&apos;s intelligent Docker support makes containerization
-            effortless while ensuring production-grade security, performance,
-            and reliability.
+            Kargo&apos;s intelligent Docker support makes containerization effortless while ensuring
+            production-grade security, performance, and reliability.
           </p>
           <div className="flex flex-col sm:flex-row gap-3">
             <AnimatedButton
-              onClick={() => (window.location.href = "/docs/quick-start")}
+              onClick={() => (window.location.href = '/docs/quick-start')}
               variant="primary"
               className="font-medium px-4 py-2"
             >
               Deploy Your First Container
             </AnimatedButton>
             <AnimatedButton
-              onClick={() =>
-                (window.location.href = "/docs/applications/creating")
-              }
+              onClick={() => (window.location.href = '/docs/applications/creating')}
               variant="secondary"
               className="font-medium px-4 py-2"
             >

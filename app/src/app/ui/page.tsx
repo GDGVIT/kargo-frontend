@@ -1,8 +1,8 @@
-import UIShowcase from "../../components/UIShowcase/UIShowcase";
-import PageHeading from "../../components/ui/PageHeading/PageHeading";
+import UIShowcase from '../../components/UIShowcase/UIShowcase';
+import PageHeading from '../../components/ui/PageHeading/PageHeading';
 
-const title = "UI Components Demo";
-const description = "Showcase of all reusable UI components.";
+const title = 'UI Components Demo';
+const description = 'Showcase of all reusable UI components.';
 
 export const metadata = {
   title,

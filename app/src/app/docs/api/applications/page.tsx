@@ -1,14 +1,13 @@
-import { generatePageMetadata } from "../../../../lib/metadata";
+import { generatePageMetadata } from '../../../../lib/metadata';
 
-const title = "Applications API";
-const description =
-  "Complete reference for the Kargo Applications API endpoints.";
+const title = 'Applications API';
+const description = 'Complete reference for the Kargo Applications API endpoints.';
 
 export const metadata = generatePageMetadata({
   title,
   description,
-  path: "/docs/api/applications",
-  imageAlt: "Kargo Applications API Reference",
+  path: '/docs/api/applications',
+  imageAlt: 'Kargo Applications API Reference',
 });
 
 export default function ApplicationsAPIPage() {
@@ -46,8 +45,7 @@ Authorization: Bearer <token>`}
             <code>limit</code> (optional) - Number of items per page (max 100)
           </li>
           <li>
-            <code>status</code> (optional) - Filter by status (running, stopped,
-            error)
+            <code>status</code> (optional) - Filter by status (running, stopped, error)
           </li>
           <li>
             <code>environment</code> (optional) - Filter by environment
@@ -259,8 +257,7 @@ Authorization: Bearer <token>`}
         <h3>Query Parameters</h3>
         <ul>
           <li>
-            <code>lines</code> (optional) - Number of log lines to return
-            (default: 100)
+            <code>lines</code> (optional) - Number of log lines to return (default: 100)
           </li>
           <li>
             <code>since</code> (optional) - Return logs since timestamp

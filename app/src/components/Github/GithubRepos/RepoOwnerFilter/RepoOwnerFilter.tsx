@@ -1,12 +1,8 @@
-import React from "react";
-import Select from "../../../ui/Select/Select";
-import RepoOwnerFilterProps from "../../../../types/Repo/RepoOwnerFilterProps";
+import React from 'react';
+import Select from '../../../ui/Select/Select';
+import RepoOwnerFilterProps from '../../../../types/Repo/RepoOwnerFilterProps';
 
-const RepoOwnerFilter: React.FC<RepoOwnerFilterProps> = ({
-  owners,
-  value,
-  onChange,
-}) => {
+const RepoOwnerFilter: React.FC<RepoOwnerFilterProps> = ({ owners, value, onChange }) => {
   const handleSelectChange = (val: string) => {
     const event = {
       target: { value: val },
@@ -15,10 +11,7 @@ const RepoOwnerFilter: React.FC<RepoOwnerFilterProps> = ({
   };
   return (
     <div className="flex flex-col">
-      <label
-        htmlFor="repo-owner-filter"
-        className="mb-1 text-sm font-medium text-zinc-300"
-      >
+      <label htmlFor="repo-owner-filter" className="mb-1 text-sm font-medium text-zinc-300">
         Repository owner filter
       </label>
       <Select

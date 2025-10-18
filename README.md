@@ -12,29 +12,30 @@
 [![Instagram](https://img.shields.io/badge/Instagram-%23E4405F.svg?logo=Instagram&logoColor=white)](https://www.instagram.com/gdgvitvellore/)
 [![X (Twitter)](https://img.shields.io/badge/X-%23000000.svg?logo=X&logoColor=white)](https://x.com/gdgvitvellore)
 
-[![DOCS](https://img.shields.io/badge/Documentation-see%20docs-green?style=flat-square&logo=appveyor)](https://kargo.dscvit.com/docs/) 
+[![DOCS](https://img.shields.io/badge/Documentation-see%20docs-green?style=flat-square&logo=appveyor)](https://kargo.dscvit.com/docs/)
 [![UI ](https://img.shields.io/badge/User%20Interface-Link%20to%20UI-orange?style=flat-square&logo=appveyor)](https://kargo.dscvit.com/)
-
+[![DeepWiki](https://img.shields.io/badge/DeepWiki-kargo--frontend-blue?style=flat-square&logo=appveyor)](https://deepwiki.com/GDGVIT/kargo-frontend)
 
 ## Features
-- [x]  AI-Powered Application Setup - Automatic Dockerfile generation from Git repositories
-- [x]  Real-time Application Monitoring - Live status tracking and metrics visualization
-- [x]  Kubernetes-Native Deployment - Seamless container orchestration and scaling
-- [x]  Multi-Provider Authentication - Google OAuth, GitHub OAuth, and local authentication
+
+- [x] AI-Powered Application Setup - Automatic Dockerfile generation from Git repositories
+- [x] Real-time Application Monitoring - Live status tracking and metrics visualization
+- [x] Kubernetes-Native Deployment - Seamless container orchestration and scaling
+- [x] Multi-Provider Authentication - Google OAuth, GitHub OAuth, and local authentication
 
 <br>
 
 ## Dependencies
- - Node.js 20 or higher
- - Next.js 15.x with React 19
- - Tailwind CSS 4.x for styling
- - TypeScript for type safety
 
+- Node.js 20 or higher
+- Next.js 15.x with React 19
+- Tailwind CSS 4.x for styling
+- TypeScript for type safety
 
 ## Running
 
-
 Clone the repository and install dependencies
+
 ```bash
 git clone https://github.com/GDGVIT/kargo-frontend.git
 cd kargo-frontend

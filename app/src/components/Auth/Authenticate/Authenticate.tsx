@@ -1,21 +1,21 @@
-"use client";
+'use client';
 
-import Branding from "./Branding/Branding";
-import AuthTabs from "./AuthTabs/AuthTabs";
-import AuthForm from "./AuthForm/AuthForm";
-import OAuthButtons from "./OAuthButtons/OAuthButtons";
-import { useState, useEffect } from "react";
-import { useAuth } from "../AuthProvider/AuthProvider";
-import useNotification from "../../ui/Notification/Notification";
-import { baseURL } from "../../../utils/api";
-import { useRouter } from "next/navigation";
+import Branding from './Branding/Branding';
+import AuthTabs from './AuthTabs/AuthTabs';
+import AuthForm from './AuthForm/AuthForm';
+import OAuthButtons from './OAuthButtons/OAuthButtons';
+import { useState, useEffect } from 'react';
+import { useAuth } from '../AuthProvider/AuthProvider';
+import useNotification from '../../ui/Notification/Notification';
+import { baseURL } from '../../../utils/api';
+import { useRouter } from 'next/navigation';
 
 export default function Authenticate() {
   const [isLogin, setIsLogin] = useState(true);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
+  const [username, setUsername] = useState('');
   const [loading, setLoading] = useState(false);
   const [oauthLoading, setOauthLoading] = useState(false);
 
@@ -25,12 +25,11 @@ export default function Authenticate() {
 
   useEffect(() => {
     if (user) {
-      router.replace("/settings");
+      router.replace('/settings');
     }
   }, [user, router]);
 
-  const validateEmail = (email: string) =>
-    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+  const validateEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
 
   const handleSubmit = async () => {
     const trimmedEmail = email.trim();
@@ -40,28 +39,23 @@ export default function Authenticate() {
 
     if (isLogin) {
       if (!trimmedEmail || !trimmedPassword) {
-        notify("Please fill in all fields.", "warning");
+        notify('Please fill in all fields.', 'warning');
         return;
       }
     } else {
-      if (
-        !trimmedEmail ||
-        !trimmedPassword ||
-        !trimmedName ||
-        !trimmedUsername
-      ) {
-        notify("Please fill in all fields.", "warning");
+      if (!trimmedEmail || !trimmedPassword || !trimmedName || !trimmedUsername) {
+        notify('Please fill in all fields.', 'warning');
         return;
       }
     }
 
     if (!validateEmail(trimmedEmail)) {
-      notify("Please enter a valid email address.", "warning");
+      notify('Please enter a valid email address.', 'warning');
       return;
     }
 
     if (trimmedPassword.length < 6) {
-      notify("Password must be at least 6 characters.", "warning");
+      notify('Password must be at least 6 characters.', 'warning');
       return;
     }
 
@@ -72,43 +66,33 @@ export default function Authenticate() {
       if (isLogin) {
         response = await login(trimmedEmail, trimmedPassword);
       } else {
-        response = await register(
-          trimmedEmail,
-          trimmedPassword,
-          trimmedName,
-          trimmedUsername
-        );
+        response = await register(trimmedEmail, trimmedPassword, trimmedName, trimmedUsername);
       }
 
       if (response && response.success) {
         notify(
           response.message ||
             (isLogin
-              ? `Logged in successfully! Welcome, ${
-                  user?.name || user?.email || ""
-                }!`
-              : "Registered successfully. Please check your email to verify."),
-          "success"
+              ? `Logged in successfully! Welcome, ${user?.name || user?.email || ''}!`
+              : 'Registered successfully. Please check your email to verify.'),
+          'success'
         );
         if (!isLogin) setIsLogin(true);
-        setEmail("");
-        setPassword("");
-        setName("");
-        setUsername("");
+        setEmail('');
+        setPassword('');
+        setName('');
+        setUsername('');
       } else {
-        notify(response?.message || "Something went wrong.", "error");
+        notify(response?.message || 'Something went wrong.', 'error');
       }
     } catch (err: unknown) {
-      let errorMsg = "Unexpected error.";
-      if (err && typeof err === "object") {
-        if (
-          "message" in err &&
-          typeof (err as { message: string }).message === "string"
-        ) {
+      let errorMsg = 'Unexpected error.';
+      if (err && typeof err === 'object') {
+        if ('message' in err && typeof (err as { message: string }).message === 'string') {
           errorMsg = (err as { message: string }).message;
         }
       }
-      notify(errorMsg, "error");
+      notify(errorMsg, 'error');
     } finally {
       setLoading(false);
     }

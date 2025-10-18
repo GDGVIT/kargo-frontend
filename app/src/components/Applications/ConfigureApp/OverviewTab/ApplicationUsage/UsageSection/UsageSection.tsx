@@ -1,281 +1,259 @@
-"use client";
+'use client';
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import {
-	LineChart,
-	Line,
-	XAxis,
-	YAxis,
-	Tooltip,
-	ResponsiveContainer,
-	CartesianGrid,
-	ReferenceLine,
-} from "recharts";
-import api from "../../../../../../utils/api";
-import Select from "../../../../../ui/Select/Select";
-import Resources from "../../../../../../types/Application/Resources/Resources";
-import Loader from "../../../../../ui/Loader/Loader";
-import type { TooltipProps } from "recharts";
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+  CartesianGrid,
+  ReferenceLine,
+} from 'recharts';
+import api from '../../../../../../utils/api';
+import Select from '../../../../../ui/Select/Select';
+import Resources from '../../../../../../types/Application/Resources/Resources';
+import Loader from '../../../../../ui/Loader/Loader';
+import type { TooltipProps } from 'recharts';
 
 const usageLabels: Record<string, string> = {
-	cpu: "CPU Usage (cores)",
-	memory: "Memory Usage (bytes)",
-	storage: "Storage Usage (bytes)",
+  cpu: 'CPU Usage (cores)',
+  memory: 'Memory Usage (bytes)',
+  storage: 'Storage Usage (bytes)',
 };
 
 interface UsageHistory {
-	current: string | null;
-	history: [number, string][];
+  current: string | null;
+  history: [number, string][];
 }
 
 interface UsageData {
-	[key: string]: UsageHistory;
+  [key: string]: UsageHistory;
 }
 
 interface UsageSectionProps {
-	appId: string;
-	metricType?: "cpu" | "memory" | "storage";
-	resources?: Resources;
+  appId: string;
+  metricType?: 'cpu' | 'memory' | 'storage';
+  resources?: Resources;
 }
 
 const WINDOW_OPTIONS = [
-	{ label: "15min", value: "15" },
-	{ label: "1hr", value: "60" },
-	{ label: "All", value: "-1" },
+  { label: '15min', value: '15' },
+  { label: '1hr', value: '60' },
+  { label: 'All', value: '-1' },
 ];
 
-const UsageSection: React.FC<UsageSectionProps> = ({
-	appId,
-	metricType = "cpu",
-	resources,
-}) => {
-	const [usage, setUsage] = useState<UsageData | null>(null);
-	const [loading, setLoading] = useState(true);
-	const [windowSize, setWindowSize] = useState<string>("60");
+const UsageSection: React.FC<UsageSectionProps> = ({ appId, metricType = 'cpu', resources }) => {
+  const [usage, setUsage] = useState<UsageData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [windowSize, setWindowSize] = useState<string>('60');
 
-	useEffect(() => {
-		let isMounted = true;
-		setLoading(true);
-		async function fetchUsage() {
-			try {
-				const { data } = await api.get(`/api/applications/${appId}/metrics`);
-				if (!isMounted) return;
-				setUsage(data.metrics); // API returns 'metrics', but we treat as 'usage' in UI
-			} catch {
-				if (!isMounted) return;
-				setUsage(null);
-			} finally {
-				setLoading(false);
-			}
-		}
-		fetchUsage();
-		const interval = setInterval(fetchUsage, 10000);
-		return () => {
-			isMounted = false;
-			clearInterval(interval);
-		};
-	}, [appId]);
+  useEffect(() => {
+    let isMounted = true;
+    setLoading(true);
+    async function fetchUsage() {
+      try {
+        const { data } = await api.get(`/api/applications/${appId}/metrics`);
+        if (!isMounted) return;
+        setUsage(data.metrics); // API returns 'metrics', but we treat as 'usage' in UI
+      } catch {
+        if (!isMounted) return;
+        setUsage(null);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchUsage();
+    const interval = setInterval(fetchUsage, 10000);
+    return () => {
+      isMounted = false;
+      clearInterval(interval);
+    };
+  }, [appId]);
 
-	// Extract requests and limits for the selected usage type
-	let requestValue: number | undefined = undefined;
-	let limitValue: number | undefined = undefined;
-	let requestLabel = "";
-	let limitLabel = "";
-	if (resources) {
-		if (metricType === "cpu") {
-			if (resources.requests?.cpu) {
-				requestValue = Number(resources.requests.cpu);
-				requestLabel = `CPU Request (${Math.round(
-					resources.requests.cpu * 1000
-				)}m)`;
-			}
-			if (resources.limits?.cpu) {
-				limitValue = Number(resources.limits.cpu);
-				limitLabel = `CPU Limit (${Math.round(resources.limits.cpu * 1000)}m)`;
-			}
-		} else if (metricType === "memory") {
-			if (resources.requests?.memory) {
-				requestValue = Number(resources.requests.memory);
-				requestLabel = `Memory Request (${Math.round(
-					resources.requests.memory / (1024 * 1024)
-				)} MiB)`;
-			}
-			if (resources.limits?.memory) {
-				limitValue = Number(resources.limits.memory);
-				limitLabel = `Memory Limit (${Math.round(
-					resources.limits.memory / (1024 * 1024)
-				)} MiB)`;
-			}
-		} else if (metricType === "storage") {
-			if (resources.requests?.storage) {
-				requestValue = Number(resources.requests.storage);
-				requestLabel = `Storage Request (${Math.round(
-					resources.requests.storage / (1024 * 1024 * 1024)
-				)} GiB)`;
-			}
-			if (resources.limits?.storage) {
-				limitValue = Number(resources.limits.storage);
-				limitLabel = `Storage Limit (${Math.round(
-					resources.limits.storage / (1024 * 1024 * 1024)
-				)} GiB)`;
-			}
-		}
-	}
+  // Extract requests and limits for the selected usage type
+  let requestValue: number | undefined = undefined;
+  let limitValue: number | undefined = undefined;
+  let requestLabel = '';
+  let limitLabel = '';
+  if (resources) {
+    if (metricType === 'cpu') {
+      if (resources.requests?.cpu) {
+        requestValue = Number(resources.requests.cpu);
+        requestLabel = `CPU Request (${Math.round(resources.requests.cpu * 1000)}m)`;
+      }
+      if (resources.limits?.cpu) {
+        limitValue = Number(resources.limits.cpu);
+        limitLabel = `CPU Limit (${Math.round(resources.limits.cpu * 1000)}m)`;
+      }
+    } else if (metricType === 'memory') {
+      if (resources.requests?.memory) {
+        requestValue = Number(resources.requests.memory);
+        requestLabel = `Memory Request (${Math.round(
+          resources.requests.memory / (1024 * 1024)
+        )} MiB)`;
+      }
+      if (resources.limits?.memory) {
+        limitValue = Number(resources.limits.memory);
+        limitLabel = `Memory Limit (${Math.round(resources.limits.memory / (1024 * 1024))} MiB)`;
+      }
+    } else if (metricType === 'storage') {
+      if (resources.requests?.storage) {
+        requestValue = Number(resources.requests.storage);
+        requestLabel = `Storage Request (${Math.round(
+          resources.requests.storage / (1024 * 1024 * 1024)
+        )} GiB)`;
+      }
+      if (resources.limits?.storage) {
+        limitValue = Number(resources.limits.storage);
+        limitLabel = `Storage Limit (${Math.round(
+          resources.limits.storage / (1024 * 1024 * 1024)
+        )} GiB)`;
+      }
+    }
+  }
 
-	// Prepare chart data
-	const usageMetric = usage?.[metricType];
-	let formattedData: { time: string; value: number }[] = [];
-	if (usageMetric?.history) {
-		formattedData = usageMetric.history.map(([timestamp, val]) => ({
-			time: new Date(timestamp * 1000).toLocaleTimeString(),
-			value: parseFloat(val),
-		}));
-		// Apply window size
-		const win = parseInt(windowSize, 10);
-		if (win > 0) {
-			formattedData = formattedData.slice(-win);
-		}
-	}
+  // Prepare chart data
+  const usageMetric = usage?.[metricType];
+  let formattedData: { time: string; value: number }[] = [];
+  if (usageMetric?.history) {
+    formattedData = usageMetric.history.map(([timestamp, val]) => ({
+      time: new Date(timestamp * 1000).toLocaleTimeString(),
+      value: parseFloat(val),
+    }));
+    // Apply window size
+    const win = parseInt(windowSize, 10);
+    if (win > 0) {
+      formattedData = formattedData.slice(-win);
+    }
+  }
 
-	// Helper to format usage value with units
-	function formatUsageValue(value: string | null, type: string): string {
-		if (!value || isNaN(Number(value))) return "N/A";
-		const num = parseFloat(value);
-		if (type === "cpu") {
-			// Show up to 3 decimal places for CPU cores
-			return `${num.toLocaleString(undefined, {
-				maximumFractionDigits: 3,
-			})} cores`;
-		} else if (type === "memory" || type === "storage") {
-			// Convert bytes to MiB or GiB as appropriate
-			if (num >= 1024 * 1024 * 1024) {
-				return `${(num / (1024 * 1024 * 1024)).toLocaleString(undefined, {
-					maximumFractionDigits: 2,
-				})} GiB`;
-			} else if (num >= 1024 * 1024) {
-				return `${(num / (1024 * 1024)).toLocaleString(undefined, {
-					maximumFractionDigits: 2,
-				})} MiB`;
-			} else if (num >= 1024) {
-				return `${(num / 1024).toLocaleString(undefined, {
-					maximumFractionDigits: 2,
-				})} KiB`;
-			} else {
-				return `${num.toLocaleString()} bytes`;
-			}
-		}
-		return num.toLocaleString();
-	}
+  // Helper to format usage value with units
+  function formatUsageValue(value: string | null, type: string): string {
+    if (!value || isNaN(Number(value))) return 'N/A';
+    const num = parseFloat(value);
+    if (type === 'cpu') {
+      // Show up to 3 decimal places for CPU cores
+      return `${num.toLocaleString(undefined, {
+        maximumFractionDigits: 3,
+      })} cores`;
+    } else if (type === 'memory' || type === 'storage') {
+      // Convert bytes to MiB or GiB as appropriate
+      if (num >= 1024 * 1024 * 1024) {
+        return `${(num / (1024 * 1024 * 1024)).toLocaleString(undefined, {
+          maximumFractionDigits: 2,
+        })} GiB`;
+      } else if (num >= 1024 * 1024) {
+        return `${(num / (1024 * 1024)).toLocaleString(undefined, {
+          maximumFractionDigits: 2,
+        })} MiB`;
+      } else if (num >= 1024) {
+        return `${(num / 1024).toLocaleString(undefined, {
+          maximumFractionDigits: 2,
+        })} KiB`;
+      } else {
+        return `${num.toLocaleString()} bytes`;
+      }
+    }
+    return num.toLocaleString();
+  }
 
-	// Custom dark themed tooltip for Recharts
-	const CustomTooltip: React.FC<TooltipProps<number, string>> = ({
-		active,
-		payload,
-		label,
-	}) => {
-		if (active && payload && payload.length) {
-			return (
-				<div className="bg-gray-900 text-gray-100 rounded-lg shadow-lg px-4 py-2 border border-gray-700 max-w-xs break-words">
-					<div className="font-semibold text-sm mb-1">{label}</div>
-					{payload.map((entry, idx) => (
-						<div key={idx} className="text-base">
-							<span className="font-medium">{entry.name}: </span>
-							<span>{entry.value}</span>
-						</div>
-					))}
-				</div>
-			);
-		}
-		return null;
-	};
+  // Custom dark themed tooltip for Recharts
+  const CustomTooltip: React.FC<TooltipProps<number, string>> = ({ active, payload, label }) => {
+    if (active && payload && payload.length) {
+      return (
+        <div className="bg-gray-900 text-gray-100 rounded-lg shadow-lg px-4 py-2 border border-gray-700 max-w-xs break-words">
+          <div className="font-semibold text-sm mb-1">{label}</div>
+          {payload.map((entry, idx) => (
+            <div key={idx} className="text-base">
+              <span className="font-medium">{entry.name}: </span>
+              <span>{entry.value}</span>
+            </div>
+          ))}
+        </div>
+      );
+    }
+    return null;
+  };
 
-	return (
-		<div className="mb-8 px-2 md:px-6 py-10 rounded-2xl w-full min-h-[60vh] flex flex-col items-center animate-fade-in">
-			<div className="flex flex-col md:flex-row items-center justify-between mb-8 w-full max-w-7xl">
-				<span className="text-xl text-gray-800 dark:text-gray-300 font-medium mb-4 md:mb-0">
-					<b>{usageLabels[metricType]}</b>
-				</span>
-				<div className="flex items-center space-x-3 w-full md:w-auto">
-					<label
-						className="text-lg text-gray-600 dark:text-gray-400 whitespace-nowrap mr-2"
-						htmlFor="usage-window-select"
-					>
-						Time Window:
-					</label>
-					<div className="flex-1 min-w-[100px] max-w-[160px]">
-						<Select
-							value={windowSize}
-							onChange={setWindowSize}
-							options={WINDOW_OPTIONS}
-							label={undefined}
-							className="w-full"
-							aria-label="Time Window"
-						/>
-					</div>
-				</div>
-			</div>
-			<div className="mb-4 text-2xl font-bold">
-				{formatUsageValue(usageMetric?.current ?? null, metricType)}
-			</div>
-			<div className="h-64 w-full max-w-4xl">
-				{loading ? (
-					<Loader />
-				) : formattedData.length === 0 ? (
-					<div className="text-2xl text-gray-400 dark:text-gray-500 mt-24">
-						No usage data available
-					</div>
-				) : (
-					<ResponsiveContainer width="100%" height="100%">
-						<LineChart data={formattedData} margin={{ left: 0, right: 0 }}>
-							<XAxis
-								dataKey="time"
-								minTickGap={20}
-								interval="preserveStartEnd"
-							/>
-							<YAxis />
-							<Tooltip content={<CustomTooltip />} />
-							<CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
-							<Line
-								type="monotone"
-								dataKey="value"
-								stroke="#38bdf8"
-								strokeWidth={2}
-								dot={false}
-							/>
-							{typeof requestValue === "number" && (
-								<ReferenceLine
-									y={requestValue}
-									stroke="#fbbf24"
-									strokeDasharray="3 3"
-									label={{
-										value: requestLabel,
-										position: "right",
-										fill: "#fbbf24",
-										fontSize: 12,
-										fontWeight: "bold",
-									}}
-								/>
-							)}
-							{typeof limitValue === "number" && (
-								<ReferenceLine
-									y={limitValue}
-									stroke="#ef4444"
-									strokeDasharray="3 3"
-									label={{
-										value: limitLabel,
-										position: "right",
-										fill: "#ef4444",
-										fontSize: 12,
-										fontWeight: "bold",
-									}}
-								/>
-							)}
-						</LineChart>
-					</ResponsiveContainer>
-				)}
-			</div>
-		</div>
-	);
+  return (
+    <div className="mb-8 px-2 md:px-6 py-10 rounded-2xl w-full min-h-[60vh] flex flex-col items-center animate-fade-in">
+      <div className="flex flex-col md:flex-row items-center justify-between mb-8 w-full max-w-7xl">
+        <span className="text-xl text-gray-800 dark:text-gray-300 font-medium mb-4 md:mb-0">
+          <b>{usageLabels[metricType]}</b>
+        </span>
+        <div className="flex items-center space-x-3 w-full md:w-auto">
+          <label
+            className="text-lg text-gray-600 dark:text-gray-400 whitespace-nowrap mr-2"
+            htmlFor="usage-window-select"
+          >
+            Time Window:
+          </label>
+          <div className="flex-1 min-w-[100px] max-w-[160px]">
+            <Select
+              value={windowSize}
+              onChange={setWindowSize}
+              options={WINDOW_OPTIONS}
+              label={undefined}
+              className="w-full"
+              aria-label="Time Window"
+            />
+          </div>
+        </div>
+      </div>
+      <div className="mb-4 text-2xl font-bold">
+        {formatUsageValue(usageMetric?.current ?? null, metricType)}
+      </div>
+      <div className="h-64 w-full max-w-4xl">
+        {loading ? (
+          <Loader />
+        ) : formattedData.length === 0 ? (
+          <div className="text-2xl text-gray-400 dark:text-gray-500 mt-24">
+            No usage data available
+          </div>
+        ) : (
+          <ResponsiveContainer width="100%" height="100%">
+            <LineChart data={formattedData} margin={{ left: 0, right: 0 }}>
+              <XAxis dataKey="time" minTickGap={20} interval="preserveStartEnd" />
+              <YAxis />
+              <Tooltip content={<CustomTooltip />} />
+              <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
+              <Line type="monotone" dataKey="value" stroke="#38bdf8" strokeWidth={2} dot={false} />
+              {typeof requestValue === 'number' && (
+                <ReferenceLine
+                  y={requestValue}
+                  stroke="#fbbf24"
+                  strokeDasharray="3 3"
+                  label={{
+                    value: requestLabel,
+                    position: 'right',
+                    fill: '#fbbf24',
+                    fontSize: 12,
+                    fontWeight: 'bold',
+                  }}
+                />
+              )}
+              {typeof limitValue === 'number' && (
+                <ReferenceLine
+                  y={limitValue}
+                  stroke="#ef4444"
+                  strokeDasharray="3 3"
+                  label={{
+                    value: limitLabel,
+                    position: 'right',
+                    fill: '#ef4444',
+                    fontSize: 12,
+                    fontWeight: 'bold',
+                  }}
+                />
+              )}
+            </LineChart>
+          </ResponsiveContainer>
+        )}
+      </div>
+    </div>
+  );
 };
 
 export default UsageSection;

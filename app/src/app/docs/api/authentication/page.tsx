@@ -1,14 +1,13 @@
-import { generatePageMetadata } from "../../../../lib/metadata";
+import { generatePageMetadata } from '../../../../lib/metadata';
 
-const title = "API Authentication";
-const description =
-  "Learn how to authenticate with the Kargo API using tokens and OAuth.";
+const title = 'API Authentication';
+const description = 'Learn how to authenticate with the Kargo API using tokens and OAuth.';
 
 export const metadata = generatePageMetadata({
   title,
   description,
-  path: "/docs/api/authentication",
-  imageAlt: "Kargo API Authentication",
+  path: '/docs/api/authentication',
+  imageAlt: 'Kargo API Authentication',
 });
 
 export default function APIAuthenticationPage() {

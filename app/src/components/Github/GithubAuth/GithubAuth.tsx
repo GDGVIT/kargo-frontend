@@ -1,15 +1,21 @@
-"use client";
+'use client';
 
-import React, { useEffect, useState, useRef } from "react";
-import api, { baseURL } from "../../../utils/api";
-import { motion, AnimatePresence } from "framer-motion";
-import { FaGithub, FaExclamationCircle } from "react-icons/fa";
-import gsap from "gsap";
-import AnimatedButton from "../../ui/AnimatedButton/AnimatedButton";
-import type User from "../../../types/User/User";
+import React, { useEffect, useState, useRef } from 'react';
+import type User from '../../../types/User/User';
+import api, { baseURL } from '../../../utils/api';
+import { motion, AnimatePresence } from 'framer-motion';
+import { FaGithub, FaExclamationCircle } from 'react-icons/fa';
+import gsap from 'gsap';
+import AnimatedButton from '../../ui/AnimatedButton/AnimatedButton';
 
-const GithubAuth: React.FC<{ user: User }> = () => {
-  const [installationIds, setInstallationIds] = useState<string[]>([]);
+interface GithubAuthProps {
+  user: User;
+}
+
+const GithubAuth: React.FC<GithubAuthProps> = ({ user }) => {
+  const [installationIds, setInstallationIds] = useState<string[]>(
+    () => user.githubInstallationId || []
+  );
   const [error, setError] = useState<string | null>(null);
   const iconRef = useRef<HTMLDivElement>(null);
 
@@ -17,21 +23,21 @@ const GithubAuth: React.FC<{ user: User }> = () => {
     const fetchAndSyncInstallationIds = async () => {
       try {
         const url = new URL(window.location.href);
-        const installationIdFromUrl = url.searchParams.get("installation_id");
+        const installationIdFromUrl = url.searchParams.get('installation_id');
         if (installationIdFromUrl) {
           try {
             await api.post(
-              "/api/github/installation-id",
+              '/api/github/installation-id',
               { installation_id: installationIdFromUrl },
               { withCredentials: true }
             );
           } catch (err) {
-            console.error("Error saving GitHub installation ID:", err);
-            setError("Failed to save GitHub installation ID.");
+            console.error('Error saving GitHub installation ID:', err);
+            setError('Failed to save GitHub installation ID.');
           }
         }
 
-        const res = await api.get("/api/github/installation-id", {
+        const res = await api.get('/api/github/installation-id', {
           withCredentials: true,
         });
         const savedInstallationIds: string[] = res.data.installation_ids || [];
@@ -40,12 +46,12 @@ const GithubAuth: React.FC<{ user: User }> = () => {
         setInstallationIds(uniqueInstallationIds);
 
         if (installationIdFromUrl) {
-          url.searchParams.delete("installation_id");
-          window.history.replaceState(null, "", url.toString());
+          url.searchParams.delete('installation_id');
+          window.history.replaceState(null, '', url.toString());
         }
       } catch (err) {
-        console.error("Error loading GitHub installation IDs:", err);
-        setError("Failed to load GitHub installation info.");
+        console.error('Error loading GitHub installation IDs:', err);
+        setError('Failed to load GitHub installation info.');
       }
     };
 
@@ -62,7 +68,7 @@ const GithubAuth: React.FC<{ user: User }> = () => {
           rotate: 0,
           opacity: 1,
           duration: 0.7,
-          ease: "back.out(1.7)",
+          ease: 'back.out(1.7)',
         }
       );
     }
@@ -99,12 +105,15 @@ const GithubAuth: React.FC<{ user: User }> = () => {
             transition={{ duration: 0.4 }}
           >
             <p className="text-zinc-300 mb-5 text-center">
-              GitHub connected with{" "}
-              <span className="font-bold text-sky-400">
-                {installationIds.length}
-              </span>{" "}
-              installation
-              {installationIds.length > 1 ? "s" : ""}.
+              GitHub connected with{' '}
+              <span className="font-bold text-sky-400">{installationIds.length}</span> installation
+              {installationIds.length > 1 ? 's' : ''}.
+              {user.username ? (
+                <>
+                  {' '}
+                  Connected as <span className="font-semibold">{user.username}</span>.
+                </>
+              ) : null}
               <br />
             </p>
             <div className="flex justify-center">
@@ -132,13 +141,7 @@ const GithubAuth: React.FC<{ user: User }> = () => {
 function InstallButton() {
   return (
     <AnimatedButton
-      onClick={() =>
-        window.open(
-          `${baseURL}/api/github/install`,
-          "_blank",
-          "noopener,noreferrer"
-        )
-      }
+      onClick={() => window.open(`${baseURL}/api/github/install`, '_blank', 'noopener,noreferrer')}
       icon={<FaGithub size={22} />}
       className="px-5 py-2.5"
       type="button"
@@ -152,13 +155,7 @@ function InstallButton() {
 function ReinstallButton() {
   return (
     <AnimatedButton
-      onClick={() =>
-        window.open(
-          `${baseURL}/api/github/install`,
-          "_blank",
-          "noopener,noreferrer"
-        )
-      }
+      onClick={() => window.open(`${baseURL}/api/github/install`, '_blank', 'noopener,noreferrer')}
       icon={<FaGithub size={22} />}
       className="px-5 py-2.5"
       type="button"

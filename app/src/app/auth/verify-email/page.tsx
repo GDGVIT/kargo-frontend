@@ -1,8 +1,8 @@
-import VerifyEmail from "../../../components/Auth/VerifyEmail/VerifyEmail";
-import PageHeading from "../../../components/ui/PageHeading/PageHeading";
+import VerifyEmail from '../../../components/Auth/VerifyEmail/VerifyEmail';
+import PageHeading from '../../../components/ui/PageHeading/PageHeading';
 
-const title = "Verify Your Email";
-const description = "Please verify your email address to continue.";
+const title = 'Verify Your Email';
+const description = 'Please verify your email address to continue.';
 
 export const metadata = {
   title,

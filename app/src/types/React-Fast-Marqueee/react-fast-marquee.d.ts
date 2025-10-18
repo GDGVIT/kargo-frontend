@@ -1,5 +1,5 @@
-declare module "react-fast-marquee" {
-  import * as React from "react";
+declare module 'react-fast-marquee' {
+  import * as React from 'react';
   interface MarqueeProps extends React.HTMLAttributes<HTMLDivElement> {
     speed?: number;
     gradient?: boolean;
@@ -7,7 +7,7 @@ declare module "react-fast-marquee" {
     gradientWidth?: number | string;
     pauseOnHover?: boolean;
     pauseOnClick?: boolean;
-    direction?: "left" | "right" | "up" | "down";
+    direction?: 'left' | 'right' | 'up' | 'down';
     delay?: number;
     loop?: number;
     play?: boolean;

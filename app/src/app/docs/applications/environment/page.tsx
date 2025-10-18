@@ -1,14 +1,14 @@
-import { generatePageMetadata } from "../../../../lib/metadata";
+import { generatePageMetadata } from '../../../../lib/metadata';
 
-const title = "Environment Variables";
+const title = 'Environment Variables';
 const description =
-  "Learn how to manage environment variables and configuration in Kargo applications.";
+  'Learn how to manage environment variables and configuration in Kargo applications.';
 
 export const metadata = generatePageMetadata({
   title,
   description,
-  path: "/docs/applications/environment",
-  imageAlt: "Environment Variables in Kargo",
+  path: '/docs/applications/environment',
+  imageAlt: 'Environment Variables in Kargo',
 });
 
 export default function EnvironmentVariablesPage() {
@@ -18,8 +18,7 @@ export default function EnvironmentVariablesPage() {
 
       <div className="prose dark:prose-invert max-w-none">
         <p className="text-xl text-gray-600 dark:text-gray-400 mb-8">
-          Manage configuration and secrets for your applications using
-          environment variables.
+          Manage configuration and secrets for your applications using environment variables.
         </p>
 
         <h2>Types of Environment Variables</h2>
@@ -54,10 +53,7 @@ export default function EnvironmentVariablesPage() {
         </ol>
 
         <h3>Through Configuration Files</h3>
-        <p>
-          You can also define environment variables in your application
-          configuration:
-        </p>
+        <p>You can also define environment variables in your application configuration:</p>
         <pre className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg">
           <code>
             {`environment:
@@ -121,8 +117,7 @@ secrets:
             <strong>Manual Entry</strong> - Enter secrets through the dashboard
           </li>
           <li>
-            <strong>External Secrets</strong> - Sync from external secret
-            managers
+            <strong>External Secrets</strong> - Sync from external secret managers
           </li>
           <li>
             <strong>CI/CD Integration</strong> - Set secrets during deployment
@@ -148,9 +143,7 @@ secrets:
         </ul>
 
         <h2>Common Environment Variables</h2>
-        <p>
-          Here are some commonly used environment variables in applications:
-        </p>
+        <p>Here are some commonly used environment variables in applications:</p>
 
         <pre className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg">
           <code>
@@ -182,8 +175,8 @@ MAX_UPLOAD_SIZE=10MB`}
             🔐 Security Warning
           </h3>
           <p className="text-red-800 dark:text-red-200">
-            Always mark sensitive data as secrets. Regular environment variables
-            are visible to anyone with access to the application configuration.
+            Always mark sensitive data as secrets. Regular environment variables are visible to
+            anyone with access to the application configuration.
           </p>
         </div>
       </div>

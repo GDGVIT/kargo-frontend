@@ -1,8 +1,8 @@
-import Settings from "../../components/Settings/Settings";
-import PageHeading from "../../components/ui/PageHeading/PageHeading";
+import Settings from '../../components/Settings/Settings';
+import PageHeading from '../../components/ui/PageHeading/PageHeading';
 
-const title = "Settings";
-const description = "Manage your profile and plans";
+const title = 'Settings';
+const description = 'Manage your profile and plans';
 
 export const metadata = {
   title,

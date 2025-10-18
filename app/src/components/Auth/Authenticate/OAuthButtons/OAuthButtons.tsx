@@ -1,5 +1,5 @@
-import { FcGoogle } from "react-icons/fc";
-import { FaGithub } from "react-icons/fa";
+import { FcGoogle } from 'react-icons/fc';
+import { FaGithub } from 'react-icons/fa';
 
 type OAuthButtonsProps = {
   googleLogin: () => void;

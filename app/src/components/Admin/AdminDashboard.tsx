@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { useRouter } from "next/navigation";
-import Card from "../ui/Card/Card";
-import AnimatedButton from "../ui/AnimatedButton/AnimatedButton";
-import { FaUsers, FaClipboardList } from "react-icons/fa";
-import AdminOverallMetrics from "./AdminOverallMetrics/AdminOverallMetrics";
+import { useRouter } from 'next/navigation';
+import Card from '../ui/Card/Card';
+import AnimatedButton from '../ui/AnimatedButton/AnimatedButton';
+import { FaUsers, FaClipboardList } from 'react-icons/fa';
+import AdminOverallMetrics from './AdminOverallMetrics/AdminOverallMetrics';
 
 export default function AdminDashboard() {
   const router = useRouter();
@@ -13,13 +13,13 @@ export default function AdminDashboard() {
     <>
       <Card className="max-w-md shadow-xl rounded-2xl p-10 flex flex-col items-center gap-8 border border-[#23283a]">
         <AnimatedButton
-          onClick={() => router.push("/admin/users")}
+          onClick={() => router.push('/admin/users')}
           icon={<FaUsers className="h-5 w-5" />}
         >
           Manage Users
         </AnimatedButton>
         <AnimatedButton
-          onClick={() => router.push("/admin/plans")}
+          onClick={() => router.push('/admin/plans')}
           icon={<FaClipboardList className="h-5 w-5" />}
         >
           Manage Plans

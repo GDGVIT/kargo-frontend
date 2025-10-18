@@ -1,31 +1,30 @@
-"use client";
+'use client';
 
-import { useState, useEffect, useCallback } from "react";
-import api from "../../../utils/api";
-import { useRouter } from "next/navigation";
-import useNotification from "../../ui/Notification/Notification";
-import useImageTest from "../../../hooks/useImageTest";
-import ImageTestErrorModal from "../../Docker/ImageTestErrorModal/ImageTestErrorModal";
-import type RegistryCredential from "../../../types/Registry/RegistryCredential/RegistryCredential";
-import AnimatedButton from "../../ui/AnimatedButton/AnimatedButton";
-import { FaPlus, FaCheck, FaSpinner, FaSearch } from "react-icons/fa";
-import Input from "../../ui/Input/Input";
-import Select from "../../ui/Select/Select";
-import Modal from "../../ui/Modal/Modal";
-import GithubRepos from "../../Github/GithubRepos/GithubRepos";
-import Card from "../../ui/Card/Card";
+import { useState, useEffect, useCallback } from 'react';
+import api from '../../../utils/api';
+import { useRouter } from 'next/navigation';
+import useNotification from '../../ui/Notification/Notification';
+import useImageTest from '../../../hooks/useImageTest';
+import ImageTestErrorModal from '../../Docker/ImageTestErrorModal/ImageTestErrorModal';
+import type RegistryCredential from '../../../types/Registry/RegistryCredential/RegistryCredential';
+import AnimatedButton from '../../ui/AnimatedButton/AnimatedButton';
+import { FaPlus, FaCheck, FaSpinner, FaSearch } from 'react-icons/fa';
+import Input from '../../ui/Input/Input';
+import Select from '../../ui/Select/Select';
+import Modal from '../../ui/Modal/Modal';
+import GithubRepos from '../../Github/GithubRepos/GithubRepos';
+import Card from '../../ui/Card/Card';
 
 export default function AddAppForm() {
   const [form, setForm] = useState({
-    name: "",
-    imageUrl: "",
-    imageTag: "",
+    name: '',
+    imageUrl: '',
+    imageTag: '',
     credentials: [] as RegistryCredential[],
   });
   const [loading, setLoading] = useState(false);
   const [credentials, setCredentials] = useState<RegistryCredential[]>([]);
-  const [selectedCredential, setSelectedCredential] =
-    useState<RegistryCredential | null>(null);
+  const [selectedCredential, setSelectedCredential] = useState<RegistryCredential | null>(null);
   const [dockerModalOpen, setDockerModalOpen] = useState(false);
   const [showImageErrorModal, setShowImageErrorModal] = useState(false);
   const { testImage, isLoading: isTestingImage, lastResult } = useImageTest();
@@ -33,9 +32,7 @@ export default function AddAppForm() {
   const { notify } = useNotification();
 
   useEffect(() => {
-    api
-      .get("/api/users/me/credentials")
-      .then((res) => setCredentials(res.data.credentials));
+    api.get('/api/users/me/credentials').then((res) => setCredentials(res.data.credentials));
   }, []);
 
   function isValidAppName(name: string) {
@@ -44,11 +41,11 @@ export default function AddAppForm() {
 
   const handleTestImage = useCallback(async () => {
     if (!form.imageUrl.trim()) {
-      notify("Please enter an image URL first", "warning");
+      notify('Please enter an image URL first', 'warning');
       return;
     }
 
-    const tag = form.imageTag.trim() || "latest";
+    const tag = form.imageTag.trim() || 'latest';
     const credentialIds = selectedCredential
       ? [`${selectedCredential.name}:${selectedCredential.registryType}`]
       : undefined;
@@ -57,11 +54,9 @@ export default function AddAppForm() {
     if (result.available) {
       notify(
         `Image ${form.imageUrl}:${tag} is available${
-          result.authTested
-            ? ` (with ${result.testedWith || "authentication"})`
-            : " (public)"
+          result.authTested ? ` (with ${result.testedWith || 'authentication'})` : ' (public)'
         }`,
-        "success"
+        'success'
       );
 
       // Show modal if there are suggestions OR blocking errors
@@ -77,13 +72,13 @@ export default function AddAppForm() {
     if (isTestingImage) {
       return {
         icon: <FaSpinner className="animate-spin" />,
-        text: "Testing...",
+        text: 'Testing...',
       };
     }
     if (lastResult?.available) {
-      return { icon: <FaCheck />, text: "Available" };
+      return { icon: <FaCheck />, text: 'Available' };
     }
-    return { icon: <FaSearch />, text: "Test Image" };
+    return { icon: <FaSearch />, text: 'Test Image' };
   };
 
   async function handleAdd(e: React.FormEvent<HTMLFormElement>) {
@@ -91,20 +86,20 @@ export default function AddAppForm() {
     setLoading(true);
     if (!isValidAppName(form.name)) {
       notify(
-        "Application name must be lowercase, alphanumeric, and may contain hyphens. No underscores or uppercase letters allowed.",
-        "error"
+        'Application name must be lowercase, alphanumeric, and may contain hyphens. No underscores or uppercase letters allowed.',
+        'error'
       );
       setLoading(false);
       return;
     }
-    if (!form.imageUrl || form.imageUrl.trim() === "") {
-      notify("No image found. Please dockerize your app first.", "error");
-      router.push("/dockerize");
+    if (!form.imageUrl || form.imageUrl.trim() === '') {
+      notify('No image found. Please dockerize your app first.', 'error');
+      router.push('/dockerize');
       setLoading(false);
       return;
     }
 
-    const tag = form.imageTag.trim() || "latest";
+    const tag = form.imageTag.trim() || 'latest';
     const credentialIds = selectedCredential
       ? [`${selectedCredential.name}:${selectedCredential.registryType}`]
       : undefined;
@@ -120,24 +115,24 @@ export default function AddAppForm() {
     let finalNodeSelector = {};
     if (result.recommendedNodeSelector) {
       console.log(
-        "[AddAppForm] Applying recommended nodeSelector:",
+        '[AddAppForm] Applying recommended nodeSelector:',
         result.recommendedNodeSelector
       );
       finalNodeSelector = { ...result.recommendedNodeSelector };
     }
 
     try {
-      await api.post("/api/applications", {
+      await api.post('/api/applications', {
         ...form,
         credentials: selectedCredential ? [selectedCredential] : [],
         nodeSelector: finalNodeSelector,
         // No volumes sent
       });
-      setForm({ name: "", imageUrl: "", imageTag: "", credentials: [] });
-      notify("Application added successfully!", "success");
-      router.push("/applications");
+      setForm({ name: '', imageUrl: '', imageTag: '', credentials: [] });
+      notify('Application added successfully!', 'success');
+      router.push('/applications');
     } catch {
-      notify("Failed to add app", "error");
+      notify('Failed to add app', 'error');
     }
     setLoading(false);
   }
@@ -169,9 +164,7 @@ export default function AddAppForm() {
                 required
                 label="Docker Image"
                 value={form.imageUrl}
-                onChange={(value) =>
-                  setForm((f) => ({ ...f, imageUrl: value }))
-                }
+                onChange={(value) => setForm((f) => ({ ...f, imageUrl: value }))}
                 placeholder="registry.io/my-app"
                 helperText={
                   <AnimatedButton
@@ -190,9 +183,7 @@ export default function AddAppForm() {
                 required
                 label="Image Tag"
                 value={form.imageTag}
-                onChange={(value) =>
-                  setForm((f) => ({ ...f, imageTag: value }))
-                }
+                onChange={(value) => setForm((f) => ({ ...f, imageTag: value }))}
                 placeholder="latest"
               />
             </div>
@@ -204,13 +195,11 @@ export default function AddAppForm() {
               label="Registry Credential (Optional)"
               value={
                 selectedCredential
-                  ? selectedCredential.name +
-                    ":" +
-                    selectedCredential.registryType
-                  : ""
+                  ? selectedCredential.name + ':' + selectedCredential.registryType
+                  : ''
               }
               onChange={(val) => {
-                const [name, registryType] = val.split(":");
+                const [name, registryType] = val.split(':');
                 const cred = credentials.find(
                   (c) => c.name === name && c.registryType === registryType
                 );
@@ -222,11 +211,11 @@ export default function AddAppForm() {
               }}
               options={[
                 {
-                  value: "",
-                  label: "Select a credential (for private registries)",
+                  value: '',
+                  label: 'Select a credential (for private registries)',
                 },
                 ...credentials.map((cred) => ({
-                  value: cred.name + ":" + cred.registryType,
+                  value: cred.name + ':' + cred.registryType,
                   label: `${cred.name} [${cred.registryType}] (${cred.username})`,
                 })),
               ]}
@@ -248,7 +237,7 @@ export default function AddAppForm() {
             className="!px-6 !py-2"
             icon={<FaPlus />}
           >
-            {loading ? "Adding..." : "Add Application"}
+            {loading ? 'Adding...' : 'Add Application'}
           </AnimatedButton>
           <AnimatedButton
             type="button"
@@ -260,7 +249,7 @@ export default function AddAppForm() {
           </AnimatedButton>
           <AnimatedButton
             type="button"
-            variant={lastResult?.available ? "success" : "secondary"}
+            variant={lastResult?.available ? 'success' : 'secondary'}
             className="!px-6 !py-2"
             onClick={handleTestImage}
             disabled={isTestingImage || !form.imageUrl.trim()}
@@ -275,14 +264,14 @@ export default function AddAppForm() {
         open={showImageErrorModal}
         onClose={() => setShowImageErrorModal(false)}
         imageUrl={form.imageUrl}
-        imageTag={form.imageTag || "latest"}
-        error={lastResult?.error || ""}
+        imageTag={form.imageTag || 'latest'}
+        error={lastResult?.error || ''}
         needsAuth={lastResult?.needsAuth}
         authTested={lastResult?.authTested}
         suggestions={lastResult?.suggestions}
         available={lastResult?.available}
         isArchitectureIssue={lastResult?.isArchitectureIssue}
-        onNavigateToCredentials={() => router.push("/credentials")}
+        onNavigateToCredentials={() => router.push('/credentials')}
       />
     </>
   );

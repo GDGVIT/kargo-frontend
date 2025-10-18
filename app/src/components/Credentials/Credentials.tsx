@@ -1,27 +1,25 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import api from "../../utils/api";
-import useNotification from "../ui/Notification/Notification";
-import type RegistryCredential from "../../types/Registry/RegistryCredential/RegistryCredential";
-import CredentialRegister from "./CredentialRegister/CredentialRegister";
-import CredentialList from "./CredentialList/CredentialList";
+import { useEffect, useState } from 'react';
+import api from '../../utils/api';
+import useNotification from '../ui/Notification/Notification';
+import type RegistryCredential from '../../types/Registry/RegistryCredential/RegistryCredential';
+import CredentialRegister from './CredentialRegister/CredentialRegister';
+import CredentialList from './CredentialList/CredentialList';
 
 export default function Credentials() {
   const [credentials, setCredentials] = useState<RegistryCredential[]>([]);
   const [loading, setLoading] = useState(false);
   const { notify } = useNotification();
-  const [confirmDelete, setConfirmDelete] = useState<RegistryCredential | null>(
-    null
-  );
+  const [confirmDelete, setConfirmDelete] = useState<RegistryCredential | null>(null);
 
   const fetchCredentials = async () => {
     setLoading(true);
     try {
-      const res = await api.get("/api/users/me/credentials");
+      const res = await api.get('/api/users/me/credentials');
       setCredentials(res.data.credentials);
     } catch {
-      notify("Failed to load credentials", "error");
+      notify('Failed to load credentials', 'error');
     }
     setLoading(false);
   };
@@ -33,24 +31,17 @@ export default function Credentials() {
 
   const handleAdd = async (form: RegistryCredential) => {
     setLoading(true);
-    if (
-      credentials.some(
-        (c) => c.name === form.name && c.registryType === form.registryType
-      )
-    ) {
-      notify(
-        "Credential with this name and registry type already exists.",
-        "warning"
-      );
+    if (credentials.some((c) => c.name === form.name && c.registryType === form.registryType)) {
+      notify('Credential with this name and registry type already exists.', 'warning');
       setLoading(false);
       return;
     }
     try {
-      await api.post("/api/users/me/credentials", form);
+      await api.post('/api/users/me/credentials', form);
       await fetchCredentials();
-      notify("Credential added successfully!", "success");
+      notify('Credential added successfully!', 'success');
     } catch {
-      notify("Failed to save credential", "error");
+      notify('Failed to save credential', 'error');
     }
     setLoading(false);
   };
@@ -58,13 +49,13 @@ export default function Credentials() {
   const handleDelete = async (cred: RegistryCredential) => {
     setLoading(true);
     try {
-      await api.delete("/api/users/me/credentials", {
+      await api.delete('/api/users/me/credentials', {
         data: { name: cred.name, registryType: cred.registryType },
       });
       await fetchCredentials();
-      notify("Credential deleted successfully!", "success");
+      notify('Credential deleted successfully!', 'success');
     } catch {
-      notify("Failed to delete credential", "error");
+      notify('Failed to delete credential', 'error');
     }
     setLoading(false);
     setConfirmDelete(null);
