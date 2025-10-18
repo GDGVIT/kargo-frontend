@@ -1,6 +1,6 @@
 /// <reference lib="webworker" />
 
-const CACHE_NAME = 'Kargo_v1.0.2';
+const CACHE_NAME = 'v1.0.0';
 const CORE_ASSETS = [
   '/',
   '/offline',
