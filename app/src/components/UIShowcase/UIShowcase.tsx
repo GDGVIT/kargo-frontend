@@ -6,11 +6,13 @@ import Card from '../ui/Card/Card';
 import Input from '../ui/Input/Input';
 import Select from '../ui/Select/Select';
 import Textarea from '../ui/Textarea/Textarea';
-import { FaSave, FaTrash, FaCheck, FaExclamationTriangle, FaCode } from 'react-icons/fa';
+import { FaSave, FaTrash, FaCheck, FaExclamationTriangle, FaCode, FaMicrochip, FaMemory } from 'react-icons/fa';
+import { FaFloppyDisk } from 'react-icons/fa6';
 import useNotification from '../ui/Notification/Notification';
 import Loader from '../ui/Loader/Loader';
 import Modal from '../ui/Modal/Modal';
 import Tabs, { TabItem } from '../ui/Tabs/Tabs';
+import { ResourceItem } from '@/components/ui';
 
 export default function UIPage() {
   const selectOptions = [
@@ -511,6 +513,45 @@ export default function UIPage() {
             className="max-w-2xl mx-auto"
           />
         </div>
+      </section>
+
+      <section id="resource-item" style={{ marginTop: 40, marginBottom: 40 }}>
+        <h2
+          style={{ cursor: 'pointer' }}
+          onClick={() => {
+            document.getElementById('resource-item')?.scrollIntoView({
+              behavior: 'smooth',
+            });
+            window.location.hash = '#resource-item';
+          }}
+        >
+          Resource Item
+        </h2>
+        <Card elevation={1} aria-label="Resource Item showcase">
+          <div className="responsive-flex-column gap-4">
+            <ResourceItem
+              icon={<FaMicrochip className="text-sky-300" />}
+              label="CPU"
+              usage="500m"
+              max="2000m"
+              color="text-sky-200"
+            />
+            <ResourceItem
+              icon={<FaMemory className="text-emerald-300" />}
+              label="Memory"
+              usage="1GB"
+              max="8GB"
+              color="text-emerald-200"
+            />
+            <ResourceItem
+              icon={<FaFloppyDisk className="text-yellow-300" />}
+              label="Storage"
+              usage="50GB"
+              max="200GB"
+              color="text-yellow-200"
+            />
+          </div>
+        </Card>
       </section>
     </>
   );

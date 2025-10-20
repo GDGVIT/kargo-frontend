@@ -19,7 +19,7 @@ import {
   FaWrench,
 } from 'react-icons/fa';
 import { HiSparkles } from 'react-icons/hi';
-import AnimatedButton from '../../../components/ui/AnimatedButton/AnimatedButton';
+import { AnimatedButton } from '@/components/ui';
 
 export default function QuickStartPage() {
   return (

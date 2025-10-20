@@ -11,10 +11,9 @@ import {
   CartesianGrid,
   ReferenceLine,
 } from 'recharts';
-import api from '../../../../../../utils/api';
-import Select from '../../../../../ui/Select/Select';
-import Resources from '../../../../../../types/Application/Resources/Resources';
-import Loader from '../../../../../ui/Loader/Loader';
+import api from '@/utils/api';
+import { Loader, Select } from '@/components/ui';
+import Resources from '@/types/Application/Resources/Resources';
 import type { TooltipProps } from 'recharts';
 
 const usageLabels: Record<string, string> = {

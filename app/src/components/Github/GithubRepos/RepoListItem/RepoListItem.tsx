@@ -8,8 +8,8 @@ import {
   FaExclamationCircle,
   FaUser,
 } from 'react-icons/fa';
-import Repo from '../../../../types/Repo/Repo';
-import Card from '../../../ui/Card/Card';
+import Repo from '@/types/Repo/Repo';
+import { Card } from '@/components/ui';
 
 const RepoListItem: React.FC<{ repo: Repo; actions?: React.ReactNode }> = ({ repo, actions }) => {
   return (

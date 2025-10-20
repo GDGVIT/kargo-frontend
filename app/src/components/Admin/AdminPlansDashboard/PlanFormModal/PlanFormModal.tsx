@@ -1,10 +1,7 @@
 import React from 'react';
-import Modal from '../../../ui/Modal/Modal';
-import Input from '../../../ui/Input/Input';
-import Textarea from '../../../ui/Textarea/Textarea';
-import AnimatedButton from '../../../ui/AnimatedButton/AnimatedButton';
+import { Modal, Input, Textarea, AnimatedButton } from '@/components/ui';
 import { FaMicrochip, FaMemory } from 'react-icons/fa6';
-import type PlanFormModalProps from '../../../../types/Plan/PlanFormModalProps';
+import type PlanFormModalProps from '@/types/Plan/PlanFormModalProps';
 
 const PlanFormModal: React.FC<PlanFormModalProps> = ({
   show,

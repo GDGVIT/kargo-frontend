@@ -1,6 +1,6 @@
 import React from 'react';
 import { FaUser, FaEnvelope, FaSignOutAlt } from 'react-icons/fa';
-import AnimatedButton from '../ui/AnimatedButton/AnimatedButton';
+import { AnimatedButton } from '@/components/ui';
 import { FaUser as FaUserIcon } from 'react-icons/fa';
 
 interface ProfileProps {

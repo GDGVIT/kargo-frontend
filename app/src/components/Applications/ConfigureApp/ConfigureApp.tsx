@@ -2,21 +2,17 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import api from '../../../utils/api';
-import type Application from '../../../types/Application/Application';
-import type RegistryCredential from '../../../types/Registry/RegistryCredential/RegistryCredential';
-import Loader from '../../ui/Loader/Loader';
-import { useAuth } from '../../Auth/AuthProvider/AuthProvider';
-import Tabs, { TabItem } from '../../ui/Tabs/Tabs';
-import useNotification from '../../ui/Notification/Notification';
-import Modal from '../../ui/Modal/Modal';
-import AnimatedButton from '../../ui/AnimatedButton/AnimatedButton';
+import api from '@/utils/api';
+import type Application from '@/types/Application/Application';
+import type RegistryCredential from '@/types/Registry/RegistryCredential/RegistryCredential';
+import { useAuth } from '@/components/Auth/AuthProvider/AuthProvider';
+import { Tabs, TabItem, Modal, useNotification, AnimatedButton, Loader } from '@/components/ui';
 import OverviewTab from './OverviewTab/OverviewTab';
 import SetupTab from './SetupTab/SetupTab';
 import SettingsTab from './SettingsTab/SettingsTab';
 import ActionButtons from './ActionButtons/ActionButtons';
-import useImageTest from '../../../hooks/useImageTest';
-import ImageTestErrorModal from '../../Docker/ImageTestErrorModal/ImageTestErrorModal';
+import useImageTest from '@/hooks/useImageTest';
+import ImageTestErrorModal from '@/components/Docker/ImageTestErrorModal/ImageTestErrorModal';
 
 export default function ConfigureApp({ appId }: { appId: string }) {
   const { user } = useAuth();

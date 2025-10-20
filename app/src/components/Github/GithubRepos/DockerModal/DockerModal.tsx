@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { FaCopy, FaDocker } from 'react-icons/fa';
-import DockerModalProps from '../../../../types/DockerModalProps/DockerModalProps';
+import DockerModalProps from '@/types/DockerModalProps/DockerModalProps';
 import { DockerfileParser } from 'dockerfile-ast';
 import yaml from 'js-yaml';
-import Button from '../../../ui/AnimatedButton/AnimatedButton';
-import Modal from '../../../ui/Modal/Modal';
+import {Modal, AnimatedButton} from '@/components/ui';
 
 const DockerModal: React.FC<DockerModalProps> = ({
   open,
@@ -102,13 +101,13 @@ const DockerModal: React.FC<DockerModalProps> = ({
       }
       return (
         <div className="relative">
-          <Button
+          <AnimatedButton
             className="absolute top-2 right-2 text-xs px-2 py-1 bg-blue-700 hover:bg-blue-800 text-white rounded flex items-center gap-1"
             onClick={() => handleCopy(formatContent(dockerfile), 'dockerfile')}
             variant="primary"
           >
             <FaCopy /> {copied === 'dockerfile' ? 'Copied!' : 'Copy'}
-          </Button>
+          </AnimatedButton>
           <pre className="bg-neutral-800 p-4 text-sm overflow-x-auto text-blue-200 whitespace-pre-wrap border border-blue-700 shadow-inner mt-6">
             {formatContent(dockerfile)}
           </pre>
@@ -126,13 +125,13 @@ const DockerModal: React.FC<DockerModalProps> = ({
       }
       return (
         <div className="relative">
-          <Button
+          <AnimatedButton
             className="absolute top-2 right-2 text-xs px-2 py-1 bg-pink-700 hover:bg-pink-800 text-white rounded flex items-center gap-1"
             onClick={() => handleCopy(formatDockerCompose(dockerCompose), 'dockerCompose')}
             variant="primary"
           >
             <FaCopy /> {copied === 'dockerCompose' ? 'Copied!' : 'Copy'}
-          </Button>
+          </AnimatedButton>
           <pre className="bg-neutral-800 p-4 text-sm overflow-x-auto text-pink-200 whitespace-pre-wrap border border-pink-700 shadow-inner mt-6">
             {formatDockerCompose(dockerCompose)}
           </pre>
@@ -162,7 +161,7 @@ const DockerModal: React.FC<DockerModalProps> = ({
       showCloseButton
     >
       <div className="flex justify-center mb-4 gap-2">
-        <Button
+        <AnimatedButton
           className={`px-4 py-2 rounded-t-lg font-semibold transition-colors duration-200 border-b-2 focus:outline-none flex items-center gap-2 ${
             activeTab === 'dockerfile'
               ? 'bg-blue-700 text-white border-blue-400'
@@ -174,8 +173,8 @@ const DockerModal: React.FC<DockerModalProps> = ({
           icon={<FaDocker />}
         >
           Dockerfile
-        </Button>
-        <Button
+        </AnimatedButton>
+        <AnimatedButton
           className={`px-4 py-2 rounded-t-lg font-semibold transition-colors duration-200 border-b-2 focus:outline-none flex items-center gap-2 ${
             activeTab === 'dockerCompose'
               ? 'bg-pink-700 text-white border-pink-400'
@@ -187,7 +186,7 @@ const DockerModal: React.FC<DockerModalProps> = ({
           icon={<FaDocker />}
         >
           docker-compose.yml
-        </Button>
+        </AnimatedButton>
       </div>
       <div className="max-h-[50vh] overflow-y-auto scrollbar-thin scrollbar-thumb-zinc-700 scrollbar-track-zinc-900 rounded-lg">
         {renderTabContent()}

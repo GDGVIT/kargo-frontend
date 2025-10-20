@@ -3,11 +3,9 @@
 import React, { useState } from 'react';
 
 import { useAuth } from '../Auth/AuthProvider/AuthProvider';
-import Loader from '../ui/Loader/Loader';
-import useNotification from '../ui/Notification/Notification';
+import { useNotification, Loader, Card } from '@/components/ui';
 import GithubAuth from '../Github/GithubAuth/GithubAuth';
 import PlanDetails from '../PlanDetails/PlanDetails';
-import Card from '../ui/Card/Card';
 import UserStats from '../UserStats/UserStats';
 import Profile from '../Profile/Profile';
 

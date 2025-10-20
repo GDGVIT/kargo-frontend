@@ -1,5 +1,5 @@
-import Onboarding from '../../../components/Auth/Onboarding/Onboarding';
-import PageHeading from '@/components/ui/PageHeading/PageHeading';
+import Onboarding from '@/components/Auth/Onboarding/Onboarding';
+import {PageHeading} from '@/components/ui';
 
 export default function OnboardingPage() {
   return (

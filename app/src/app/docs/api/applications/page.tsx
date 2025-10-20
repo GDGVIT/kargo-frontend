@@ -1,4 +1,4 @@
-import { generatePageMetadata } from '../../../../lib/metadata';
+import { generatePageMetadata } from '@/lib/metadata';
 
 const title = 'Applications API';
 const description = 'Complete reference for the Kargo Applications API endpoints.';

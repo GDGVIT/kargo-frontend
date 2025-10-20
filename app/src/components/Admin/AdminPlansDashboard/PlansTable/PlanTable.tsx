@@ -1,12 +1,9 @@
 import React, { useState } from 'react';
-import Card from '../../../ui/Card/Card';
-import AnimatedButton from '../../../ui/AnimatedButton/AnimatedButton';
-import Loader from '../../../ui/Loader/Loader';
-import Modal from '../../../ui/Modal/Modal';
-import Plan from '../../../../types/Plan/Plan';
-import type PlanTableProps from '../../../../types/Plan/PlanTableProps';
+import { Modal, Loader, Card, AnimatedButton } from '@/components/ui';
+import Plan from '@/types/Plan/Plan';
+import type PlanTableProps from '@/types/Plan/PlanTableProps';
 import { FaEdit, FaTrash, FaCheckCircle, FaRegCircle } from 'react-icons/fa';
-import { formatCpu, formatMemory, formatStorage, formatPrice } from '../../../../utils/resources';
+import { formatCpuMilli, formatMemory, formatStorage, formatPrice } from '@/utils/resources';
 
 const PlanTable: React.FC<PlanTableProps> = ({
   plans,
@@ -93,13 +90,13 @@ const PlanTable: React.FC<PlanTableProps> = ({
                       <div className="text-xs p-2 rounded flex flex-col gap-1">
                         <div>
                           <span className="font-semibold">Req:</span> CPU:{' '}
-                          {formatCpu(plan.resources.requests?.cpu)}, Mem:{' '}
+                          {formatCpuMilli(plan.resources.requests?.cpu)}, Mem:{' '}
                           {formatMemory(plan.resources.requests?.memory)}, Storage:{' '}
                           {formatStorage(plan.resources.requests?.storage)}
                         </div>
                         <div>
                           <span className="font-semibold">Lim:</span> CPU:{' '}
-                          {formatCpu(plan.resources.limits?.cpu)}, Mem:{' '}
+                          {formatCpuMilli(plan.resources.limits?.cpu)}, Mem:{' '}
                           {formatMemory(plan.resources.limits?.memory)}, Storage:{' '}
                           {formatStorage(plan.resources.limits?.storage)}
                         </div>

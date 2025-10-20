@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import RepoListItem from '../RepoListItem/RepoListItem';
-import Repo from '../../../../types/Repo/Repo';
+import Repo from '@/types/Repo/Repo';
 
 const RepoList: React.FC<{
   repos: Repo[];

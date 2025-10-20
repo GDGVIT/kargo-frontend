@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { generatePageMetadata } from '../lib/metadata';
+import { generatePageMetadata } from '@/lib/metadata';
 
 const title = 'Page Not Found';
 const description = 'Sorry, the page you are looking for does not exist or has been moved.';

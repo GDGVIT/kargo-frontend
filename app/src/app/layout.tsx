@@ -3,12 +3,10 @@ import './globals.css';
 import Script from 'next/script';
 import { AuthProvider } from '../components/Auth/AuthProvider/AuthProvider';
 import { NotificationProvider } from '../components/ui/Notification/Notification';
-import Header from '../components/ui/Header/Header';
-import Footer from '../components/ui/Footer/Footer';
-import Sidebar from '../components/ui/Sidebar/Sidebar';
-import AcceptCookies from '../components/AcceptCookies/AcceptCookies';
-import LayoutWrapper from '../components/ui/LayoutWrapper/LayoutWrapper';
-import ServiceWorkerRegister from '../components/ServiceWorkerRegister/ServiceWorkerRegister';
+import {Header, Footer, Sidebar} from '@/components/ui'
+import AcceptCookies from '@/components/AcceptCookies/AcceptCookies';
+import LayoutWrapper from '@/components/ui/LayoutWrapper/LayoutWrapper';
+import ServiceWorkerRegister from '@/components/ServiceWorkerRegister/ServiceWorkerRegister';
 
 export const metadata: Metadata = {
   title: 'Kargo',

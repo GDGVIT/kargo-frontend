@@ -1,4 +1,4 @@
-import { generatePageMetadata } from '../../../../lib/metadata';
+import { generatePageMetadata } from '@/lib/metadata';
 
 const title = 'Application Deployment';
 const description = 'Learn how to deploy and manage applications in Kargo.';

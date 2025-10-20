@@ -1,15 +1,12 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import api from '../../utils/api';
-import type Plan from '../../types/Plan/Plan';
-import AnimatedButton from '../ui/AnimatedButton/AnimatedButton';
-import Card from '../ui/Card/Card';
-import Loader from '../ui/Loader/Loader';
-import loadRazorpayScript from '../../utils/loadRazorpayScript';
-import useNotification from '../ui/Notification/Notification';
+import api from '@/utils/api';
+import type Plan from '@/types/Plan/Plan';
+import { useNotification, Loader, Card, AnimatedButton } from '@/components/ui';
+import loadRazorpayScript from '@/utils/loadRazorpayScript';
 import { getRuntimeEnv } from '@/utils/getRuntimeEnv';
-import { formatCpu, formatMemory, formatStorage } from '../../utils/resources';
+import { formatCpuMilli, formatMemory, formatStorage } from '@/utils/resources';
 
 const Plans = () => {
   const [plans, setPlans] = useState<Plan[]>([]);
@@ -102,13 +99,13 @@ const Plans = () => {
                 <>
                   <div>
                     <span className="font-semibold">Requests:</span> CPU:{' '}
-                    {formatCpu(plan.resources.requests?.cpu)}, Memory:{' '}
+                    {formatCpuMilli(plan.resources.requests?.cpu)}, Memory:{' '}
                     {formatMemory(plan.resources.requests?.memory)}, Storage:{' '}
                     {formatStorage(plan.resources.requests?.storage)}
                   </div>
                   <div>
                     <span className="font-semibold">Limits:</span> CPU:{' '}
-                    {formatCpu(plan.resources.limits?.cpu)}, Memory:{' '}
+                    {formatCpuMilli(plan.resources.limits?.cpu)}, Memory:{' '}
                     {formatMemory(plan.resources.limits?.memory)}, Storage:{' '}
                     {formatStorage(plan.resources.limits?.storage)}
                   </div>

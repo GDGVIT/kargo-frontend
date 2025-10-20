@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
-import type ImageFieldsProps from '../../../../../types/Application/ImageFieldProps/ImageFieldProps';
-import Input from '../../../../ui/Input/Input';
-import Select from '../../../../ui/Select/Select';
-import AnimatedButton from '../../../../ui/AnimatedButton/AnimatedButton';
-import useImageTest from '../../../../../hooks/useImageTest';
+import { Input, Select, AnimatedButton, useNotification } from '@/components/ui';
+import type ImageFieldsProps from '@/types/Application/ImageFieldProps/ImageFieldProps';
+import useImageTest from '@/hooks/useImageTest';
 import ImageTestErrorModal from '../../../../Docker/ImageTestErrorModal/ImageTestErrorModal';
-import useNotification from '../../../../ui/Notification/Notification';
 import { useRouter } from 'next/navigation';
 import { FaCheck, FaSpinner, FaSearch } from 'react-icons/fa';
 

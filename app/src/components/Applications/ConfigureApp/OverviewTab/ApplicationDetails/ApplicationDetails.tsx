@@ -1,6 +1,6 @@
 import React from 'react';
-import type Application from '../../../../../types/Application/Application';
-import Card from '../../../../ui/Card/Card';
+import type Application from '@/types/Application/Application';
+import { Card } from '@/components/ui';
 
 const ApplicationDetails: React.FC<{ form: Application | null }> = ({ form }) => {
   if (!form) return null;

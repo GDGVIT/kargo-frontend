@@ -1,6 +1,5 @@
 import React from 'react';
-import Modal from '../../ui/Modal/Modal';
-import AnimatedButton from '../../ui/AnimatedButton/AnimatedButton';
+import { Modal, AnimatedButton } from '@/components/ui';
 import { FaExclamationTriangle, FaKey, FaCog } from 'react-icons/fa';
 
 interface ImageTestErrorModalProps {

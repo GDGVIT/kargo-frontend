@@ -1,10 +1,9 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import api from '../../../utils/api';
-import useNotification from '../../ui/Notification/Notification';
+import api from '@/utils/api';
+import { AnimatedButton, useNotification } from '@/components/ui';
 import type Plan from '../../../types/Plan/Plan';
-import AnimatedButton from '../../ui/AnimatedButton/AnimatedButton';
 import PlanTable from './PlansTable/PlanTable';
 import PlanFormModal from './PlanFormModal/PlanFormModal';
 
@@ -64,15 +63,20 @@ export default function AdminPlansDashboard() {
       setPlanForm({
         name: plan.name,
         description: plan.description || '',
-        requestsCpu: plan.resources?.requests?.cpu?.toString() || '',
-        requestsMemory: plan.resources?.requests?.memory?.toString() || '',
-        requestsStorage: plan.resources?.requests?.storage?.toString() || '',
-        limitsCpu: plan.resources?.limits?.cpu?.toString() || '',
-        limitsMemory: plan.resources?.limits?.memory?.toString() || '',
-        limitsStorage: plan.resources?.limits?.storage?.toString() || '',
+        // Backend/base units are already: cpu in m, memory in MB, storage in GB
+        requestsCpu: plan.resources?.requests?.cpu != null ? String(plan.resources.requests.cpu) : '',
+        requestsMemory:
+          plan.resources?.requests?.memory != null ? String(plan.resources.requests.memory) : '',
+        requestsStorage:
+          plan.resources?.requests?.storage != null ? String(plan.resources.requests.storage) : '',
+        limitsCpu: plan.resources?.limits?.cpu != null ? String(plan.resources.limits.cpu) : '',
+        limitsMemory:
+          plan.resources?.limits?.memory != null ? String(plan.resources.limits.memory) : '',
+        limitsStorage:
+          plan.resources?.limits?.storage != null ? String(plan.resources.limits.storage) : '',
         isDefault: !!plan.isDefault,
         isActive: plan.isActive !== false,
-        price: plan.price ? String(plan.price) : '',
+        price: plan.price != null ? String(plan.price) : '',
       });
     } else {
       setEditingPlan(null);
@@ -102,19 +106,20 @@ export default function AdminPlansDashboard() {
       description: planForm.description,
       resources: {
         requests: {
-          cpuMilli: planForm.requestsCpu,
-          memoryMB: planForm.requestsMemory,
-          storageGB: planForm.requestsStorage,
+          // Send numeric values in base units expected by backend schema
+          cpu: planForm.requestsCpu ? Number(planForm.requestsCpu) : undefined,
+          memory: planForm.requestsMemory ? Number(planForm.requestsMemory) : undefined,
+          storage: planForm.requestsStorage ? Number(planForm.requestsStorage) : undefined,
         },
         limits: {
-          cpuMilli: planForm.limitsCpu,
-          memoryMB: planForm.limitsMemory,
-          storageGB: planForm.limitsStorage,
+          cpu: planForm.limitsCpu ? Number(planForm.limitsCpu) : undefined,
+          memory: planForm.limitsMemory ? Number(planForm.limitsMemory) : undefined,
+          storage: planForm.limitsStorage ? Number(planForm.limitsStorage) : undefined,
         },
       },
       isDefault: planForm.isDefault,
       isActive: planForm.isActive,
-      price: planForm.price ? planForm.price : undefined,
+      price: planForm.price ? Number(planForm.price) : undefined,
     };
     try {
       if (editingPlan) {

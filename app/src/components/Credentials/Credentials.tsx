@@ -1,9 +1,9 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import api from '../../utils/api';
-import useNotification from '../ui/Notification/Notification';
-import type RegistryCredential from '../../types/Registry/RegistryCredential/RegistryCredential';
+import api from '@/utils/api';
+import { useNotification } from '@/components/ui';
+import type RegistryCredential from '@/types/Registry/RegistryCredential/RegistryCredential';
 import CredentialRegister from './CredentialRegister/CredentialRegister';
 import CredentialList from './CredentialList/CredentialList';
 

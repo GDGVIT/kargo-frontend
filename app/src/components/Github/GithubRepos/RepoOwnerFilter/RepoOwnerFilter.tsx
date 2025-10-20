@@ -1,6 +1,6 @@
 import React from 'react';
-import Select from '../../../ui/Select/Select';
-import RepoOwnerFilterProps from '../../../../types/Repo/RepoOwnerFilterProps';
+import { Select } from '@/components/ui';
+import RepoOwnerFilterProps from '@/types/Repo/RepoOwnerFilterProps';
 
 const RepoOwnerFilter: React.FC<RepoOwnerFilterProps> = ({ owners, value, onChange }) => {
   const handleSelectChange = (val: string) => {

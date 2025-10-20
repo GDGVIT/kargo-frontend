@@ -9,7 +9,7 @@ import {
   FaEnvelope,
   FaClipboardList,
 } from 'react-icons/fa';
-import AnimatedButton from '../../../../components/ui/AnimatedButton/AnimatedButton';
+import { AnimatedButton } from '@/components/ui';
 
 export default function UserManagementPage() {
   return (

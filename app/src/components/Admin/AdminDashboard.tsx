@@ -1,8 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import Card from '../ui/Card/Card';
-import AnimatedButton from '../ui/AnimatedButton/AnimatedButton';
+import { Card, AnimatedButton } from '@/components/ui';
 import { FaUsers, FaClipboardList } from 'react-icons/fa';
 import AdminOverallMetrics from './AdminOverallMetrics/AdminOverallMetrics';
 

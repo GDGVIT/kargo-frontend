@@ -1,8 +1,6 @@
-import Card from '../../ui/Card/Card';
+import { Modal, AnimatedButton, Card } from '@/components/ui';
 import { FaDocker, FaGithub, FaGitlab, FaKey } from 'react-icons/fa';
-import AnimatedButton from '../../ui/AnimatedButton/AnimatedButton';
-import Modal from '../../ui/Modal/Modal';
-import type RegistryCredential from '../../../types/Registry/RegistryCredential/RegistryCredential';
+import type RegistryCredential from '@/types/Registry/RegistryCredential/RegistryCredential';
 import { useState } from 'react';
 import { FaTrash } from 'react-icons/fa';
 

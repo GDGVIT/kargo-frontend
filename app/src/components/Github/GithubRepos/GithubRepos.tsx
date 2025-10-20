@@ -2,18 +2,14 @@
 
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { FaGithub } from 'react-icons/fa';
-import api from '../../../utils/api';
+import api from '@/utils/api';
 import axios from 'axios';
-import useNotification from '../../ui/Notification/Notification';
-import Loader from '../../ui/Loader/Loader';
+import { useNotification, Loader, Input, Select, AnimatedButton } from '@/components/ui';
 import { motion } from 'framer-motion';
 import RepoPagination from './RepoPagination/RepoPagination';
-import AnimatedButton from '../../ui/AnimatedButton/AnimatedButton';
-import Input from '../../ui/Input/Input';
-import Select from '../../ui/Select/Select';
 import RepoList from './RepoList/RepoList';
 import DockerModal from './DockerModal/DockerModal';
-import Repo from '../../../types/Repo/Repo';
+import Repo from '@/types/Repo/Repo';
 import { GiBrain } from 'react-icons/gi';
 
 const GithubRepos: React.FC = () => {

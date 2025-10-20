@@ -1,5 +1,11 @@
 // utils/resources.ts
 // Utility functions to format resource values for display
+// NOTE: Backend expects and stores resource values in the following base units:
+// - CPU in millicores (m)
+// - Memory in megabytes (MB)
+// - Storage in gigabytes (GB)
+// The formatters below assume inputs are already in these base units and render
+// user-friendly strings (promoting to vCPU/GB/TB where appropriate).
 
 /**
  * Generic function to format a value with the most appropriate unit.
@@ -29,23 +35,28 @@ export function formatUnit(
 }
 
 /**
- * Format CPU value in cores (e.g., 1 = 1 vCPU, 0.25 = 250m)
+ * Format CPU where input is in cores (decimal). This keeps compatibility for charts/metrics
+ * that deal in cores directly.
  */
-export function formatCpu(cpu?: number | null): string {
-  if (cpu == null || isNaN(cpu)) return '0 m';
-  if (cpu >= 1) {
-    // Show in vCPU
-    return formatUnit(cpu, [
-      { label: 'm', value: 0.001 },
-      { label: 'vCPU', value: 1 },
-    ]);
-  }
-  // Show in millicores
-  return `${Math.round(cpu * 1000)}m`;
+export function formatCpu(cores?: number | null): string {
+  if (cores == null || isNaN(cores)) return '0 m';
+  if (cores < 1) return `${Math.round(cores * 1000)} m`;
+  return `${cores.toFixed(cores >= 10 ? 0 : 2)} vCPU`;
 }
 
 /**
- * Format memory value in bytes (auto: B, KB, MB, GB, TB)
+ * Format CPU where input is millicores (m). Use this for plan/base values.
+ */
+export function formatCpuMilli(m?: number | null): string {
+  if (m == null || isNaN(m)) return '0 m';
+  if (m < 1000) return `${Math.round(m)} m`;
+  const cores = m / 1000;
+  return `${cores.toFixed(cores >= 10 ? 0 : 2)} vCPU`;
+}
+
+/**
+ * Format memory when input is in BYTES (auto: B, KB, MB, GB, TB)
+ * Used by metrics and places that deal with raw byte counts.
  */
 export function formatMemoryBytes(memoryBytes?: number | null): string {
   return formatUnit(memoryBytes, [
@@ -58,24 +69,29 @@ export function formatMemoryBytes(memoryBytes?: number | null): string {
 }
 
 /**
- * Format memory value in bytes (same as formatMemoryBytes, for consistency)
+ * Format memory where input is megabytes (MB). Auto-promote to GB/TB.
  */
 export function formatMemory(memory?: number | null): string {
-  return formatMemoryBytes(memory);
+  if (memory == null || isNaN(memory)) return '0 MB';
+  // memory is in MB
+  if (memory < 1024) return `${Math.round(memory)} MB`;
+  const gb = memory / 1024;
+  if (gb < 1024) return `${gb.toFixed(gb >= 10 ? 0 : 2)} GB`;
+  const tb = gb / 1024;
+  return `${tb.toFixed(tb >= 10 ? 0 : 2)} TB`;
 }
 
 /**
- * Format storage value in bytes (auto: B, KB, MB, GB, TB, PB)
+ * Format storage where input is gigabytes (GB). Auto-promote to TB/PB.
  */
 export function formatStorage(storage?: number | null): string {
-  return formatUnit(storage, [
-    { label: 'B', value: 1 },
-    { label: 'KB', value: 1024 },
-    { label: 'MB', value: 1024 ** 2 },
-    { label: 'GB', value: 1024 ** 3 },
-    { label: 'TB', value: 1024 ** 4 },
-    { label: 'PB', value: 1024 ** 5 },
-  ]);
+  if (storage == null || isNaN(storage)) return '0 GB';
+  // storage is in GB
+  if (storage < 1024) return `${Math.round(storage)} GB`;
+  const tb = storage / 1024;
+  if (tb < 1024) return `${tb.toFixed(tb >= 10 ? 0 : 2)} TB`;
+  const pb = tb / 1024;
+  return `${pb.toFixed(pb >= 10 ? 0 : 2)} PB`;
 }
 
 /**

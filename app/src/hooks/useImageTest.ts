@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import api from '../utils/api';
+import api from '@/utils/api';
 
 interface ImageTestResult {
   available: boolean;

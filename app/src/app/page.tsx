@@ -1,5 +1,5 @@
-import Hero from '../components/Hero/Hero';
-import { generatePageMetadata } from '../lib/metadata';
+import Hero from '@/components/Hero/Hero';
+import { generatePageMetadata } from '@/lib/metadata';
 
 const title = 'Kargo';
 const description =

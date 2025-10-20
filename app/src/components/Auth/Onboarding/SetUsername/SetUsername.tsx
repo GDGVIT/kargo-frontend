@@ -4,11 +4,8 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '../../AuthProvider/AuthProvider';
 import { motion } from 'framer-motion';
-import useNotification, { NotificationProvider } from '../../../ui/Notification/Notification';
-import { baseURL } from '../../../../utils/api';
-import Card from '../../../ui/Card/Card';
-import Input from '../../../ui/Input/Input';
-import AnimatedButton from '../../../ui/AnimatedButton/AnimatedButton';
+import { baseURL } from '@/utils/api';
+import { Card, Input, AnimatedButton, useNotification, NotificationProvider } from '@/components/ui';
 
 const SetUsername: React.FC = () => {
   const [username, setUsername] = useState('');
