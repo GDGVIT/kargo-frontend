@@ -74,41 +74,39 @@ const SetUsername: React.FC = () => {
 
   return (
     <NotificationProvider>
-      <section className="flex items-center justify-center px-4 min-h-screen">
-        <Card className="max-w-md w-full">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="space-y-6"
-          >
-            <div className="text-center">
-              <h2 className="text-2xl font-bold text-white mb-2">Choose a Username</h2>
-              <p className="text-sm text-zinc-400">
-                Set your unique username to continue. It must be Kubernetes-compatible.
-              </p>
-            </div>
+      <Card className="max-w-md w-full">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="space-y-6"
+        >
+          <div className="text-center">
+            <h2 className="text-2xl font-bold text-white mb-2">Choose a Username</h2>
+            <p className="text-sm text-zinc-400">
+              Set your unique username to continue. It must be Kubernetes-compatible.
+            </p>
+          </div>
 
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <Input
-                label="Username"
-                type="text"
-                placeholder="Enter username (lowercase, letters, numbers, hyphens)"
-                value={username}
-                onChange={(value) => setUsername(value)}
-                error={error}
-                helperText="Only lowercase letters, numbers, and hyphens. Must start and end with a letter or number. Max 63 characters."
-                disabled={loading}
-                required
-              />
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <Input
+              label="Username"
+              type="text"
+              placeholder="Enter username (lowercase, letters, numbers, hyphens)"
+              value={username}
+              onChange={(value) => setUsername(value)}
+              error={error}
+              helperText="Only lowercase letters, numbers, and hyphens. Must start and end with a letter or number. Max 63 characters."
+              disabled={loading}
+              required
+            />
 
-              <AnimatedButton type="submit" variant="primary" disabled={loading} className="w-full">
-                {loading ? 'Setting...' : 'Set Username'}
-              </AnimatedButton>
-            </form>
-          </motion.div>
-        </Card>
-      </section>
+            <AnimatedButton type="submit" variant="primary" disabled={loading} className="w-full">
+              {loading ? 'Setting...' : 'Set Username'}
+            </AnimatedButton>
+          </form>
+        </motion.div>
+      </Card>
     </NotificationProvider>
   );
 };
