@@ -9,7 +9,5 @@ export default interface Plan {
     limits?: Resource;
   };
   isDefault?: boolean;
-  /** Price in paise (integer) */
-  price?: number;
   isActive?: boolean;
 }

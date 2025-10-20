@@ -93,15 +93,3 @@ export function formatStorage(storage?: number | null): string {
   const pb = tb / 1024;
   return `${pb.toFixed(pb >= 10 ? 0 : 2)} PB`;
 }
-
-/**
- * Format price in paise to INR string (e.g., 49900 = ₹499.00)
- */
-export function formatPrice(pricePaise?: number | string | null): string {
-  if (pricePaise == null || pricePaise === '' || isNaN(Number(pricePaise))) return '₹0.00';
-  const price = typeof pricePaise === 'string' ? parseInt(pricePaise, 10) : pricePaise;
-  return `₹${(price / 100).toLocaleString('en-IN', {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  })}`;
-}

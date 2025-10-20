@@ -7,7 +7,6 @@ import UserManagement from './UserManagement/UserManagement';
 import type Plan from '@/types/Plan/Plan';
 import type User from '@/types/User/User';
 import type Resource from '@/types/Application/Resource/Resource';
-import { formatPrice } from '@/utils/resources';
 
 export default function AdminUsersDashboard() {
   const [users, setUsers] = useState<User[]>([]);
@@ -223,8 +222,6 @@ export default function AdminUsersDashboard() {
         memory: planResources.limits?.memory,
         storage: planResources.limits?.storage,
       },
-      price: planObj.price,
-      formattedPrice: formatPrice(planObj.price),
     } as {
       requests: Resource;
       limits: Resource;

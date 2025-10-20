@@ -100,15 +100,6 @@ const PlanFormModal: React.FC<PlanFormModalProps> = ({
             displayHelperText
           />
         </div>
-        <Input
-          label="Price (in paise)"
-          value={planForm.price}
-          onChange={(val) => setPlanForm((f) => ({ ...f, price: val }))}
-          placeholder="e.g. 49900 for ₹499.00"
-          title="Price in paise"
-          type="number"
-          required
-        />
         <div className="flex gap-4 items-center">
           <label className="flex items-center gap-2">
             <input

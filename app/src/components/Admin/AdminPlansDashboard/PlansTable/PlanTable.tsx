@@ -3,7 +3,7 @@ import { Modal, Loader, Card, AnimatedButton } from '@/components/ui';
 import Plan from '@/types/Plan/Plan';
 import type PlanTableProps from '@/types/Plan/PlanTableProps';
 import { FaEdit, FaTrash, FaCheckCircle, FaRegCircle } from 'react-icons/fa';
-import { formatCpuMilli, formatMemory, formatStorage, formatPrice } from '@/utils/resources';
+import { formatCpuMilli, formatMemory, formatStorage } from '@/utils/resources';
 
 const PlanTable: React.FC<PlanTableProps> = ({
   plans,
@@ -74,7 +74,6 @@ const PlanTable: React.FC<PlanTableProps> = ({
                 <th className="p-2">Name</th>
                 <th className="p-2">Description</th>
                 <th className="p-2">Resources</th>
-                <th className="p-2">Price</th>
                 <th className="p-2">Default</th>
                 <th className="p-2">Active</th>
                 <th className="p-2">Actions</th>
@@ -105,7 +104,6 @@ const PlanTable: React.FC<PlanTableProps> = ({
                       '-'
                     )}
                   </td>
-                  <td className="p-2 font-mono text-green-400">{formatPrice(plan.price)}</td>
                   <td className="p-2 text-center align-middle">
                     <div className="flex items-center justify-center h-full min-h-[28px]">
                       {plan.isDefault ? (

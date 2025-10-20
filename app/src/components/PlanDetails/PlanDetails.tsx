@@ -84,11 +84,6 @@ const PlanDetails: React.FC<PlanDetailsProps> = ({ planId, planObj }) => {
           <FaCrown className="text-yellow-300 text-xl" />
         </span>
         <span className="text-xl font-semibold text-white">{plan.name}</span>
-        {plan.price !== undefined && (
-          <span className="text-sm font-medium text-sky-100 bg-sky-800 px-2 py-0.5 rounded-lg border border-sky-700">
-            ₹{(plan.price / 100).toLocaleString('en-IN')}/mo
-          </span>
-        )}
       </div>
 
       {plan.description && <div className="text-zinc-400 italic">{plan.description}</div>}

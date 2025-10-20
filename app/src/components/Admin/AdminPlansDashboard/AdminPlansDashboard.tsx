@@ -24,7 +24,6 @@ export default function AdminPlansDashboard() {
     limitsStorage: string;
     isDefault: boolean;
     isActive: boolean;
-    price: string;
   }>({
     name: '',
     description: '',
@@ -36,7 +35,6 @@ export default function AdminPlansDashboard() {
     limitsStorage: '',
     isDefault: false,
     isActive: true,
-    price: '',
   });
   const [planFormLoading, setPlanFormLoading] = useState(false);
   const [planFormError, setPlanFormError] = useState('');
@@ -77,7 +75,6 @@ export default function AdminPlansDashboard() {
           plan.resources?.limits?.storage != null ? String(plan.resources.limits.storage) : '',
         isDefault: !!plan.isDefault,
         isActive: plan.isActive !== false,
-        price: plan.price != null ? String(plan.price) : '',
       });
     } else {
       setEditingPlan(null);
@@ -92,7 +89,6 @@ export default function AdminPlansDashboard() {
         limitsStorage: '',
         isDefault: false,
         isActive: true,
-        price: '',
       });
     }
     setShowPlanForm(true);
@@ -120,7 +116,6 @@ export default function AdminPlansDashboard() {
       },
       isDefault: planForm.isDefault,
       isActive: planForm.isActive,
-      price: planForm.price ? Number(planForm.price) : undefined,
     };
     try {
       if (editingPlan) {
