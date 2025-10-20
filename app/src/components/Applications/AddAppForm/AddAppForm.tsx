@@ -10,7 +10,6 @@ import type RegistryCredential from '@/types/Registry/RegistryCredential/Registr
 import { FaPlus, FaCheck, FaSpinner, FaSearch } from 'react-icons/fa';
 import GithubRepos from '../../Github/GithubRepos/GithubRepos';
 
-
 export default function AddAppForm() {
   const [form, setForm] = useState({
     name: '',

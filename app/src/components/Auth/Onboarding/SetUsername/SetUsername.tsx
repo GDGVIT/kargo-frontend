@@ -5,7 +5,13 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '../../AuthProvider/AuthProvider';
 import { motion } from 'framer-motion';
 import { baseURL } from '@/utils/api';
-import { Card, Input, AnimatedButton, useNotification, NotificationProvider } from '@/components/ui';
+import {
+  Card,
+  Input,
+  AnimatedButton,
+  useNotification,
+  NotificationProvider,
+} from '@/components/ui';
 
 const SetUsername: React.FC = () => {
   const [username, setUsername] = useState('');

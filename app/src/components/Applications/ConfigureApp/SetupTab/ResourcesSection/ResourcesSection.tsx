@@ -1,5 +1,5 @@
 import React from 'react';
-import {Input} from '@/components/ui';
+import { Input } from '@/components/ui';
 import { formatCpuMilli, formatMemory, formatStorage } from '@/utils/resources';
 import type Resource from '@/types/Application/Resource/Resource';
 

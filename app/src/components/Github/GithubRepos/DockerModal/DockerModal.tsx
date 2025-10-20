@@ -3,7 +3,7 @@ import { FaCopy, FaDocker } from 'react-icons/fa';
 import DockerModalProps from '@/types/DockerModalProps/DockerModalProps';
 import { DockerfileParser } from 'dockerfile-ast';
 import yaml from 'js-yaml';
-import {Modal, AnimatedButton} from '@/components/ui';
+import { Modal, AnimatedButton } from '@/components/ui';
 
 const DockerModal: React.FC<DockerModalProps> = ({
   open,

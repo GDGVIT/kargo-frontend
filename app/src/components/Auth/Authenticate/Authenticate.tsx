@@ -6,7 +6,7 @@ import AuthForm from './AuthForm/AuthForm';
 import OAuthButtons from './OAuthButtons/OAuthButtons';
 import { useState, useEffect } from 'react';
 import { useAuth } from '../AuthProvider/AuthProvider';
-import {useNotification} from '@/components/ui';
+import { useNotification } from '@/components/ui';
 import { baseURL } from '@/utils/api';
 import { useRouter } from 'next/navigation';
 

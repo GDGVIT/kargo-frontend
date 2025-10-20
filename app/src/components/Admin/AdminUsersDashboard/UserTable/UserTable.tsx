@@ -129,8 +129,8 @@ const UserTable: React.FC<UserTableProps> = ({
                   <div>
                     <div className="text-xs mb-1">
                       <div>
-                        <b>Requests:</b> CPU: {formatCpuMilli(user.extraResources?.requests?.cpu)}, Mem:{' '}
-                        {formatMemory(user.extraResources?.requests?.memory)}, Storage:{' '}
+                        <b>Requests:</b> CPU: {formatCpuMilli(user.extraResources?.requests?.cpu)},
+                        Mem: {formatMemory(user.extraResources?.requests?.memory)}, Storage:{' '}
                         {formatStorage(user.extraResources?.requests?.storage)}
                       </div>
                       <div>

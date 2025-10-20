@@ -64,7 +64,8 @@ export default function AdminPlansDashboard() {
         name: plan.name,
         description: plan.description || '',
         // Backend/base units are already: cpu in m, memory in MB, storage in GB
-        requestsCpu: plan.resources?.requests?.cpu != null ? String(plan.resources.requests.cpu) : '',
+        requestsCpu:
+          plan.resources?.requests?.cpu != null ? String(plan.resources.requests.cpu) : '',
         requestsMemory:
           plan.resources?.requests?.memory != null ? String(plan.resources.requests.memory) : '',
         requestsStorage:

@@ -1,4 +1,3 @@
-
 // Buttons
 export { default as AnimatedButton } from './AnimatedButton/AnimatedButton';
 
@@ -55,4 +54,3 @@ export type { TextareaProps } from './Textarea/Textarea';
 // User Input
 export { default as UserInput } from './UserInput/UserInput';
 export type { UserInputProps } from './UserInput/UserInput';
-

@@ -6,7 +6,15 @@ import Card from '../ui/Card/Card';
 import Input from '../ui/Input/Input';
 import Select from '../ui/Select/Select';
 import Textarea from '../ui/Textarea/Textarea';
-import { FaSave, FaTrash, FaCheck, FaExclamationTriangle, FaCode, FaMicrochip, FaMemory } from 'react-icons/fa';
+import {
+  FaSave,
+  FaTrash,
+  FaCheck,
+  FaExclamationTriangle,
+  FaCode,
+  FaMicrochip,
+  FaMemory,
+} from 'react-icons/fa';
 import { FaFloppyDisk } from 'react-icons/fa6';
 import useNotification from '../ui/Notification/Notification';
 import Loader from '../ui/Loader/Loader';
