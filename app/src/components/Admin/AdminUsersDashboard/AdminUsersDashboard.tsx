@@ -104,6 +104,14 @@ export default function AdminUsersDashboard() {
     setExtraResourcesSaving(userId);
     const data = extraResourcesEdit[userId];
     try {
+      // NOTE on units and schema:
+      // The backend schema now uses base-unit field names: cpu, memory, storage.
+      // Expected base units are:
+      // - cpu in millicores (m)
+      // - memory in megabytes (MB)
+      // - storage in gigabytes (GB)
+      // (Previously these were cpuMilli/memoryMB/storageGB.)
+      // See utils/resources.ts header comments for details.
       await api.put(`/api/users/${userId}/extra-resources`, {
         extraResources: {
           requests: {
@@ -125,6 +133,8 @@ export default function AdminUsersDashboard() {
               ? {
                   ...u,
                   extraResources: {
+                    // Local state mirrors backend base units:
+                    // cpu (millicores), memory (MB), storage (GB)
                     requests: {
                       cpu: data.requestsCpu ? Number(data.requestsCpu) : undefined,
                       memory: data.requestsMemory ? Number(data.requestsMemory) : undefined,
