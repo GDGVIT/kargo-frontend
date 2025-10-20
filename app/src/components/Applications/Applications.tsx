@@ -2,12 +2,10 @@
 
 import { useEffect, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import api from '../../utils/api';
-import useNotification from '../ui/Notification/Notification';
-import Modal from '../ui/Modal/Modal';
+import api from '@/utils/api';
+import { useNotification, Modal, Loader } from '@/components/ui';
 import AnimatedButton from '../ui/AnimatedButton/AnimatedButton';
 import { FaPlus, FaTrash, FaCircle } from 'react-icons/fa';
-import Loader from '../ui/Loader/Loader';
 
 export default function Applications() {
   const [apps, setApps] = useState([]);

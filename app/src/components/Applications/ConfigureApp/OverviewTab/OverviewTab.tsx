@@ -1,8 +1,8 @@
 import React from 'react';
 import ApplicationDetails from './ApplicationDetails/ApplicationDetails';
 import ApplicationUsage from './ApplicationUsage/ApplicationUsage';
-import type Application from '../../../../types/Application/Application';
-import type Resources from '../../../../types/Application/Resources/Resources';
+import type Application from '@/types/Application/Application';
+import type Resources from '@/types/Application/Resources/Resources';
 
 const OverviewTab: React.FC<{
   appId: string;

@@ -1,12 +1,12 @@
 'use client';
 
 import React, { useEffect, useState, useRef } from 'react';
-import type User from '../../../types/User/User';
-import api, { baseURL } from '../../../utils/api';
+import type User from '@/types/User/User';
+import api, { baseURL } from '@/utils/api';
+import { AnimatedButton } from '@/components/ui';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaGithub, FaExclamationCircle } from 'react-icons/fa';
 import gsap from 'gsap';
-import AnimatedButton from '../../ui/AnimatedButton/AnimatedButton';
 
 interface GithubAuthProps {
   user: User;
@@ -107,14 +107,7 @@ const GithubAuth: React.FC<GithubAuthProps> = ({ user }) => {
             <p className="text-zinc-300 mb-5 text-center">
               GitHub connected with{' '}
               <span className="font-bold text-sky-400">{installationIds.length}</span> installation
-              {installationIds.length > 1 ? 's' : ''}.
-              {user.username ? (
-                <>
-                  {' '}
-                  Connected as <span className="font-semibold">{user.username}</span>.
-                </>
-              ) : null}
-              <br />
+              {installationIds.length > 1 ? 's' : ''}
             </p>
             <div className="flex justify-center">
               <ReinstallButton />

@@ -5,7 +5,7 @@ export const metadata = {
   description: title,
 };
 
-import PageHeading from '../../components/ui/PageHeading/PageHeading';
+import { PageHeading } from '@/components/ui';
 
 export default function TermsOfServicePage() {
   return (

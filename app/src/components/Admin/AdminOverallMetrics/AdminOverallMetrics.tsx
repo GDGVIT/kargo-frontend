@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import api from '../../../utils/api';
-import Card from '../../ui/Card/Card';
+import api from '@/utils/api';
+import { Card } from '@/components/ui';
 import {
   LineChart,
   Line,
@@ -12,7 +12,7 @@ import {
   ResponsiveContainer,
   CartesianGrid,
 } from 'recharts';
-import { formatCpu, formatMemoryBytes, formatStorage } from '../../../utils/resources';
+import { formatCpu, formatMemoryBytes, formatStorage } from '@/utils/resources';
 
 const COLORS = {
   axis: '#64748b',

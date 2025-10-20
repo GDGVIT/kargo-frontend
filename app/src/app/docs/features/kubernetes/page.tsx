@@ -16,7 +16,7 @@ import {
   FaCheck,
 } from 'react-icons/fa';
 import { SiKubernetes } from 'react-icons/si';
-import AnimatedButton from '../../../../components/ui/AnimatedButton/AnimatedButton';
+import { AnimatedButton } from '@/components/ui';
 
 export default function KubernetesPage() {
   return (

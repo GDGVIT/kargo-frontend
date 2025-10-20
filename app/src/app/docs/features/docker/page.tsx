@@ -21,7 +21,7 @@ import {
   FaBug,
 } from 'react-icons/fa';
 import { HiSparkles, HiCloud } from 'react-icons/hi';
-import AnimatedButton from '../../../../components/ui/AnimatedButton/AnimatedButton';
+import { AnimatedButton } from '@/components/ui';
 
 export default function DockerPage() {
   return (
@@ -258,7 +258,7 @@ registry:
   url: "docker.io"
   username: "your-username"
   # Password/token stored securely
-  
+
 image:
   repository: "your-org/app-name"
   tag: "v1.0.0"
@@ -489,7 +489,7 @@ services:
       - /app/node_modules
     depends_on:
       - database
-      
+
   database:
     image: postgres:14
     environment:
@@ -498,7 +498,7 @@ services:
       POSTGRES_PASSWORD: dev
     volumes:
       - db_data:/var/lib/postgresql/data
-      
+
 volumes:
   db_data:`}
                 </code>

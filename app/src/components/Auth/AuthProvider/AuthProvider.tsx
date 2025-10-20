@@ -1,10 +1,10 @@
 'use client';
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { baseURL } from '../../../utils/api';
-import Loader from '../../ui/Loader/Loader';
-import type User from '../../../types/User/User';
-import type AuthContextType from '../../../types/Auth/AuthContextType/AuthContextType';
+import { baseURL } from '@/utils/api';
+import Loader from '@/components/ui/Loader/Loader';
+import type User from '@/types/User/User';
+import type AuthContextType from '@/types/Auth/AuthContextType/AuthContextType';
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 

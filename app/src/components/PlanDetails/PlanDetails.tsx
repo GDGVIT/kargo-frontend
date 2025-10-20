@@ -1,31 +1,32 @@
+'use client';
+
 import React, { useEffect, useState } from 'react';
-import api from '../../utils/api';
+import api from '@/utils/api';
 import { FaCrown, FaMicrochip, FaMemory } from 'react-icons/fa';
 import { FaFloppyDisk } from 'react-icons/fa6';
-import type Plan from '../../types/Plan/Plan';
-import type PlanDetailsProps from '../../types/Plan/PlanDetailsProps';
-import Loader from '../ui/Loader/Loader';
-import useNotification from '../ui/Notification/Notification';
-import { formatCpu, formatMemory, formatStorage } from '../../utils/resources';
+import type Plan from '@/types/Plan/Plan';
+import type PlanDetailsProps from '@/types/Plan/PlanDetailsProps';
+import { useNotification, Loader } from '@/components/ui';
+import { formatCpuMilli, formatMemory, formatStorage } from '@/utils/resources';
 
 const ResourceItem = ({
   icon,
   label,
-  value,
   usage,
+  max,
   color = 'text-white',
 }: {
   icon: React.ReactNode;
   label: string;
-  value: string;
   usage?: string;
+  max: string;
   color?: string;
 }) => (
   <div className="flex items-center gap-2 min-w-0 text-sm text-zinc-200">
     <div className="text-base">{icon}</div>
     <span className="text-zinc-400">{label}:</span>
     <span className={`font-mono ${color} truncate`}>
-      {usage} / {value}
+      {usage} / {max}
     </span>
   </div>
 );
@@ -83,11 +84,6 @@ const PlanDetails: React.FC<PlanDetailsProps> = ({ planId, planObj }) => {
           <FaCrown className="text-yellow-300 text-xl" />
         </span>
         <span className="text-xl font-semibold text-white">{plan.name}</span>
-        {plan.price !== undefined && (
-          <span className="text-sm font-medium text-sky-100 bg-sky-800 px-2 py-0.5 rounded-lg border border-sky-700">
-            ₹{(plan.price / 100).toLocaleString('en-IN')}/mo
-          </span>
-        )}
       </div>
 
       {plan.description && <div className="text-zinc-400 italic">{plan.description}</div>}
@@ -105,22 +101,22 @@ const PlanDetails: React.FC<PlanDetailsProps> = ({ planId, planObj }) => {
                 <ResourceItem
                   icon={<FaMicrochip className="text-sky-300" />}
                   label="CPU"
-                  value={formatCpu(plan.resources.requests.cpu)}
-                  usage={usage ? formatCpu(usage.requests?.cpu) : undefined}
+                  usage={usage ? formatCpuMilli(usage.requests?.cpu) : undefined}
+                  max={formatCpuMilli(plan.resources.requests.cpu)}
                   color="text-sky-200"
                 />
                 <ResourceItem
                   icon={<FaMemory className="text-emerald-300" />}
                   label="Memory"
-                  value={formatMemory(plan.resources.requests.memory)}
                   usage={usage ? formatMemory(usage.requests?.memory) : undefined}
+                  max={formatMemory(plan.resources.requests.memory)}
                   color="text-emerald-200"
                 />
                 <ResourceItem
                   icon={<FaFloppyDisk className="text-yellow-300" />}
                   label="Storage"
-                  value={formatStorage(plan.resources.requests.storage)}
                   usage={usage ? formatStorage(usage.requests?.storage) : undefined}
+                  max={formatStorage(plan.resources.requests.storage)}
                   color="text-yellow-200"
                 />
               </div>
@@ -138,21 +134,21 @@ const PlanDetails: React.FC<PlanDetailsProps> = ({ planId, planObj }) => {
                 <ResourceItem
                   icon={<FaMicrochip className="text-sky-300" />}
                   label="CPU"
-                  value={formatCpu(plan.resources.limits.cpu)}
-                  usage={usage ? formatCpu(usage.limits?.cpu) : undefined}
+                  max={formatCpuMilli(plan.resources.limits.cpu)}
+                  usage={usage ? formatCpuMilli(usage.limits?.cpu) : undefined}
                   color="text-sky-200"
                 />
                 <ResourceItem
                   icon={<FaMemory className="text-emerald-300" />}
                   label="Memory"
-                  value={formatMemory(plan.resources.limits.memory)}
+                  max={formatMemory(plan.resources.limits.memory)}
                   usage={usage ? formatMemory(usage.limits?.memory) : undefined}
                   color="text-emerald-200"
                 />
                 <ResourceItem
                   icon={<FaFloppyDisk className="text-yellow-300" />}
                   label="Storage"
-                  value={formatStorage(plan.resources.limits.storage)}
+                  max={formatStorage(plan.resources.limits.storage)}
                   usage={usage ? formatStorage(usage.limits?.storage) : undefined}
                   color="text-yellow-200"
                 />
@@ -166,3 +162,4 @@ const PlanDetails: React.FC<PlanDetailsProps> = ({ planId, planObj }) => {
 };
 
 export default PlanDetails;
+export { ResourceItem };

@@ -1,19 +1,14 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import api from '../../../utils/api';
+import { Modal, Input, Select, Card, useNotification, AnimatedButton } from '@/components/ui';
+import api from '@/utils/api';
 import { useRouter } from 'next/navigation';
-import useNotification from '../../ui/Notification/Notification';
-import useImageTest from '../../../hooks/useImageTest';
+import useImageTest from '@/hooks/useImageTest';
 import ImageTestErrorModal from '../../Docker/ImageTestErrorModal/ImageTestErrorModal';
-import type RegistryCredential from '../../../types/Registry/RegistryCredential/RegistryCredential';
-import AnimatedButton from '../../ui/AnimatedButton/AnimatedButton';
+import type RegistryCredential from '@/types/Registry/RegistryCredential/RegistryCredential';
 import { FaPlus, FaCheck, FaSpinner, FaSearch } from 'react-icons/fa';
-import Input from '../../ui/Input/Input';
-import Select from '../../ui/Select/Select';
-import Modal from '../../ui/Modal/Modal';
 import GithubRepos from '../../Github/GithubRepos/GithubRepos';
-import Card from '../../ui/Card/Card';
 
 export default function AddAppForm() {
   const [form, setForm] = useState({

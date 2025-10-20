@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import AnimatedButton from '../../components/ui/AnimatedButton/AnimatedButton';
+import { AnimatedButton } from '@/components/ui';
 
 export default function DocsNotFound() {
   return (

@@ -1,6 +1,6 @@
 import React from 'react';
-import Input from '../../../ui/Input/Input';
-import RepoSearchInputProps from '../../../../types/Repo/RepoSearchInputProps';
+import { Input } from '@/components/ui';
+import RepoSearchInputProps from '@/types/Repo/RepoSearchInputProps';
 
 const RepoSearchInput: React.FC<RepoSearchInputProps> = ({ value, onChange }) => (
   <Input

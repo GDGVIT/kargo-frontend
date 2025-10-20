@@ -1,5 +1,4 @@
-import PageHeading from '../../components/ui/PageHeading/PageHeading';
-import Card from '../../components/ui/Card/Card';
+import { PageHeading, Card } from '@/components/ui';
 
 const title = 'Offline Mode';
 const description = 'You are currently offline. Please check your network connection.';

@@ -1,4 +1,4 @@
-import Loader from '../components/ui/Loader/Loader';
+import { Loader } from '@/components/ui';
 
 export default function Loading() {
   return <Loader />;

@@ -1,5 +1,5 @@
-import Settings from '../../components/Settings/Settings';
-import PageHeading from '../../components/ui/PageHeading/PageHeading';
+import { PageHeading } from '@/components/ui';
+import Settings from '@/components/Settings/Settings';
 
 const title = 'Settings';
 const description = 'Manage your profile and plans';

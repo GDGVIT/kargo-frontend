@@ -1,6 +1,5 @@
 // Utility helpers for subdomain handling and validation
 export function buildSubdomainRegex(username: string, ingressBaseDomain: string): RegExp {
-  // Escape special regex characters in the ingress base domain
   const safeDomain = ingressBaseDomain.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   return new RegExp(`^([^.]+)\\.${username}\\.${safeDomain}$`);
 }

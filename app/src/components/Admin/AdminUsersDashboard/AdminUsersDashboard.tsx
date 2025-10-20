@@ -1,14 +1,12 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import api from '../../../utils/api';
+import { useNotification, Loader } from '@/components/ui';
+import api from '@/utils/api';
 import UserManagement from './UserManagement/UserManagement';
-import Loader from '../../ui/Loader/Loader';
-import type Plan from '../../../types/Plan/Plan';
-import type User from '../../../types/User/User';
-import type Resource from '../../../types/Application/Resource/Resource';
-import useNotification from '../../ui/Notification/Notification';
-import { formatPrice } from '../../../utils/resources';
+import type Plan from '@/types/Plan/Plan';
+import type User from '@/types/User/User';
+import type Resource from '@/types/Application/Resource/Resource';
 
 export default function AdminUsersDashboard() {
   const [users, setUsers] = useState<User[]>([]);
@@ -106,17 +104,25 @@ export default function AdminUsersDashboard() {
     setExtraResourcesSaving(userId);
     const data = extraResourcesEdit[userId];
     try {
+      // NOTE on units and schema:
+      // The backend schema now uses base-unit field names: cpu, memory, storage.
+      // Expected base units are:
+      // - cpu in millicores (m)
+      // - memory in megabytes (MB)
+      // - storage in gigabytes (GB)
+      // (Previously these were cpuMilli/memoryMB/storageGB.)
+      // See utils/resources.ts header comments for details.
       await api.put(`/api/users/${userId}/extra-resources`, {
         extraResources: {
           requests: {
-            cpuMilli: data.requestsCpu,
-            memoryMB: data.requestsMemory,
-            storageGB: data.requestsStorage,
+            cpu: data.requestsCpu ? Number(data.requestsCpu) : undefined,
+            memory: data.requestsMemory ? Number(data.requestsMemory) : undefined,
+            storage: data.requestsStorage ? Number(data.requestsStorage) : undefined,
           },
           limits: {
-            cpuMilli: data.limitsCpu,
-            memoryMB: data.limitsMemory,
-            storageGB: data.limitsStorage,
+            cpu: data.limitsCpu ? Number(data.limitsCpu) : undefined,
+            memory: data.limitsMemory ? Number(data.limitsMemory) : undefined,
+            storage: data.limitsStorage ? Number(data.limitsStorage) : undefined,
           },
         },
       });
@@ -127,15 +133,17 @@ export default function AdminUsersDashboard() {
               ? {
                   ...u,
                   extraResources: {
+                    // Local state mirrors backend base units:
+                    // cpu (millicores), memory (MB), storage (GB)
                     requests: {
-                      cpuMilli: data.requestsCpu,
-                      memoryMB: data.requestsMemory,
-                      storageGB: data.requestsStorage,
+                      cpu: data.requestsCpu ? Number(data.requestsCpu) : undefined,
+                      memory: data.requestsMemory ? Number(data.requestsMemory) : undefined,
+                      storage: data.requestsStorage ? Number(data.requestsStorage) : undefined,
                     },
                     limits: {
-                      cpuMilli: data.limitsCpu,
-                      memoryMB: data.limitsMemory,
-                      storageGB: data.limitsStorage,
+                      cpu: data.limitsCpu ? Number(data.limitsCpu) : undefined,
+                      memory: data.limitsMemory ? Number(data.limitsMemory) : undefined,
+                      storage: data.limitsStorage ? Number(data.limitsStorage) : undefined,
                     },
                   },
                 }
@@ -224,8 +232,6 @@ export default function AdminUsersDashboard() {
         memory: planResources.limits?.memory,
         storage: planResources.limits?.storage,
       },
-      price: planObj.price,
-      formattedPrice: formatPrice(planObj.price),
     } as {
       requests: Resource;
       limits: Resource;

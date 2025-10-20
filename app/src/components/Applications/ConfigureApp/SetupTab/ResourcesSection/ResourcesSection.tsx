@@ -1,7 +1,7 @@
 import React from 'react';
-import Input from '../../../../ui/Input/Input';
-import { formatCpu, formatMemory, formatStorage } from '../../../../../utils/resources';
-import type Resource from '../../../../../types/Application/Resource/Resource';
+import { Input } from '@/components/ui';
+import { formatCpuMilli, formatMemory, formatStorage } from '@/utils/resources';
+import type Resource from '@/types/Application/Resource/Resource';
 
 export interface ResourceLimits {
   allowed: {
@@ -52,12 +52,12 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
               <div className="font-medium text-gray-600 dark:text-gray-400 mb-2">Requests</div>
               <div className="space-y-1 text-gray-500 dark:text-gray-500">
                 <div>
-                  Allowed: {formatCpu(resourceLimits.allowed.requests.cpu)},{' '}
+                  Allowed: {formatCpuMilli(resourceLimits.allowed.requests.cpu)},{' '}
                   {formatMemory(resourceLimits.allowed.requests.memory)},{' '}
                   {formatStorage(resourceLimits.allowed.requests.storage)}
                 </div>
                 <div>
-                  Used: {formatCpu(resourceLimits.usage.requests.cpu)},{' '}
+                  Used: {formatCpuMilli(resourceLimits.usage.requests.cpu)},{' '}
                   {formatMemory(resourceLimits.usage.requests.memory)},{' '}
                   {formatStorage(resourceLimits.usage.requests.storage)}
                 </div>
@@ -67,12 +67,12 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
               <div className="font-medium text-gray-600 dark:text-gray-400 mb-2">Limits</div>
               <div className="space-y-1 text-gray-500 dark:text-gray-500">
                 <div>
-                  Allowed: {formatCpu(resourceLimits.allowed.limits.cpu)},{' '}
+                  Allowed: {formatCpuMilli(resourceLimits.allowed.limits.cpu)},{' '}
                   {formatMemory(resourceLimits.allowed.limits.memory)},{' '}
                   {formatStorage(resourceLimits.allowed.limits.storage)}
                 </div>
                 <div>
-                  Used: {formatCpu(resourceLimits.usage.limits.cpu)},{' '}
+                  Used: {formatCpuMilli(resourceLimits.usage.limits.cpu)},{' '}
                   {formatMemory(resourceLimits.usage.limits.memory)},{' '}
                   {formatStorage(resourceLimits.usage.limits.storage)}
                 </div>

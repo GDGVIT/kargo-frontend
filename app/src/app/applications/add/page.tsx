@@ -1,5 +1,5 @@
-import AddAppForm from '../../../components/Applications/AddAppForm/AddAppForm';
-import PageHeading from '../../../components/ui/PageHeading/PageHeading';
+import AddAppForm from '@/components/Applications/AddAppForm/AddAppForm';
+import { PageHeading } from '@/components/ui';
 
 const title = 'Add Application';
 const description = 'Fill in the details to add a new application.';

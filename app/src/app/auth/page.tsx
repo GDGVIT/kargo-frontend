@@ -1,5 +1,5 @@
-import Authenticate from '../../components/Auth/Authenticate/Authenticate';
-import { generatePageMetadata } from '../../lib/metadata';
+import Authenticate from '@/components/Auth/Authenticate/Authenticate';
+import { generatePageMetadata } from '@/lib/metadata';
 
 const title = 'Authentication';
 const description = 'Log in to your account to continue.';

@@ -1,9 +1,7 @@
 import { useState } from 'react';
-import type RegistryType from '../../../types/Registry/RegistryType/RegistryType';
-import type RegistryCredential from '../../../types/Registry/RegistryCredential/RegistryCredential';
-import Input from '../../ui/Input/Input';
-import Select from '../../ui/Select/Select';
-import AnimatedButton from '../../ui/AnimatedButton/AnimatedButton';
+import { Input, Select, AnimatedButton } from '@/components/ui';
+import type RegistryType from '@/types/Registry/RegistryType/RegistryType';
+import type RegistryCredential from '@/types/Registry/RegistryCredential/RegistryCredential';
 import { RiAddLargeFill } from 'react-icons/ri';
 import { SiDocker, SiGithub, SiGitlab } from 'react-icons/si';
 import { FiBox } from 'react-icons/fi';

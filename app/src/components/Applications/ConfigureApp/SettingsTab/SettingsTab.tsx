@@ -1,7 +1,7 @@
 import React from 'react';
 import ImageFields from './ImageFields/ImageFields';
-import type RegistryCredential from '../../../../types/Registry/RegistryCredential/RegistryCredential';
-import Card from '../../../ui/Card/Card';
+import type RegistryCredential from '@/types/Registry/RegistryCredential/RegistryCredential';
+import { Card } from '@/components/ui';
 
 interface SettingsTabProps {
   imageUrl: string;

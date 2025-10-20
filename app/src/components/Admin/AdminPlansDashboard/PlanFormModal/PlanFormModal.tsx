@@ -1,10 +1,7 @@
 import React from 'react';
-import Modal from '../../../ui/Modal/Modal';
-import Input from '../../../ui/Input/Input';
-import Textarea from '../../../ui/Textarea/Textarea';
-import AnimatedButton from '../../../ui/AnimatedButton/AnimatedButton';
+import { Modal, Input, Textarea, AnimatedButton } from '@/components/ui';
 import { FaMicrochip, FaMemory } from 'react-icons/fa6';
-import type PlanFormModalProps from '../../../../types/Plan/PlanFormModalProps';
+import type PlanFormModalProps from '@/types/Plan/PlanFormModalProps';
 
 const PlanFormModal: React.FC<PlanFormModalProps> = ({
   show,
@@ -103,15 +100,6 @@ const PlanFormModal: React.FC<PlanFormModalProps> = ({
             displayHelperText
           />
         </div>
-        <Input
-          label="Price (in paise)"
-          value={planForm.price}
-          onChange={(val) => setPlanForm((f) => ({ ...f, price: val }))}
-          placeholder="e.g. 49900 for ₹499.00"
-          title="Price in paise"
-          type="number"
-          required
-        />
         <div className="flex gap-4 items-center">
           <label className="flex items-center gap-2">
             <input

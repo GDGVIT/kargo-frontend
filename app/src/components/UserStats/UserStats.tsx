@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import Card from '../ui/Card/Card';
-import Loader from '../ui/Loader/Loader';
-import axios from '../../utils/api';
+import { Loader, Card } from '@/components/ui';
+import axios from '@/utils/api';
 import { FaServer, FaNetworkWired, FaKey, FaLock } from 'react-icons/fa';
-import type User from '../../types/User/User';
+import type User from '@/types/User/User';
 
 interface UserStatsData {
   servers: number;

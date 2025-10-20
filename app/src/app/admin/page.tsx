@@ -1,5 +1,5 @@
-import AdminDashboard from '../../components/Admin/AdminDashboard';
-import PageHeading from '../../components/ui/PageHeading/PageHeading';
+import AdminDashboard from '@/components/Admin/AdminDashboard';
+import { PageHeading } from '@/components/ui';
 
 const title = 'Admin Dashboard';
 const description = 'Manage your application settings.';

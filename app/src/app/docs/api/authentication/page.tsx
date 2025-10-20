@@ -1,4 +1,4 @@
-import { generatePageMetadata } from '../../../../lib/metadata';
+import { generatePageMetadata } from '@/lib/metadata';
 
 const title = 'API Authentication';
 const description = 'Learn how to authenticate with the Kargo API using tokens and OAuth.';

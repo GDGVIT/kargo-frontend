@@ -1,8 +1,7 @@
 import React from 'react';
 import { FaPlus, FaEye, FaEyeSlash } from 'react-icons/fa';
-import type EnvVarsSectionProps from '../../../../../types/Application/EnvVarsSectionProps/EnvVarsSectionProps';
-import AnimatedButton from '../../../../ui/AnimatedButton/AnimatedButton';
-import Input from '../../../../ui/Input/Input';
+import type EnvVarsSectionProps from '@/types/Application/EnvVarsSectionProps/EnvVarsSectionProps';
+import { Input, AnimatedButton } from '@/components/ui';
 
 const EnvVarsSection: React.FC<EnvVarsSectionProps> = ({
   envList,

@@ -9,6 +9,4 @@ export default interface PlanForm {
   limitsStorage: string;
   isDefault: boolean;
   isActive: boolean;
-  /** Price in paise (integer) */
-  price: string;
 }
