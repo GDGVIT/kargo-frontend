@@ -43,7 +43,17 @@ self.addEventListener('install', (event) => {
   event.waitUntil(
     caches
       .open(PRECACHE)
-      .then((cache) => Promise.allSettled(CORE_ASSETS.map((asset) => cache.add(asset))))
+      .then((cache) => {
+        // Map assets to their cache.add promises
+        const assetPromises = CORE_ASSETS.map((asset) => cache.add(asset));
+        return Promise.allSettled(assetPromises).then((results) => {
+          results.forEach((result, i) => {
+            if (result.status === 'rejected') {
+              console.error(`Failed to cache asset: ${CORE_ASSETS[i]}`, result.reason);
+            }
+          });
+        });
+      })
       .then(() => self.skipWaiting())
   );
 });
