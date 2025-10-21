@@ -96,7 +96,7 @@ export default function manifest(): MetadataRoute.Manifest {
         src: '/icons/icon-192x192.webp',
         sizes: '192x192',
         type: 'image/webp',
-        purpose: 'maskable',
+        purpose: 'any',
       },
       {
         src: '/icons/icon-196x196.webp',
@@ -133,6 +133,24 @@ export default function manifest(): MetadataRoute.Manifest {
         sizes: 'any',
         type: 'image/svg+xml',
       },
+      {
+        src: '/apple-touch-icon.webp',
+        sizes: '180x180',
+        type: 'image/webp',
+        purpose: 'any',
+      },
+      {
+        src: '/maskable-icon.webp',
+        sizes: '512x512',
+        type: 'image/webp',
+        purpose: 'maskable',
+      },
+      {
+        src: '/maskable-icon.png',
+        sizes: '512x512',
+        type: 'image/png',
+        purpose: 'maskable',
+      }
     ],
     lang: 'en-US',
     dir: 'ltr',
