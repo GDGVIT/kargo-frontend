@@ -9,5 +9,5 @@
     "moduleResolution": "bundler",
     "jsx": "preserve"
   },
-  "include": ["app/**/*.ts", "app/**/*.tsx"],
+  "include": ["app/**/*.ts", "app/**/*.tsx"]
 }

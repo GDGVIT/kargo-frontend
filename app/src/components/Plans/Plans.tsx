@@ -67,10 +67,7 @@ const Plans = () => {
                 </>
               )}
             </div>
-            <AnimatedButton
-              className="mt-2 !bg-sky-600 hover:!bg-sky-700"
-              onClick={handleBuy}
-            >
+            <AnimatedButton className="mt-2 !bg-sky-600 hover:!bg-sky-700" onClick={handleBuy}>
               Select Plan
             </AnimatedButton>
           </Card>
