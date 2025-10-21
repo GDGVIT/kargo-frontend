@@ -1,6 +1,9 @@
-/// <reference lib="webworker" />
+const VERSION = 'v1.1.1';
+const PRECACHE = `precache-${VERSION}`;
+const RUNTIME = `runtime-${VERSION}`;
+const RUNTIME_MAX_ENTRIES = 100;
+const RUNTIME_MAX_AGE = 7 * 24 * 60 * 60 * 1000; // 7 days in ms
 
-const CACHE_NAME = 'v1.1.1';
 const CORE_ASSETS = [
   '/',
   '/offline',
@@ -35,30 +38,103 @@ const CORE_ASSETS = [
   '/favicon.ico',
 ];
 
+// Install
 self.addEventListener('install', (event) => {
-  console.log('[SW] Installing and caching core assets...');
-  event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(CORE_ASSETS)));
-  self.skipWaiting();
+  event.waitUntil(
+    caches
+      .open(PRECACHE)
+      .then((cache) => cache.addAll(CORE_ASSETS))
+      .then(() => self.skipWaiting())
+  );
 });
 
+// Activate
 self.addEventListener('activate', (event) => {
-  console.log('[SW] Activating and cleaning old caches...');
   event.waitUntil(
     caches
       .keys()
-      .then((keys) => Promise.all(keys.map((key) => key !== CACHE_NAME && caches.delete(key))))
+      .then((keys) =>
+        Promise.all(
+          keys.filter((key) => key !== PRECACHE && key !== RUNTIME).map((key) => caches.delete(key))
+        )
+      )
+      .then(() => self.clients.claim())
   );
-  self.clients.claim();
 });
 
-self.addEventListener('fetch', (event) => {
-  const url = new URL(event.request.url);
+// Helper: prune runtime cache by age and max entries
+async function pruneRuntimeCache() {
+  const cache = await caches.open(RUNTIME);
+  const requests = await cache.keys();
+  const now = Date.now();
 
-  if (event.request.method !== 'GET' || url.origin !== self.location.origin) return;
+  const entries = [];
+  for (const req of requests) {
+    const res = await cache.match(req);
+    const fetchedTime = res && res.headers.get('SW-Fetched-Time');
+    entries.push({ req, time: fetchedTime ? parseInt(fetchedTime) : 0 });
+  }
+
+  // Remove old entries by age
+  for (const entry of entries) {
+    if (now - entry.time > RUNTIME_MAX_AGE) {
+      await cache.delete(entry.req);
+    }
+  }
+
+  // Remove excess entries beyond max entries
+  entries.sort((a, b) => a.time - b.time);
+  while (entries.length > RUNTIME_MAX_ENTRIES) {
+    const entry = entries.shift();
+    if (entry) await cache.delete(entry.req);
+  }
+}
+
+// Fetch
+self.addEventListener('fetch', (event) => {
+  const request = event.request;
+  const url = new URL(request.url);
+
+  if (request.method !== 'GET' || url.origin !== self.location.origin) return;
 
   if (CORE_ASSETS.includes(url.pathname)) {
-    event.respondWith(caches.match(event.request).then((cached) => cached || fetch(event.request)));
-  } else if (event.request.mode === 'navigate') {
-    event.respondWith(fetch(event.request).catch(() => caches.match('/offline')));
+    event.respondWith(
+      caches.match(request).then((cached) => {
+        const networkFetch = fetch(request)
+          .then((response) => {
+            caches.open(PRECACHE).then((cache) => cache.put(request, response.clone()));
+            return response;
+          })
+          .catch(() => cached);
+
+        return cached || networkFetch;
+      })
+    );
+  } else if (request.mode === 'navigate') {
+    event.respondWith(fetch(request).catch(() => caches.match('/offline')));
+  } else {
+    event.respondWith(
+      caches.match(request).then((cached) => {
+        if (cached) return cached;
+
+        return fetch(request)
+          .then(async (response) => {
+            const cloned = response.clone();
+            const headers = new Headers(cloned.headers);
+            headers.set('SW-Fetched-Time', Date.now().toString());
+            const modifiedResponse = new Response(await cloned.blob(), { headers });
+            const cache = await caches.open(RUNTIME);
+            await cache.put(request, modifiedResponse);
+            await pruneRuntimeCache();
+            return response;
+          })
+          .catch(() => {});
+      })
+    );
   }
+});
+
+// Skip waiting via client message
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'SKIP_WAITING') self.skipWaiting();
 });
