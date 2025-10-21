@@ -43,7 +43,7 @@ self.addEventListener('install', (event) => {
   event.waitUntil(
     caches
       .open(PRECACHE)
-      .then((cache) => cache.addAll(CORE_ASSETS))
+      .then((cache) => Promise.allSettled(CORE_ASSETS.map((asset) => cache.add(asset))))
       .then(() => self.skipWaiting())
   );
 });
@@ -62,25 +62,32 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-// Helper: prune runtime cache by age and max entries
+// Runtime cache pruning
 async function pruneRuntimeCache() {
   const cache = await caches.open(RUNTIME);
   const requests = await cache.keys();
   const now = Date.now();
 
-  const entries = [];
-  for (const req of requests) {
-    const res = await cache.match(req);
-    const fetchedTime = res && res.headers.get('SW-Fetched-Time');
-    entries.push({ req, time: fetchedTime ? parseInt(fetchedTime) : 0 });
-  }
+  let entries = await Promise.all(
+    requests.map(async (req) => {
+      const res = await cache.match(req);
+      const fetchedTime = res?.headers.get('SW-Fetched-Time');
+      return { req, time: fetchedTime ? parseInt(fetchedTime) : 0 };
+    })
+  );
 
   // Remove old entries by age
-  for (const entry of entries) {
-    if (now - entry.time > RUNTIME_MAX_AGE) {
-      await cache.delete(entry.req);
-    }
-  }
+  await Promise.all(
+    entries.map(async (entry) => {
+      if (now - entry.time > RUNTIME_MAX_AGE) {
+        await cache.delete(entry.req);
+        entry.deleted = true;
+      }
+    })
+  );
+
+  // Filter out deleted entries
+  entries = entries.filter((entry) => !entry.deleted);
 
   // Remove excess entries beyond max entries
   entries.sort((a, b) => a.time - b.time);
@@ -90,35 +97,51 @@ async function pruneRuntimeCache() {
   }
 }
 
-// Fetch
+// Fetch handler
 self.addEventListener('fetch', (event) => {
   const request = event.request;
   const url = new URL(request.url);
 
   if (request.method !== 'GET' || url.origin !== self.location.origin) return;
 
+  // Core assets: cache-first
   if (CORE_ASSETS.includes(url.pathname)) {
     event.respondWith(
       caches.match(request).then((cached) => {
         const networkFetch = fetch(request)
           .then((response) => {
-            caches.open(PRECACHE).then((cache) => cache.put(request, response.clone()));
+            if (response && response.status === 200) {
+              caches.open(PRECACHE).then((cache) => cache.put(request, response.clone()));
+            }
             return response;
           })
-          .catch(() => cached);
+          .catch((err) => {
+            console.error('Fetch failed for core asset:', request.url, err);
+            return cached || caches.match('/offline') || new Response('Service unavailable', { status: 503 });
+          });
 
         return cached || networkFetch;
       })
     );
-  } else if (request.mode === 'navigate') {
-    event.respondWith(fetch(request).catch(() => caches.match('/offline')));
-  } else {
+  }
+  // Navigation requests: network-first, fallback offline
+  else if (request.mode === 'navigate') {
     event.respondWith(
-      caches.match(request).then((cached) => {
+      fetch(request).catch((err) => {
+        console.error('Navigation fetch failed:', request.url, err);
+        return caches.match('/offline') || new Response('Offline', { status: 503 });
+      })
+    );
+  }
+  // Other runtime requests: network-first, runtime cache
+  else {
+    event.respondWith(
+      caches.match(request).then(async (cached) => {
         if (cached) return cached;
 
-        return fetch(request)
-          .then(async (response) => {
+        try {
+          const response = await fetch(request);
+          if (response && response.status === 200) {
             const cloned = response.clone();
             const headers = new Headers(cloned.headers);
             headers.set('SW-Fetched-Time', Date.now().toString());
@@ -126,9 +149,12 @@ self.addEventListener('fetch', (event) => {
             const cache = await caches.open(RUNTIME);
             await cache.put(request, modifiedResponse);
             await pruneRuntimeCache();
-            return response;
-          })
-          .catch(() => {});
+          }
+          return response;
+        } catch (err) {
+          console.error('Runtime fetch failed:', request.url, err);
+          return caches.match('/offline') || new Response('Service unavailable', { status: 503 });
+        }
       })
     );
   }
@@ -136,5 +162,5 @@ self.addEventListener('fetch', (event) => {
 
 // Skip waiting via client message
 self.addEventListener('message', (event) => {
-  if (event.data && event.data.type === 'SKIP_WAITING') self.skipWaiting();
+  if (event.data?.type === 'SKIP_WAITING') self.skipWaiting();
 });
