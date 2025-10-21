@@ -31,6 +31,8 @@ const CORE_ASSETS = [
   '/icons/icon-384x384.webp',
   '/icons/icon-512x512.webp',
   '/apple-touch-icon.webp',
+  '/maskable-icon.png',
+  '/maskable-icon.webp',
   '/icon.avif',
   '/icon.png',
   '/icon.svg',
