@@ -2,9 +2,9 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { FaArrowDown, FaSearch } from 'react-icons/fa';
+import { Input, Select, Loader } from '@/components/ui';
 import api from '@/utils/api';
 import type LogsProps from '@/types/Application/LogsProps/LogsProps';
-import { Input, Select, Loader } from '@/components/ui';
 
 function generateProfessionalHSLColor(pod: string): string {
   let hash = 0;

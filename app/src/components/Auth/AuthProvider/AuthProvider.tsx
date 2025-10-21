@@ -1,8 +1,8 @@
 'use client';
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
+import { Loader } from '@/components/ui';
 import { baseURL } from '@/utils/api';
-import Loader from '@/components/ui/Loader/Loader';
 import type User from '@/types/User/User';
 import type AuthContextType from '@/types/Auth/AuthContextType/AuthContextType';
 

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
+import { FaEdit, FaTrash, FaCheckCircle, FaRegCircle } from 'react-icons/fa';
 import { Modal, Loader, Card, AnimatedButton } from '@/components/ui';
+import { formatCpuMilli, formatMemory, formatStorage } from '@/utils/resources';
 import Plan from '@/types/Plan/Plan';
 import type PlanTableProps from '@/types/Plan/PlanTableProps';
-import { FaEdit, FaTrash, FaCheckCircle, FaRegCircle } from 'react-icons/fa';
-import { formatCpuMilli, formatMemory, formatStorage } from '@/utils/resources';
 
 const PlanTable: React.FC<PlanTableProps> = ({
   plans,

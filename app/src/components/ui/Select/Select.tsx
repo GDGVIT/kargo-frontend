@@ -2,9 +2,9 @@
 
 import React from 'react';
 import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headlessui/react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { FiChevronDown, FiCheck } from 'react-icons/fi';
-import UserInput from '../UserInput/UserInput';
+import { motion, AnimatePresence } from 'framer-motion';
+import { UserInput } from '@/components/ui';
 
 export interface SelectOption {
   value: string;

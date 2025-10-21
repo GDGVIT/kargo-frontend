@@ -1,6 +1,6 @@
 import React from 'react';
-import { AnimatedButton } from '@/components/ui';
 import { FaSave, FaTrash, FaBook, FaPowerOff, FaRedo } from 'react-icons/fa';
+import { AnimatedButton } from '@/components/ui';
 import type ActionButtonsProps from '@/types/Application/ActionButtonProps/ActionButtonProps';
 
 const ActionButtons: React.FC<

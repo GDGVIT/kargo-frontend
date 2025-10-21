@@ -1,6 +1,6 @@
-import Applications from '@/components/Applications/Applications';
 import { PageHeading } from '@/components/ui';
 import { generatePageMetadata } from '@/lib/metadata';
+import Applications from '@/components/Applications/Applications';
 
 const title = 'Applications';
 const description = 'Manage your applications and settings.';

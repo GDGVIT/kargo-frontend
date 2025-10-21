@@ -1,5 +1,5 @@
-import { generatePageMetadata } from '@/lib/metadata';
 import { FaCheckCircle, FaClock, FaTimesCircle, FaSync, FaLink } from 'react-icons/fa';
+import { generatePageMetadata } from '@/lib/metadata';
 
 const title = 'GitHub Integration';
 const description =

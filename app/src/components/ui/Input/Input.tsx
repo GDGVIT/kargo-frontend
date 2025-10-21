@@ -2,8 +2,7 @@
 
 import React, { InputHTMLAttributes, forwardRef, useMemo, useState } from 'react';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
-import Select from '../Select/Select';
-import UserInput from '../UserInput/UserInput';
+import { Select, UserInput } from '@/components/ui';
 
 export type UnitType = 'cpu' | 'memory' | 'storage';
 

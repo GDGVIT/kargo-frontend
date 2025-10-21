@@ -1,12 +1,12 @@
 'use client';
 
 import React, { useEffect, useState, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import gsap from 'gsap';
+import { FaGithub, FaExclamationCircle } from 'react-icons/fa';
+import { AnimatedButton } from '@/components/ui';
 import type User from '@/types/User/User';
 import api, { baseURL } from '@/utils/api';
-import { AnimatedButton } from '@/components/ui';
-import { motion, AnimatePresence } from 'framer-motion';
-import { FaGithub, FaExclamationCircle } from 'react-icons/fa';
-import gsap from 'gsap';
 
 interface GithubAuthProps {
   user: User;

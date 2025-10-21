@@ -1,10 +1,10 @@
 import React from 'react';
+import { Card } from '@/components/ui';
+import type Port from '@/types/Application/Port/Port';
+import type Resource from '@/types/Application/Resource/Resource';
 import EnvVarsSection from './EnvVarsSection/EnvVarsSection';
 import PortsSection from './PortsSection/PortsSection';
 import ResourcesSection from './ResourcesSection/ResourcesSection';
-import type Port from '@/types/Application/Port/Port';
-import type Resource from '@/types/Application/Resource/Resource';
-import { Card } from '@/components/ui';
 
 interface SetupTabProps {
   envList: [string, string][];

@@ -1,10 +1,10 @@
 'use client';
 
-import { useAuth } from '../../../Auth/AuthProvider/AuthProvider';
-import Loader from '../../Loader/Loader';
 import React, { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Loader } from '@/components/ui';
+import { useAuth } from '@/components/Auth/AuthProvider/AuthProvider';
 
 export default function Auth() {
   const { user, loading, logout } = useAuth();

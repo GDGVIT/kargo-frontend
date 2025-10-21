@@ -1,5 +1,5 @@
-import Credentials from '@/components/Credentials/Credentials';
 import { PageHeading } from '@/components/ui';
+import Credentials from '@/components/Credentials/Credentials';
 
 const title = 'Manage Your Credentials';
 const description = 'Add, edit, or remove your credentials.';

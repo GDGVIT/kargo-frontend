@@ -1,5 +1,5 @@
-import { generatePageMetadata } from '@/lib/metadata';
 import { FaRobot } from 'react-icons/fa';
+import { generatePageMetadata } from '@/lib/metadata';
 
 const title = 'AI-Powered Setup';
 const description =

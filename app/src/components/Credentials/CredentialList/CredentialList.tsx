@@ -1,8 +1,7 @@
-import { Modal, AnimatedButton, Card } from '@/components/ui';
-import { FaDocker, FaGithub, FaGitlab, FaKey } from 'react-icons/fa';
-import type RegistryCredential from '@/types/Registry/RegistryCredential/RegistryCredential';
 import { useState } from 'react';
-import { FaTrash } from 'react-icons/fa';
+import { FaDocker, FaGithub, FaGitlab, FaKey, FaTrash } from 'react-icons/fa';
+import { Modal, AnimatedButton, Card } from '@/components/ui';
+import type RegistryCredential from '@/types/Registry/RegistryCredential/RegistryCredential';
 
 export default function CredentialList({
   credentials,

@@ -2,8 +2,8 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import api from '@/utils/api';
 import { Select, AnimatedButton } from '@/components/ui';
+import api from '@/utils/api';
 
 interface Application {
   _id: string;

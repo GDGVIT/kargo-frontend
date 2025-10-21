@@ -1,6 +1,6 @@
-import ConfigureApp from '@/components/Applications/ConfigureApp/ConfigureApp';
 import { PageHeading } from '@/components/ui';
 import { generatePageMetadata } from '@/lib/metadata';
+import ConfigureApp from '@/components/Applications/ConfigureApp/ConfigureApp';
 
 const title = 'Application Configuration';
 const description = 'Configure your application configuration.';

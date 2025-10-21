@@ -1,5 +1,5 @@
 import React, { TextareaHTMLAttributes, forwardRef } from 'react';
-import UserInput from '../UserInput/UserInput';
+import { UserInput } from '@/components/ui';
 
 export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   label?: string;

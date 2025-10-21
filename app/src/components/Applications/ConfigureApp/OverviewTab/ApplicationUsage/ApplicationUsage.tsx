@@ -1,6 +1,6 @@
 import React from 'react';
-import UsageSection from './UsageSection/UsageSection';
 import type Resources from '@/types/Application/Resources/Resources';
+import UsageSection from './UsageSection/UsageSection';
 
 const ApplicationUsage: React.FC<{
   appId: string;

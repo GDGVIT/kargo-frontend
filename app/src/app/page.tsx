@@ -1,4 +1,6 @@
 import Hero from '@/components/Hero/Hero';
+import FeaturesShowcase from '@/components/FeaturesShowcase/FeaturesShowcase';
+import FAQSection from '@/components/FAQSection/FAQSection';
 import { generatePageMetadata } from '@/lib/metadata';
 
 const title = 'Kargo';
@@ -16,6 +18,8 @@ export default function Home() {
   return (
     <main style={{ justifyContent: 'center' }}>
       <Hero />
+      <FeaturesShowcase />
+      <FAQSection />
     </main>
   );
 }

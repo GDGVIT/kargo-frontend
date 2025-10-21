@@ -1,8 +1,9 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import Link from 'next/link';
+import { motion } from 'framer-motion';
 import Marquee from 'react-fast-marquee';
+import { ChevronDown } from 'lucide-react';
 
 export default function Hero() {
   return (
@@ -10,7 +11,7 @@ export default function Hero() {
       className="relative flex flex-col items-center justify-center w-full text-white"
       style={{
         padding: `var(--padding-large) var(--screen-horizontal-margin)`,
-        minHeight: '70vh',
+        minHeight: '90vh',
       }}
     >
       <div className="max-w-5xl w-full text-center" style={{ gap: 'var(--margin-large)' }}>
@@ -119,6 +120,36 @@ export default function Hero() {
           </Link>
         </motion.div>
       </div>
+
+      <motion.a
+        href="#features"
+        aria-label="Scroll to features"
+        initial={{ opacity: 0, y: 2 }}
+        animate={{ opacity: [0.55, 0.85, 0.55], y: [0, 3, 0] }}
+        transition={{ duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
+        className="absolute left-1/2 -translate-x-1/2"
+        style={{
+          bottom: '1rem',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '6px',
+          color: '#a0aec0',
+          textDecoration: 'none',
+          transition: 'color var(--transition-fast), opacity var(--transition-fast)',
+          opacity: 0.8,
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.color = 'var(--theme-blue)';
+          e.currentTarget.style.opacity = '1';
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.color = '#a0aec0';
+          e.currentTarget.style.opacity = '0.8';
+        }}
+      >
+        <ChevronDown size={18} />
+      </motion.a>
     </section>
   );
 }

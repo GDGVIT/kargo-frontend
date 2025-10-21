@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { FaPlus } from 'react-icons/fa';
+import { Input, Select, AnimatedButton } from '@/components/ui';
+import { extractSubdomainSegment } from '@/utils/subdomain';
 import { useAuth } from '@/components/Auth/AuthProvider/AuthProvider';
 import type Port from '@/types/Application/Port/Port';
 import type PortsSectionProps from '@/types/Application/Port/PortSectionProps/PortSectionProps';
-import { Input, Select, AnimatedButton } from '@/components/ui';
-import { FaPlus } from 'react-icons/fa';
-import { extractSubdomainSegment } from '@/utils/subdomain';
 
 const defaultPort: Port = {
   containerPort: 80,

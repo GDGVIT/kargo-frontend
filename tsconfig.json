@@ -9,10 +9,5 @@
     "moduleResolution": "bundler",
     "jsx": "preserve"
   },
-  "include": ["app/**/*.ts", "app/**/*.tsx"],
-  "references": [
-    {
-      "path": "./app"
-    }
-  ]
+  "include": ["app/**/*.ts", "app/**/*.tsx"]
 }

@@ -1,7 +1,7 @@
 import React from 'react';
+import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import { AnimatedButton } from '@/components/ui';
 import RepoPaginationProps from '@/types/Repo/RepoPaginationProps';
-import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 
 const RepoPagination: React.FC<RepoPaginationProps> = ({ page, totalPages, onPrev, onNext }) => (
   <div className="flex flex-row justify-center items-center mt-4 gap-3 sm:gap-8 w-full">

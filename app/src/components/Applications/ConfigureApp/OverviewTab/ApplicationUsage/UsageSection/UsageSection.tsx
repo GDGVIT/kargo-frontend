@@ -10,11 +10,11 @@ import {
   ResponsiveContainer,
   CartesianGrid,
   ReferenceLine,
+  TooltipProps,
 } from 'recharts';
-import api from '@/utils/api';
 import { Loader, Select } from '@/components/ui';
+import api from '@/utils/api';
 import Resources from '@/types/Application/Resources/Resources';
-import type { TooltipProps } from 'recharts';
 
 const usageLabels: Record<string, string> = {
   cpu: 'CPU Usage (cores)',

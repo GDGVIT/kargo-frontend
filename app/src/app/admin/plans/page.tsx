@@ -1,5 +1,5 @@
-import AdminPlansDashboard from '@/components/Admin/AdminPlansDashboard/AdminPlansDashboard';
 import { PageHeading } from '@/components/ui';
+import AdminPlansDashboard from '@/components/Admin/AdminPlansDashboard/AdminPlansDashboard';
 
 const title = 'Admin Plans';
 const description =

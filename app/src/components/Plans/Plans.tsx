@@ -1,10 +1,10 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import api from '@/utils/api';
-import type Plan from '@/types/Plan/Plan';
 import { useNotification, Loader, Card, AnimatedButton } from '@/components/ui';
+import api from '@/utils/api';
 import { formatCpuMilli, formatMemory, formatStorage } from '@/utils/resources';
+import type Plan from '@/types/Plan/Plan';
 
 const Plans = () => {
   const [plans, setPlans] = useState<Plan[]>([]);
@@ -67,10 +67,7 @@ const Plans = () => {
                 </>
               )}
             </div>
-            <AnimatedButton
-              className="mt-2 !bg-sky-600 hover:!bg-sky-700"
-              onClick={handleBuy}
-            >
+            <AnimatedButton className="mt-2 !bg-sky-600 hover:!bg-sky-700" onClick={handleBuy}>
               Select Plan
             </AnimatedButton>
           </Card>

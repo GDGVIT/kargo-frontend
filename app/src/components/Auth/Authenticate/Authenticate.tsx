@@ -1,14 +1,14 @@
 'use client';
 
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { useNotification } from '@/components/ui';
+import { baseURL } from '@/utils/api';
+import { useAuth } from '../AuthProvider/AuthProvider';
 import Branding from './Branding/Branding';
 import AuthTabs from './AuthTabs/AuthTabs';
 import AuthForm from './AuthForm/AuthForm';
 import OAuthButtons from './OAuthButtons/OAuthButtons';
-import { useState, useEffect } from 'react';
-import { useAuth } from '../AuthProvider/AuthProvider';
-import { useNotification } from '@/components/ui';
-import { baseURL } from '@/utils/api';
-import { useRouter } from 'next/navigation';
 
 export default function Authenticate() {
   const [isLogin, setIsLogin] = useState(true);

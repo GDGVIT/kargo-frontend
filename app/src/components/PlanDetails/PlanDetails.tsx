@@ -1,13 +1,13 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import api from '@/utils/api';
 import { FaCrown, FaMicrochip, FaMemory } from 'react-icons/fa';
 import { FaFloppyDisk } from 'react-icons/fa6';
+import { useNotification, Loader } from '@/components/ui';
+import api from '@/utils/api';
+import { formatCpuMilli, formatMemory, formatStorage } from '@/utils/resources';
 import type Plan from '@/types/Plan/Plan';
 import type PlanDetailsProps from '@/types/Plan/PlanDetailsProps';
-import { useNotification, Loader } from '@/components/ui';
-import { formatCpuMilli, formatMemory, formatStorage } from '@/utils/resources';
 
 const ResourceItem = ({
   icon,

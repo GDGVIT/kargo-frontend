@@ -1,6 +1,6 @@
 /// <reference lib="webworker" />
 
-const CACHE_NAME = 'v1.1.0';
+const CACHE_NAME = 'v1.1.1';
 const CORE_ASSETS = [
   '/',
   '/offline',

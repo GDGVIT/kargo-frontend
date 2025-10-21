@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import { FaServer, FaNetworkWired, FaKey, FaLock } from 'react-icons/fa';
 import { Loader, Card } from '@/components/ui';
 import axios from '@/utils/api';
-import { FaServer, FaNetworkWired, FaKey, FaLock } from 'react-icons/fa';
 import type User from '@/types/User/User';
 
 interface UserStatsData {
