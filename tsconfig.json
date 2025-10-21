@@ -10,9 +10,4 @@
     "jsx": "preserve"
   },
   "include": ["app/**/*.ts", "app/**/*.tsx"],
-  "references": [
-    {
-      "path": "./app"
-    }
-  ]
 }
