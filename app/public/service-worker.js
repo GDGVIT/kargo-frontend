@@ -88,15 +88,18 @@ self.addEventListener('fetch', (event) => {
   if (CORE_ASSETS.includes(url.pathname)) {
     event.respondWith((async () => {
       const cached = await caches.match(request);
+      if (cached) {
+        return cached;
+      }
       try {
         const response = await fetch(request);
         if (response && response.status === 200) {
           const cache = await caches.open(PRECACHE);
           cache.put(request, response.clone());
         }
-        return cached || response;
+        return response;
       } catch {
-        return cached || await caches.match('/offline') || new Response('Service unavailable', { status: 503 });
+        return await caches.match('/offline') || new Response('Service unavailable', { status: 503 });
       }
     })());
     return;
