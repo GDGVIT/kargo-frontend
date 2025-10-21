@@ -1,6 +1,6 @@
 import React from 'react';
-import { Modal, AnimatedButton } from '@/components/ui';
 import { FaExclamationTriangle, FaKey, FaCog } from 'react-icons/fa';
+import { Modal, AnimatedButton } from '@/components/ui';
 
 interface ImageTestErrorModalProps {
   open: boolean;

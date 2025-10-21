@@ -1,4 +1,4 @@
-import api from '../utils/api';
+import api from './api';
 
 export async function fetchAppMetrics(appId: string) {
   const { data } = await api.get(`/applications/${appId}/metrics`);

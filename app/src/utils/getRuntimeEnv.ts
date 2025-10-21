@@ -1,5 +1,3 @@
-// Utility to get runtime env vars on the client
-
 declare global {
   interface Window {
     env?: Record<string, string>;

@@ -1,10 +1,10 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import api from '@/utils/api';
-import type Plan from '@/types/Plan/Plan';
 import { useNotification, Loader, Card, AnimatedButton } from '@/components/ui';
+import api from '@/utils/api';
 import { formatCpuMilli, formatMemory, formatStorage } from '@/utils/resources';
+import type Plan from '@/types/Plan/Plan';
 
 const Plans = () => {
   const [plans, setPlans] = useState<Plan[]>([]);

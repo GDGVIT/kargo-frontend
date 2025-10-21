@@ -2,8 +2,8 @@
 
 import React, { useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
-import { useAuth } from '../AuthProvider/AuthProvider';
 import { Loader } from '@/components/ui';
+import { useAuth } from '../AuthProvider/AuthProvider';
 import type ProtectRoutesProps from '@/types/ProtectRoutesProps/ProtectRoutesProps';
 
 export default function ProtectRoutes({ children }: ProtectRoutesProps) {

@@ -3,8 +3,8 @@
 import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import clsx from 'clsx';
-import { useAuth } from '../../Auth/AuthProvider/AuthProvider';
-import { useIsClient } from '../../../utils/hooks/useIsClient';
+import { useAuth } from '@/components/Auth/AuthProvider/AuthProvider';
+import { useIsClient } from '@/utils/hooks/useIsClient';
 
 export default function LayoutWrapper({ children }: { children: React.ReactNode }) {
   const { user } = useAuth();

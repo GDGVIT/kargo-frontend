@@ -1,8 +1,8 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { Card, AnimatedButton } from '@/components/ui';
 import { FaUsers, FaClipboardList } from 'react-icons/fa';
+import { Card, AnimatedButton } from '@/components/ui';
 import AdminOverallMetrics from './AdminOverallMetrics/AdminOverallMetrics';
 
 export default function AdminDashboard() {

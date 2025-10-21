@@ -2,8 +2,8 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { MdArrowForwardIos } from 'react-icons/md';
 import { usePathname } from 'next/navigation';
+import { MdArrowForwardIos } from 'react-icons/md';
 
 const Breadcrumbs: React.FC = () => {
   const pathname = usePathname();

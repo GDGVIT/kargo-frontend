@@ -2,9 +2,7 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '../../AuthProvider/AuthProvider';
 import { motion } from 'framer-motion';
-import { baseURL } from '@/utils/api';
 import {
   Card,
   Input,
@@ -12,6 +10,8 @@ import {
   useNotification,
   NotificationProvider,
 } from '@/components/ui';
+import { baseURL } from '@/utils/api';
+import { useAuth } from '../../AuthProvider/AuthProvider';
 
 const SetUsername: React.FC = () => {
   const [username, setUsername] = useState('');

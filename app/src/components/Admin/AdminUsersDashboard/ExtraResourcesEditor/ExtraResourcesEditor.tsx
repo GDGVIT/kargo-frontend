@@ -1,6 +1,6 @@
 import React from 'react';
-import { Input, AnimatedButton } from '@/components/ui';
 import { HiCheck, HiX } from 'react-icons/hi';
+import { Input, AnimatedButton } from '@/components/ui';
 import type ExtraResourcesEditorProps from '@/types/ExtraResources/ExtraResourcesEditorProps';
 
 const ExtraResourcesEditor: React.FC<ExtraResourcesEditorProps> = ({

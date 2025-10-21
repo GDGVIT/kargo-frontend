@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { Modal, Select, AnimatedButton, Card } from '@/components/ui';
 import { HiPencil } from 'react-icons/hi';
-import ExtraResourcesEditor from '../ExtraResourcesEditor/ExtraResourcesEditor';
+import { Modal, Select, AnimatedButton, Card } from '@/components/ui';
+import { formatCpuMilli, formatMemory, formatStorage } from '@/utils/resources';
 import type UserTableProps from '@/types/User/UserTableProps';
 import type User from '@/types/User/User';
-import { formatCpuMilli, formatMemory, formatStorage } from '@/utils/resources';
+import ExtraResourcesEditor from '../ExtraResourcesEditor/ExtraResourcesEditor';
 
 const UserTable: React.FC<UserTableProps> = ({
   users,

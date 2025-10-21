@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { Input, Select, AnimatedButton } from '@/components/ui';
-import type RegistryType from '@/types/Registry/RegistryType/RegistryType';
-import type RegistryCredential from '@/types/Registry/RegistryCredential/RegistryCredential';
 import { RiAddLargeFill } from 'react-icons/ri';
 import { SiDocker, SiGithub, SiGitlab } from 'react-icons/si';
 import { FiBox } from 'react-icons/fi';
+import { Input, Select, AnimatedButton } from '@/components/ui';
+import type RegistryType from '@/types/Registry/RegistryType/RegistryType';
+import type RegistryCredential from '@/types/Registry/RegistryCredential/RegistryCredential';
 
 export default function CredentialRegister({
   onAdd,

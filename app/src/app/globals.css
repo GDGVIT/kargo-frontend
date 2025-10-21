@@ -80,7 +80,6 @@ body {
   min-height: 100vh;
 }
 
-/* Hide scrollbar for body only */
 body {
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* Internet Explorer 10+ */

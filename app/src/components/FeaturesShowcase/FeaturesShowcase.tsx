@@ -1,10 +1,10 @@
 'use client';
 
-import { AnimatePresence, motion, useInView } from 'framer-motion';
-import Image from 'next/image';
 import { useEffect, useMemo, useRef, useState } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { AnimatePresence, motion, useInView } from 'framer-motion';
 import features, { Feature, Slide } from '@/data/features';
 
 interface FeatureSectionProps {

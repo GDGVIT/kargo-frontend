@@ -1,20 +1,12 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import Branding from './Branding/Branding';
-import {
-  FiBarChart2,
-  FiBook,
-  FiKey,
-  // FiGrid,
-  FiSettings,
-  FiShield,
-} from 'react-icons/fi';
-import { useAuth } from '../../Auth/AuthProvider/AuthProvider';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import React from 'react';
+import { FiBarChart2, FiBook, FiKey, FiSettings, FiShield } from 'react-icons/fi';
+import { useAuth } from '@/components/Auth/AuthProvider/AuthProvider';
+import Branding from './Branding/Branding';
 
 export default function Sidebar() {
   const { user, loading } = useAuth();

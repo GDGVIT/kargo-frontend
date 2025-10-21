@@ -2,8 +2,8 @@
 
 import { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import api from '@/utils/api';
 import { useNotification } from '@/components/ui';
+import api from '@/utils/api';
 
 export default function VerifyEmailPage() {
   const [status, setStatus] = useState<'pending' | 'success' | 'error'>('pending');

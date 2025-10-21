@@ -1,7 +1,7 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import Link from 'next/link';
+import { motion } from 'framer-motion';
 import Marquee from 'react-fast-marquee';
 import { ChevronDown } from 'lucide-react';
 

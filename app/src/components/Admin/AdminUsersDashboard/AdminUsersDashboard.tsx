@@ -3,9 +3,9 @@
 import { useEffect, useState } from 'react';
 import { useNotification, Loader } from '@/components/ui';
 import api from '@/utils/api';
-import UserManagement from './UserManagement/UserManagement';
 import type Plan from '@/types/Plan/Plan';
 import type User from '@/types/User/User';
+import UserManagement from './UserManagement/UserManagement';
 import type Resource from '@/types/Application/Resource/Resource';
 
 export default function AdminUsersDashboard() {

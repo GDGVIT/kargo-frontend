@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import api from '@/utils/api';
 import { AnimatedButton, useNotification } from '@/components/ui';
-import type Plan from '../../../types/Plan/Plan';
+import api from '@/utils/api';
+import type Plan from '@/types/Plan/Plan';
 import PlanTable from './PlansTable/PlanTable';
 import PlanFormModal from './PlanFormModal/PlanFormModal';
 

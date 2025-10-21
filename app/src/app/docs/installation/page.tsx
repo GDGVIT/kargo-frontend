@@ -1,4 +1,3 @@
-import { generatePageMetadata } from '@/lib/metadata';
 import {
   FaRocket,
   FaLaptopCode,
@@ -19,6 +18,7 @@ import {
   FaBook,
 } from 'react-icons/fa';
 import { SiKubernetes } from 'react-icons/si';
+import { generatePageMetadata } from '@/lib/metadata';
 
 const title = 'Installation Guide';
 const description = 'Learn how to install and set up Kargo for development or production use.';

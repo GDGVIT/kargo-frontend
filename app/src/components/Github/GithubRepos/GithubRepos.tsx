@@ -1,16 +1,16 @@
 'use client';
 
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
-import { FaGithub } from 'react-icons/fa';
-import api from '@/utils/api';
 import axios from 'axios';
-import { useNotification, Loader, Input, Select, AnimatedButton } from '@/components/ui';
 import { motion } from 'framer-motion';
+import { FaGithub } from 'react-icons/fa';
+import { GiBrain } from 'react-icons/gi';
+import { useNotification, Loader, Input, Select, AnimatedButton } from '@/components/ui';
+import api from '@/utils/api';
+import Repo from '@/types/Repo/Repo';
 import RepoPagination from './RepoPagination/RepoPagination';
 import RepoList from './RepoList/RepoList';
 import DockerModal from './DockerModal/DockerModal';
-import Repo from '@/types/Repo/Repo';
-import { GiBrain } from 'react-icons/gi';
 
 const GithubRepos: React.FC = () => {
   const { notify } = useNotification();

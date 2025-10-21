@@ -1,9 +1,9 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 import Auth from './Auth/Auth';
 import { useAuth } from '../../Auth/AuthProvider/AuthProvider';
-import Link from 'next/link';
 import Breadcrumbs from './Breadcrumbs/Breadcrumbs';
 
 const HEADER_HEIGHT = 64;

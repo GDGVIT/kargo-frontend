@@ -1,9 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-
-import { useAuth } from '../Auth/AuthProvider/AuthProvider';
 import { useNotification, Loader, Card } from '@/components/ui';
+import { useAuth } from '../Auth/AuthProvider/AuthProvider';
 import GithubAuth from '../Github/GithubAuth/GithubAuth';
 import PlanDetails from '../PlanDetails/PlanDetails';
 import UserStats from '../UserStats/UserStats';
