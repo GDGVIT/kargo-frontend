@@ -38,7 +38,7 @@ const Settings: React.FC = () => {
 
   return (
     <div className="px-2 sm:px-6 flex flex-col md:flex-row md:items-start md:gap-2 items-stretch gap-4">
-      <Card className="flex flex-col items-center md:items-start gap-4 w-full md:w-1/3 min-w-[220px] max-w-full md:max-w-xs p-6">
+      <Card className="flex flex-col justify-between md:items-start gap-4 w-full md:w-1/3 min-w-[220px] max-w-full md:max-w-xs p-6" style={{ height: "-webkit-fill-available" }}>
         <Profile
           user={user}
           imageError={imageError}
