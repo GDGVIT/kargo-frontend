@@ -6,6 +6,7 @@ import { motion, Easing } from 'framer-motion';
 interface CardProps {
   children: ReactNode;
   className?: string;
+  style?: React.CSSProperties;
   hoverable?: boolean;
   onClick?: () => void;
   disabled?: boolean;
@@ -27,6 +28,7 @@ const elevationMap = {
 const Card = ({
   children,
   className = '',
+  style = {},
   hoverable = false,
   onClick,
   disabled = false,
@@ -65,7 +67,7 @@ const Card = ({
       tabIndex={onClick && !disabled ? 0 : undefined}
       role={onClick && !disabled ? 'button' : undefined}
       aria-label={ariaLabel}
-      style={{ outline: 'none', maxWidth: '-webkit-fill-available' }}
+      style={{ outline: 'none', maxWidth: '-webkit-fill-available', ...style }}
       onKeyDown={handleKeyDown}
     >
       {children}

@@ -8,12 +8,14 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
     <div className="min-h-screen">
       {/* Main content */}
       <div className="mr-64 overflow-y-auto min-h-screen">
-        <div className="p-8 my-2">{children}</div>
+        <div className="p-8 my-2 docs-theme">
+          <div className="max-w-5xl mx-auto">{children}</div>
+        </div>
       </div>
 
       {/* Sidebar */}
       <aside
-        className="w-64 fixed right-0 top-0 h-screen overflow-y-auto px-6 py-10"
+        className="w-64 fixed right-0 top-16 h-[calc(100vh-64px)] overflow-y-auto px-6 py-10"
         style={{
           backgroundColor: 'var(--card-background)',
           borderLeft: '1px solid #3a4152',
@@ -36,7 +38,7 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
                         textDecoration: 'none',
                       }}
                       onMouseEnter={(e) => {
-                        e.currentTarget.style.color = 'var(--theme-blue)';
+                        e.currentTarget.style.color = 'var(--text-link-hover-color)';
                       }}
                       onMouseLeave={(e) => {
                         e.currentTarget.style.color = '#a0aec0';
