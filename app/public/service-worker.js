@@ -1,4 +1,4 @@
-const VERSION = 'v1.1.1';
+const VERSION = 'v1.1.2';
 const PRECACHE = `precache-${VERSION}`;
 const RUNTIME = `runtime-${VERSION}`;
 const RUNTIME_MAX_ENTRIES = 100;
